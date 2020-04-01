@@ -10,8 +10,12 @@ chrome.extension.onConnect.addListener(function(port) {
                 // el.innerHTML = rep;
                 var parser = new DOMParser();
                 var el = parser.parseFromString(rep, "text/html");
+                var body = el.querySelector("body");
                 
-                var acceptedAnswer = el.querySelector("body").querySelector(".accepted-answer");
+                var acceptedAnswer = body.querySelector(".accepted-answer");
+                if(!acceptedAnswer){
+                    acceptedAnswer = body.querySelector(".answer");
+                }
 
                 let codes = acceptedAnswer.querySelectorAll("code, pre");
                 codes.forEach(c => {

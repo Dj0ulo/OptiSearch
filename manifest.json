@@ -20,7 +20,7 @@
 "content_scripts": 
 [ 
 	{
-	"matches": ["https://www.google.com/search?*"],
+	"matches": ["*://www.google.com/search?*","*://www.ecosia.org/search?*"],
 	"js": ["run_prettify.js","setStack.js"],
 	"css": ["styleStack.css","tomorrow.css"] 
 	}

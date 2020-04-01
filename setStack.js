@@ -1,5 +1,16 @@
 //console.log("Stackoverflow");
 
+const Google = "google", Ecosia = "ecosia";
+var host = "";
+var site = window.location.hostname;
+console.log(site);     
+if(site.endsWith("ecosia.org")){
+    host = Ecosia;
+}
+else if(site.search("google")!=-1){
+    host = Google;
+}
+
 var classCol = ".rhscol.col";
 
 function loaded(){
@@ -18,7 +29,8 @@ var results = document.querySelectorAll(".r");
 var found = false;
 results.forEach(r => {
     var link = r.querySelector("a").href;
-    if(!found && link.startsWith("https://stackoverflow.com/questions/")){        
+    if(!found && link.startsWith("https://stackoverflow.com/questions/")){   
+        console.log(link);     
         port.postMessage(link);
         found= true;
     }        
