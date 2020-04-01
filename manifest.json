@@ -1,0 +1,28 @@
+{
+"name" :"StackOverflow Google",
+"version" : "1.0",
+"manifest_version": 2,
+"description" :"StackOverflow Google",
+"permissions": ["tabs", "activeTab","<all_urls>","https://*/"],
+"browser_action" :
+{
+	"default_popup" :"pop_up.html"
+},
+
+"background": {
+    "scripts": ["background.js"],
+    "persistent": false
+},
+"externally_connectable": {
+    "matches": ["*://*.google.com/*"]
+},
+	
+"content_scripts": 
+[ 
+	{
+	"matches": ["https://www.google.com/search?*"],
+	"js": ["jquery.min.js","run_prettify.js","prettify-full.en.js","prettify.js","setStack.js", "prettifyduck.min.js"],
+	"css": ["styleStack.css"] 
+	}
+]
+}
