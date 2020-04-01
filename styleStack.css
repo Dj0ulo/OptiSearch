@@ -19,8 +19,11 @@
 .stackoverflow .title{
     font-size: x-large;
     font-weight: bold;
-    color: #1a0dab !important;
 }
+.stackoverflow .title:hover{
+    text-decoration: underline;
+}
+
 
 .stackoverflow .stacklink{
     white-space: nowrap;
@@ -28,6 +31,11 @@
     text-overflow: ellipsis;
     max-width: 400px;
     padding-top: 8px;
+    color: #3C4043 !important;
+}
+
+.stackoverflow .stackheader a:link{
+    text-decoration: none!important;
 }
 
 .stackoverflow .stacklink img{
@@ -55,10 +63,6 @@
     padding-bottom: .25em;
 }
 
-.stackoverflow pre.prettyprint{
-    border: 0px;
-}
-
 .stackoverflow blockquote {
     position: relative;
     padding-left: 12px;
@@ -77,12 +81,13 @@
     background: var(--black-150);
 }
 
-code{
+.stackoverflow code{
     font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
     background-color: var(--black-050);
 }
 
-pre {
+.stackoverflow pre.prettyprint {
+    border: 0px;
     margin-bottom: 1em;
     padding: 12px 8px;
     width: auto;
@@ -95,6 +100,11 @@ pre {
     scrollbar-color: var(--scrollbar) transparent;
 }
 
+.stackoverflow .stackfoot{
+    margin-top: 15px;
+    line-height: 25px;
+    font-size: small;
+}
 
 body{
     --white: #fff;

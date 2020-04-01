@@ -15,17 +15,44 @@ chrome.extension.onConnect.addListener(function(port) {
 
                 let codes = acceptedAnswer.querySelectorAll("code, pre");
                 codes.forEach(c => {
-                    var s = c.textContent;
-                    console.log(s);
                     c.className = "prettyprint";
                 });
+                
+                let editions = acceptedAnswer.querySelectorAll(".user-info");
+                editions.forEach(e => {
+                    e.querySelector(".user-action-time").style.display="inline-block";
+                    let links = e.querySelectorAll("a");
+                    links.forEach(a => {
+                        a.href = "https://stackoverflow.com"+a.getAttribute('href');
+                    });
+                });
+
+                let author = {
+                    name : editions[editions.length-1].querySelector(".user-details").querySelector("a").outerHTML,
+                    answered : editions[editions.length-1].querySelector(".user-action-time").outerHTML
+                }
+
+                let editor = null;                
+                if(editions.length>1){
+                    let nameEditor = editions[0].querySelector(".user-details").querySelector("a");
+                    if(nameEditor == null)
+                        nameEditor = author.name;
+                    else
+                        nameEditor = nameEditor.outerHTML;
+                    editor = {
+                        name : nameEditor,
+                        answered : editions[0].querySelector(".user-action-time").outerHTML
+                    }
+                }
+
                 
                 var answer = {
                     title : el.getElementById("question-header").querySelector("h1").textContent,
                     link : link + "#" + acceptedAnswer.getAttribute('data-answerid'),
-                    html : acceptedAnswer.querySelector(".post-text").innerHTML
+                    html : acceptedAnswer.querySelector(".post-text").innerHTML,
+                    author : author,
+                    editor : editor
                 }
-                console.log(answer.html);
                 port.postMessage(answer)
             }
         }

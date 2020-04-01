@@ -44,12 +44,23 @@ port.onMessage.addListener(function(answer) {
     headPanel.innerHTML = link;
     sidePanel.appendChild(headPanel);
 
-    sidePanel.append(document.createElement("hr"));
+    sidePanel.append(document.createElement("hr"));//body
 
     var bodyPanel = document.createElement("div");
     bodyPanel.className = "stackbody";
     bodyPanel.innerHTML = answer.html;
     sidePanel.appendChild(bodyPanel);
+
+    sidePanel.append(document.createElement("hr"));//foot
+
+    var footPanel = document.createElement("div");
+    footPanel.className = "stackfoot";
+    var foothtml = answer.author.name +" – "+answer.author.answered;
+    if(answer.editor){
+        foothtml += "<br>"+answer.editor.name +" – "+answer.editor.answered;
+    }
+    footPanel.innerHTML = foothtml;
+    sidePanel.appendChild(footPanel);
 
     knowledgePanel.appendChild(sidePanel);
 
