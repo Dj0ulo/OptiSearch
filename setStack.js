@@ -24,11 +24,11 @@ results.forEach(r => {
     }        
 });
 port.onMessage.addListener(function(answer) {
-    var classSidePanel = "kp-blk EyBRub knowledge-panel Wnoohf OJXvsb";
-    var sidePanel = document.getElementsByClassName(classSidePanel)[0];
-    if(sidePanel != null){
-        console.log(sidePanel);
-    }
+    // var classSidePanel = "kp-blk EyBRub knowledge-panel Wnoohf OJXvsb";
+    // var sidePanel = document.getElementsByClassName(classSidePanel)[0];
+    // if(sidePanel != null){
+    //     console.log(sidePanel);
+    // }
 
     var knowledgePanel = document.createElement("div");
     knowledgePanel.className = "stackpanel";
@@ -68,14 +68,14 @@ port.onMessage.addListener(function(answer) {
 
     if(loaded())
         appendIt();
-    else{
-        var intervalID = setInterval(() => {
-            if(loaded()){
-                appendIt();
-                clearInterval(intervalID);
-            }                
-        },100);
-    }
+    // else{
+    //     var intervalID = setInterval(() => {
+    //         if(loaded()){
+    //             appendIt();
+    //             clearInterval(intervalID);
+    //         }                
+    //     },100);
+    // }
 
     function appendIt(){
         document.querySelector(classCol).appendChild(knowledgePanel);

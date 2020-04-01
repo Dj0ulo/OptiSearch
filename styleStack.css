@@ -51,10 +51,8 @@
     border-bottom-color: rgb(220,220,220);
 }
 
-.stackoverflow .stackbody a{
+.stackoverflow .stackfoot a{
     color: var(--blue-600);
-    text-decoration: none;
-    cursor: pointer;
 }
 
 .stackoverflow .stackbody p{

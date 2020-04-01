@@ -3,6 +3,10 @@
   background: #f7f7f7;
 }
 
+a .prettyprint .pln, a .prettyprint .pun{
+  color: #0077cc;
+}
+
 .prettyprint .pln {
   color: #4d4d4c;
 }
