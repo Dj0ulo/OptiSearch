@@ -68,6 +68,7 @@ port.onMessage.addListener(function(answer) {
 
     function appendIt(){
         document.querySelector(classCol).appendChild(knowledgePanel);
+        dotherunningpretty();
     }
     
 });

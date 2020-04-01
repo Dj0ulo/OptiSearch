@@ -55,6 +55,28 @@
     padding-bottom: .25em;
 }
 
+.stackoverflow pre.prettyprint{
+    border: 0px;
+}
+
+.stackoverflow blockquote {
+    position: relative;
+    padding-left: 12px;
+}
+
+.stackoverflow blockquote:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    height: inherit;
+    border-radius: 8px;
+    background: var(--black-150);
+}
+
 code{
     font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
     background-color: var(--black-050);

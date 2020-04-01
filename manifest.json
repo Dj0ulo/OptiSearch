@@ -21,8 +21,8 @@
 [ 
 	{
 	"matches": ["https://www.google.com/search?*"],
-	"js": ["jquery.min.js","run_prettify.js","prettify-full.en.js","prettify.js","setStack.js", "prettifyduck.min.js"],
-	"css": ["styleStack.css"] 
+	"js": ["run_prettify.js","setStack.js"],
+	"css": ["styleStack.css","tomorrow.css"] 
 	}
 ]
 }

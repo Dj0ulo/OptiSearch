@@ -13,7 +13,7 @@ chrome.extension.onConnect.addListener(function(port) {
                 
                 var acceptedAnswer = el.querySelector("body").querySelector(".accepted-answer");
 
-                let codes = acceptedAnswer.querySelectorAll("code");
+                let codes = acceptedAnswer.querySelectorAll("code, pre");
                 codes.forEach(c => {
                     var s = c.textContent;
                     console.log(s);
