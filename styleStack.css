@@ -53,6 +53,7 @@
 
 .stackoverflow .stackfoot a{
     color: var(--blue-600);
+    text-decoration: none;
 }
 
 .stackoverflow .stackbody p{
@@ -98,9 +99,13 @@
     scrollbar-color: var(--scrollbar) transparent;
 }
 
+.stackoverflow .stackbody a{
+    text-decoration: none;
+}
+
 .stackoverflow .stackfoot{
     margin-top: 15px;
-    line-height: 25px;
+    line-height: 23px;
     font-size: small;
 }
 

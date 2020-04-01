@@ -11,21 +11,17 @@ else if(site.search("google")!=-1){
     host = Google;
 }
 
-var classCol = ".rhscol.col";
+var classCol = {};
+classCol[Google] = ".rhscol.col";
+classCol[Ecosia] = ".col-lg-4.col-sm-12";
 
-function loaded(){
-    if(!document.querySelector(classCol)){
-        return false;
-    }
-    else{
-        return true;
-    }
-}
+var resultClass = {};
+resultClass[Google] = ".r";
+resultClass[Ecosia] = ".result.js-result";
 
 var port = chrome.runtime.connect();
 
-
-var results = document.querySelectorAll(".r");
+var results = document.querySelectorAll(resultClass[host]);
 var found = false;
 results.forEach(r => {
     var link = r.querySelector("a").href;
@@ -44,6 +40,8 @@ port.onMessage.addListener(function(answer) {
 
     var knowledgePanel = document.createElement("div");
     knowledgePanel.className = "stackpanel";
+    if(host == Ecosia)
+        knowledgePanel.style.marginTop = "20px";
 
     var sidePanel = document.createElement("div");
     sidePanel.className = "stackoverflow";
@@ -76,6 +74,11 @@ port.onMessage.addListener(function(answer) {
 
     knowledgePanel.appendChild(sidePanel);
 
+
+    function loaded(){
+        return document.querySelector(classCol[host]);
+    }
+
     console.log("loaded : "+loaded());
 
     if(loaded())
@@ -90,7 +93,7 @@ port.onMessage.addListener(function(answer) {
     // }
 
     function appendIt(){
-        document.querySelector(classCol).appendChild(knowledgePanel);
+        document.querySelector(classCol[host]).appendChild(knowledgePanel);
         dotherunningpretty();
     }
     
