@@ -2,6 +2,10 @@ function getMDN(from, doc){
     var body = doc.querySelector("body");
 
     let article = body.querySelector("#wikiArticle");
+    if(!article){
+        return;
+    }
+        
     let syntax = article.querySelector(".syntaxbox");
     let summary = article.querySelector("p");
 

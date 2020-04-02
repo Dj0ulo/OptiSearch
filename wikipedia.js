@@ -4,9 +4,9 @@ function getWiki(from, doc){
     let infobox = article.querySelector("[class^=infobox]");
     let img;
     if(infobox)
-        img = infobox.querySelector(".image img");
+        img = infobox.querySelector(".image");
     else{
-        img = article.querySelector(".thumbinner .image img")
+        img = article.querySelector(".thumbinner .image")
     }
 
     let children = article.querySelectorAll(":scope > p");

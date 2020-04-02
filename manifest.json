@@ -10,7 +10,7 @@
 },
 
 "background": {
-    "scripts": ["background.js", "stackoverflow.js","mdn.js","wikipedia.js"],
+    "scripts": ["background.js", "stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
     "persistent": false
 },
 "externally_connectable": {
@@ -21,7 +21,7 @@
 [ 
 	{
 	"matches": ["*://www.google.com/search?*","*://www.ecosia.org/search?*","*://search.yahoo.com/search*"],
-	"js": ["run_prettify.js","tex-svg.js","setPanel.js", "stackoverflow.js","mdn.js","wikipedia.js"],
+	"js": ["run_prettify.js","tex-svg.js","setPanel.js", "stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
 	"css": ["styleStack.css","tomorrow.css"] 
 	}
 ]

@@ -11,6 +11,8 @@ chrome.extension.onConnect.addListener(function(port) {
                     port.postMessage(getMDN(msg, doc));
                 else if(msg.site == "wikipedia")
                     port.postMessage(getWiki(msg, doc));
+                else if(msg.site == "w3schools")
+                    port.postMessage(getW3(msg, doc));
             }
         }
         xmlHttp.open("GET", msg.link, true); // true for asynchronous 

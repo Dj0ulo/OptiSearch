@@ -15,7 +15,7 @@ else if(site.search("google")!=-1){
 else if(site.search("yahoo")!=-1){
     engine = Yahoo;
 }
-let regexp = /[?|&]q=([%21|!][^&]*)/
+let regexp = /[?|&]q=((%21|!)[^&]*)/
 if(window.location.href.search(regexp)!=-1){
     let reg = window.location.href.match(regexp);
     console.log(reg['1']);
@@ -33,6 +33,15 @@ resRow[Google] = ".r";
 resRow[Ecosia] = ".result.js-result";
 resRow[Yahoo] = ".dd.algo";
 
+if(engine == Ecosia){
+    if(window.location.href.search(/[?|&]q=calculator(&?|$)/)!=-1){
+        let iframe = document.createElement("iframe");
+        iframe.className = "opticalculator";
+        iframe.src = "https://www.desmos.com/scientific";
+        document.querySelector(rightCol[engine]).appendChild(iframe);
+    }
+}
+
 
 //send site
 var port = chrome.runtime.connect();
@@ -47,9 +56,11 @@ results.forEach(r => {
         site = "stackoverflow";
     else if(link.startsWith("https://developer.mozilla.org/"))
         site = "mdn";
+    else if(link.startsWith("https://www.w3schools.com/"))
+        site = "w3schools";
     else if(link.startsWith("https://math.stackexchange.com/questions/"))
         site = "stackexchange";
-    else if(engine == Ecosia && link.search("wikipedia.org/wiki/")!=-1)
+    else if((engine == Ecosia || engine == Yahoo) && link.search("wikipedia.org/wiki/")!=-1)
         site = "wikipedia";
 
     if(!found && site){
@@ -86,8 +97,13 @@ port.onMessage.addListener(function(msg) {
         icon = 'https://wikipedia.org/static/favicon/wikipedia.ico';
         panel = setWiki(msg);
     }
-    else
+    else if(msg.site == "w3schools"){
+        icon = 'https://www.w3schools.com/favicon.ico';
+        panel = setW3(msg);
+    }
+    if(!panel)
         return;
+    
 
     let host = msg.link.match("https?://[^/]+")[0];        
 
@@ -103,7 +119,9 @@ port.onMessage.addListener(function(msg) {
     var headPanel = document.createElement("div");
     headPanel.className = "stackheader";
 
-    
+    console.log(msg.title);
+    msg.title = msg.title.replace(/<(\w*)>/g,'&lt;$1&gt;');
+    console.log(msg.title);
 
     var link = "<a href='"+msg.link+"'><div class='title'>"+msg.title+"</div>";
     link += "<div class='stacklink'><img width='16' height='16' src='"+icon+"'>"+msg.link+"</div></a>";
@@ -131,8 +149,14 @@ port.onMessage.addListener(function(msg) {
     let links = sidePanel.querySelectorAll("a");
     links.forEach(a => {
         let ahref = a.getAttribute('href');
-        if(ahref.startsWith("/"))
-            a.href = host+ahref;
+        if(!ahref.startsWith("//") && !ahref.startsWith("http")){
+            if(!ahref.startsWith("/")){
+                a.href = msg.link.replace(/\/[^\/]*$/,"")+"/"+ahref;
+            }
+            else
+                a.href = host+ahref;
+        }
+            
     });
 
 
