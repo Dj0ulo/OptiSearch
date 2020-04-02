@@ -9,6 +9,7 @@
 .stackoverflow{
     padding: 15px 15px;
     padding-top: 8px;
+    font-size: 15px;
 }
 
 .stackoverflow .stackheader{
@@ -40,7 +41,7 @@
 
 .stackoverflow .stacklink img{
     vertical-align: middle;
-    padding-right: .5em;
+    margin-right: 3px;
     margin-top: -3px;
     max-width: 16px;
 }
@@ -56,10 +57,14 @@
     text-decoration: none;
 }
 
-.stackoverflow .stackbody p{
+.stackoverflow .stackbody p, .stackoverflow .stackbody ul{
     line-height: 1.35;
     padding-top: .25em;
     padding-bottom: .25em;
+}
+
+.stackoverflow .stackbody ul{
+    padding-left: 20px;
 }
 
 .stackoverflow blockquote {

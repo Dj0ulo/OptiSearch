@@ -1,4 +1,4 @@
-function dotherunningpretty(){/*
+function runPrettify(){/*
 
  Copyright (C) 2013 Google Inc.
 
