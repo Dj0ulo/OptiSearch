@@ -5,7 +5,7 @@ chrome.extension.onConnect.addListener(function(port) {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
                 var doc = new DOMParser().parseFromString(xmlHttp.response, "text/html");
 
-                if(msg.site == "stackoverflow")
+                if(msg.site == "stackoverflow" || msg.site == "stackexchange")
                     port.postMessage(getStack(msg, doc));
                 else if(msg.site == "mdn")
                     port.postMessage(getMDN(msg, doc));

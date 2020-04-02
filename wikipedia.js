@@ -1,7 +1,13 @@
 function getWiki(from, doc){
     let body = doc.querySelector("body");
     let article = body.querySelector("#mw-content-text .mw-parser-output");
-    let img = article.querySelector(".image img");
+    let infobox = article.querySelector("[class^=infobox]");
+    let img;
+    if(infobox)
+        img = infobox.querySelector(".image img");
+    else{
+        img = article.querySelector(".thumbinner .image img")
+    }
 
     let children = article.querySelectorAll(":scope > p");
     let summary = null;

@@ -15,6 +15,12 @@ else if(site.search("google")!=-1){
 else if(site.search("yahoo")!=-1){
     engine = Yahoo;
 }
+let regexp = /[?|&]q=([%21|!][^&]*)/
+if(window.location.href.search(regexp)!=-1){
+    let reg = window.location.href.match(regexp);
+    console.log(reg['1']);
+    window.location.href = "https://duckduckgo.com/?q="+reg['1'];
+}
 
 
 var rightCol = {};
@@ -66,7 +72,12 @@ port.onMessage.addListener(function(msg) {
     if(msg.site == "stackoverflow"){
         icon = 'https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico';
         panel = setStack(msg);
-    }        
+    }      
+    else if(msg.site == "stackexchange"){
+        icon = 'https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico';
+        panel = setStack(msg);
+        getChildrenTex(panel.body);
+    }    
     else if(msg.site == "mdn"){
         icon = 'https://developer.mozilla.org/static/img/favicon32.png';
         panel = setMDN(msg);
@@ -99,6 +110,8 @@ port.onMessage.addListener(function(msg) {
     headPanel.innerHTML = link;
     sidePanel.appendChild(headPanel);
 
+    runMathJax(headPanel.querySelector(".title"));
+
     if(panel.body){        
         sidePanel.append(document.createElement("hr"));//body
         panel.body.className += " optibody";
@@ -110,6 +123,7 @@ port.onMessage.addListener(function(msg) {
     }
 
     if(panel.foot){
+        panel.foot.id = "output";
         sidePanel.append(document.createElement("hr"));//foot
         sidePanel.appendChild(panel.foot);
     }
@@ -126,5 +140,37 @@ port.onMessage.addListener(function(msg) {
 
     document.querySelector(rightCol[engine]).appendChild(knowledgePanel);
 
-    runPrettify();    
+    runPrettify();
 });
+
+const regexpTex = /\${1,2}([^\$]*)\${1,2}/;
+const regexpTexG = /\${1,2}([^\$]*)\${1,2}/g;
+function getChildrenTex(element){
+    var all = element.querySelectorAll("*");
+    var children = [];
+    all.forEach(p => {
+        if(p.textContent.search(regexpTex) != -1)
+            children.push(p);
+    });
+
+    children.forEach(c => {
+        runMathJax(c);
+    });
+}
+
+function runMathJax(element) {
+    element.innerHTML = element.innerHTML.replace(regexpTexG,"<span style='display: inline-block; ' class='mjx'>$1</span>");
+
+    var texs = element.querySelectorAll(".mjx");
+    
+    MathJax.texReset();
+    texs.forEach(t => {
+        var options = MathJax.getMetricsFor(t);
+        
+        MathJax.tex2svgPromise(t.textContent, options).then( node => {
+            t.innerHTML = "";
+            t.appendChild(node);
+        });
+    });
+
+}
