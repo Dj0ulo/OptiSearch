@@ -5,7 +5,8 @@ chrome.extension.onConnect.addListener(function(port) {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
                 var doc = new DOMParser().parseFromString(xmlHttp.response, "text/html");
 
-                port.postMessage(getStack(msg.link, doc));
+                if(msg.site == "stackoverflow")
+                    port.postMessage(getStack(msg, doc));
             }
         }
         xmlHttp.open("GET", msg.link, true); // true for asynchronous 

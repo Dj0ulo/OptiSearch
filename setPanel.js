@@ -25,24 +25,38 @@ resultClass[Google] = ".r";
 resultClass[Ecosia] = ".result.js-result";
 resultClass[Yahoo] = ".dd.algo";
 
+
 var port = chrome.runtime.connect();
 
 var results = document.querySelectorAll(resultClass[host]);
 var found = false;
 results.forEach(r => {
     var link = r.querySelector("a").href;
-    if(!found && 
-        (link.startsWith("https://stackoverflow.com/questions/")
-        || link.startsWith("https://developer.mozilla.org/") )){   
+
+    let site = null;
+    if(link.startsWith("https://stackoverflow.com/questions/"))
+        site = "stackoverflow";
+    else if(link.startsWith("https://developer.mozilla.org/"))
+        site = "mdn";
+
+    if(!found && site){   
         let msg = {
             engine : host,
-            link : link
+            link : link,
+            site : site
         }
         port.postMessage(msg);
         found= true;
     }        
 });
+
+
+//set
 port.onMessage.addListener(function(answer) {
-    document.querySelector(classCol[host]).appendChild(setStack(host, answer));
+    var panel;
+    if(answer.site == "stackoverflow")
+        panel = setStack(host, answer);
+    
+    document.querySelector(classCol[host]).appendChild(panel);
     runPrettify();    
 });

@@ -1,4 +1,4 @@
-function getStack(url, doc){
+function getStack(from, doc){
     var body = doc.querySelector("body");
                 
     var acceptedAnswer = body.querySelector(".accepted-answer");
@@ -40,17 +40,18 @@ function getStack(url, doc){
     
     return {
         title : doc.getElementById("question-header").querySelector("h1").textContent,
-        link : url + "#" + acceptedAnswer.getAttribute('data-answerid'),
+        link : from.link + "#" + acceptedAnswer.getAttribute('data-answerid'),
+        site : from.site,
         html : acceptedAnswer.querySelector(".post-text").innerHTML,
         author : author,
         editor : editor
     }
 }
 
-function setStack(host, answer){
+function setStack(engine, answer){
     var knowledgePanel = document.createElement("div");
     knowledgePanel.className = "stackpanel";
-    if(host == Ecosia)
+    if(engine == Ecosia)
         knowledgePanel.style.marginTop = "20px";
 
     var sidePanel = document.createElement("div");
