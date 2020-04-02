@@ -5,24 +5,25 @@ function getStack(from, doc){
     if(!acceptedAnswer){
         acceptedAnswer = body.querySelector(".answer");
     }
-
-    let codes = acceptedAnswer.querySelectorAll("code, pre");
-    codes.forEach(c => {
-        c.className = "prettyprint";
-    });
     
     let editions = acceptedAnswer.querySelectorAll(".user-info");
     editions.forEach(e => {
-        e.querySelector(".user-action-time").style.display="inline-block";
-        let links = e.querySelectorAll("a");
-        links.forEach(a => {
-            a.href = "https://stackoverflow.com"+a.getAttribute('href');
-        });
+        let time = e.querySelector(".user-action-time");
+        if(time)
+            time.style.display="inline-block";
     });
 
+    let time = editions[editions.length-1].querySelector(".user-action-time");
+    if(time)
+        time = time.outerHTML;
+    let details = editions[editions.length-1].querySelector(".user-details");
+    if(details.querySelector("a"))
+        details = details.querySelector("a");
+    details.style.display = "inline-block";
+
     let author = {
-        name : editions[editions.length-1].querySelector(".user-details").querySelector("a").outerHTML,
-        answered : editions[editions.length-1].querySelector(".user-action-time").outerHTML
+        name : details.outerHTML,
+        answered : time
     }
 
     let editor = null;                
@@ -48,42 +49,23 @@ function getStack(from, doc){
     }
 }
 
-function setStack(engine, answer){
-    var knowledgePanel = document.createElement("div");
-    knowledgePanel.className = "stackpanel";
-    if(engine == Ecosia)
-        knowledgePanel.style.marginTop = "20px";
-
-    var sidePanel = document.createElement("div");
-    sidePanel.className = "stackoverflow";
-
-    var headPanel = document.createElement("div");
-    headPanel.className = "stackheader";
-
-    var link = "<a href='"+answer.link+"'><div class='title'>"+answer.title+"</div>";
-    link += "<div class='stacklink'><img width='16' height='16' src='https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico'>"+answer.link+"</div></a>";
-    headPanel.innerHTML = link;
-    sidePanel.appendChild(headPanel);
-
-    sidePanel.append(document.createElement("hr"));//body
-
+function setStack(answer){
     var bodyPanel = document.createElement("div");
     bodyPanel.className = "stackbody";
     bodyPanel.innerHTML = answer.html;
-    sidePanel.appendChild(bodyPanel);
-
-    sidePanel.append(document.createElement("hr"));//foot
 
     var footPanel = document.createElement("div");
     footPanel.className = "stackfoot";
-    var foothtml = answer.author.name +" – "+answer.author.answered;
+    var foothtml = answer.author.name + (answer.author.answered ? (" – "+answer.author.answered) : "");
     if(answer.editor){
-        foothtml += "<br>"+answer.editor.name +" – "+answer.editor.answered;
+        foothtml += "<br>";
+        if(answer.editor.name != answer.author.name)
+            foothtml += answer.editor.name;
+        foothtml += " – "+answer.editor.answered;
     }
     footPanel.innerHTML = foothtml;
-    sidePanel.appendChild(footPanel);
 
-    knowledgePanel.appendChild(sidePanel);
-
-    return knowledgePanel;
+    return {
+        body: bodyPanel, 
+        foot: footPanel};
 }

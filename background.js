@@ -7,6 +7,10 @@ chrome.extension.onConnect.addListener(function(port) {
 
                 if(msg.site == "stackoverflow")
                     port.postMessage(getStack(msg, doc));
+                else if(msg.site == "mdn")
+                    port.postMessage(getMDN(msg, doc));
+                else if(msg.site == "wikipedia")
+                    port.postMessage(getWiki(msg, doc));
             }
         }
         xmlHttp.open("GET", msg.link, true); // true for asynchronous 

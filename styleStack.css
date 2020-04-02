@@ -1,4 +1,4 @@
-.stackpanel {
+.optisearchbox {
     border: 1px solid #dfe1e5;
     border-radius: 8px;
     width: fit-content;
@@ -6,27 +6,28 @@
     max-width: 600px;
 }
 
-.stackoverflow{
+.optipanel{
     padding: 15px 15px;
     padding-top: 8px;
     font-size: 15px;
 }
 
-.stackoverflow .stackheader{
+.optipanel .stackheader{
     margin-top: 15px;
     margin-bottom: 15px;
 }
 
-.stackoverflow .title{
+.optipanel .title{
     font-size: x-large;
     font-weight: bold;
+    color: #1a0dab;
 }
-.stackoverflow .title:hover{
+.optipanel .title:hover{
     text-decoration: underline;
 }
 
 
-.stackoverflow .stacklink{
+.optipanel .stacklink{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -35,44 +36,39 @@
     color: #3C4043 !important;
 }
 
-.stackoverflow .stackheader a:link{
+.optipanel .stackheader a:link{
     text-decoration: none!important;
 }
 
-.stackoverflow .stacklink img{
+.optipanel .stacklink img{
     vertical-align: middle;
     margin-right: 3px;
     margin-top: -3px;
     max-width: 16px;
 }
 
-.stackoverflow hr{
+.optipanel hr{
     border-left: 0px;
     border-top: 0px;
     border-bottom-color: rgb(220,220,220);
 }
 
-.stackoverflow .stackfoot a{
-    color: var(--blue-600);
-    text-decoration: none;
-}
-
-.stackoverflow .stackbody p, .stackoverflow .stackbody ul{
+.optipanel .optibody p, .optipanel .optibody ul{
     line-height: 1.35;
     padding-top: .25em;
     padding-bottom: .25em;
 }
 
-.stackoverflow .stackbody ul{
+.optipanel .optibody ul{
     padding-left: 20px;
 }
 
-.stackoverflow blockquote {
+.optipanel blockquote {
     position: relative;
     padding-left: 12px;
 }
 
-.stackoverflow blockquote:before {
+.optipanel blockquote:before {
     content: "";
     display: block;
     position: absolute;
@@ -85,12 +81,12 @@
     background: var(--black-150);
 }
 
-.stackoverflow code{
+.optipanel code{
     font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
     background-color: var(--black-050);
 }
 
-.stackoverflow pre.prettyprint {
+.optipanel pre.prettyprint {
     border: 0px;
     margin-bottom: 1em;
     padding: 12px 8px;
@@ -104,11 +100,28 @@
     scrollbar-color: var(--scrollbar) transparent;
 }
 
-.stackoverflow .stackbody a{
-    text-decoration: none;
+.optipanel .optibody.wikibody img{
+    width: 40%;
+    height: 100%;
+    float: right;
+    border-radius: 10px;
+    margin: 10px;
 }
 
-.stackoverflow .stackfoot{
+.optipanel .optibody{
+    overflow: auto;
+}
+
+.optipanel a{
+    color: var(--blue-600) !important;
+    text-decoration: none;
+}
+.optipanel a:hover{
+    color: var(--blue-600);
+    text-decoration: underline;
+}
+
+.optipanel .stackfoot{
     margin-top: 15px;
     line-height: 23px;
     font-size: small;
