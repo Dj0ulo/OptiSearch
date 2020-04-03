@@ -13,7 +13,7 @@ function getWiki(from, doc){
     let summary = null;
     for (let i = 0; i < children.length; i++) {
         const p = children[i];
-        if(!p.className){
+        if(!p.className && p.textContent.trim()!=""){
             summary = p;
             break;
         }

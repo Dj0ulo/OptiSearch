@@ -3,14 +3,15 @@
 "version" : "0.1",
 "manifest_version": 2,
 "description" :"Upgrade and optimize your searches !",
-"permissions": ["tabs", "activeTab","<all_urls>","https://*/"],
+"permissions": ["<all_urls>"],
 "browser_action" :
 {
 	"default_popup" :"pop_up.html"
 },
 
 "background": {
-    "scripts": ["background.js", "stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
+	"scripts": ["background.js", 
+				"stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
     "persistent": false
 },
 "externally_connectable": {
@@ -21,7 +22,9 @@
 [ 
 	{
 	"matches": ["*://www.google.com/search?*","*://www.ecosia.org/search?*","*://search.yahoo.com/search*"],
-	"js": ["run_prettify.js","tex-svg.js","setPanel.js", "stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
+	"js": ["libs/plotly.min.js","libs/math.min.js","libs/run_prettify.js","libs/tex-svg.js",
+			"plot.js","setPanel.js", 
+			"stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
 	"css": ["styleStack.css","tomorrow.css"] 
 	}
 ]

@@ -1,11 +1,18 @@
-console.log("Opti search");
+console.log("OptiSearch");
+
+//const
+const Google = "google", Ecosia = "ecosia", Yahoo = "yahoo";
+const PANEL_CLASS = "optipanel";
+const regexpTex = /\${1,2}([^\$]*)\${1,2}/;
+const regexpTexG = /\${1,2}([^\$]*)\${1,2}/g;
+
+const ICON_COPY = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 
 
 //engines
-const Google = "google", Ecosia = "ecosia", Yahoo = "yahoo";
-var engine = "";
+var engine = "", searchString = "";
 var site = window.location.hostname;
-console.log(site);     
+
 if(site.endsWith("ecosia.org")){
     engine = Ecosia;
 }
@@ -15,13 +22,12 @@ else if(site.search("google")!=-1){
 else if(site.search("yahoo")!=-1){
     engine = Yahoo;
 }
-let regexp = /[?|&]q=((%21|!)[^&]*)/
-if(window.location.href.search(regexp)!=-1){
-    let reg = window.location.href.match(regexp);
-    console.log(reg['1']);
-    window.location.href = "https://duckduckgo.com/?q="+reg['1'];
-}
-
+// let regexp = /[?|&]q=((%21|!)[^&]*)/
+// if(window.location.href.search(regexp)!=-1){
+//     let reg = window.location.href.match(regexp);
+//     console.log(reg['1']);
+//     window.location.href = "https://duckduckgo.com/?q="+reg['1'];
+// }
 
 var rightCol = {};
 rightCol[Google] = ".rhscol.col";
@@ -33,12 +39,62 @@ resRow[Google] = ".r";
 resRow[Ecosia] = ".result.js-result";
 resRow[Yahoo] = ".dd.algo";
 
+var searchBox = {};
+searchBox[Google] = ".gLFyf.gsfi";
+searchBox[Ecosia] = ".search-form-input.js-search-input";
+searchBox[Yahoo] = "#yschsp";
+
+searchString = document.querySelector(searchBox[engine]).value;
+console.log("search: "+searchString);
+
 if(engine == Ecosia){
     if(window.location.href.search(/[?|&]q=calculator(&?|$)/)!=-1){
         let iframe = document.createElement("iframe");
-        iframe.className = "opticalculator";
+        iframe.id = "opticalculator"
+        iframe.className = PANEL_CLASS;
         iframe.src = "https://www.desmos.com/scientific";
-        document.querySelector(rightCol[engine]).appendChild(iframe);
+        appendPanel(iframe);
+    }
+}
+
+let doPlot = false;
+if(engine != Google){
+    let rep = isMathExpr(searchString);
+    if(rep){
+        if(rep.vars.length > 0){
+            if(doPlot){
+                let fun = {
+                    expr : rep.expr,
+                    vars : rep.vars
+                }
+                let graph = document.createElement("div");
+                graph.id = "optiplot";
+                graph.className = PANEL_CLASS;
+                appendPanel(graph);
+                plotFun(fun, "optiplot");
+            }
+        }else if(typeof rep.answer == 'number' || typeof rep.answer == 'boolean' || rep.answer.entries){
+            let expr = document.createElement("div");
+            expr.id = "optiexpr";
+            expr.className = PANEL_CLASS;
+
+            let str = "$"+math.parse(rep.expr).toTex() +"~";
+            let answer = rep.answer;
+            if(typeof answer == 'number'){
+                str += "=~"+answer;
+            }
+            else if(typeof answer == 'boolean'){
+                str += ":~"+answer;
+            }else if(rep.answer.entries){
+                answer = answer.entries[0];
+                str += "=~"+answer;
+            }
+            str+="$";
+            expr.innerHTML = str;
+
+            runMathJax(expr);
+            appendPanel(expr).querySelector("#optiexpr").appendChild(createCopyButton(answer.toString()));
+        }
     }
 }
 
@@ -77,6 +133,18 @@ results.forEach(r => {
 
 
 //set panel
+function appendPanel(panel){
+    let knowledgePanel = document.createElement("div");
+    knowledgePanel.className = "optisearchbox";
+    if(engine == Ecosia)
+        knowledgePanel.style.marginTop = "20px";
+    knowledgePanel.style.marginBottom = "20px";
+
+    knowledgePanel.appendChild(panel);
+
+    document.querySelector(rightCol[engine]).appendChild(knowledgePanel);
+    return knowledgePanel;
+}
 port.onMessage.addListener(function(msg) {
     var panel;
     let icon;
@@ -107,21 +175,13 @@ port.onMessage.addListener(function(msg) {
 
     let host = msg.link.match("https?://[^/]+")[0];        
 
-    var knowledgePanel = document.createElement("div");
-    knowledgePanel.className = "optisearchbox";
-    if(engine == Ecosia)
-        knowledgePanel.style.marginTop = "20px";
-    knowledgePanel.style.marginBottom = "20px";
-
     var sidePanel = document.createElement("div");
-    sidePanel.className = "optipanel";
+    sidePanel.className = PANEL_CLASS;
 
     var headPanel = document.createElement("div");
     headPanel.className = "stackheader";
 
-    console.log(msg.title);
     msg.title = msg.title.replace(/<(\w*)>/g,'&lt;$1&gt;');
-    console.log(msg.title);
 
     var link = "<a href='"+msg.link+"'><div class='title'>"+msg.title+"</div>";
     link += "<div class='stacklink'><img width='16' height='16' src='"+icon+"'>"+msg.link+"</div></a>";
@@ -136,6 +196,16 @@ port.onMessage.addListener(function(msg) {
         let codes = panel.body.querySelectorAll("code, pre");
         codes.forEach(c => {
             c.className += " prettyprint";
+        });
+        let pres = panel.body.querySelectorAll("pre");
+        pres.forEach(pre => {
+
+            var surround = document.createElement("div");
+            surround.style.position = "relative";
+            surround.innerHTML = pre.outerHTML;
+            surround.appendChild(createCopyButton(pre.innerText));
+
+            pre.parentNode.replaceChild(surround, pre);
         });
         sidePanel.appendChild(panel.body);
     }
@@ -160,15 +230,11 @@ port.onMessage.addListener(function(msg) {
     });
 
 
-    knowledgePanel.appendChild(sidePanel);
+    appendPanel(sidePanel);
 
-    document.querySelector(rightCol[engine]).appendChild(knowledgePanel);
-
-    runPrettify();
+    PR.prettyPrint();
 });
 
-const regexpTex = /\${1,2}([^\$]*)\${1,2}/;
-const regexpTexG = /\${1,2}([^\$]*)\${1,2}/g;
 function getChildrenTex(element){
     var all = element.querySelectorAll("*");
     var children = [];
@@ -197,4 +263,33 @@ function runMathJax(element) {
         });
     });
 
+}
+
+function createCopyButton(text){
+    var divCopy = document.createElement("div");
+    divCopy.className = "opticopy";            
+    
+    divCopy.innerHTML = ICON_COPY;            
+    divCopy.querySelector("svg").addEventListener('click',clickSVG);
+    function clickSVG(){
+        divCopy.innerHTML = "";
+        copyTextToClipboard(text,function(r){
+            divCopy.innerHTML = r==true ? "Copied !" : "Error";
+            setTimeout(() => {
+                divCopy.innerHTML = ICON_COPY;
+                divCopy.querySelector("svg").onclick = clickSVG;
+            },2000);
+        });
+    }
+    return divCopy;
+}
+function copyTextToClipboard(text, callback) {
+    if (!navigator.clipboard) {
+        return;
+    }
+    navigator.clipboard.writeText(text).then(function() {
+        callback(true);
+    }, function(err) {
+        callback(false);
+    });
 }

@@ -1,19 +1,31 @@
-.opticalculator{
-    min-height: 420px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+#optiexpr{
+    padding-left: 30px;
+    position: relative;
+}
+#optiplot{
+    height: 400px;
+    width: 400px;
+    padding: 0px;
+    margin: 5px;
 }
 
-.optisearchbox, .opticalculator {
+#opticalculator{
+    height: 400px;
+    width: 400px;
+    padding: 0px;
+}
+
+.optisearchbox {
     border: 1px solid #dfe1e5;
     border-radius: 8px;
-    width: fit-content;
+    width: auto;
     min-width: 400px;
     max-width: 600px;
 }
 
 .optipanel{
     padding: 15px 15px;
+    padding-bottom: 8px;
     padding-top: 8px;
     font-size: 15px;
 }
@@ -29,7 +41,7 @@
     line-height: initial;
     color: #1a0dab;
 }
-.optipanel .title:hover{
+.optipanel .stackheader:hover .title{
     text-decoration: underline;
 }
 
@@ -60,6 +72,26 @@
     border-bottom-color: rgb(220,220,220);
 }
 
+.optipanel .opticopy{
+    position: absolute;
+    width: auto;
+    height: auto;
+    right: 6px;
+    top: 6px;
+    user-select: none;
+    font-size: x-small;
+    opacity: 70%;
+}
+
+.optipanel .opticopy svg{
+    width: 15px;
+    height: 15px;
+    stroke: var(--black-200);
+}
+.optipanel .opticopy svg:hover{
+    stroke: var(--black-300);
+    cursor: pointer;
+}
 .optipanel .optibody p, .optipanel .optibody ul{
     line-height: 1.35;
     padding-top: .25em;
@@ -118,6 +150,9 @@
     font-weight: bold;
     color: #4a4a4a;
 }
+.optipanel .optibody.w3body b{
+    font-weight: bold;
+}
 .optipanel .optibody.w3body .w3-example{
     /* border: 1px solid #dfe1e5; */
     background-color: var(--black-025);
@@ -154,6 +189,9 @@
     color: #0b0080;
 }
 
+.optipanel .stackfoot .d-none{
+    display: none;
+}
 
 .optipanel .stackfoot{
     margin-top: 15px;
