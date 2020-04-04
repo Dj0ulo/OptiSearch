@@ -6,6 +6,7 @@ const Engines = {
     Yahoo : {icon : "https://s.yimg.com/rz/l/favicon.ico"}
 };
 const EnginesIco = "https://cdn.ecosia.org/assets/images/ico/favicon.ico";
+
 const Options = {
     Sites : {
         "Wikipedia" : {
@@ -13,20 +14,20 @@ const Options = {
             icon : 'https://wikipedia.org/static/favicon/wikipedia.ico'
         },
         "Stack Overflow": {
-            link : "wikipedia.org/wiki/",
-            icon : 'https://wikipedia.org/static/favicon/wikipedia.ico'
+            link : "https://stackoverflow.com/questions/",
+            icon : 'https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico'
         },
         "Stack Exchange": {
-            link : "wikipedia.org/wiki/",
-            icon : 'https://wikipedia.org/static/favicon/wikipedia.ico'
+            link : "https://math.stackexchange.com/questions/",
+            icon : 'https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico'
         },
         "W3Schools": {
-            link : "wikipedia.org/wiki/",
-            icon : 'https://wikipedia.org/static/favicon/wikipedia.ico'
+            link : "https://www.w3schools.com/",
+            icon : 'https://www.w3schools.com/favicon.ico'
         },
         "MDN Web Docs": {
-            link : "wikipedia.org/wiki/",
-            icon : 'https://wikipedia.org/static/favicon/wikipedia.ico'
+            link : "https://developer.mozilla.org/",
+            icon : 'https://developer.mozilla.org/static/img/favicon32.png'
         }
     },
     Tools : {"DuckDuckGo Bangs": {},"Calculator": {},"Plot": {}}

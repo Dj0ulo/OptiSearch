@@ -59,7 +59,7 @@ console.log("search: "+searchString);
         }
     }
 
-    let doPlot = false;
+    let doPlot = true;
     if(engine != Google){
         let rep = isMathExpr(searchString);
         if(rep){

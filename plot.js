@@ -52,9 +52,14 @@ function calcFun(expr, nameVar, space){
         }
         return y;
     }else if(typeof space == 'number'){
-        return math.eval('x = '+space+";"+expr).entries[0];
+        let scope = {};
+        scope[nameVar] = space;
+        return math.evaluate(expr,scope);
     }
     return null;
+}
+function abs(x){
+    return Math.abs(x);
 }
 function plotFun(fun, idDiv, range){
     if(fun.vars.length > 1)
@@ -64,14 +69,15 @@ function plotFun(fun, idDiv, range){
         range = {
             left : -5,
             right : 5,
-            bottom : -5,
-            top : 5,
+            // bottom : -5,
+            // top : 5,
         };        
     }
 
     let data = [];
 
     let exprs = fun.expr.split(";");
+    let yMin = null;
     exprs.forEach(e => {
         let space = linspace(range.left,range.right,1000);
 
@@ -82,18 +88,19 @@ function plotFun(fun, idDiv, range){
         f = f.trim();
         let nameVar = fun.vars[0];
         let fy = calcFun(e,nameVar, space);
-    
-        data.push({
-            x: space,
-            y: fy,
-            mode: 'lines',
-            name: e.trim()
-        });
+        
+        let indexMin = 0;
+        for (let i = 1; i < fy.length; i++) {
+            const y = abs(fy[i]);
+            if(y < abs(fy[indexMin]))
+                indexMin = i;
+        }
+        if(!yMin || abs(fy[indexMin])<abs(yMin))
+            yMin = fy[indexMin];
 
         try {
             let df = math.derivative(f, nameVar).toString();
             let dfy = calcFun(df,nameVar, space);
-            //console.log(df);
             const maxAsym = 10;
             let asympIndex = [];
             for (let i = 1; i < dfy.length-1; i++) {
@@ -103,34 +110,39 @@ function plotFun(fun, idDiv, range){
                         break;
                 }
             }
-            
             if(asympIndex.length<= maxAsym){
                 asympIndex.forEach(i => {
-                    let center = (space[i-1]+space[i])/2;
-                    data.push({
-                        x: [center-0.000000001,center+0.000000001],
-                        y: [range.bottom, range.top],
-                        mode: 'lines',
-                        name: ""
-                    });
+                    fy[i-1] = -Infinity;
+                    fy[i] = Infinity;
                 });
             }
+
         } catch (error) {
             
         }
 
+        data.push({
+            x: space,
+            y: fy,
+            mode: 'lines',
+            name: e.trim()
+        });
+
         
     });
 
-    var autorange = true;
-    if(range.bottom && range.top)
-        autorange = false;
+    var autorange = false;
+    if(!range.bottom || !range.top){
+        range.bottom = yMin -5;
+        range.top = yMin +5;
+    }
+    //     autorange = false;
     
     var layout = {
-        title:'Plot',
+        title:'Plot (beta)',
         dragmode: 'pan',
         xaxis: {range: [range.left, range.right]},
-        yaxis: {range: [range.bottom, range.top], autorange : autorange}
+        yaxis: {range: [range.bottom, range.top], autorange : autorange},
     };
 
 
@@ -139,6 +151,7 @@ function plotFun(fun, idDiv, range){
     Plotly.newPlot(idDiv, data, layout);
 
     plot.on('plotly_relayout', function(eventData){
+        //console.log(eventData);
         if(eventData['xaxis.autorange'] == true)
             plotFun(fun, idDiv);
         if(eventData['xaxis.range[0]']){
