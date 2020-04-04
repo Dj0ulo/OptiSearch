@@ -1,7 +1,6 @@
 console.log("OptiSearch");
 
 //const
-const Google = "google", Ecosia = "ecosia", Yahoo = "yahoo";
 const PANEL_CLASS = "optipanel";
 const regexpTex = /\${1,2}([^\$]*)\${1,2}/;
 const regexpTexG = /\${1,2}([^\$]*)\${1,2}/g;
@@ -47,89 +46,93 @@ searchBox[Yahoo] = "#yschsp";
 searchString = document.querySelector(searchBox[engine]).value;
 console.log("search: "+searchString);
 
-if(engine == Ecosia){
-    if(window.location.href.search(/[?|&]q=calculator(&?|$)/)!=-1){
-        let iframe = document.createElement("iframe");
-        iframe.id = "opticalculator"
-        iframe.className = PANEL_CLASS;
-        iframe.src = "https://www.desmos.com/scientific";
-        appendPanel(iframe);
-    }
-}
 
-let doPlot = false;
-if(engine != Google){
-    let rep = isMathExpr(searchString);
-    if(rep){
-        if(rep.vars.length > 0){
-            if(doPlot){
-                let fun = {
-                    expr : rep.expr,
-                    vars : rep.vars
+// chrome.storage.local.get(['options'],(storage) => {  
+
+    if(engine == Ecosia){
+        if(window.location.href.search(/[?|&]q=calculator(&?|$)/)!=-1){
+            let iframe = document.createElement("iframe");
+            iframe.id = "opticalculator"
+            iframe.className = PANEL_CLASS;
+            iframe.src = "https://www.desmos.com/scientific";
+            appendPanel(iframe);
+        }
+    }
+
+    let doPlot = false;
+    if(engine != Google){
+        let rep = isMathExpr(searchString);
+        if(rep){
+            if(rep.vars.length > 0){
+                if(doPlot){
+                    let fun = {
+                        expr : rep.expr,
+                        vars : rep.vars
+                    }
+                    let graph = document.createElement("div");
+                    graph.id = "optiplot";
+                    graph.className = PANEL_CLASS;
+                    appendPanel(graph);
+                    plotFun(fun, "optiplot");
                 }
-                let graph = document.createElement("div");
-                graph.id = "optiplot";
-                graph.className = PANEL_CLASS;
-                appendPanel(graph);
-                plotFun(fun, "optiplot");
-            }
-        }else if(typeof rep.answer == 'number' || typeof rep.answer == 'boolean' || rep.answer.entries){
-            let expr = document.createElement("div");
-            expr.id = "optiexpr";
-            expr.className = PANEL_CLASS;
+            }else if(typeof rep.answer == 'number' || typeof rep.answer == 'boolean' || rep.answer.entries){
+                let expr = document.createElement("div");
+                expr.id = "optiexpr";
+                expr.className = PANEL_CLASS;
 
-            let str = "$"+math.parse(rep.expr).toTex() +"~";
-            let answer = rep.answer;
-            if(typeof answer == 'number'){
-                str += "=~"+answer;
-            }
-            else if(typeof answer == 'boolean'){
-                str += ":~"+answer;
-            }else if(rep.answer.entries){
-                answer = answer.entries[0];
-                str += "=~"+answer;
-            }
-            str+="$";
-            expr.innerHTML = str;
+                let str = "$"+math.parse(rep.expr).toTex() +"~";
+                let answer = rep.answer;
+                if(typeof answer == 'number'){
+                    str += "=~"+answer;
+                }
+                else if(typeof answer == 'boolean'){
+                    str += ":~"+answer;
+                }else if(rep.answer.entries){
+                    answer = answer.entries[0];
+                    str += "=~"+answer;
+                }
+                str+="$";
+                expr.innerHTML = str;
 
-            runMathJax(expr);
-            appendPanel(expr).querySelector("#optiexpr").appendChild(createCopyButton(answer.toString()));
+                runMathJax(expr);
+                appendPanel(expr).querySelector("#optiexpr").appendChild(createCopyButton(answer.toString()));
+            }
         }
     }
-}
 
 
-//send site
-var port = chrome.runtime.connect();
+    //send site
+    var port = chrome.runtime.connect();
 
-var results = document.querySelectorAll(resRow[engine]);
-var found = false;
-results.forEach(r => {
-    var link = r.querySelector("a").href;
+    var results = document.querySelectorAll(resRow[engine]);
+    var found = false;
+    results.forEach(r => {
+        var link = r.querySelector("a").href;
 
-    let site = null;
-    if(link.startsWith("https://stackoverflow.com/questions/"))
-        site = "stackoverflow";
-    else if(link.startsWith("https://developer.mozilla.org/"))
-        site = "mdn";
-    else if(link.startsWith("https://www.w3schools.com/"))
-        site = "w3schools";
-    else if(link.startsWith("https://math.stackexchange.com/questions/"))
-        site = "stackexchange";
-    else if((engine == Ecosia || engine == Yahoo) && link.search("wikipedia.org/wiki/")!=-1)
-        site = "wikipedia";
+        let site = null;
+        if(link.startsWith("https://stackoverflow.com/questions/"))
+            site = "stackoverflow";
+        else if(link.startsWith("https://developer.mozilla.org/"))
+            site = "mdn";
+        else if(link.startsWith("https://www.w3schools.com/"))
+            site = "w3schools";
+        else if(link.startsWith("https://math.stackexchange.com/questions/"))
+            site = "stackexchange";
+        else if((engine == Ecosia || engine == Yahoo) && link.search("wikipedia.org/wiki/")!=-1)
+            site = "wikipedia";
 
-    if(!found && site){
-        console.log("Site "+site+" found - "+link);
-        let msg = {
-            engine : engine,
-            link : link,
-            site : site
-        }
-        port.postMessage(msg);
-        found= true;
-    }        
-});
+        if(!found && site){
+            console.log("Site "+site+" found - "+link);
+            let msg = {
+                engine : engine,
+                link : link,
+                site : site
+            }
+            port.postMessage(msg);
+            found= true;
+        }        
+    });
+// });
 
 
 //set panel

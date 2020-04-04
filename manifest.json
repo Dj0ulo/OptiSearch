@@ -3,7 +3,7 @@
 "version" : "0.1",
 "manifest_version": 2,
 "description" :"Upgrade and optimize your searches !",
-"permissions": ["<all_urls>"],
+"permissions": ["<all_urls>","storage"],
 "browser_action" :
 {
 	"default_popup" :"pop_up.html"
@@ -23,7 +23,7 @@
 	{
 	"matches": ["*://www.google.com/search?*","*://www.ecosia.org/search?*","*://search.yahoo.com/search*"],
 	"js": ["libs/plotly.min.js","libs/math.min.js","libs/run_prettify.js","libs/tex-svg.js",
-			"plot.js","setPanel.js", 
+			"settings.js","plot.js","setPanel.js", 
 			"stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
 	"css": ["styleStack.css","tomorrow.css"] 
 	}
