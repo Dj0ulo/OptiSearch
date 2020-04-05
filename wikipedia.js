@@ -1,4 +1,4 @@
-function getWiki(from, doc){
+Sites.wikipedia.get = function getWiki(from, doc){
     let body = doc.querySelector("body");
     let article = body.querySelector("#mw-content-text .mw-parser-output");
     let infobox = article.querySelector("[class^=infobox]");
@@ -28,7 +28,7 @@ function getWiki(from, doc){
     }
 }
 
-function setWiki(msg){
+Sites.wikipedia.set = function setWiki(msg){
     var bodyPanel = document.createElement("div");
     bodyPanel.className = "wikibody";
     bodyPanel.innerHTML = (msg.img ? msg.img : "") + (msg.summary ? msg.summary : "");

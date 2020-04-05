@@ -1,4 +1,4 @@
-function getMDN(from, doc){
+Sites.mdn.get = function getMDN(from, doc){
     var body = doc.querySelector("body");
 
     let article = body.querySelector("#wikiArticle");
@@ -18,7 +18,7 @@ function getMDN(from, doc){
     }
 }
 
-function setMDN(msg){
+Sites.mdn.set = function setMDN(msg){
     var bodyPanel = document.createElement("div");
     bodyPanel.className = "mdnbody";
     bodyPanel.innerHTML = (msg.summary ? msg.summary : "") + (msg.syntax ? msg.syntax : "");

@@ -30,7 +30,7 @@
     font-size: 15px;
 }
 
-.optipanel .stackheader{
+.optipanel .optiheader{
     margin-top: 15px;
     margin-bottom: 15px;
 }
@@ -41,12 +41,11 @@
     line-height: initial;
     color: #1a0dab;
 }
-.optipanel .stackheader:hover .title{
+.optipanel .optiheader:hover .title{
     text-decoration: underline;
 }
 
-
-.optipanel .stacklink{
+.optipanel .optilink{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -55,11 +54,11 @@
     color: #3C4043 !important;
 }
 
-.optipanel .stackheader a:link{
+.optipanel .optiheader a:link{
     text-decoration: none!important;
 }
 
-.optipanel .stacklink img{
+.optipanel .optilink img{
     vertical-align: middle;
     margin-right: 5px;
     margin-top: -3px;
@@ -188,7 +187,9 @@
 .optipanel .optibody.wikibody a:visited{
     color: #0b0080;
 }
-
+.optipanel span.mwe-math-element{
+    display: inline-flex;
+}
 .optipanel .stackfoot .d-none{
     display: none;
 }

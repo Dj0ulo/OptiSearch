@@ -1,4 +1,4 @@
-function getW3(from, doc){
+Sites.w3schools.get = function getW3(from, doc){
     var body = doc.querySelector("body");
 
     let article = body.querySelector("#main");
@@ -41,7 +41,7 @@ function getW3(from, doc){
     }
 }
 
-function setW3(msg){
+Sites.w3schools.set = function setW3(msg){
     var bodyPanel = document.createElement("div");
     bodyPanel.className = "w3body";
     bodyPanel.innerHTML = (msg.summary ? msg.summary : "") + (msg.syntax ? msg.syntax : "") + (msg.example ? msg.example : "");

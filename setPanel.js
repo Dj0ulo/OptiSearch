@@ -10,15 +10,15 @@ const ICON_COPY = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" f
 
 //engines
 var engine = "", searchString = "";
-var site = window.location.hostname;
+var siteFound = window.location.hostname;
 
-if(site.endsWith("ecosia.org")){
+if(siteFound.endsWith("ecosia.org")){
     engine = Ecosia;
 }
-else if(site.search("google")!=-1){
+else if(siteFound.search("google")!=-1){
     engine = Google;
 }
-else if(site.search("yahoo")!=-1){
+else if(siteFound.search("yahoo")!=-1){
     engine = Yahoo;
 }
 // let regexp = /[?|&]q=((%21|!)[^&]*)/
@@ -109,24 +109,22 @@ console.log("search: "+searchString);
     results.forEach(r => {
         var link = r.querySelector("a").href;
 
-        let site = null;
-        if(link.startsWith("https://stackoverflow.com/questions/"))
-            site = "stackoverflow";
-        else if(link.startsWith("https://developer.mozilla.org/"))
-            site = "mdn";
-        else if(link.startsWith("https://www.w3schools.com/"))
-            site = "w3schools";
-        else if(link.startsWith("https://math.stackexchange.com/questions/"))
-            site = "stackexchange";
-        else if((engine == Ecosia || engine == Yahoo) && link.search("wikipedia.org/wiki/")!=-1)
-            site = "wikipedia";
-
-        if(!found && site){
-            console.log("Site "+site+" found - "+link);
+        let siteFound = null;
+        for (const site in Sites ) {
+            if (Sites.hasOwnProperty(site)) {
+                const p = Sites[site];
+                if(link.search(p.link)!=-1){
+                    siteFound = site;
+                    break;
+                }
+            }
+        }
+        if(!found && siteFound){
+            console.log("Site "+siteFound+" found - "+link);
             let msg = {
                 engine : engine,
                 link : link,
-                site : site
+                site : siteFound
             }
             port.postMessage(msg);
             found= true;
@@ -151,26 +149,19 @@ function appendPanel(panel){
 port.onMessage.addListener(function(msg) {
     var panel;
     let icon;
-    if(msg.site == "stackoverflow"){
-        icon = 'https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico';
-        panel = setStack(msg);
-    }      
-    else if(msg.site == "stackexchange"){
-        icon = 'https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico';
-        panel = setStack(msg);
-        getChildrenTex(panel.body);
-    }    
-    else if(msg.site == "mdn"){
-        icon = 'https://developer.mozilla.org/static/img/favicon32.png';
-        panel = setMDN(msg);
-    }
-    else if(msg.site == "wikipedia"){
-        icon = 'https://wikipedia.org/static/favicon/wikipedia.ico';
-        panel = setWiki(msg);
-    }
-    else if(msg.site == "w3schools"){
-        icon = 'https://www.w3schools.com/favicon.ico';
-        panel = setW3(msg);
+
+    for (const site in Sites ) {
+        if (Sites.hasOwnProperty(site)) {
+            const p = Sites[site];
+            if(msg.site == site){
+                icon = p.icon;
+                panel = p.set(msg);
+                if(site == 'stackexchange'){
+                    getChildrenTex(panel.body);
+                }
+                break;
+            }
+        }
     }
     if(!panel)
         return;
@@ -182,12 +173,12 @@ port.onMessage.addListener(function(msg) {
     sidePanel.className = PANEL_CLASS;
 
     var headPanel = document.createElement("div");
-    headPanel.className = "stackheader";
+    headPanel.className = "optiheader";
 
     msg.title = msg.title.replace(/<(\w*)>/g,'&lt;$1&gt;');
 
     var link = "<a href='"+msg.link+"'><div class='title'>"+msg.title+"</div>";
-    link += "<div class='stacklink'><img width='16' height='16' src='"+icon+"'>"+msg.link+"</div></a>";
+    link += "<div class='optilink'><img width='16' height='16' src='"+icon+"'>"+msg.link+"</div></a>";
     headPanel.innerHTML = link;
     sidePanel.appendChild(headPanel);
 

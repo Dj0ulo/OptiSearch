@@ -10,7 +10,7 @@
 },
 
 "background": {
-	"scripts": ["background.js", 
+	"scripts": ["background.js","settings.js", 
 				"stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
     "persistent": false
 },

@@ -1,3 +1,5 @@
+Sites.stackoverflow.get = getStack;
+Sites.stackexchange.get = getStack;
 function getStack(from, doc){
     var body = doc.querySelector("body");
                 
@@ -49,6 +51,8 @@ function getStack(from, doc){
     }
 }
 
+Sites.stackoverflow.set = setStack;
+Sites.stackexchange.set = setStack;
 function setStack(answer){
     var bodyPanel = document.createElement("div");
     bodyPanel.className = "stackbody";

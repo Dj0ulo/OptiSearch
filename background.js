@@ -5,14 +5,9 @@ chrome.extension.onConnect.addListener(function(port) {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
                 var doc = new DOMParser().parseFromString(xmlHttp.response, "text/html");
 
-                if(msg.site == "stackoverflow" || msg.site == "stackexchange")
-                    port.postMessage(getStack(msg, doc));
-                else if(msg.site == "mdn")
-                    port.postMessage(getMDN(msg, doc));
-                else if(msg.site == "wikipedia")
-                    port.postMessage(getWiki(msg, doc));
-                else if(msg.site == "w3schools")
-                    port.postMessage(getW3(msg, doc));
+                let site = Sites[msg.site];
+                if(site)
+                    port.postMessage(site.get(msg,doc));
             }
         }
         xmlHttp.open("GET", msg.link, true); // true for asynchronous 

@@ -5,13 +5,8 @@ const CLASS_CHECKDIV = 'checkdiv';
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    chrome.storage.local.get(['options'],(storage) => {   
-        console.log(storage);
-        var save = storage['options'];
-        if(!save){
-            save = {};
-            save.global = saveEngines();
-        }
+    getSettings((save) => {   
+        //console.log(save);
         
         let liEng = document.querySelector("#Engines");
         enginesChecks(liEng);
@@ -71,13 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         d.className = "optiondiv";
                         d.style.display = "inline-block";
                         li.appendChild(d);
-                        d.innerHTML = "<span class='titleOption'>"+o+"</span>";
+                        d.innerHTML = "<span class='titleOption'>"+spec.name+"</span>";
                         d.appendChild(checkBox(CLASS_CHECK_OPTION));
-    
-                        if(!save[o]){
-                            save[o] = saveEngines();
-                            save[o][CLASS_CHECK_OPTION] = true;
-                        }
                             
                         enginesChecks(li);
                         listM.appendChild(li);
@@ -91,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function refreshCheckboxes(){
             for (const option in save) {
-                if (save.hasOwnProperty(option)) {
+                if (save.hasOwnProperty(option) && (option == GLOBAL_OPTION || Options.Sites.hasOwnProperty(option) || Options.Tools.hasOwnProperty(option))) {
                     const saveOption = save[option];
                     for (const engine in saveOption) {
                         if (saveOption.hasOwnProperty(engine)) {
@@ -99,14 +89,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                             const select = '.'+CLASS_CHECKDIV+'.'+engine+" .checkbox";
                             let checkBox;
-                            if(option=='global'){
+                            if(option==GLOBAL_OPTION){
                                 checkBox = document.querySelector("#Engines").querySelector(select);
                             }                                
                             else{
                                 let lineOpt = document.getElementById(option);
                                 checkBox = lineOpt.querySelector(select);                                
                                 if(engine != CLASS_CHECK_OPTION &&
-                                    (save['global'][engine]==false || save[option][CLASS_CHECK_OPTION]==false) )
+                                    (save[GLOBAL_OPTION][engine]==false || save[option][CLASS_CHECK_OPTION]==false) )
                                     checkBox.disabled = true;
                                 else
                                     checkBox.disabled = false;
@@ -114,10 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             checkBox.checked = active;
                             checkBox.onclick = function(){
                                 save[option][engine] = save[option][engine]==true ? false : true;
-                                chrome.storage.local.set({'options': save}, function() {
-                                    console.log(save);
-                                    refreshCheckboxes();
-                                });
+                                saveSettings(save,refreshCheckboxes);
                             }                                
                             
                         }
