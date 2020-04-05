@@ -132,6 +132,15 @@ document.addEventListener("DOMContentLoaded", () => {
             d.innerHTML = "<input class='checkbox' type='checkbox'>";
             return d;
         }
+
+        var links = document.querySelectorAll("a");
+        for (var i = 0; i < links.length; i++) {
+            var ln = links[i];
+            var location = ln.href;
+            ln.onclick = function () {
+                chrome.tabs.create({active: true, url: location});
+            };
+        }
     });
 
 });

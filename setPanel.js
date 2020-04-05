@@ -12,21 +12,12 @@ const ICON_COPY = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" f
 var engine = "", searchString = "";
 var siteFound = window.location.hostname;
 
-if(siteFound.endsWith("ecosia.org")){
+if(siteFound.endsWith("ecosia.org"))
     engine = Ecosia;
-}
-else if(siteFound.search("google")!=-1){
+else if(siteFound.search("google")!=-1)
     engine = Google;
-}
-else if(siteFound.search("yahoo")!=-1){
+else if(siteFound.search("yahoo")!=-1)
     engine = Yahoo;
-}
-// let regexp = /[?|&]q=((%21|!)[^&]*)/
-// if(window.location.href.search(regexp)!=-1){
-//     let reg = window.location.href.match(regexp);
-//     console.log(reg['1']);
-//     window.location.href = "https://duckduckgo.com/?q="+reg['1'];
-// }
 
 var rightCol = {};
 rightCol[Google] = ".rhscol.col";
@@ -48,6 +39,15 @@ searchString = document.querySelector(searchBox[engine]).value;
 
 
 getSettings((save) => {  
+    if(isActive('bangs',engine,save)){
+        let regexp = /[?|&]q=((%21|!)[^&]*)/
+        let reg = window.location.href.match(regexp);
+        if(reg){
+            console.log(reg['1']);
+            window.location.href = "https://duckduckgo.com/?q="+reg['1'];
+        }
+    }
+
     if(isActive('calculator',engine,save)){
         if(window.location.href.search(/[?|&]q=calculator(&?|$)/)!=-1){
             let iframe = document.createElement("iframe");

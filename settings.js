@@ -1,8 +1,8 @@
 const Google = "Google", Ecosia = "Ecosia", Yahoo = "Yahoo";
 
 const Engines = {
-    Google : {regexp: /https:\/\/www\.google\.com\/search\?/, icon : "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png"},
-    Ecosia : {regexp: /https:\/\/www\.ecosia\.org\/search\?/, icon : "https://cdn.ecosia.org/assets/images/ico/favicon.ico"}
+    Google : {icon : "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png"},
+    Ecosia : {icon : "https://cdn.ecosia.org/assets/images/ico/favicon.ico"}
 };
 var Sites = {
     wikipedia : {
@@ -17,7 +17,7 @@ var Sites = {
     },
     stackexchange: {
         name : "Stack Exchange",
-        link : "https://math.stackexchange.com/questions/",
+        link : "stackexchange.com/questions/",
         icon : 'https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico'
     },
     w3schools: {
@@ -35,7 +35,7 @@ var Sites = {
 const Options = {
     Sites : Sites,
     Tools : {
-        bangs: {name: "DuckDuckGo Bangs"},
+        bangs: {name: "<a href='https://duckduckgo.com/bang?q='>DuckDuckGo Bangs</a>"},
         calculator: {name: "Calculator"},
         plot: {name: "Plot (beta)"}
     }
