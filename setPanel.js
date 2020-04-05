@@ -1,4 +1,4 @@
-console.log("OptiSearch");
+// console.log("OptiSearch");
 
 //const
 const PANEL_CLASS = "optipanel";
@@ -44,12 +44,11 @@ searchBox[Ecosia] = ".search-form-input.js-search-input";
 searchBox[Yahoo] = "#yschsp";
 
 searchString = document.querySelector(searchBox[engine]).value;
-console.log("search: "+searchString);
+// console.log("search: "+searchString);
 
 
-// chrome.storage.local.get(['options'],(storage) => {  
-
-    if(engine == Ecosia){
+getSettings((save) => {  
+    if(isActive('calculator',engine,save)){
         if(window.location.href.search(/[?|&]q=calculator(&?|$)/)!=-1){
             let iframe = document.createElement("iframe");
             iframe.id = "opticalculator"
@@ -59,47 +58,44 @@ console.log("search: "+searchString);
         }
     }
 
-    let doPlot = true;
-    if(engine != Google){
-        let rep = isMathExpr(searchString);
-        if(rep){
-            if(rep.vars.length > 0){
-                if(doPlot){
-                    let fun = {
-                        expr : rep.expr,
-                        vars : rep.vars
-                    }
-                    let graph = document.createElement("div");
-                    graph.id = "optiplot";
-                    graph.className = PANEL_CLASS;
-                    appendPanel(graph);
-                    plotFun(fun, "optiplot");
+    let rep = isMathExpr(searchString);
+    if(rep){
+        if(rep.vars.length > 0){
+            if(isActive('plot',engine,save)){
+                let fun = {
+                    expr : rep.expr,
+                    vars : rep.vars
                 }
-            }else if(typeof rep.answer == 'number' || typeof rep.answer == 'boolean' || rep.answer.entries){
-                let expr = document.createElement("div");
-                expr.id = "optiexpr";
-                expr.className = PANEL_CLASS;
-
-                let str = "$"+math.parse(rep.expr).toTex() +"~";
-                let answer = rep.answer;
-                if(typeof answer == 'number'){
-                    str += "=~"+answer;
-                }
-                else if(typeof answer == 'boolean'){
-                    str += ":~"+answer;
-                }else if(rep.answer.entries){
-                    answer = answer.entries[0];
-                    str += "=~"+answer;
-                }
-                str+="$";
-                expr.innerHTML = str;
-
-                runMathJax(expr);
-                appendPanel(expr).querySelector("#optiexpr").appendChild(createCopyButton(answer.toString()));
+                let graph = document.createElement("div");
+                graph.id = "optiplot";
+                graph.className = PANEL_CLASS;
+                appendPanel(graph);
+                plotFun(fun, "optiplot");
             }
+        }else if(isActive('calculator',engine,save) 
+        && (typeof rep.answer == 'number' || typeof rep.answer == 'boolean' || rep.answer.entries)){
+            let expr = document.createElement("div");
+            expr.id = "optiexpr";
+            expr.className = PANEL_CLASS;
+
+            let str = "$"+math.parse(rep.expr).toTex() +"~";
+            let answer = rep.answer;
+            if(typeof answer == 'number'){
+                str += "=~"+answer;
+            }
+            else if(typeof answer == 'boolean'){
+                str += ":~"+answer;
+            }else if(rep.answer.entries){
+                answer = answer.entries[0];
+                str += "=~"+answer;
+            }
+            str+="$";
+            expr.innerHTML = str;
+
+            runMathJax(expr);
+            appendPanel(expr).querySelector("#optiexpr").appendChild(createCopyButton(answer.toString()));
         }
     }
-
 
     //send site
     var port = chrome.runtime.connect();
@@ -113,14 +109,14 @@ console.log("search: "+searchString);
         for (const site in Sites ) {
             if (Sites.hasOwnProperty(site)) {
                 const p = Sites[site];
-                if(link.search(p.link)!=-1){
+                if(isActive(site,engine,save) && link.search(p.link)!=-1){
                     siteFound = site;
                     break;
                 }
             }
         }
         if(!found && siteFound){
-            console.log("Site "+siteFound+" found - "+link);
+            // console.log("Site "+siteFound+" found - "+link);
             let msg = {
                 engine : engine,
                 link : link,
@@ -130,104 +126,104 @@ console.log("search: "+searchString);
             found= true;
         }        
     });
-// });
 
+    //set panel
+    function appendPanel(panel){
+        let knowledgePanel = document.createElement("div");
+        knowledgePanel.className = "optisearchbox";
+        if(engine == Ecosia)
+            knowledgePanel.style.marginTop = "20px";
+        knowledgePanel.style.marginBottom = "20px";
 
-//set panel
-function appendPanel(panel){
-    let knowledgePanel = document.createElement("div");
-    knowledgePanel.className = "optisearchbox";
-    if(engine == Ecosia)
-        knowledgePanel.style.marginTop = "20px";
-    knowledgePanel.style.marginBottom = "20px";
+        knowledgePanel.appendChild(panel);
 
-    knowledgePanel.appendChild(panel);
+        document.querySelector(rightCol[engine]).appendChild(knowledgePanel);
+        return knowledgePanel;
+    }
+    port.onMessage.addListener(function(msg) {
+        var panel;
+        let icon;
 
-    document.querySelector(rightCol[engine]).appendChild(knowledgePanel);
-    return knowledgePanel;
-}
-port.onMessage.addListener(function(msg) {
-    var panel;
-    let icon;
-
-    for (const site in Sites ) {
-        if (Sites.hasOwnProperty(site)) {
-            const p = Sites[site];
-            if(msg.site == site){
-                icon = p.icon;
-                panel = p.set(msg);
-                if(site == 'stackexchange'){
-                    getChildrenTex(panel.body);
+        for (const site in Sites ) {
+            if (Sites.hasOwnProperty(site)) {
+                const p = Sites[site];
+                if(msg.site == site){
+                    icon = p.icon;
+                    panel = p.set(msg);
+                    if(site == 'stackexchange'){
+                        getChildrenTex(panel.body);
+                    }
+                    break;
                 }
-                break;
             }
         }
-    }
-    if(!panel)
-        return;
-    
+        if(!panel)
+            return;
+        
 
-    let host = msg.link.match("https?://[^/]+")[0];        
+        let host = msg.link.match("https?://[^/]+")[0];        
 
-    var sidePanel = document.createElement("div");
-    sidePanel.className = PANEL_CLASS;
+        var sidePanel = document.createElement("div");
+        sidePanel.className = PANEL_CLASS;
 
-    var headPanel = document.createElement("div");
-    headPanel.className = "optiheader";
+        var headPanel = document.createElement("div");
+        headPanel.className = "optiheader";
 
-    msg.title = msg.title.replace(/<(\w*)>/g,'&lt;$1&gt;');
+        msg.title = msg.title.replace(/<(\w*)>/g,'&lt;$1&gt;');
 
-    var link = "<a href='"+msg.link+"'><div class='title'>"+msg.title+"</div>";
-    link += "<div class='optilink'><img width='16' height='16' src='"+icon+"'>"+msg.link+"</div></a>";
-    headPanel.innerHTML = link;
-    sidePanel.appendChild(headPanel);
+        var link = "<a href='"+msg.link+"'><div class='title'>"+msg.title+"</div>";
+        link += "<div class='optilink'><img width='16' height='16' src='"+icon+"'>"+msg.link+"</div></a>";
+        headPanel.innerHTML = link;
+        sidePanel.appendChild(headPanel);
 
-    runMathJax(headPanel.querySelector(".title"));
+        runMathJax(headPanel.querySelector(".title"));
 
-    if(panel.body){        
-        sidePanel.append(document.createElement("hr"));//body
-        panel.body.className += " optibody";
-        let codes = panel.body.querySelectorAll("code, pre");
-        codes.forEach(c => {
-            c.className += " prettyprint";
-        });
-        let pres = panel.body.querySelectorAll("pre");
-        pres.forEach(pre => {
+        if(panel.body){        
+            sidePanel.append(document.createElement("hr"));//body
+            panel.body.className += " optibody";
+            let codes = panel.body.querySelectorAll("code, pre");
+            codes.forEach(c => {
+                c.className += " prettyprint";
+            });
+            let pres = panel.body.querySelectorAll("pre");
+            pres.forEach(pre => {
 
-            var surround = document.createElement("div");
-            surround.style.position = "relative";
-            surround.innerHTML = pre.outerHTML;
-            surround.appendChild(createCopyButton(pre.innerText));
+                var surround = document.createElement("div");
+                surround.style.position = "relative";
+                surround.innerHTML = pre.outerHTML;
+                surround.appendChild(createCopyButton(pre.innerText));
 
-            pre.parentNode.replaceChild(surround, pre);
-        });
-        sidePanel.appendChild(panel.body);
-    }
-
-    if(panel.foot){
-        panel.foot.id = "output";
-        sidePanel.append(document.createElement("hr"));//foot
-        sidePanel.appendChild(panel.foot);
-    }
-
-    let links = sidePanel.querySelectorAll("a");
-    links.forEach(a => {
-        let ahref = a.getAttribute('href');
-        if(!ahref.startsWith("//") && !ahref.startsWith("http")){
-            if(!ahref.startsWith("/")){
-                a.href = msg.link.replace(/\/[^\/]*$/,"")+"/"+ahref;
-            }
-            else
-                a.href = host+ahref;
+                pre.parentNode.replaceChild(surround, pre);
+            });
+            sidePanel.appendChild(panel.body);
         }
-            
+
+        if(panel.foot){
+            panel.foot.id = "output";
+            sidePanel.append(document.createElement("hr"));//foot
+            sidePanel.appendChild(panel.foot);
+        }
+
+        let links = sidePanel.querySelectorAll("a");
+        links.forEach(a => {
+            let ahref = a.getAttribute('href');
+            if(!ahref.startsWith("//") && !ahref.startsWith("http")){
+                if(!ahref.startsWith("/")){
+                    a.href = msg.link.replace(/\/[^\/]*$/,"")+"/"+ahref;
+                }
+                else
+                    a.href = host+ahref;
+            }
+                
+        });
+
+
+        appendPanel(sidePanel);
+
+        PR.prettyPrint();
     });
-
-
-    appendPanel(sidePanel);
-
-    PR.prettyPrint();
 });
+
 
 function getChildrenTex(element){
     var all = element.querySelectorAll("*");

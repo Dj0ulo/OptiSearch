@@ -1,9 +1,8 @@
 const Google = "Google", Ecosia = "Ecosia", Yahoo = "Yahoo";
 
 const Engines = {
-    Google : {icon : "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png"},
-    Ecosia : {icon : "https://cdn.ecosia.org/assets/images/ico/favicon.ico"},
-    Yahoo : {icon : "https://s.yimg.com/rz/l/favicon.ico"}
+    Google : {regexp: /https:\/\/www\.google\.com\/search\?/, icon : "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png"},
+    Ecosia : {regexp: /https:\/\/www\.ecosia\.org\/search\?/, icon : "https://cdn.ecosia.org/assets/images/ico/favicon.ico"}
 };
 var Sites = {
     wikipedia : {
@@ -43,7 +42,7 @@ const Options = {
 }
 
 const GLOBAL_OPTION = 'GLOBAL';
-const SAVE_OPTIONS_KEY = "optionSave";
+const SAVE_OPTIONS_KEY = "optionSaves";
 const CLASS_CHECK_OPTION = 'Option';
 
 function savedEngines() {
@@ -51,17 +50,23 @@ function savedEngines() {
 }
 
 function setDefaultSettings(callback){
-    let save = {
-        global : savedEngines()
-    };
+    let save = {};
+    save[GLOBAL_OPTION] = savedEngines();
 
     for (const type in Options) {
         if (Options.hasOwnProperty(type)) {
             const t = Options[type];
             for (const o in t) {
-                if (t.hasOwnProperty(o)) {
-                    save[o][CLASS_CHECK_OPTION] = true;
+                if (o!=GLOBAL_OPTION && t.hasOwnProperty(o)) {
                     save[o] = savedEngines();
+                    save[o][CLASS_CHECK_OPTION] = true;                    
+                    if(o=='calculator'){
+                        save[o].Google = false;
+                        save[o].Yahoo = false;
+                    }
+                    else if(o=='plot' || o=='wikipedia'){
+                        save[o].Google = false;
+                    }
                 }
             }
         }
@@ -83,5 +88,11 @@ function saveSettings(save, callback){
     chrome.storage.local.set(store, function() {
         callback();
     });
+}
+
+function isActive(option, engine, save){
+    if(!save)
+        return false;
+    return save[GLOBAL_OPTION][engine] == true && save[option][CLASS_CHECK_OPTION] == true && save[option][engine] == true;
 }
 

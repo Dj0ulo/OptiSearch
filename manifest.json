@@ -4,24 +4,20 @@
 "manifest_version": 2,
 "description" :"Upgrade and optimize your searches !",
 "permissions": ["<all_urls>","storage"],
+"icons": { "128" : "icon128.png"},
 "browser_action" :
 {
 	"default_popup" :"pop_up.html"
 },
-
 "background": {
 	"scripts": ["background.js","settings.js", 
 				"stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
     "persistent": false
 },
-"externally_connectable": {
-    "matches": ["*://*.google.com/*"]
-},
-	
 "content_scripts": 
 [ 
 	{
-	"matches": ["*://www.google.com/search?*","*://www.ecosia.org/search?*","*://search.yahoo.com/search*"],
+	"matches": ["*://www.google.com/search?*","*://www.ecosia.org/search?*"],
 	"js": ["libs/plotly.min.js","libs/math.min.js","libs/run_prettify.js","libs/tex-svg.js",
 			"settings.js","plot.js","setPanel.js", 
 			"stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],

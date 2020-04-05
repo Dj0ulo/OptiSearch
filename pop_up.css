@@ -1,6 +1,13 @@
 body{
-    font-family: Consolas, "Segoe UI", Tahoma, sans-serif;
+    font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
     width: 400px;
+}
+body > h2{
+    text-align: center;
+    margin-bottom: 30px;
+}
+img{
+    margin-right: 5px;
 }
 
 #Engines{
@@ -18,7 +25,7 @@ body{
 
 ul {
     list-style-type: none;
-    padding-inline-start: 20px;
+    padding-inline-start: 0px;
 }
 body > ul{
     padding-inline-start: 0px
@@ -41,7 +48,7 @@ body > ul{
     border-radius: 4px; */
     /* font-weight: bold; */
     margin-right: 20px;
-    cursor: pointer;
+    /* cursor: pointer; */
     user-select: none;
     font-size: x-small;
     overflow: hidden;
@@ -53,22 +60,21 @@ hr{
     display: inline-block;
     width: 100%;
     margin-left: 10px;
-    
+    margin-bottom: 2px;
 }
 
 .optiondiv{
-    cursor: pointer;
-    user-select: none;
+    /* user-select: none; */
     overflow: hidden;
 }
 .titleOption{
     display: inline-block;
     text-align: right;
-    width: 120px;
+    width: 140px;
     white-space: nowrap;
     overflow:     hidden;
     text-overflow: ellipsis;
-    margin-right: 15px;
+    margin-right: 10px;
 }
 .titleOption .checkbox{
     margin-left: 20px;
@@ -85,4 +91,5 @@ hr{
 .checkbox{
     height: 20px;
     width: 20px;
+    cursor: pointer;
 }

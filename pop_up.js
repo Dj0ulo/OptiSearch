@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         d.className = "optiondiv";
                         d.style.display = "inline-block";
                         li.appendChild(d);
-                        d.innerHTML = "<span class='titleOption'>"+spec.name+"</span>";
+                        d.innerHTML = "<span class='titleOption'><img width=14 height=14 src='"+spec.icon+"'>"+spec.name+"</span>";
                         d.appendChild(checkBox(CLASS_CHECK_OPTION));
                             
                         enginesChecks(li);
@@ -94,19 +94,22 @@ document.addEventListener("DOMContentLoaded", () => {
                             }                                
                             else{
                                 let lineOpt = document.getElementById(option);
-                                checkBox = lineOpt.querySelector(select);                                
-                                if(engine != CLASS_CHECK_OPTION &&
-                                    (save[GLOBAL_OPTION][engine]==false || save[option][CLASS_CHECK_OPTION]==false) )
-                                    checkBox.disabled = true;
-                                else
-                                    checkBox.disabled = false;
+                                checkBox = lineOpt.querySelector(select); 
+                                if(checkBox){                               
+                                    if(engine != CLASS_CHECK_OPTION &&
+                                        (save[GLOBAL_OPTION][engine]==false || save[option][CLASS_CHECK_OPTION]==false) )
+                                        checkBox.disabled = true;
+                                    else
+                                        checkBox.disabled = false;
+                                }
                             }
-                            checkBox.checked = active;
-                            checkBox.onclick = function(){
-                                save[option][engine] = save[option][engine]==true ? false : true;
-                                saveSettings(save,refreshCheckboxes);
-                            }                                
-                            
+                            if(checkBox){
+                                checkBox.checked = active;
+                                checkBox.onclick = function(){
+                                    save[option][engine] = save[option][engine]==true ? false : true;
+                                    saveSettings(save,refreshCheckboxes);
+                                }    
+                            }                           
                         }
                     }                    
                 }
