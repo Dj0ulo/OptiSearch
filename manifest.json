@@ -1,9 +1,9 @@
 {
 "name" :"OptiSearch",
-"version" : "0.1",
+"version" : "0.1.1",
 "manifest_version": 2,
 "description" :"Upgrade and optimize your searches !",
-"optional_permissions": ["activeTab","storage",
+"permissions": ["storage",
 				"https://stackoverflow.com/",
 				"https://*.wikipedia.org/",
 				"https://*.stackexchange.com/",
