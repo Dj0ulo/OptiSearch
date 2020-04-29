@@ -26,7 +26,10 @@
 				"settings.js","plot.js","setPanel.js", 
 				"stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
 		"css": ["styleStack.css","tomorrow.css"],
-		"matches": ["*://www.ecosia.org/search?*",
+		"matches": [
+				"*://www.bing.com/search?*",
+				"*://www.ecosia.org/search?*",
+
 				"*://www.google.com/search?*",
 				"*://www.google.ac/search?*",
 				"*://www.google.ad/search?*",

@@ -1,7 +1,8 @@
-const Google = "Google", Ecosia = "Ecosia", Yahoo = "Yahoo";
+const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo";
 
 const Engines = {
     Google : {icon : "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png"},
+    Bing : {icon : "https://www.bing.com/sa/simg/bing_p_rr_teal_min.ico"},
     Ecosia : {icon : "https://cdn.ecosia.org/assets/images/ico/favicon.ico"}
 };
 var Sites = {
@@ -46,10 +47,10 @@ const SAVE_OPTIONS_KEY = "optionSaves";
 const CLASS_CHECK_OPTION = 'Option';
 
 function savedEngines() {
-    return {Google:true, Ecosia:true, Yahoo:true};
+    return {Google:true, Bing:true, Ecosia:true, Yahoo:true};
 }
 
-function setDefaultSettings(callback){
+function setDefaultSettings(){
     let save = {};
     save[GLOBAL_OPTION] = savedEngines();
 
@@ -71,15 +72,42 @@ function setDefaultSettings(callback){
             }
         }
     }
-    callback(save);
+    return save;
+}
+function checkIfAllSettings(save){
+    let engines = savedEngines();
+    for (const e in engines) {
+        if (engines.hasOwnProperty(e) && !save[GLOBAL_OPTION].hasOwnProperty(e)) {
+            save[GLOBAL_OPTION][e] = engines[e];//put true                            
+        }
+    }
+
+    for (const type in Options) {
+        if (Options.hasOwnProperty(type)) {
+            const t = Options[type];
+            for (const o in t) {
+                if (t.hasOwnProperty(o)) {
+                    if(!save.hasOwnProperty(o)){
+                        save[o] = engines;
+                        save[o][CLASS_CHECK_OPTION] = true;
+                    }
+                    for (const e in engines) {
+                        if (engines.hasOwnProperty(e) && !save[o].hasOwnProperty(e)) {
+                            save[o][e] = engines[e];//put true                            
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 function getSettings(callback){
     chrome.storage.local.get([SAVE_OPTIONS_KEY],(storage) => {   
         var save = storage[SAVE_OPTIONS_KEY];
         if(!save)
-            setDefaultSettings(callback);
-        else
-            callback(save);
+            save = setDefaultSettings();
+        checkIfAllSettings(save);
+        callback(save);
     });
 }
 function saveSettings(save, callback){

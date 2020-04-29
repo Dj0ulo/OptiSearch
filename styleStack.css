@@ -138,7 +138,7 @@
     scrollbar-color: var(--scrollbar) transparent;
 }
 
-.optipanel .optibody.wikibody img{
+.optipanel .optibody.wikibody .imgwiki img{
     width: 40%;
     height: 100%;
     float: right;

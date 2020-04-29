@@ -6,7 +6,10 @@ Sites.wikipedia.get = function getWiki(from, doc){
     if(infobox)
         img = infobox.querySelector(".image");
     else{
-        img = article.querySelector(".thumbinner .image")
+        img = article.querySelector(".thumbinner .image");
+    }
+    if(img){
+        img.className = "imgwiki";
     }
 
     let children = article.querySelectorAll(":scope > p");

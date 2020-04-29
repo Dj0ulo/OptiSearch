@@ -1,4 +1,4 @@
-// console.log("OptiSearch");
+console.log("OptiSearch");
 
 //const
 const PANEL_CLASS = "optipanel";
@@ -14,23 +14,28 @@ var siteFound = window.location.hostname;
 
 if(siteFound.endsWith("ecosia.org"))
     engine = Ecosia;
-else if(siteFound.search("google")!=-1)
+else if(siteFound.search(".bing.com")!=-1)
+    engine = Bing;
+else if(siteFound.search(".google.")!=-1)
     engine = Google;
-else if(siteFound.search("yahoo")!=-1)
+else if(siteFound.search(".yahoo.")!=-1)
     engine = Yahoo;
 
 var rightCol = {};
 rightCol[Google] = ".rhscol.col";
+rightCol[Bing] = "#b_context"
 rightCol[Ecosia] = ".col-lg-4.col-sm-12";
 rightCol[Yahoo] = "#right";
 
 var resRow = {};
 resRow[Google] = ".r";
+resRow[Bing] = ".b_algo"
 resRow[Ecosia] = ".result.js-result";
 resRow[Yahoo] = ".dd.algo";
 
 var searchBox = {};
 searchBox[Google] = ".gLFyf.gsfi";
+searchBox[Bing] = ".b_searchbox#sb_form_q";
 searchBox[Ecosia] = ".search-form-input.js-search-input";
 searchBox[Yahoo] = "#yschsp";
 
