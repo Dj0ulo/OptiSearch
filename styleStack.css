@@ -200,6 +200,11 @@
     font-size: small;
 }
 
+/*recherche associes position fixed google*/
+#rhs .z2QsLb{
+    position: unset!important;
+}
+
 body{
     --white: #fff;
     --black: #0c0d0e;
