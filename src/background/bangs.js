@@ -1,19 +1,3 @@
-chrome.extension.onConnect.addListener(function(port) {
-    port.onMessage.addListener(function(msg) {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function() { 
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-                var doc = new DOMParser().parseFromString(xmlHttp.response, "text/html");
-
-                let site = Sites[msg.site];
-                if(site)
-                    port.postMessage(site.get(msg,doc));
-            }
-        }
-        xmlHttp.open("GET", msg.link, true); // true for asynchronous 
-        xmlHttp.send(null);
-    });
-});
 // chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 //     getSettings((save)=>{
 //         chrome.tabs.executeScript(tabId,

@@ -28,7 +28,7 @@ rightCol[Ecosia] = ".col-lg-4.col-sm-12";
 rightCol[Yahoo] = "#right";
 
 var resRow = {};
-resRow[Google] = ".r";
+resRow[Google] = ".g";
 resRow[Bing] = ".b_algo"
 resRow[Ecosia] = ".result.js-result";
 resRow[Yahoo] = ".dd.algo";
@@ -145,9 +145,11 @@ getSettings((save) => {
         document.querySelector(rightCol[engine]).appendChild(knowledgePanel);
         return knowledgePanel;
     }
-    port.onMessage.addListener(function(msg) {
+    port.onMessage.addListener(msg => {
         var panel;
         let icon;
+
+        // console.log(msg)
 
         for (const site in Sites ) {
             if (Sites.hasOwnProperty(site)) {

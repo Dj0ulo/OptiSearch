@@ -12,20 +12,32 @@
 "icons": { "128" : "icon128.png"},
 "browser_action" :
 {
-	"default_popup" :"pop_up.html"
+	"default_popup" :"src/pop_up.html"
 },
 "background": {
-	"scripts": ["background.js","settings.js", 
-				"stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
+    "scripts": ["src/background/request.js",
+                "src/settings.js",
+                "src/site/stackoverflow.js",
+                "src/site/mdn.js",
+                "src/site/wikipedia.js",
+                "src/site/w3schools.js"],
     "persistent": false
 },
 "content_scripts": 
 [ 
 	{
-		"js": ["libs/plotly.min.js","libs/math.min.js","libs/run_prettify.js","libs/tex-svg.js",
-				"settings.js","plot.js","setPanel.js", 
-				"stackoverflow.js","mdn.js","wikipedia.js","w3schools.js"],
-		"css": ["styleStack.css","tomorrow.css"],
+        "js": ["src/libs/plotly.min.js",
+               "src/libs/math.min.js",
+               "src/libs/run_prettify.js",
+               "src/libs/tex-svg.js",
+               "src/settings.js",
+               "src/plot.js",
+               "src/panel.js", 
+               "src/site/stackoverflow.js",
+               "src/site/mdn.js",
+               "src/site/wikipedia.js",
+               "src/site/w3schools.js"],
+		"css": ["src/styles/style-panel.css","src/styles/tomorrow.css"],
 		"matches": [
 				"*://www.bing.com/search?*",
 				"*://www.ecosia.org/search?*",

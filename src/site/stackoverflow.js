@@ -45,7 +45,7 @@ function getStack(from, doc){
         title : doc.getElementById("question-header").querySelector("h1").textContent,
         link : from.link + "#" + acceptedAnswer.getAttribute('data-answerid'),
         site : from.site,
-        html : acceptedAnswer.querySelector(".post-text").innerHTML,
+        html : acceptedAnswer.querySelector(".js-post-body").innerHTML,
         author : author,
         editor : editor
     }
@@ -71,5 +71,6 @@ function setStack(answer){
 
     return {
         body: bodyPanel, 
-        foot: footPanel};
+        foot: footPanel
+    };
 }

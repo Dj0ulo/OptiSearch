@@ -1,11 +1,11 @@
-Sites.w3schools.get = function getW3(from, doc){
-    var body = doc.querySelector("body");
+Sites.w3schools.get = (from, doc) => {
+    const body = doc.querySelector("body");
 
-    let article = body.querySelector("#main");
+    const article = body.querySelector("#main");
     if(!article){
         return;
     }
-    let children = article.children;
+    const children = article.children;
 
     let summary = "", syntax = "";
     for (let i = 0; i < children.length; i++) {
@@ -26,13 +26,14 @@ Sites.w3schools.get = function getW3(from, doc){
     }
 
         
-    let example = article.querySelector(".w3-example");
-    let code = example.querySelector(".w3-code");
+    const example = article.querySelector(".w3-example");
+    const code = example.querySelector(".w3-code");
     if(code)
         code.outerHTML = "<pre>"+code.innerHTML.replace(/\n/g,"").trim()+"</pre>";
 
+    const title = article.querySelector("h1")
     return {
-        title : article.querySelector("h1").textContent,
+        title : title ? title.textContent  : "",
         link : from.link,
         site : from.site,
         summary : summary,
@@ -42,9 +43,9 @@ Sites.w3schools.get = function getW3(from, doc){
 }
 
 Sites.w3schools.set = function setW3(msg){
-    var bodyPanel = document.createElement("div");
-    bodyPanel.className = "w3body";
-    bodyPanel.innerHTML = (msg.summary ? msg.summary : "") + (msg.syntax ? msg.syntax : "") + (msg.example ? msg.example : "");
+    const bodyPanel = document.createElement("div")
+    bodyPanel.className = "w3body"
+    bodyPanel.innerHTML = `${msg.summary}${msg.syntax}${msg.example}`
 
     return {body: bodyPanel};
 }
