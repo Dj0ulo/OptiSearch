@@ -139,7 +139,7 @@ function plotFun(fun, idDiv, range){
     //     autorange = false;
     
     var layout = {
-        title:'Plot (beta)',
+        title:'Plot',
         dragmode: 'pan',
         xaxis: {range: [range.left, range.right]},
         yaxis: {range: [range.bottom, range.top], autorange : autorange},

@@ -1,61 +1,43 @@
-console.log("OptiSearch");
-
-//const
 const PANEL_CLASS = "optipanel";
 const regexpTex = /\${1,2}([^\$]*)\${1,2}/;
 const regexpTexG = /\${1,2}([^\$]*)\${1,2}/g;
 
 const ICON_COPY = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 
-
 //engines
-var engine = "", searchString = "";
-var siteFound = window.location.hostname;
+let engine = ""
+const siteFound = window.location.hostname
 
-if(siteFound.endsWith("ecosia.org"))
-    engine = Ecosia;
-else if(siteFound.search(".bing.com")!=-1)
-    engine = Bing;
-else if(siteFound.search(".google.")!=-1)
-    engine = Google;
-else if(siteFound.search(".yahoo.")!=-1)
-    engine = Yahoo;
+if (siteFound.endsWith("ecosia.org"))
+    engine = Ecosia
+else if (siteFound.search(".bing.com") != -1)
+    engine = Bing
+else if (siteFound.search(".google.") != -1)
+    engine = Google
+else if (siteFound.search(".yahoo.") != -1)
+    engine = Yahoo
 
-var rightCol = {};
-rightCol[Google] = ".rhscol.col";
-rightCol[Bing] = "#b_context"
-rightCol[Ecosia] = ".col-lg-4.col-sm-12";
-rightCol[Yahoo] = "#right";
+const searchString = document.querySelector(Engines[engine].searchBox).value
+if(!searchString)
+    console.warn("No search string detected");
 
-var resRow = {};
-resRow[Google] = ".g";
-resRow[Bing] = ".b_algo"
-resRow[Ecosia] = ".result.js-result";
-resRow[Yahoo] = ".dd.algo";
+console.log(`OptiSearch - ${engine} : "${searchString}"`)
 
-var searchBox = {};
-searchBox[Google] = ".gLFyf.gsfi";
-searchBox[Bing] = ".b_searchbox#sb_form_q";
-searchBox[Ecosia] = ".search-form-input.js-search-input";
-searchBox[Yahoo] = "#yschsp";
-
-searchString = document.querySelector(searchBox[engine]).value;
-// console.log("search: "+searchString);
-
-
-getSettings((save) => {  
-    if(isActive('bangs',engine,save)){
-        let regexp = /[?|&]q=((%21|!)[^&]*)/
-        let reg = window.location.href.match(regexp);
-        if(reg){
+//Not await !!
+getSettings().then(save => {
+    //Tools
+    if (save['bangs']) {
+        const regexp = /[?|&]q=((%21|!)[^&]*)/
+        const reg = window.location.href.match(regexp)
+        if (reg) {
             console.log(reg['1']);
-            window.location.href = "https://duckduckgo.com/?q="+reg['1'];
+            window.location.href = "https://duckduckgo.com/?q=" + reg['1'];
         }
     }
 
-    if(isActive('calculator',engine,save)){
-        if(window.location.href.search(/[?|&]q=calculator(&?|$)/)!=-1){
-            let iframe = document.createElement("iframe");
+    if (save['calculator']) {
+        if (window.location.href.search(/[?|&]q=calculator(&?|$)/) != -1) {
+            const iframe = document.createElement("iframe");
             iframe.id = "opticalculator"
             iframe.className = PANEL_CLASS;
             iframe.src = "https://www.desmos.com/scientific";
@@ -63,13 +45,13 @@ getSettings((save) => {
         }
     }
 
-    let rep = isMathExpr(searchString);
-    if(rep){
-        if(rep.vars.length > 0){
-            if(isActive('plot',engine,save)){
+    const rep = isMathExpr(searchString);
+    if (rep) {
+        if (rep.vars.length > 0) {
+            if (save['plot']) {
                 let fun = {
-                    expr : rep.expr,
-                    vars : rep.vars
+                    expr: rep.expr,
+                    vars: rep.vars
                 }
                 let graph = document.createElement("div");
                 graph.id = "optiplot";
@@ -77,24 +59,24 @@ getSettings((save) => {
                 appendPanel(graph);
                 plotFun(fun, "optiplot");
             }
-        }else if(isActive('calculator',engine,save) 
-        && (typeof rep.answer == 'number' || typeof rep.answer == 'boolean' || rep.answer.entries)){
+        } else if (save['calculator']
+            && (typeof rep.answer == 'number' || typeof rep.answer == 'boolean' || rep.answer.entries)) {
             let expr = document.createElement("div");
             expr.id = "optiexpr";
             expr.className = PANEL_CLASS;
 
-            let str = "$"+math.parse(rep.expr).toTex() +"~";
+            let str = "$" + math.parse(rep.expr).toTex() + "~";
             let answer = rep.answer;
-            if(typeof answer == 'number'){
-                str += "=~"+answer;
+            if (typeof answer == 'number') {
+                str += "=~" + answer;
             }
-            else if(typeof answer == 'boolean'){
-                str += ":~"+answer;
-            }else if(rep.answer.entries){
+            else if (typeof answer == 'boolean') {
+                str += ":~" + answer;
+            } else if (rep.answer.entries) {
                 answer = answer.entries[0];
-                str += "=~"+answer;
+                str += "=~" + answer;
             }
-            str+="$";
+            str += "$";
             expr.innerHTML = str;
 
             runMathJax(expr);
@@ -102,47 +84,42 @@ getSettings((save) => {
         }
     }
 
-    //send site
+    //Sites
     var port = chrome.runtime.connect();
 
-    var results = document.querySelectorAll(resRow[engine]);
-    var found = false;
-    results.forEach(r => {
-        var link = r.querySelector("a").href;
+    const results = document.querySelectorAll(Engines[engine].resultRow);
+    if(results.length === 0)
+        console.warn('No result detected')
 
-        let siteFound = null;
-        for (const site in Sites ) {
-            if (Sites.hasOwnProperty(site)) {
-                const p = Sites[site];
-                if(isActive(site,engine,save) && link.search(p.link)!=-1){
-                    siteFound = site;
-                    break;
-                }
-            }
+    for(let r of results){
+        const link = r.querySelector("a").href;
+        const found = Object.keys(Sites).find(site => save[site] && link.search(Sites[site].link) != -1)
+        if(found){  
+            port.postMessage({
+                engine: engine,
+                link: link,
+                site: found
+            });
+            break;
         }
-        if(!found && siteFound){
-            // console.log("Site "+siteFound+" found - "+link);
-            let msg = {
-                engine : engine,
-                link : link,
-                site : siteFound
-            }
-            port.postMessage(msg);
-            found= true;
-        }        
-    });
+    }
+
 
     //set panel
-    function appendPanel(panel){
+    function appendPanel(panel) {
         let knowledgePanel = document.createElement("div");
         knowledgePanel.className = "optisearchbox";
-        if(engine == Ecosia)
+        if (engine == Ecosia)
             knowledgePanel.style.marginTop = "20px";
         knowledgePanel.style.marginBottom = "20px";
 
         knowledgePanel.appendChild(panel);
 
-        document.querySelector(rightCol[engine]).appendChild(knowledgePanel);
+        const rightColumn = document.querySelector(Engines[engine].rightColumn)
+        if(!rightColumn)
+            console.warn('No right column detected')
+        else
+            rightColumn.appendChild(knowledgePanel);
         return knowledgePanel;
     }
     port.onMessage.addListener(msg => {
@@ -151,24 +128,24 @@ getSettings((save) => {
 
         // console.log(msg)
 
-        for (const site in Sites ) {
+        for (const site in Sites) {
             if (Sites.hasOwnProperty(site)) {
                 const p = Sites[site];
-                if(msg.site == site){
+                if (msg.site == site) {
                     icon = p.icon;
                     panel = p.set(msg);
-                    if(site == 'stackexchange'){
+                    if (site == 'stackexchange') {
                         getChildrenTex(panel.body);
                     }
                     break;
                 }
             }
         }
-        if(!panel)
+        if (!panel)
             return;
-        
 
-        let host = msg.link.match("https?://[^/]+")[0];        
+
+        let host = msg.link.match("https?://[^/]+")[0];
 
         var sidePanel = document.createElement("div");
         sidePanel.className = PANEL_CLASS;
@@ -176,16 +153,16 @@ getSettings((save) => {
         var headPanel = document.createElement("div");
         headPanel.className = "optiheader";
 
-        msg.title = msg.title.replace(/<(\w*)>/g,'&lt;$1&gt;');
+        msg.title = msg.title.replace(/<(\w*)>/g, '&lt;$1&gt;');
 
-        var link = "<a href='"+msg.link+"'><div class='title'>"+msg.title+"</div>";
-        link += "<div class='optilink'><img width='16' height='16' src='"+icon+"'>"+msg.link+"</div></a>";
+        var link = "<a href='" + msg.link + "'><div class='title'>" + msg.title + "</div>";
+        link += "<div class='optilink'><img width='16' height='16' src='" + icon + "'>" + msg.link + "</div></a>";
         headPanel.innerHTML = link;
         sidePanel.appendChild(headPanel);
 
         runMathJax(headPanel.querySelector(".title"));
 
-        if(panel.body){        
+        if (panel.body) {
             sidePanel.append(document.createElement("hr"));//body
             panel.body.className += " optibody";
             let codes = panel.body.querySelectorAll("code, pre");
@@ -205,7 +182,7 @@ getSettings((save) => {
             sidePanel.appendChild(panel.body);
         }
 
-        if(panel.foot){
+        if (panel.foot) {
             panel.foot.id = "output";
             sidePanel.append(document.createElement("hr"));//foot
             sidePanel.appendChild(panel.foot);
@@ -214,14 +191,14 @@ getSettings((save) => {
         let links = sidePanel.querySelectorAll("a");
         links.forEach(a => {
             let ahref = a.getAttribute('href');
-            if(!ahref.startsWith("//") && !ahref.startsWith("http")){
-                if(!ahref.startsWith("/")){
-                    a.href = msg.link.replace(/\/[^\/]*$/,"")+"/"+ahref;
+            if (!ahref.startsWith("//") && !ahref.startsWith("http")) {
+                if (!ahref.startsWith("/")) {
+                    a.href = msg.link.replace(/\/[^\/]*$/, "") + "/" + ahref;
                 }
                 else
-                    a.href = host+ahref;
+                    a.href = host + ahref;
             }
-                
+
         });
 
 
@@ -229,14 +206,15 @@ getSettings((save) => {
 
         PR.prettyPrint();
     });
-});
+
+})
 
 
-function getChildrenTex(element){
-    var all = element.querySelectorAll("*");
-    var children = [];
+function getChildrenTex(element) {
+    const all = element.querySelectorAll("*");
+    const children = [];
     all.forEach(p => {
-        if(p.textContent.search(regexpTex) != -1)
+        if (p.textContent.search(regexpTex) != -1)
             children.push(p);
     });
 
@@ -246,15 +224,15 @@ function getChildrenTex(element){
 }
 
 function runMathJax(element) {
-    element.innerHTML = element.innerHTML.replace(regexpTexG,"<span style='display: inline-block; ' class='mjx'>$1</span>");
+    element.innerHTML = element.innerHTML.replace(regexpTexG, "<span style='display: inline-block; ' class='mjx'>$1</span>");
 
-    var texs = element.querySelectorAll(".mjx");
-    
+    const texs = element.querySelectorAll(".mjx");
+
     MathJax.texReset();
     texs.forEach(t => {
-        var options = MathJax.getMetricsFor(t);
-        
-        MathJax.tex2svgPromise(t.textContent, options).then( node => {
+        const options = MathJax.getMetricsFor(t);
+
+        MathJax.tex2svgPromise(t.textContent, options).then(node => {
             t.innerHTML = "";
             t.appendChild(node);
         });
@@ -262,20 +240,20 @@ function runMathJax(element) {
 
 }
 
-function createCopyButton(text){
+function createCopyButton(text) {
     var divCopy = document.createElement("div");
-    divCopy.className = "opticopy";            
-    
-    divCopy.innerHTML = ICON_COPY;            
-    divCopy.querySelector("svg").addEventListener('click',clickSVG);
-    function clickSVG(){
+    divCopy.className = "opticopy";
+
+    divCopy.innerHTML = ICON_COPY;
+    divCopy.querySelector("svg").addEventListener('click', clickSVG);
+    function clickSVG() {
         divCopy.innerHTML = "";
-        copyTextToClipboard(text,function(r){
-            divCopy.innerHTML = r==true ? "Copied !" : "Error";
+        copyTextToClipboard(text, r => {
+            divCopy.innerHTML = r ? "Copied !" : "Error";
             setTimeout(() => {
                 divCopy.innerHTML = ICON_COPY;
                 divCopy.querySelector("svg").onclick = clickSVG;
-            },2000);
+            }, 2000);
         });
     }
     return divCopy;
@@ -284,9 +262,9 @@ function copyTextToClipboard(text, callback) {
     if (!navigator.clipboard) {
         return;
     }
-    navigator.clipboard.writeText(text).then(function() {
+    navigator.clipboard.writeText(text).then(function () {
         callback(true);
-    }, function(err) {
+    }, function (err) {
         callback(false);
     });
 }

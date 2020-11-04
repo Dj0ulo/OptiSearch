@@ -1,6 +1,6 @@
 body{
     font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
-    width: 400px;
+    width: 300px;
 }
 body > h2{
     text-align: center;
@@ -10,10 +10,10 @@ img{
     margin-right: 5px;
 }
 
-#Engines{
+#engines{
     height: 40px;
 }
-#Engines .enginechecks .checkdiv img{
+.engine img{
     width: 16px;
     height: 16px;
     display: block;
@@ -21,6 +21,10 @@ img{
     margin: auto;
     padding-right: 2px;
     padding-bottom: 5px;
+}
+.engine{
+    display: inline-block;
+    margin-left: .5rem;
 }
 
 ul {
