@@ -150,6 +150,11 @@ getSettings().then(save => {
         var sidePanel = document.createElement("div");
         sidePanel.className = PANEL_CLASS;
 
+        const watermark = document.createElement("div");
+        watermark.className = "watermark";
+        watermark.textContent = 'OptiSearch'
+        sidePanel.appendChild(watermark)
+
         var headPanel = document.createElement("div");
         headPanel.className = "optiheader";
 

@@ -30,6 +30,12 @@
     font-size: 15px;
 }
 
+.optipanel .watermark{
+    float: right;
+    font-size: x-small;
+    color: #999999;
+}
+
 .optipanel .optiheader{
     margin-top: 15px;
     margin-bottom: 15px;
