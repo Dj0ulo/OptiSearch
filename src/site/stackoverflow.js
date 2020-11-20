@@ -1,76 +1,83 @@
+const queries = {
+  "acceptedAnswer": ".accepted-answer",
+  "answer": ".answer",
+  "bodyAnswer": ".js-post-body",
+  "editions": ".user-info",
+  "time": ".user-action-time",
+  "details": ".user-details",
+  "title": "#question-header h1",
+  "attributeAnswerId" : "data-answerid"
+}
+
+const getStack = (from, doc) => {
+  const body = doc.querySelector('body');
+  const acceptedAnswer = body.querySelector(queries.acceptedAnswer) || body.querySelector(queries.answer);
+
+  const editions = acceptedAnswer.querySelectorAll(queries.editions);
+  editions.forEach(e => {
+    const time = e.querySelector(queries.time);
+    if (time)
+      time.style.display = "inline-block";
+  });
+
+  let time = editions[editions.length - 1].querySelector(queries.time);
+  if (time)
+    time = time.outerHTML;
+
+  let details = editions[editions.length - 1].querySelector(queries.details);
+  const a = details.querySelector("a")
+  if(a)
+    details = a;
+  details.style.display = "inline-block";
+
+  const author = {
+    name: details.outerHTML,
+    answered: time
+  }
+
+  let editor = null;
+  if (editions.length > 1) {
+    let name = editions[0].querySelector(queries.details).querySelector("a");
+    editor = {
+      name: name ? name.outerHTML : author.name,
+      answered: editions[0].querySelector(queries.time).outerHTML
+    }
+  }
+
+  return {
+    title: doc.querySelector(queries.title).textContent,
+    link: `${from.link}#${acceptedAnswer.getAttribute(queries.attributeAnswerId)}`,
+    site: from.site,
+    html: acceptedAnswer.querySelector(queries.bodyAnswer).innerHTML,
+    author: author,
+    editor: editor
+  }
+}
+
+function setStack(answer) {
+  const bodyPanel = document.createElement("div");
+  bodyPanel.className = "stackbody";
+  bodyPanel.innerHTML = answer.html;
+
+  const footPanel = document.createElement("div");
+  footPanel.className = "stackfoot";
+  let foothtml = answer.author.name + (answer.author.answered ? ` – ${answer.author.answered}` : '');
+  if (answer.editor) {
+    foothtml += "<br>";
+    if (answer.editor.name != answer.author.name)
+      foothtml += answer.editor.name;
+    foothtml += ` – ${answer.editor.answered}`;
+  }
+  footPanel.innerHTML = foothtml;
+
+  return {
+    body: bodyPanel,
+    foot: footPanel
+  };
+}
+
 Sites.stackoverflow.get = getStack;
 Sites.stackexchange.get = getStack;
-function getStack(from, doc){
-    var body = doc.querySelector("body");
-                
-    var acceptedAnswer = body.querySelector(".accepted-answer");
-    if(!acceptedAnswer){
-        acceptedAnswer = body.querySelector(".answer");
-    }
-    
-    let editions = acceptedAnswer.querySelectorAll(".user-info");
-    editions.forEach(e => {
-        let time = e.querySelector(".user-action-time");
-        if(time)
-            time.style.display="inline-block";
-    });
-
-    let time = editions[editions.length-1].querySelector(".user-action-time");
-    if(time)
-        time = time.outerHTML;
-    let details = editions[editions.length-1].querySelector(".user-details");
-    if(details.querySelector("a"))
-        details = details.querySelector("a");
-    details.style.display = "inline-block";
-
-    let author = {
-        name : details.outerHTML,
-        answered : time
-    }
-
-    let editor = null;                
-    if(editions.length>1){
-        let nameEditor = editions[0].querySelector(".user-details").querySelector("a");
-        if(nameEditor == null)
-            nameEditor = author.name;
-        else
-            nameEditor = nameEditor.outerHTML;
-        editor = {
-            name : nameEditor,
-            answered : editions[0].querySelector(".user-action-time").outerHTML
-        }
-    }
-    
-    return {
-        title : doc.getElementById("question-header").querySelector("h1").textContent,
-        link : from.link + "#" + acceptedAnswer.getAttribute('data-answerid'),
-        site : from.site,
-        html : acceptedAnswer.querySelector(".js-post-body").innerHTML,
-        author : author,
-        editor : editor
-    }
-}
 
 Sites.stackoverflow.set = setStack;
 Sites.stackexchange.set = setStack;
-function setStack(answer){
-    var bodyPanel = document.createElement("div");
-    bodyPanel.className = "stackbody";
-    bodyPanel.innerHTML = answer.html;
-
-    var footPanel = document.createElement("div");
-    footPanel.className = "stackfoot";
-    var foothtml = answer.author.name + (answer.author.answered ? (" – "+answer.author.answered) : "");
-    if(answer.editor){
-        foothtml += "<br>";
-        if(answer.editor.name != answer.author.name)
-            foothtml += answer.editor.name;
-        foothtml += " – "+answer.editor.answered;
-    }
-    footPanel.innerHTML = foothtml;
-
-    return {
-        body: bodyPanel, 
-        foot: footPanel
-    };
-}

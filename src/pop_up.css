@@ -88,9 +88,9 @@ hr{
     margin-top: 5px;
     margin-bottom: 5px;
 }
-.enginechecks{
-   left: 200px;
-   position: fixed;
+.engine{
+   cursor: pointer;
+   vertical-align: middle;
 }
 .checkbox{
     height: 20px;

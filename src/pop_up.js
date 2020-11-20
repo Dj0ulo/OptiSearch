@@ -4,15 +4,21 @@ const ARROW_DOWN = '&#9660;';
 const CLASS_CHECKDIV = 'checkdiv'
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const save = await getSettings()
+    const save = await loadSettings();
+    const engines = await loadEngines();
+
+    console.log('oh',engines)
         
     const liEng = document.querySelector("#engines")
-    Object.keys(Engines).forEach(e => {
+    Object.values(engines).forEach(e => {
+        if(!e.active)
+          return;
         const div = document.createElement("div")
         div.className = 'engine'
+        div.onclick = () => chrome.tabs.create({active: true, url: e.link})
 
         const img = document.createElement("img")
-        img.src = Engines[e].icon;  
+        img.src = e.icon;
         div.appendChild(img)
 
         liEng.appendChild(div)

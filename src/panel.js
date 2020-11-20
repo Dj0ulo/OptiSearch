@@ -24,7 +24,7 @@ if(!searchString)
 console.log(`OptiSearch - ${engine} : "${searchString}"`)
 
 //Not await !!
-getSettings().then(save => {
+loadSettings().then(save => {
     //Tools
     if (save['bangs']) {
         const regexp = /[?|&]q=((%21|!)[^&]*)/
