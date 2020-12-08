@@ -1,3 +1,7 @@
+Sites.mdn.msgApi = (link) => {
+    return {
+    }
+}
 Sites.mdn.get = (from, doc) => {
     const body = doc.querySelector("body");
 

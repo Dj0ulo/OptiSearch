@@ -8,7 +8,10 @@ const queries = {
   "title": "#question-header h1",
   "attributeAnswerId" : "data-answerid"
 }
-
+const msgApi = (link) => {
+  return {
+  }
+}
 const getStack = (from, doc) => {
   const body = doc.querySelector('body');
   const acceptedAnswer = body.querySelector(queries.acceptedAnswer) || body.querySelector(queries.answer);
@@ -75,6 +78,9 @@ function setStack(answer) {
     foot: footPanel
   };
 }
+
+Sites.stackoverflow.msgApi = msgApi;
+Sites.stackexchange.msgApi = msgApi;
 
 Sites.stackoverflow.get = getStack;
 Sites.stackexchange.get = getStack;

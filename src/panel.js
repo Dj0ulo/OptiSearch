@@ -1,3 +1,5 @@
+console.log(`OptiSearch`);
+
 const PANEL_CLASS = "optipanel";
 const regexpTex = /\${1,2}([^\$]*)\${1,2}/;
 const regexpTexG = /\${1,2}([^\$]*)\${1,2}/g;
@@ -101,7 +103,9 @@ loadEngines().then(engines => {
                 port.postMessage({
                     engine: engine,
                     link: link,
-                    site: found
+                    site: found,
+                    type: 'html',
+                    ...Sites[found].msgApi(link)
                 });
                 break;
             }

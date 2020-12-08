@@ -1,3 +1,8 @@
+Sites.w3schools.msgApi = (link) => {
+    return {
+    }
+}
+
 Sites.w3schools.get = (from, doc) => {
     const body = doc.querySelector("body");
 
