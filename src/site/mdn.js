@@ -5,7 +5,7 @@ Sites.mdn.msgApi = (link) => {
 Sites.mdn.get = (from, doc) => {
     const body = doc.querySelector("body");
 
-    const article = body.querySelector("#wikiArticle");
+    const article = body.querySelector("article");
     if(!article){
         return;
     }
@@ -13,7 +13,7 @@ Sites.mdn.get = (from, doc) => {
     const syntax = article.querySelector(".syntaxbox");
     const summary = article.querySelector("p");
 
-    const title = body.querySelector(".titlebar .title")
+    const title = body.querySelector(".title")
     return {
         title : title ? title.textContent : "",
         link : from.link,

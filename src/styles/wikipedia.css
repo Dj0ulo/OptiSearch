@@ -1,0 +1,12 @@
+.optipanel .optibody.wikibody .imgwiki img {
+  width: 40%;
+  height: 100%;
+  float: right;
+  border-radius: 5px;
+  margin: 10px;
+}
+/* .optipanel .optibody.wikibody a { color: #0645ad; }
+.optipanel .optibody.wikibody a:visited { color: #0b0080; }
+
+.dark .optipanel .optibody.wikibody a { color: #5BB0FF; }
+.dark .optipanel .optibody.wikibody a:visited { color: #7668FF; } */

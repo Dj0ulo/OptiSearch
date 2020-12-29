@@ -10,7 +10,7 @@ chrome.extension.onConnect.addListener(port => {
             doc = new DOMParser().parseFromString(text, "text/html");
           else if(msg.type === 'json')
             doc = JSON.parse(text);
-          port.postMessage(site.get(msg, doc));
+          port.postMessage({...site.get(msg, doc), indexPanel: msg.indexPanel});
         }
       })
   })

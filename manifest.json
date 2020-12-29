@@ -15,7 +15,7 @@
     "128": "icon128.png"
   },
   "browser_action": {
-    "default_popup": "src/pop_up.html"
+    "default_popup": "src/pop-up/index.html"
   },
   "background": {
     "scripts": [
@@ -30,6 +30,13 @@
   },
   "content_scripts": [
     {
+      "css": [
+        "src/styles/style-panel.css",
+        "src/styles/tomorrow.css",
+        "src/styles/sunburst.css",
+        "src/styles/w3schools.css",
+        "src/styles/wikipedia.css"
+      ],
       "js": [
         "src/libs/plotly.min.js",
         "src/libs/math.min.js",
@@ -37,15 +44,12 @@
         "src/libs/tex-svg.js",
         "src/settings.js",
         "src/plot.js",
+        "src/utils.js",
         "src/panel.js",
         "src/site/stackoverflow.js",
         "src/site/mdn.js",
         "src/site/wikipedia.js",
         "src/site/w3schools.js"
-      ],
-      "css": [
-        "src/styles/style-panel.css",
-        "src/styles/tomorrow.css"
       ],
       "matches": [
         "*://www.bing.com/search?*",
