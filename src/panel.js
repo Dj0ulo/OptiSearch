@@ -15,11 +15,14 @@ if (siteFound.endsWith("ecosia.org")) engine = Ecosia;
 else if (siteFound.search(".bing.com") != -1) engine = Bing;
 else if (siteFound.search(".google.") != -1) engine = Google;
 else if (siteFound.search(".yahoo.") != -1) engine = Yahoo;
-else if (siteFound.search("duckduckgo.") != -1) engine = DuckDuckGo;
+else if (siteFound.search("duckduckgo.com") != -1) engine = DuckDuckGo;
+else if (siteFound.search("baidu.com") != -1) engine = Baidu;
 
 
 //Not await !!
 loadEngines().then(async (engines) => {
+
+  // console.log(document.body.innerHTML);
   const searchString = document.querySelector(engines[engine].searchBox).value;
   if (!searchString) console.warn("No search string detected");
 
@@ -39,9 +42,11 @@ loadEngines().then(async (engines) => {
 
   if (save["calculator"]) {
     if (window.location.href.search(/[?|&]q=calculator(&?|$)/) != -1) {
-      const iframe = el("iframe", null, PANEL_CLASS);
-      iframe.id = "opticalculator";
-      iframe.src = "https://www.desmos.com/scientific";
+      const iframe = el("iframe", {
+        className: PANEL_CLASS,
+        id: "opticalculator",
+        src: "https://www.desmos.com/scientific"
+      });
       appendPanel(iframe);
     }
   }
@@ -162,23 +167,24 @@ loadEngines().then(async (engines) => {
   });
 
   function panelFromSite(site, title, link, icon, infos) {
-    const sidePanel = el("div", null, PANEL_CLASS);
+    const panel = el("div", { className: PANEL_CLASS });
 
     //watermark
-    el("div", sidePanel, "watermark", "OptiSearch");
+    el("div", { className: "watermark", textContent: "OptiSearch" }, panel);
 
-    const headPanel = el("div", sidePanel, "optiheader");
+    const headPanel = el("div", { className: "optiheader" }, panel);
 
-    const a = el("a", headPanel);
-    a.setAttribute("href", link);
+    const a = el("a", { href: link }, headPanel);
 
     title = title.replace(/<(\w*)>/g, "&lt;$1&gt;"); // avoid html tag to be counted if it is in the title
-    toTeX(el("div", a, "title result-title", title));
-    el("div", a, "optilink result-url", `<img width=16 height=16 src="${icon}">${link}`);
+    toTeX(el("div", { className: "title result-title", textContent: title }, a));
+
+    const linkElement = el("div", { className: "optilink result-url", textContent: link }, a);
+    linkElement.prepend(el("img", { width: 16, height: 16, src: icon }));
 
     // BODY
     if (infos.body) {
-      el("hr", sidePanel); // separation
+      hline(panel);
       infos.body.className += " optibody";
 
       if (site === "stackexchange") {
@@ -192,26 +198,24 @@ loadEngines().then(async (engines) => {
 
       const pres = infos.body.querySelectorAll("pre");
       pres.forEach((pre) => {
-        const surround = el("div");
-        surround.style.position = "relative";
-        surround.innerHTML = pre.outerHTML;
+        const surround = el("div", { innerHTML: pre.outerHTML, style: "position: relative" });
         surround.appendChild(createCopyButton(pre.innerText));
 
         pre.parentNode.replaceChild(surround, pre);
       });
-      sidePanel.appendChild(infos.body);
+      panel.appendChild(infos.body);
     }
 
     // FOOT
     if (infos.foot) {
       infos.foot.id = "output";
-      el("hr", sidePanel); // separation
-      sidePanel.appendChild(infos.foot);
+      hline(panel);
+      panel.appendChild(infos.foot);
     }
 
     // put the host in every link
     const host = link.match("https?://[^/]+")[0];
-    const links = sidePanel.querySelectorAll("a");
+    const links = panel.querySelectorAll("a");
     links.forEach((a) => {
       let ahref = a.getAttribute("href");
       if (!ahref.startsWith("//") && !ahref.startsWith("http")) {
@@ -221,7 +225,7 @@ loadEngines().then(async (engines) => {
       }
     });
 
-    return sidePanel;
+    return panel;
   }
 
   /**
@@ -234,7 +238,7 @@ loadEngines().then(async (engines) => {
     if (!rightColumn)
       console.warn("No right column detected");
     else {
-      const box = el("div", rightColumn, `optisearchbox ${isDarkMode() ? "dark" : "bright"}`);
+      const box = el("div", {className: `optisearchbox ${isDarkMode() ? "dark" : "bright"}`}, rightColumn);
       if (engine == Ecosia)
         box.style.marginTop = "20px";
       box.style.marginBottom = "20px";

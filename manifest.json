@@ -55,6 +55,8 @@
         "*://duckduckgo.com/?*",
         "*://www.bing.com/search?*",
         "*://www.ecosia.org/search?*",
+        "*://www.baidu.com/s?*",
+
         "*://www.google.com/search?*",
         "*://www.google.ac/search?*",
         "*://www.google.ad/search?*",

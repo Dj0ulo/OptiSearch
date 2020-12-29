@@ -1,4 +1,4 @@
-const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo";
+const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu";
 
 const Engines = Object.freeze({
   "Google": {
@@ -77,6 +77,9 @@ const fetchEngines = () => {
         return response.json()
     })
     .then(json => {
+      json = {
+        ...json,
+      }
       chrome.storage.local.set({
         [SAVE_QUERIES_ENGINE]: json
       })
@@ -92,7 +95,7 @@ const fetchEngines = () => {
 fetchEngines().then(r => console.log("Engines: ", r))
 
 const loadEngines = () => {
-  return new Promise(async resolve => {
+  return new Promise(resolve => {
     chrome.storage.local.get([SAVE_QUERIES_ENGINE], storage => {
       resolve(storage[SAVE_QUERIES_ENGINE] || Engines);
     })
@@ -109,7 +112,7 @@ const defaultSettings = () => {
   return save;
 }
 const loadSettings = () => {
-  return new Promise(async resolve => {
+  return new Promise(resolve => {
     chrome.storage.local.get([SAVE_OPTIONS_KEY], storage => {
       resolve(storage[SAVE_OPTIONS_KEY] || defaultSettings());
     });

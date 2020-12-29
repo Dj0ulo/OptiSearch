@@ -19,7 +19,7 @@
   border: 1px solid #dfe1e5;
   border-radius: 8px;
   width: auto;
-  min-width: 400px;
+  min-width: 460px;
   max-width: 600px;
 }
 .optisearchbox.dark{ border-color: rgb(38, 44, 46); color: rgb(215, 210, 204);}

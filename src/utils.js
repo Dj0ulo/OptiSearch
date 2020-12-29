@@ -36,7 +36,7 @@ function toTeX(element) {
  * @returns {Element}
  */
 function createCopyButton(text) {
-  const copyButton = el("div", null, "opticopy", ICON_COPY);
+  const copyButton = el("div", { className: "opticopy", innerHTML: ICON_COPY });
   copyButton.querySelector("svg").onclick = clickSVG;
   function clickSVG() {
     copyButton.innerHTML = "";
@@ -69,17 +69,23 @@ function copyTextToClipboard(text) {
 /**
  * Create an element
  * @param {string} tag Tag name of the element
+ * @param {Object} attributes
  * @param {Element} parent
- * @param {string} className
- * @param {string} html innerHTML
  * @returns {Element} Element created
  */
-function el(tag, parent, className, html) {
+function el(tag, attr, parent) {
   const x = document.createElement(tag);
   if (parent) parent.appendChild(x);
-  if (className) x.className = className;
-  if (html) x.innerHTML = html;
+
+  if (attr)
+    Object.entries(attr).forEach(([k, v]) => {
+      x[k] = v;
+    })
   return x;
+}
+
+function hline(parent){
+  return el("hr", null, parent);
 }
 
 /**

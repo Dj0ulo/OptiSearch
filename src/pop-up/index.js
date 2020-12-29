@@ -4,92 +4,64 @@ const ARROW_DOWN = '&#9660;';
 const CLASS_CHECKDIV = 'checkdiv'
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const save = await loadSettings();
-    const engines = await loadEngines();
+  const save = await loadSettings();
+  const engines = await loadEngines();
 
-    console.log('oh',engines)
-        
-    const liEng = document.querySelector("#engines")
-    Object.values(engines).forEach(e => {
-        if(!e.active)
-          return;
-        const div = document.createElement("div")
-        div.className = 'engine'
-        div.onclick = () => chrome.tabs.create({active: true, url: e.link})
+  console.log('oh', engines)
 
-        const img = document.createElement("img")
-        img.src = e.icon;
-        div.appendChild(img)
+  const liEng = document.querySelector("#engines")
+  Object.values(engines).forEach(e => {
+    if (e.active) {
+      const div = el("div", {
+        className: "engine",
+        onclick: () => chrome.tabs.create({ active: true, url: e.link })
+      }, liEng);
 
-        liEng.appendChild(div)
-    })
-
-    const list = document.createElement('ul')
-    document.body.appendChild(list)
-
-
-    //options
-    Object.keys(Options).forEach(category => {
-        const menu = document.createElement('li')
-        menu.className = "menu"
-        list.appendChild(menu)
-
-        const title = document.createElement("span")
-        title.className = "menu_title"
-        menu.appendChild(title)
-
-        const arrow = document.createElement("span")
-        arrow.className = 'arrow'
-        arrow.innerHTML = ARROW_LEFT
-        arrow.value = 'down'
-        title.appendChild(arrow)
-
-        const txt = document.createElement("span")
-        txt.textContent = category
-        title.appendChild(txt)
-
-        title.appendChild(document.createElement("hr"))
-
-        const sublist = document.createElement("ul")
-        sublist.className = "sublist"
-        sublist.style.display = "block"
-        menu.appendChild(sublist)
-
-        Object.keys(Options[category]).forEach(o => {
-            const spec = Options[category][o]
-
-            const li = document.createElement("li")
-            li.id = o;
-            sublist.appendChild(li)
-
-            const d = document.createElement("div")
-            d.className = "optiondiv"
-            d.style.display = "inline-block"
-            d.innerHTML = `<span class="titleOption"><img width=14 height=14 src="${spec.icon}">${spec.name}</span>`
-            const checkDiv = checkBox()
-            const box = checkDiv.querySelector('input')
-            box.checked = save[o]
-            box.onchange = ev => {
-                save[o] = ev.target.checked
-                saveSettings(save)
-            }
-
-            d.appendChild(checkDiv)
-            li.appendChild(d)    
-        })        
-    })
-
-
-    function checkBox(className){
-        const d = document.createElement("div")
-        d.style.display = "inline-block"
-        d.className = CLASS_CHECKDIV+" "+className
-        d.innerHTML = "<input class='checkbox' type='checkbox'>"
-        return d
+      el("img", {src: e.icon}, div);
     }
+  })
 
-    document.querySelectorAll("a").forEach(ln => {
-        ln.onclick = () => chrome.tabs.create({active: true, url: ln.href})
+  const list = el('ul', null, document.body)
+
+  //options
+  Object.keys(Options).forEach(category => {
+    const menu = el('li', {className: "menu"}, list);
+    const title = el("span", {className: "menu_title"}, menu);
+    el("span", {className: "arrow", innerHTML: ARROW_LEFT, value: "down"}, title);
+    el("span", {textContent: category}, title);
+    hline(title);
+
+    const sublist = el("ul", {className: "sublist", style: "display: block"}, menu);
+
+    Object.entries(Options[category]).forEach(([o, spec]) => {
+      const li = el("li",{id: o}, sublist);
+
+      const d = el("div", {
+        className: "optiondiv",
+        style: "display: inline-block"
+      }, li);
+      const spanImg = el("span", {className: "titleOption", innerHTML: spec.name}, d);
+      spanImg.prepend(el("img", {width: 14, height: 14, src: spec.icon}));
+
+      const checkDiv = el("div", {
+        className: CLASS_CHECKDIV,
+        style: "display: inline-block"
+      }, d)
+
+      el('input', {
+        className: "checkbox", 
+        type: "checkbox",
+        checked: save[o],
+        onchange: (ev) => {
+          save[o] = ev.target.checked;
+          saveSettings(save);
+        }
+      }, checkDiv)
     })
+  })
+
+  document.querySelectorAll("a").forEach(ln => {
+    ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
+  })
 
 });
