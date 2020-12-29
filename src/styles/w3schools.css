@@ -17,7 +17,7 @@
   /*box-shadow: 5px 5px rgba(0, 0, 0, 0.5);*/
 }
 .dark .optipanel .optibody.w3body .w3-example{
-  background-color: var(--black-900);
+  background-color: var(--black-800);
 }
 .optipanel .optibody.w3body .w3-example h3 {
   margin: initial;

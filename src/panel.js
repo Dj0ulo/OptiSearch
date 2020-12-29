@@ -15,6 +15,8 @@ if (siteFound.endsWith("ecosia.org")) engine = Ecosia;
 else if (siteFound.search(".bing.com") != -1) engine = Bing;
 else if (siteFound.search(".google.") != -1) engine = Google;
 else if (siteFound.search(".yahoo.") != -1) engine = Yahoo;
+else if (siteFound.search("duckduckgo.") != -1) engine = DuckDuckGo;
+
 
 //Not await !!
 loadEngines().then(async (engines) => {
@@ -91,16 +93,18 @@ loadEngines().then(async (engines) => {
   //Sites
   const port = chrome.runtime.connect();
 
-  const results = document.querySelectorAll(engines[engine].resultRow);
-  if (results.length === 0) console.warn("No result detected");
-
-  let numberPanel = 0;
-  for (let r of results) {
-    const link = r.querySelector("a").href;
-    const found = Object.keys(Sites).find(
-      (site) => save[site] && link.search(Sites[site].link) != -1
-    );
+  let numberPanel = 0, links = [];
+  const handleResult = (r) => {
+    let link = r.querySelector("a")
+    if (!link) return;
+    link = link.href;
+    const found = Object.keys(Sites).find((site) => {
+      return save[site]
+        && link.search(Sites[site].link) != -1
+        && !links.find(l => link === l);// no duplicates
+    });
     if (found) {
+      links.push(link);
       port.postMessage({
         engine: engine,
         link: link,
@@ -110,8 +114,24 @@ loadEngines().then(async (engines) => {
         ...Sites[found].msgApi(link),
       });
       numberPanel++;
-      // break;
     }
+  }
+
+  const results = document.querySelectorAll(engines[engine].resultRow);
+  if (results.length === 0) {
+    if (engine === DuckDuckGo) {
+      const links = document.querySelector(engines[DuckDuckGo].resultsContainer);
+      links.addEventListener("DOMNodeInserted", ({ target }) => {
+        const classNames = engines[DuckDuckGo].resultRow.slice(1).replace(/\./g, " ");
+        if (target.className.search(classNames) != -1)
+          handleResult(target)
+      });
+    } else {
+      console.warn("No result detected");
+    }
+  }
+  else {
+    Array.from(results).forEach(handleResult);
   }
 
   let currentPanelIndex = 0, panels = [];
@@ -120,24 +140,24 @@ loadEngines().then(async (engines) => {
       const site = Sites[msg.site];
       const infos = site.set(msg);
       if (infos) {
-        panels[msg.indexPanel] = panelFromSite(msg.site, msg.title, msg.link, site.icon, infos);      
-      }else{
+        panels[msg.indexPanel] = panelFromSite(msg.site, msg.title, msg.link, site.icon, infos);
+      } else {
         panels[msg.indexPanel] = "BUG";
       }
       //print the panels in order
-      while(currentPanelIndex < numberPanel){
+      while (currentPanelIndex < numberPanel) {
         const panel = panels[currentPanelIndex];
-        if(panel){
-          if(panel !== "BUG")
+        if (panel) {
+          if (panel !== "BUG")
             appendPanel(panel);
           currentPanelIndex++;
-        }else{
+        } else {
           break;
         }
       }
-      if(currentPanelIndex === numberPanel){
+      if (currentPanelIndex === numberPanel) {
         PR.prettyPrint();
-      }  
+      }
     }
   });
 
@@ -161,9 +181,9 @@ loadEngines().then(async (engines) => {
       el("hr", sidePanel); // separation
       infos.body.className += " optibody";
 
-      if (site === "stackexchange"){
+      if (site === "stackexchange") {
         childrenToTeX(infos.body);
-      }      
+      }
 
       const codes = infos.body.querySelectorAll("code, pre");
       codes.forEach((c) => {
@@ -222,4 +242,24 @@ loadEngines().then(async (engines) => {
       return box;
     }
   }
+
+
+  /**
+   * Update color if the theme is somehow changed
+   */
+  let wasDark = isDarkMode();
+  setInterval(() => {
+    const dark = isDarkMode();
+    if (dark !== wasDark) {
+      wasDark = dark;
+      const panels = document.querySelectorAll(".optisearchbox")
+
+      for (let p of panels) {
+        if (dark)
+          p.className = p.className.replace("bright", "dark");
+        else
+          p.className = p.className.replace("dark", "bright");
+      }
+    }
+  }, 200)
 });

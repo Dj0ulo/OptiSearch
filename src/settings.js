@@ -1,4 +1,4 @@
-const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo";
+const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo";
 
 const Engines = Object.freeze({
   "Google": {
@@ -69,29 +69,27 @@ const SAVE_QUERIES_ENGINE = "save_queries_engine"
 const SAVE_OPTIONS_KEY = "save_options_key";
 
 const fetchEngines = () => {
-  return new Promise((resolve, reject) => {
-    fetch(`${GIST}/engines.json`)
-      .then(response => {
-        if (!response.ok)
-          throw response
-        else
-          return response.json()
+  return fetch(`${GIST}/engines.json`)
+    .then(response => {
+      if (!response.ok)
+        throw response
+      else
+        return response.json()
+    })
+    .then(json => {
+      chrome.storage.local.set({
+        [SAVE_QUERIES_ENGINE]: json
       })
-      .then(json => {
-        chrome.storage.local.set({
-          [SAVE_QUERIES_ENGINE]: json
-        })
-        resolve(json)
+      return json;
+    })
+    .catch(() => {
+      chrome.storage.local.get([SAVE_QUERIES_ENGINE], storage => {
+        return storage[SAVE_QUERIES_ENGINE] || Engines;
       })
-      .catch(() => {
-        chrome.storage.local.get([SAVE_QUERIES_ENGINE], storage => {
-          resolve(storage[SAVE_QUERIES_ENGINE] || Engines);
-        })
-      })
-  })
+    });
 }
 
-fetchEngines().then(r => console.log("Engines: ",r))
+fetchEngines().then(r => console.log("Engines: ", r))
 
 const loadEngines = () => {
   return new Promise(async resolve => {

@@ -52,6 +52,7 @@
         "src/site/w3schools.js"
       ],
       "matches": [
+        "*://duckduckgo.com/?*",
         "*://www.bing.com/search?*",
         "*://www.ecosia.org/search?*",
         "*://www.google.com/search?*",
