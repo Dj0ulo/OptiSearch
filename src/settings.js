@@ -58,7 +58,7 @@ const Options = Object.freeze({
   Sites: Sites,
   Tools: {
     bangs: { name: "<a href='https://duckduckgo.com/bang?q='>DuckDuckGo Bangs</a>" },
-    calculator: { name: "Calculator" },
+    calculator: { name: `<a href="https://www.desmos.com/scientific">Calculator</a>` },
     plot: { name: "Plot" }
   }
 })

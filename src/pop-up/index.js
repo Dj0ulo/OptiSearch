@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const labelNumber = el("label",{className: "optiondiv"}, body);
 
-  el("span", {className: "titleOption", innerHTML: "Max number of results", style: "vertical-align: sub"}, labelNumber);
+  el("span", {className: "titleOption", innerHTML: "Max. number of results", style: "vertical-align: sub"}, labelNumber);
   el("input", {
     type: "number",
     style: "width: 2rem",
