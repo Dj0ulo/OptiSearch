@@ -1,4 +1,6 @@
 body{
+    background-color: #1c1c1c;
+    color: rgb(215, 210, 204);
     font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
     width: 300px;
 }
@@ -65,6 +67,7 @@ hr{
     width: 100%;
     margin-left: 10px;
     margin-bottom: 2px;
+    border-color: rgb(38, 44, 46);
 }
 
 .optiondiv{
@@ -80,13 +83,8 @@ hr{
     text-overflow: ellipsis;
     margin-right: 10px;
 }
-.titleOption .checkbox{
+.titleOption .input{
     margin-left: 20px;
-}
-.sublist > li{
-    /* float: right; */
-    margin-top: 5px;
-    margin-bottom: 5px;
 }
 .engine{
    cursor: pointer;
@@ -96,4 +94,17 @@ hr{
     height: 20px;
     width: 20px;
     cursor: pointer;
+}
+
+a{
+  text-decoration: none;
+  color: #0077cc;
+}
+a:hover{
+  text-decoration: underline;
+}
+
+input{
+  background-color: rgb(51, 51, 51);
+  color: rgb(215, 210, 204);
 }

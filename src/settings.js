@@ -104,6 +104,7 @@ const loadEngines = () => {
 
 const defaultSettings = () => {
   let save = {};
+  save["maxResults"] = 3;
   Object.keys(Options).forEach(category => {
     Object.keys(Options[category]).forEach(k => {
       save[k] = true
@@ -114,7 +115,7 @@ const defaultSettings = () => {
 const loadSettings = () => {
   return new Promise(resolve => {
     chrome.storage.local.get([SAVE_OPTIONS_KEY], storage => {
-      resolve(storage[SAVE_OPTIONS_KEY] || defaultSettings());
+      resolve({...defaultSettings(), ...storage[SAVE_OPTIONS_KEY]});
     });
   })
 }

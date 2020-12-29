@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const save = await loadSettings();
   const engines = await loadEngines();
 
-  console.log('oh', engines)
+  const body = document.body;
 
   const liEng = document.querySelector("#engines")
   Object.values(engines).forEach(e => {
@@ -21,41 +21,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   })
 
+  body.append(titleSection("Options"))
+
+  const labelNumber = el("label",{className: "optiondiv"}, body);
+
+  el("span", {className: "titleOption", innerHTML: "Max number of results", style: "vertical-align: sub"}, labelNumber);
+  el("input", {
+    type: "number",
+    style: "width: 2rem",
+    value: save.maxResults,
+    min: 0,
+    max: 9,
+    onchange: ({target}) => saveSettings({ ...save, maxResults: target.value })
+  }, labelNumber)
+
   const list = el('ul', null, document.body)
 
   //options
-  Object.keys(Options).forEach(category => {
+  Object.keys(Options).forEach((category) => {
     const menu = el('li', {className: "menu"}, list);
-    const title = el("span", {className: "menu_title"}, menu);
-    el("span", {className: "arrow", innerHTML: ARROW_LEFT, value: "down"}, title);
-    el("span", {textContent: category}, title);
-    hline(title);
+    menu.append(titleSection(category));
 
     const sublist = el("ul", {className: "sublist", style: "display: block"}, menu);
 
     Object.entries(Options[category]).forEach(([o, spec]) => {
       const li = el("li",{id: o}, sublist);
-
-      const d = el("div", {
+      
+      const label = el("label", {
         className: "optiondiv",
         style: "display: inline-block"
       }, li);
-      const spanImg = el("span", {className: "titleOption", innerHTML: spec.name}, d);
+      const spanImg = el("span", {
+        className: "titleOption", 
+        innerHTML: spec.name, 
+        style: "padding-bottom: 2px"
+      }, label);
       spanImg.prepend(el("img", {width: 14, height: 14, src: spec.icon}));
 
       const checkDiv = el("div", {
         className: CLASS_CHECKDIV,
         style: "display: inline-block"
-      }, d)
+      }, label)
 
       el('input', {
         className: "checkbox", 
         type: "checkbox",
         checked: save[o],
-        onchange: (ev) => {
-          save[o] = ev.target.checked;
-          saveSettings(save);
-        }
+        onchange: ({target}) => saveSettings({ ...save, [o]: target.checked })
       }, checkDiv)
     })
   })
@@ -63,5 +75,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll("a").forEach(ln => {
     ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
   })
+
+  function titleSection(name){
+    const title = el("span", {className: "menu_title"});
+    el("span", {className: "arrow", innerHTML: ARROW_LEFT, value: "down"}, title);
+    el("span", {textContent: name}, title);
+    hline(title);
+    return title;
+  }
 
 });

@@ -108,7 +108,7 @@ loadEngines().then(async (engines) => {
         && link.search(Sites[site].link) != -1
         && !links.find(l => link === l);// no duplicates
     });
-    if (found) {
+    if (found && numberPanel < save.maxResults) {
       links.push(link);
       port.postMessage({
         engine: engine,

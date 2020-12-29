@@ -76,11 +76,7 @@ function copyTextToClipboard(text) {
 function el(tag, attr, parent) {
   const x = document.createElement(tag);
   if (parent) parent.appendChild(x);
-
-  if (attr)
-    Object.entries(attr).forEach(([k, v]) => {
-      x[k] = v;
-    })
+  if (attr) Object.entries(attr).forEach(([k, v]) => x[k] = v);
   return x;
 }
 
