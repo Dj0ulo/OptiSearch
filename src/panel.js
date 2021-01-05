@@ -1,11 +1,8 @@
-console.log(`OptiSearch`);
+console.debug("OptiSearch");
 
 const PANEL_CLASS = "optipanel";
 const REGEX_LATEX = /\${1,2}([^\$]*)\${1,2}/;
 const REGEX_LATEX_G = /\${1,2}([^\$]*)\${1,2}/g;
-
-const ICON_COPY =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 
 //engines
 let engine = "";
@@ -26,7 +23,7 @@ loadEngines().then(async (engines) => {
   const searchString = document.querySelector(engines[engine].searchBox).value;
   if (!searchString) console.warn("No search string detected");
 
-  console.log(`OptiSearch - ${engine} : "${searchString}"`);
+  console.debug(`OptiSearch - ${engine} : "${searchString}"`);
 
   const save = await loadSettings();
 

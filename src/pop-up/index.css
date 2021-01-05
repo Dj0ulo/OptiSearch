@@ -4,7 +4,7 @@ body{
     font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
     width: 300px;
 }
-body > h2{
+.title{
     text-align: center;
     margin-bottom: 30px;
 }
@@ -107,4 +107,8 @@ a:hover{
 input{
   background-color: rgb(51, 51, 51);
   color: rgb(215, 210, 204);
+}
+
+.foota{
+  margin: 0 8px;
 }

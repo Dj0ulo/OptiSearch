@@ -8,20 +8,18 @@ Sites.wikipedia.msgApi = (link) => {
 }
 
 Sites.wikipedia.get = (from, doc) => {
-    console.log(from, doc);
+    // console.log(from, doc);
     const body = doc.querySelector("body");
     const article = body.querySelector("#mw-content-text .mw-parser-output");
     const infobox = article.querySelector("[class^=infobox]");
 
     let img;
     if(infobox)
-        img = infobox.querySelector(".image");
-    else{
+        img = infobox.querySelector(".images > .image");
+    if(!img)
         img = article.querySelector(".thumbinner .image");
-    }
-    if(img){
+    if(img)
         img.className = "imgwiki";
-    }
 
     const children = article.querySelectorAll(":scope > p");
     let summary = null;

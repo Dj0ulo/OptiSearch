@@ -2,28 +2,45 @@ const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", Duck
 
 const Engines = Object.freeze({
   "Google": {
+    "link": "https://www.google.com",
     "icon": "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
-    "rightColumn": ".rhscol.col",
+    "rightColumn": ".rhscol",
     "resultRow": ".g",
-    "searchBox": ".gLFyf.gsfi"
+    "searchBox": ".gLFyf.gsfi",
+    "active": true
   },
   "Bing": {
+    "link": "https://www.bing.com",
     "icon": "https://www.bing.com/sa/simg/bing_p_rr_teal_min.ico",
     "rightColumn": "#b_context",
     "resultRow": ".b_algo",
-    "searchBox": ".b_searchbox#sb_form_q"
+    "searchBox": ".b_searchbox#sb_form_q",
+    "active": true
   },
   "Ecosia": {
+    "link": "https://www.ecosia.org",
     "icon": "https://cdn.ecosia.org/assets/images/ico/favicon.ico",
     "rightColumn": ".col-lg-4.col-sm-12",
     "resultRow": ".result.js-result",
-    "searchBox": ".search-form-input.js-search-input"
+    "searchBox": ".search-form-input.js-search-input",
+    "active": true
   },
   "Yahoo": {
+    "link": "https://www.yahoo.com",
     "icon": "https://s.yimg.com/oa/build/images/favicons/yahoo.png",
     "rightColumn": "#right",
     "resultRow": ".dd.algo",
-    "searchBox": "#yschsp"
+    "searchBox": "#yschsp",
+    "active": false
+  },
+  "DuckDuckGo": {
+    "link": "https://duckduckgo.com/",
+    "icon": "https://duckduckgo.com/favicon.ico",
+    "rightColumn": "div.results--sidebar",
+    "resultRow": ".result.results_links_deep",
+    "searchBox": "#search_form_input",
+    "resultsContainer": "#links",
+    "active": true
   }
 })
 const Sites = Object.freeze({
@@ -92,7 +109,7 @@ const fetchEngines = () => {
     });
 }
 
-fetchEngines().then(r => console.log("Engines: ", r))
+fetchEngines();//.then(r => console.log("Engines: ", r))
 
 const loadEngines = () => {
   return new Promise(resolve => {

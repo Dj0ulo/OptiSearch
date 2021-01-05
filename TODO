@@ -7,15 +7,19 @@
 - activer / desactiver options pour chaque outils V
 - agrandir panel for ecosia V
 - remove doublons panels V
+- le panel passe au dessus des recherches associes dans google V
+- "https://fr.wikipedia.org/wiki/Le_Jeu_de_la_dame" wikipedia image V
+- calculatrice V
+
 
 - plot
 - pole plot
-- calculatrice
 - genius
 - scipy
 - cppreference
 - rabbattre le volet
-- le panel passe au dessus des recherches associes dans google
 - add privacy page 
 - add contact page
 - send feedback when no right pannel detected
+- option put on top of the panel that are already there
+- option remove panel already here

@@ -1,6 +1,6 @@
 {
   "name": "OptiSearch",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 2,
   "description": "Upgrade and optimize your searches !",
   "permissions": [
@@ -55,7 +55,6 @@
         "*://duckduckgo.com/?*",
         "*://www.bing.com/search?*",
         "*://www.ecosia.org/search?*",
-        "*://www.baidu.com/s?*",
 
         "*://www.google.com/search?*",
         "*://www.google.ac/search?*",
