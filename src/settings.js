@@ -4,7 +4,8 @@ const Engines = Object.freeze({
   "Google": {
     "link": "https://www.google.com",
     "icon": "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
-    "rightColumn": ".rhscol",
+    "centerColumn": ".D6j0vc",
+    "rightColumn": "#rhs, .rhscol",
     "resultRow": ".g",
     "searchBox": ".gLFyf.gsfi",
     "active": true
@@ -96,6 +97,7 @@ const fetchEngines = () => {
     .then(json => {
       json = {
         ...json,
+        // ...Engines
       }
       chrome.storage.local.set({
         [SAVE_QUERIES_ENGINE]: json
@@ -109,7 +111,7 @@ const fetchEngines = () => {
     });
 }
 
-fetchEngines();//.then(r => console.log("Engines: ", r))
+fetchEngines()//.then(r => console.log("Engines: ", r))
 
 const loadEngines = () => {
   return new Promise(resolve => {

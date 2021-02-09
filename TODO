@@ -10,6 +10,8 @@
 - le panel passe au dessus des recherches associes dans google V
 - "https://fr.wikipedia.org/wiki/Le_Jeu_de_la_dame" wikipedia image V
 - calculatrice V
+- wikipedia sigle V
+- add privacy page V
 
 
 - plot
@@ -18,8 +20,8 @@
 - scipy
 - cppreference
 - rabbattre le volet
-- add privacy page 
 - add contact page
 - send feedback when no right pannel detected
 - option put on top of the panel that are already there
 - option remove panel already here
+- bug "k = 4096; a = 22371; [a/k,a mod k]"

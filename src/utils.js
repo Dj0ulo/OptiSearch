@@ -91,6 +91,10 @@ function hline(parent){
   return el("hr", null, parent);
 }
 
+function insertAfter(newNode, referenceNode) {
+  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
 /**
  * @returns {boolean} true if the body color is dark 
  */

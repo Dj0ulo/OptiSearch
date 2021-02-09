@@ -21,14 +21,24 @@ Sites.wikipedia.get = (from, doc) => {
     if(img)
         img.className = "imgwiki";
 
-    const children = article.querySelectorAll(":scope > p");
-    let summary = null;
-    for (let i = 0; i < children.length; i++) {
-        const p = children[i];
-        if(!p.className && p.textContent.trim()!=""){
-            summary = p;
-            break;
-        }
+    const children = [...article.querySelectorAll(":scope > p")];
+    let summary = children.find(c => !c.className && c.textContent.trim()!="");
+
+    const nextP = (p) => {
+      if(p.textContent.trim()!="")
+        return p;
+      else if(!p)
+        return null;
+      else
+        return nextP(p.nextSibling);
+    };
+
+    let underSummary = null;
+    if(summary){
+      const textSummary = summary.textContent.trim();
+      if(textSummary[textSummary.length-1]===':'){
+        underSummary = nextP(summary.nextSibling);
+      }
     }
 
     const title = body.querySelector("#firstHeading")
@@ -36,8 +46,8 @@ Sites.wikipedia.get = (from, doc) => {
         title : title ? title.textContent : "",
         link : from.link,
         site : from.site,
-        summary : summary ? summary.outerHTML : null,
-        img : img ? img.outerHTML : null,
+        summary : (summary?.outerHTML ?? '') + (underSummary?.outerHTML ?? '') ,
+        img : img?.outerHTML,
     }
 }
 

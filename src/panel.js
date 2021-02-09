@@ -18,9 +18,9 @@ else if (siteFound.search("baidu.com") != -1) engine = Baidu;
 
 //Not await !!
 loadEngines().then(async (engines) => {
-
+  // console.log(engines);
   // console.log(document.body.innerHTML);
-  const searchString = document.querySelector(engines[engine].searchBox).value;
+  const searchString = document.querySelector(engines[engine].searchBox)?.value;
   if (!searchString) console.warn("No search string detected");
 
   console.debug(`OptiSearch - ${engine} : "${searchString}"`);
@@ -231,9 +231,34 @@ loadEngines().then(async (engines) => {
    * @returns {Element} the box where the panel is 
    */
   function appendPanel(panel) {
-    const rightColumn = document.querySelector(engines[engine].rightColumn);
-    if (!rightColumn)
+    const selectorRightCol = engines[engine].rightColumn
+    let rightColumn = document.querySelector(selectorRightCol);
+    
+    if(!rightColumn && engines[engine].centerColumn){
+      const centerColumn = document.querySelector(engines[engine].centerColumn);
+
+      // create a right column with the correct attributes
+      const [sr] = selectorRightCol.split(',');
+      const arr = [...sr.matchAll(/[\.#][^\.#,]+/g)]
+      let className = "", id = "";
+      const attr = {}
+      arr.map(a=>a[0]).forEach(a => {
+        if(a[0] === '.')
+          className = (className && " ") + a.slice(1);
+        else if(a[0] === '#')
+          id = (id && " ") + a.slice(1);
+      })
+      if(id)
+        attr.id = id;
+      if(className)
+        attr.className = className;
+
+      rightColumn = el('div',attr);
+      insertAfter(rightColumn, centerColumn);
+    }
+    if (!rightColumn){
       console.warn("No right column detected");
+    }
     else {
       const box = el("div", {className: `optisearchbox ${isDarkMode() ? "dark" : "bright"}`}, rightColumn);
       if (engine == Ecosia)
