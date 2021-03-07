@@ -81,9 +81,12 @@ function setStack(answer) {
 
 Sites.stackoverflow.msgApi = msgApi;
 Sites.stackexchange.msgApi = msgApi;
+Sites.superuser.msgApi = msgApi;
 
 Sites.stackoverflow.get = getStack;
 Sites.stackexchange.get = getStack;
+Sites.superuser.get = getStack;
 
 Sites.stackoverflow.set = setStack;
 Sites.stackexchange.set = setStack;
+Sites.superuser.set = setStack;

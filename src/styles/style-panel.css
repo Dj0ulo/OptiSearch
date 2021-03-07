@@ -3,10 +3,9 @@
   position: relative;
 }
 #optiplot {
-  height: 400px;
-  width: 400px;
   padding: 0px;
   margin: 5px;
+  overflow: auto;
 }
 
 #opticalculator {
@@ -115,6 +114,9 @@
 .optipanel .optibody ul {
   padding-left: 20px;
 }
+.optipanel .optibody img {
+  max-width: 100%;
+}
 
 .optipanel blockquote {
   position: relative;
@@ -140,6 +142,10 @@
     sans-serif;
   padding: 2px 4px;
   border-radius: 3px;
+}
+
+.optipanel pre.prettyprint code{
+  display: block;
 }
 
 .optipanel pre.prettyprint{

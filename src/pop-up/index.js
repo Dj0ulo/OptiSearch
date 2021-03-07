@@ -81,9 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }, foot);
 
   // utils
-  document.querySelectorAll("a").forEach(ln => {
-    ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
-  })
+  hrefPopUp();
 
   el("a",{
     className: "foota", 

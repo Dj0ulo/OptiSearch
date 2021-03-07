@@ -9,17 +9,22 @@ Sites.mdn.get = (from, doc) => {
     if(!article){
         return;
     }
-        
-    const syntax = article.querySelector(".syntaxbox");
-    const summary = article.querySelector("p");
 
-    const title = body.querySelector(".title")
+        
+    const syntaxTitle = article.querySelector("#syntax, #syntaxe");
+    const syntax = syntaxTitle && syntaxTitle.nextSibling.querySelector("pre");
+
+    const summary = Array.from(article.querySelectorAll("p")).find(p => p.textContent != "");
+
+    const underS = underSummary(summary);
+
+    const title = body.querySelector(".title, h1")
     return {
-        title : title ? title.textContent : "",
+        title : title?.textContent ?? "",
         link : from.link,
         site : from.site,
-        summary : summary ? summary.outerHTML : null,
-        syntax : syntax ? syntax.outerHTML : null
+        summary : (summary?.outerHTML ?? '') + (underS?.outerHTML ?? ''),
+        syntax : syntax?.outerHTML ?? "",
     }
 }
 

@@ -12,6 +12,8 @@ Sites.w3schools.get = (from, doc) => {
     }
     const children = article.children;
 
+    const replaceBr = (ih) => ih.replace(/<br>/g,"\n")
+
     let summary = "", syntax = "";
     for (let i = 0; i < children.length; i++) {
         const c = children[i];
@@ -25,27 +27,46 @@ Sites.w3schools.get = (from, doc) => {
                 }
             }
             else if(c.textContent == "Syntax"){
-                syntax = "<pre>"+c.nextElementSibling.innerHTML.replace(/\n/g,"").trim()+"</pre>";
+                syntax = "<pre>"+replaceBr(c.nextElementSibling.innerHTML.replace(/\n/g,"").trim())+"</pre>";
             }
         }
     }
 
         
     const example = article.querySelector(".w3-example");
-    const code = example.querySelector(".w3-code");
-    if(code)
-        code.outerHTML = "<pre>"+code.innerHTML.replace(/\n/g,"").trim()+"</pre>";
+
+    if(example){
+      const location = from.link.substring(0,from.link.lastIndexOf("/"));
+
+      Array.from(example.querySelectorAll("img")).forEach(img => {
+        if(!img.src.startsWith("https://")){
+          img.src = `${location}/${new URL(img.src).pathname}`;
+        }
+      });
+  
+      const codes = example.querySelectorAll(".w3-code");
+      codes?.forEach(code => {
+        const str = replaceBr(code.innerHTML.replace(/\n|\t/g,"").trim())
+          .split('\n')
+          .map(line => line.trim())
+          .join('\n');
+  
+        code.outerHTML = `<pre>${str}</pre>`;
+      })
+    }
+
 
     const title = article.querySelector("h1")
     return {
-        title : title ? title.textContent  : "",
+        title : title?.textContent ?? "",
         link : from.link,
         site : from.site,
         summary : summary,
         syntax : syntax,
-        example : example ? example.outerHTML : null
+        example : example?.outerHTML ?? "",
     }
 }
+
 
 Sites.w3schools.set = function setW3(msg){
     const bodyPanel = document.createElement("div")

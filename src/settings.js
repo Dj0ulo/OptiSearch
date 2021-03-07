@@ -60,6 +60,11 @@ const Sites = Object.freeze({
     link: "stackexchange.com/questions/",
     icon: "https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico"
   },
+  superuser: {
+    name: "Super User",
+    link: "superuser.com/questions/",
+    icon: "https://cdn.sstatic.net/Sites/superuser/img/favicon.ico"
+  },
   w3schools: {
     name: "W3Schools",
     link: "https://www.w3schools.com/",

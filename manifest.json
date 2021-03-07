@@ -1,6 +1,6 @@
 {
   "name": "OptiSearch",
-  "version": "1.1",
+  "version": "1.2",
   "manifest_version": 2,
   "description": "Upgrade and optimize your searches !",
   "permissions": [
@@ -8,6 +8,7 @@
     "https://stackoverflow.com/",
     "https://*.wikipedia.org/",
     "https://*.stackexchange.com/",
+    "https://superuser.com/",
     "https://www.w3schools.com/",
     "https://developer.mozilla.org/"
   ],
@@ -19,6 +20,7 @@
   },
   "background": {
     "scripts": [
+      "src/utils.js",
       "src/background/request.js",
       "src/settings.js",
       "src/site/stackoverflow.js",

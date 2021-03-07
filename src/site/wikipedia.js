@@ -24,29 +24,14 @@ Sites.wikipedia.get = (from, doc) => {
     const children = [...article.querySelectorAll(":scope > p")];
     let summary = children.find(c => !c.className && c.textContent.trim()!="");
 
-    const nextP = (p) => {
-      if(p.textContent.trim()!="")
-        return p;
-      else if(!p)
-        return null;
-      else
-        return nextP(p.nextSibling);
-    };
-
-    let underSummary = null;
-    if(summary){
-      const textSummary = summary.textContent.trim();
-      if(textSummary[textSummary.length-1]===':'){
-        underSummary = nextP(summary.nextSibling);
-      }
-    }
+    const underS = underSummary(summary);
 
     const title = body.querySelector("#firstHeading")
     return {
         title : title ? title.textContent : "",
         link : from.link,
         site : from.site,
-        summary : (summary?.outerHTML ?? '') + (underSummary?.outerHTML ?? '') ,
+        summary : (summary?.outerHTML ?? '') + (underS?.outerHTML ?? ''),
         img : img?.outerHTML,
     }
 }

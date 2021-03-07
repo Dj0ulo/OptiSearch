@@ -28,7 +28,7 @@ loadEngines().then(async (engines) => {
   const save = await loadSettings();
 
   //Tools
-  if (save["bangs"]) {
+  if (save["bangs"] && engine !== DuckDuckGo) {
     const regexp = /[?|&]q=((%21|!)[^&]*)/;
     const reg = window.location.href.match(regexp);
     if (reg) {
@@ -141,16 +141,16 @@ loadEngines().then(async (engines) => {
     if (Sites.hasOwnProperty(msg.site)) {
       const site = Sites[msg.site];
       const infos = site.set(msg);
-      if (infos) {
+      if (infos && infos.body.innerHTML) {
         panels[msg.indexPanel] = panelFromSite(msg.site, msg.title, msg.link, site.icon, infos);
       } else {
-        panels[msg.indexPanel] = "BUG";
+        panels[msg.indexPanel] = "NONE";
       }
       //print the panels in order
       while (currentPanelIndex < numberPanel) {
         const panel = panels[currentPanelIndex];
         if (panel) {
-          if (panel !== "BUG")
+          if (panel !== "NONE")
             appendPanel(panel);
           currentPanelIndex++;
         } else {
@@ -173,7 +173,7 @@ loadEngines().then(async (engines) => {
 
     const a = el("a", { href: link }, headPanel);
 
-    title = title.replace(/<(\w*)>/g, "&lt;$1&gt;"); // avoid html tag to be counted if it is in the title
+    // title = title.replace(/<(\w*)>/g, "&lt;$1&gt;"); // avoid html tag to be counted if it is in the title
     toTeX(el("div", { className: "title result-title", textContent: title }, a));
 
     const linkElement = el("div", { className: "optilink result-url", textContent: link }, a);
@@ -192,7 +192,7 @@ loadEngines().then(async (engines) => {
       codes.forEach((c) => {
         c.className += ` prettyprint`;
       });
-
+      
       const pres = infos.body.querySelectorAll("pre");
       pres.forEach((pre) => {
         const surround = el("div", { innerHTML: pre.outerHTML, style: "position: relative" });
@@ -271,7 +271,7 @@ loadEngines().then(async (engines) => {
 
 
   /**
-   * Update color if the theme is somehow changed
+   * Update color if the theme has somehow changed
    */
   let wasDark = isDarkMode();
   setInterval(() => {

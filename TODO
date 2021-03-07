@@ -12,9 +12,13 @@
 - calculatrice V
 - wikipedia sigle V
 - add privacy page V
+- "python plot stack" V
+- bug "plot python", copy paste V
+- other plot more pretty V
+- superuser.com V
 
 
-- plot
+
 - pole plot
 - genius
 - scipy
@@ -25,3 +29,5 @@
 - option put on top of the panel that are already there
 - option remove panel already here
 - bug "k = 4096; a = 22371; [a/k,a mod k]"
+- fix bang
+- loading box

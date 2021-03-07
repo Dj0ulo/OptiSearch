@@ -95,6 +95,32 @@ function insertAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
+function nextElementNotVoid(p){
+  if(p.textContent.trim()!="")
+    return p;
+  else if(!p)
+    return null;
+  else
+    return nextElementNotVoid(p.nextSibling);
+}
+
+function underSummary(summary){
+  let underSummary = null;
+  if(summary){
+    const textSummary = summary.textContent.trim();
+    if(textSummary[textSummary.length-1]===':'){
+      underSummary = nextElementNotVoid(summary.nextSibling);
+    }
+  }
+  return underSummary;
+}
+
+function hrefPopUp(){
+  document.querySelectorAll("a").forEach(ln => {
+    ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
+  })
+}
+
 /**
  * @returns {boolean} true if the body color is dark 
  */
