@@ -1,6 +1,8 @@
 chrome.extension.onConnect.addListener(port => {
   port.onMessage.addListener(msg => {
-    fetch(msg.api || msg.link)
+    fetch(msg.api || msg.link,{
+      credentials: 'omit'
+    })
       .then(response => response.text())
       .then(text => {
         const site = Sites[msg.site];

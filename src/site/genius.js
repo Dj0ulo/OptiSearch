@@ -3,7 +3,7 @@ Sites.genius.msgApi = () => ({})
 Sites.genius.get = (from, doc) => {
   const body = doc.querySelector("body");
 
-  const lyricsDiv = body.querySelector('.Lyrics__Root-sc-1ynbvzw-0');
+  const lyricsDiv = body.querySelector('.Lyrics__Root-sc-1ynbvzw-0, .lyrics');
   Array.from(lyricsDiv?.querySelectorAll('a')).forEach(a => a.outerHTML = a.innerHTML);
 
   return {
