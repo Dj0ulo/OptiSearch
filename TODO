@@ -16,11 +16,11 @@
 - bug "plot python", copy paste V
 - other plot more pretty V
 - superuser.com V
+- fix bang V
+- genius V
+- pole plot X
 
 
-
-- pole plot
-- genius
 - scipy
 - cppreference
 - rabbattre le volet
@@ -28,6 +28,4 @@
 - send feedback when no right pannel detected
 - option put on top of the panel that are already there
 - option remove panel already here
-- bug "k = 4096; a = 22371; [a/k,a mod k]"
-- fix bang
 - loading box

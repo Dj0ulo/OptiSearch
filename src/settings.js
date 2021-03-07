@@ -70,11 +70,21 @@ const Sites = Object.freeze({
     link: "https://www.w3schools.com/",
     icon: "https://www.w3schools.com/favicon.ico"
   },
+  // cplusplus: {
+  //   name: "cplusplus",
+  //   link: "https://www.cplusplus.com/reference/",
+  //   icon: "https://www.cplusplus.com/favicon.ico"
+  // },
   mdn: {
     name: "MDN Web Docs",
     link: "https://developer.mozilla.org/",
     icon: "https://developer.mozilla.org/static/img/favicon32.png"
-  }
+  },
+  genius: {
+    name: "Genius",
+    link: "https://genius.com/",
+    icon: "https://assets.genius.com/images/apple-touch-icon.png"
+  },
 })
 
 const Options = Object.freeze({

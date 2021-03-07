@@ -59,8 +59,6 @@ Sites.w3schools.get = (from, doc) => {
     const title = article.querySelector("h1")
     return {
         title : title?.textContent ?? "",
-        link : from.link,
-        site : from.site,
         summary : summary,
         syntax : syntax,
         example : example?.outerHTML ?? "",

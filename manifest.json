@@ -10,7 +10,8 @@
     "https://*.stackexchange.com/",
     "https://superuser.com/",
     "https://www.w3schools.com/",
-    "https://developer.mozilla.org/"
+    "https://developer.mozilla.org/",
+    "https://genius.com/"
   ],
   "icons": {
     "128": "icon128.png"
@@ -26,7 +27,8 @@
       "src/site/stackoverflow.js",
       "src/site/mdn.js",
       "src/site/wikipedia.js",
-      "src/site/w3schools.js"
+      "src/site/w3schools.js",
+      "src/site/genius.js"
     ],
     "persistent": false
   },
@@ -37,7 +39,8 @@
         "src/styles/tomorrow.css",
         "src/styles/sunburst.css",
         "src/styles/w3schools.css",
-        "src/styles/wikipedia.css"
+        "src/styles/wikipedia.css",
+        "src/styles/genius.css"
       ],
       "js": [
         "src/libs/plotly.min.js",
@@ -51,13 +54,13 @@
         "src/site/stackoverflow.js",
         "src/site/mdn.js",
         "src/site/wikipedia.js",
-        "src/site/w3schools.js"
+        "src/site/w3schools.js",
+        "src/site/genius.js"
       ],
       "matches": [
         "*://duckduckgo.com/?*",
         "*://www.bing.com/search?*",
         "*://www.ecosia.org/search?*",
-
         "*://www.google.com/search?*",
         "*://www.google.ac/search?*",
         "*://www.google.ad/search?*",

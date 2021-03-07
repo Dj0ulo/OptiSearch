@@ -29,8 +29,6 @@ Sites.wikipedia.get = (from, doc) => {
     const title = body.querySelector("#firstHeading")
     return {
         title : title ? title.textContent : "",
-        link : from.link,
-        site : from.site,
         summary : (summary?.outerHTML ?? '') + (underS?.outerHTML ?? ''),
         img : img?.outerHTML,
     }

@@ -50,7 +50,6 @@ const getStack = (from, doc) => {
   return {
     title: doc.querySelector(queries.title).textContent,
     link: `${from.link}#${acceptedAnswer.getAttribute(queries.attributeAnswerId)}`,
-    site: from.site,
     html: acceptedAnswer.querySelector(queries.bodyAnswer).innerHTML,
     author: author,
     editor: editor

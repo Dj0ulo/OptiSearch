@@ -21,8 +21,6 @@ Sites.mdn.get = (from, doc) => {
     const title = body.querySelector(".title, h1")
     return {
         title : title?.textContent ?? "",
-        link : from.link,
-        site : from.site,
         summary : (summary?.outerHTML ?? '') + (underS?.outerHTML ?? ''),
         syntax : syntax?.outerHTML ?? "",
     }
