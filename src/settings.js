@@ -48,27 +48,32 @@ const Sites = Object.freeze({
   wikipedia: {
     name: "Wikipedia",
     link: "wikipedia.org/wiki/",
-    icon: "https://wikipedia.org/static/favicon/wikipedia.ico"
+    icon: "https://wikipedia.org/static/favicon/wikipedia.ico",
+    href: "https://en.wikipedia.org/",
   },
   stackoverflow: {
     name: "Stack Overflow",
     link: "https://stackoverflow.com/questions/",
-    icon: "https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico"
+    icon: "https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico",
+    href: "https://stackoverflow.com",
   },
   stackexchange: {
     name: "Stack Exchange",
     link: "stackexchange.com/questions/",
-    icon: "https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico"
+    icon: "https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico",
+    href: "https://stackexchange.com/",
   },
   superuser: {
     name: "Super User",
     link: "superuser.com/questions/",
-    icon: "https://cdn.sstatic.net/Sites/superuser/img/favicon.ico"
+    icon: "https://cdn.sstatic.net/Sites/superuser/img/favicon.ico",
+    href: "https://superuser.com/",
   },
   w3schools: {
     name: "W3Schools",
     link: "https://www.w3schools.com/",
-    icon: "https://www.w3schools.com/favicon.ico"
+    icon: "https://www.w3schools.com/favicon.ico",
+    href: "https://www.w3schools.com/",
   },
   // cplusplus: {
   //   name: "cplusplus",
@@ -78,21 +83,32 @@ const Sites = Object.freeze({
   mdn: {
     name: "MDN Web Docs",
     link: "https://developer.mozilla.org/",
-    icon: "https://developer.mozilla.org/static/img/favicon32.png"
+    icon: "https://developer.mozilla.org/static/img/favicon32.png",
+    href: "https://developer.mozilla.org/",
   },
   genius: {
     name: "Genius",
     link: "https://genius.com/",
-    icon: "https://assets.genius.com/images/apple-touch-icon.png"
+    icon: "https://assets.genius.com/images/apple-touch-icon.png",
+    href: "https://genius.com/",
   },
 })
 
 const Options = Object.freeze({
   Sites: Sites,
   Tools: {
-    bangs: { name: "<a href='https://duckduckgo.com/bang?q='>DuckDuckGo Bangs</a>" },
-    calculator: { name: `<a href="https://www.desmos.com/scientific">Calculator</a>` },
-    plot: { name: "Plot" }
+    bangs: { 
+      name: "DuckDuckGo Bangs !",
+      href: "https://duckduckgo.com/bang",
+   },
+    calculator: { 
+      name: "\"calculator\"",
+      href: "https://www.desmos.com/scientific",
+    },
+    plot: { 
+      name: "Plot",
+      href: "https://plotly.com",
+    }
   }
 })
 

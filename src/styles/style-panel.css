@@ -1,6 +1,7 @@
 #optiexpr {
-  padding-left: 30px;
+  padding-left: 20px;
   position: relative;
+  overflow: auto;
 }
 #optiplot {
   padding: 0px;
@@ -29,6 +30,7 @@
   padding-bottom: 8px;
   padding-top: 8px;
   font-size: 15px;
+  position: relative;
 }
 
 .optipanel .watermark {

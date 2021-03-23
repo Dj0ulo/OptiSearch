@@ -19,6 +19,8 @@
 - fix bang V
 - genius V
 - pole plot X
+- problem back arrow privacy policy V
+- problem p = .16; q = 1 - p ; b = 1.96*sqrt(p*q/100); [p-b, p+b], overflow V
 
 
 - scipy
@@ -29,3 +31,4 @@
 - option put on top of the panel that are already there
 - option remove panel already here
 - loading box
+- bug "crows foot"

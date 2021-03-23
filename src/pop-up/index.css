@@ -3,6 +3,7 @@ body{
     color: rgb(215, 210, 204);
     font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
     width: 300px;
+    font-size: 12px;
 }
 .title{
     text-align: center;

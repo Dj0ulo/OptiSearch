@@ -68,9 +68,7 @@ loadEngines().then(async (engines) => {
         typeof rep.answer == "boolean" ||
         rep.answer.entries)
     ) {
-      let expr = document.createElement("div");
-      expr.id = "optiexpr";
-      expr.className = PANEL_CLASS;
+      const panel = el("div", {className: PANEL_CLASS});
 
       let str = "$" + math.parse(rep.expr).toTex() + "~";
       let answer = rep.answer;
@@ -83,12 +81,11 @@ loadEngines().then(async (engines) => {
         str += "=~" + answer;
       }
       str += "$";
-      expr.innerHTML = str;
 
+      const expr = el("div", {id: "optiexpr", innerHTML : str}, panel);
       toTeX(expr);
-      appendPanel(expr)
-        .querySelector("#optiexpr")
-        .appendChild(createCopyButton(answer.toString()));
+      panel.appendChild(createCopyButton(answer.toString()))
+      appendPanel(panel)
     }
   }
 

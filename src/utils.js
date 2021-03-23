@@ -117,7 +117,8 @@ function underSummary(summary){
 
 function hrefPopUp(){
   document.querySelectorAll("a").forEach(ln => {
-    ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
+    if(ln.href.startsWith("http"))
+      ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
   })
 }
 

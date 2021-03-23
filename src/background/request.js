@@ -1,4 +1,4 @@
-chrome.extension.onConnect.addListener(port => {
+chrome.runtime.onConnect.addListener(port => {
   port.onMessage.addListener(msg => {
     fetch(msg.api || msg.link,{
       credentials: 'omit'

@@ -4,10 +4,10 @@ const ARROW_DOWN = '&#9660;';
 const CLASS_CHECKDIV = 'checkdiv'
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const save = await loadSettings();
+  let save = await loadSettings();
   const engines = await loadEngines();
 
-  console.log(save);
+  // console.debug(save);
   const body = document.body;
 
   const liEng = document.querySelector("#engines")
@@ -33,7 +33,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     value: save.maxResults,
     min: 0,
     max: 9,
-    onchange: ({ target }) => saveSettings({ ...save, maxResults: target.value })
+    onchange: ({ target }) => {
+      save.maxResults = target.value
+      saveSettings(save);
+    }
   }, labelNumber)
 
   const list = el('ul', null, document.body)
@@ -54,10 +57,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       }, li);
       const spanImg = el("span", {
         className: "titleOption",
-        innerHTML: spec.name,
+        innerHTML: spec.href ? `<a href=${spec.href}>${spec.name}</a>` : spec.name,
         style: "padding-bottom: 2px"
       }, label);
-      spanImg.prepend(el("img", { width: 14, height: 14, src: spec.icon }));
+
+      if(spec.icon)
+        spanImg.prepend(el("img", { width: 14, height: 14, src: spec.icon }));
 
       const checkDiv = el("div", {
         className: CLASS_CHECKDIV,
@@ -68,7 +73,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         className: "checkbox",
         type: "checkbox",
         checked: save[o],
-        onchange: ({ target }) => saveSettings({ ...save, [o]: target.checked })
+        onchange: ({ target }) => {
+          save[o] = target.checked
+          saveSettings(save);
+        }
       }, checkDiv)
     })
   })
