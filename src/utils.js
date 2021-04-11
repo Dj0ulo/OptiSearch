@@ -131,6 +131,29 @@ function hrefPopUp() {
 }
 
 /**
+ * Put the host in every link of the element
+ * @param {string} url 
+ * @param {Element} container 
+ */
+function writeHostOnLinks(url, container) {
+  const host = url.match("https?://[^/]+")[0];
+  const links = container.querySelectorAll("a");
+  links.forEach(a => {
+    const ahref = a.getAttribute("href");
+    if (ahref.startsWith("http") || ahref.startsWith("//")) {
+      return;
+    }
+
+    if(ahref.startsWith("/")){
+      a.href = host + ahref;
+      return;
+    }
+
+    a.href = `${url.replace(/\/[^\/]*$/, "")}/${ahref}`;
+  });
+}
+
+/**
  * @returns {boolean} true if the body color is dark 
  */
 function isDarkMode() {
@@ -140,7 +163,7 @@ function isDarkMode() {
       .getPropertyValue("background-color");
     const matcher = colorStr.match(/\(([\d ,]+)\)/);
     const rgba = matcher[1].split(",").map((m) => parseInt(m));
-    if (rgba[3] === 0){
+    if (rgba[3] === 0) {
       return false;
     }
 

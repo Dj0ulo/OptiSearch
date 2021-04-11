@@ -11,10 +11,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const body = document.body;
 
   const liEng = document.querySelector("#engines")
-  Object.values(engines).forEach(e => {
+  Object.values(engines).forEach((e, i) => {
     if (e.active) {
       const div = el("div", {
         className: "engine",
+        style: `--order: ${i+1};`,
         onclick: () => chrome.tabs.create({ active: true, url: e.link })
       }, liEng);
 

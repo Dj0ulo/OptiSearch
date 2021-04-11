@@ -171,7 +171,7 @@ loadEngines().then(async (engines) => {
   }
 
   function panelFromSite({ site, title, link }, icon, {body, foot}) {
-    const panel = el("div", { className: PANEL_CLASS });
+    const panel = el("div", { className: `${PANEL_CLASS} fold` });
 
     //watermark
     el("div", { className: "watermark", textContent: "OptiSearch" }, panel);
@@ -216,17 +216,16 @@ loadEngines().then(async (engines) => {
       panel.appendChild(foot);
     }
 
-    // put the host in every link
-    const host = link.match("https?://[^/]+")[0];
-    const links = panel.querySelectorAll("a");
-    links.forEach((a) => {
-      let ahref = a.getAttribute("href");
-      if (!ahref.startsWith("//") && !ahref.startsWith("http")) {
-        if (!ahref.startsWith("/")) {
-          a.href = `${link.replace(/\/[^\/]*$/, "")}/${ahref}`;
-        } else a.href = host + ahref;
-      }
-    });
+    // const unfold = el('div', {className: 'unfold_button', textContent: '˅'}, panel);
+    // unfold.onclick = () => {
+    //   panel.style = "max-height: 800px"
+    //   panel.comput
+    //   // panel.classList.toggle('fold');
+    // }
+
+    
+    writeHostOnLinks(link, panel);
+
 
     return panel;
   }

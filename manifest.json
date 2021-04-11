@@ -35,7 +35,7 @@
   "content_scripts": [
     {
       "css": [
-        "src/styles/style-panel.css",
+        "src/styles/panel.css",
         "src/styles/tomorrow.css",
         "src/styles/sunburst.css",
         "src/styles/w3schools.css",
