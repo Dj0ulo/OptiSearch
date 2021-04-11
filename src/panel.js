@@ -68,7 +68,7 @@ loadEngines().then(async (engines) => {
         typeof rep.answer == "boolean" ||
         rep.answer.entries)
     ) {
-      const panel = el("div", {className: PANEL_CLASS});
+      const panel = el("div", { className: PANEL_CLASS });
 
       let str = "$" + math.parse(rep.expr).toTex() + "~";
       let answer = rep.answer;
@@ -82,7 +82,7 @@ loadEngines().then(async (engines) => {
       }
       str += "$";
 
-      const expr = el("div", {id: "optiexpr", innerHTML : str}, panel);
+      const expr = el("div", { id: "optiexpr", innerHTML: str }, panel);
       toTeX(expr);
       panel.appendChild(createCopyButton(answer.toString()))
       appendPanel(panel)
@@ -134,33 +134,43 @@ loadEngines().then(async (engines) => {
   }
 
   let currentPanelIndex = 0, panels = [];
-  port.onMessage.addListener((msg) => {
-    if (Sites.hasOwnProperty(msg.site)) {
-      const site = Sites[msg.site];
-      const infos = site.set(msg);
-      if (infos && infos.body.innerHTML) {
-        panels[msg.indexPanel] = panelFromSite(msg.site, msg.title, msg.link, site.icon, infos);
-      } else {
-        panels[msg.indexPanel] = "NONE";
-      }
-      //print the panels in order
-      while (currentPanelIndex < numberPanel) {
-        const panel = panels[currentPanelIndex];
-        if (panel) {
-          if (panel !== "NONE")
-            appendPanel(panel);
-          currentPanelIndex++;
-        } else {
-          break;
-        }
-      }
-      if (currentPanelIndex === numberPanel) {
-        PR.prettyPrint();
-      }
-    }
-  });
 
-  function panelFromSite(site, title, link, icon, infos) {
+  // receive parsed data from html page
+  port.onMessage.addListener((msg) => {
+    if (!Sites.hasOwnProperty(msg.site))
+      return;
+
+    const site = Sites[msg.site];
+    const content = site.set(msg); // set body and foot
+
+    if (content && content.body.innerHTML && msg.title !== undefined) {
+      panels[msg.indexPanel] = panelFromSite(msg, site.icon, content);
+    } else {
+      panels[msg.indexPanel] = null;
+    }
+
+    updatePanels()
+  })
+
+
+  /**
+   * Draw the panels in order. Only when the previous are not undefined
+   */
+  function updatePanels() {
+    while (currentPanelIndex < numberPanel) {
+      const panel = panels[currentPanelIndex];
+      if (panel === undefined) {
+        return;
+      }
+      if (panel !== null) {
+        appendPanel(panel);
+      }
+      currentPanelIndex++;
+    }
+    PR.prettyPrint(); // when all possible panels were appended
+  }
+
+  function panelFromSite({ site, title, link }, icon, {body, foot}) {
     const panel = el("div", { className: PANEL_CLASS });
 
     //watermark
@@ -170,41 +180,40 @@ loadEngines().then(async (engines) => {
 
     const a = el("a", { href: link }, headPanel);
 
-    // title = title.replace(/<(\w*)>/g, "&lt;$1&gt;"); // avoid html tag to be counted if it is in the title
     toTeX(el("div", { className: "title result-title", textContent: title }, a));
 
     const linkElement = el("div", { className: "optilink result-url", textContent: link }, a);
     linkElement.prepend(el("img", { width: 16, height: 16, src: icon }));
 
     // BODY
-    if (infos.body) {
+    if (body) {
       hline(panel);
-      infos.body.className += " optibody";
+      body.className += " optibody";
 
       if (site === "stackexchange") {
-        childrenToTeX(infos.body);
+        childrenToTeX(body);
       }
 
-      const codes = infos.body.querySelectorAll("code, pre");
+      const codes = body.querySelectorAll("code, pre");
       codes.forEach((c) => {
         c.className += ` prettyprint`;
       });
-      
-      const pres = infos.body.querySelectorAll("pre");
+
+      const pres = body.querySelectorAll("pre");
       pres.forEach((pre) => {
         const surround = el("div", { innerHTML: pre.outerHTML, style: "position: relative" });
         surround.appendChild(createCopyButton(pre.innerText));
 
         pre.parentNode.replaceChild(surround, pre);
       });
-      panel.appendChild(infos.body);
+      panel.appendChild(body);
     }
 
     // FOOT
-    if (infos.foot) {
-      infos.foot.id = "output";
+    if (foot) {
+      foot.id = "output";
       hline(panel);
-      panel.appendChild(infos.foot);
+      panel.appendChild(foot);
     }
 
     // put the host in every link
@@ -230,8 +239,8 @@ loadEngines().then(async (engines) => {
   function appendPanel(panel) {
     const selectorRightCol = engines[engine].rightColumn
     let rightColumn = document.querySelector(selectorRightCol);
-    
-    if(!rightColumn && engines[engine].centerColumn){
+
+    if (!rightColumn && engines[engine].centerColumn) {
       const centerColumn = document.querySelector(engines[engine].centerColumn);
 
       // create a right column with the correct attributes
@@ -239,25 +248,25 @@ loadEngines().then(async (engines) => {
       const arr = [...sr.matchAll(/[\.#][^\.#,]+/g)]
       let className = "", id = "";
       const attr = {}
-      arr.map(a=>a[0]).forEach(a => {
-        if(a[0] === '.')
+      arr.map(a => a[0]).forEach(a => {
+        if (a[0] === '.')
           className = (className && " ") + a.slice(1);
-        else if(a[0] === '#')
+        else if (a[0] === '#')
           id = (id && " ") + a.slice(1);
       })
-      if(id)
+      if (id)
         attr.id = id;
-      if(className)
+      if (className)
         attr.className = className;
 
-      rightColumn = el('div',attr);
+      rightColumn = el('div', attr);
       insertAfter(rightColumn, centerColumn);
     }
-    if (!rightColumn){
+    if (!rightColumn) {
       console.warn("No right column detected");
     }
     else {
-      const box = el("div", {className: `optisearchbox ${isDarkMode() ? "dark" : "bright"}`}, rightColumn);
+      const box = el("div", { className: `optisearchbox ${isDarkMode() ? "dark" : "bright"}` }, rightColumn);
       if (engine == Ecosia)
         box.style.marginTop = "20px";
       box.style.marginBottom = "20px";

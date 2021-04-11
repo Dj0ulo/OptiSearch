@@ -7,36 +7,41 @@ Sites.wikipedia.msgApi = (link) => {
     }
 }
 
+/**
+ * 
+ * @param {*} from 
+ * @param {Document} doc 
+ * @returns 
+ */
 Sites.wikipedia.get = (from, doc) => {
-    // console.log(from, doc);
-    const body = doc.querySelector("body");
+    const body = doc.body;
     const article = body.querySelector("#mw-content-text .mw-parser-output");
     const infobox = article.querySelector("[class^=infobox]");
 
     let img;
-    if(infobox)
+    if (infobox)
         img = infobox.querySelector(".images > .image");
-    if(!img)
+    if (!img)
         img = article.querySelector(".thumbinner .image");
-    if(img)
+    if (img)
         img.className = "imgwiki";
 
     const children = [...article.querySelectorAll(":scope > p")];
-    let summary = children.find(c => !c.className && c.textContent.trim()!="");
-
-    const underS = underSummary(summary);
+    const summary = children.find(c => !c.className && c.textContent.trim() != "");
 
     const title = body.querySelector("#firstHeading")
     return {
-        title : title ? title.textContent : "",
-        summary : (summary?.outerHTML ?? '') + (underS?.outerHTML ?? ''),
-        img : img?.outerHTML,
+        title: title ? title.textContent : "",
+        summary: (summary?.outerHTML ?? '') + (underSummary(summary)?.outerHTML ?? ''),
+        img: img?.outerHTML,
     }
 }
 
 Sites.wikipedia.set = msg => {
-    const bodyPanel = document.createElement("div");
-    bodyPanel.className = "wikibody";
-    bodyPanel.innerHTML = (msg.img ? msg.img : "") + (msg.summary ? msg.summary : "");
-    return {body: bodyPanel};
+    return {
+        body: el("div", {
+            className: 'wikibody',
+            innerHTML: (msg.img ?? "") + (msg.summary ?? ""),
+        })
+    };
 }

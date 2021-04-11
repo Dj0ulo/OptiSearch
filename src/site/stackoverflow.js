@@ -1,4 +1,4 @@
-const queries = {
+const QUERIES = {
   "acceptedAnswer": ".accepted-answer",
   "answer": ".answer",
   "bodyAnswer": ".js-post-body",
@@ -6,63 +6,89 @@ const queries = {
   "time": ".user-action-time",
   "details": ".user-details",
   "title": "#question-header h1",
-  "attributeAnswerId" : "data-answerid"
+  "attributeAnswerId": "data-answerid"
 }
 const msgApi = (link) => {
   return {
   }
 }
+/**
+ * 
+ * @param {*} from 
+ * @param {Document} doc 
+ * @returns 
+ */
 const getStack = (from, doc) => {
-  const body = doc.querySelector('body');
-  const acceptedAnswer = body.querySelector(queries.acceptedAnswer) || body.querySelector(queries.answer);
+  const body = doc.body;
+  // link
+  const isPointing = from.link.search('#:~:text');
+  if (isPointing !== -1) {
+    from.link = from.link.substring(0, isPointing);
+  }
 
-  const editions = acceptedAnswer.querySelectorAll(queries.editions);
+  const res = {
+    title: doc.querySelector(QUERIES.title).textContent,
+  }
+
+  const acceptedAnswer = body.querySelector(QUERIES.acceptedAnswer) || body.querySelector(QUERIES.answer);
+
+  if (!acceptedAnswer) {
+    return res;
+  }
+
+  res.link = `${from.link}#${acceptedAnswer.getAttribute(QUERIES.attributeAnswerId)}`;
+
+  // body
+  res.html = acceptedAnswer.querySelector(QUERIES.bodyAnswer).innerHTML;
+
+  // editions
+  const editions = acceptedAnswer.querySelectorAll(QUERIES.editions);
   editions.forEach(e => {
-    const time = e.querySelector(queries.time);
+    const time = e.querySelector(QUERIES.time);
     if (time)
       time.style.display = "inline-block";
   });
 
-  let time = editions[editions.length - 1].querySelector(queries.time);
-  if (time)
+  let time = editions[editions.length - 1].querySelector(QUERIES.time);
+  if (time) {
     time = time.outerHTML;
-
-  let details = editions[editions.length - 1].querySelector(queries.details);
+  }
+  let details = editions[editions.length - 1].querySelector(QUERIES.details);
   const a = details.querySelector("a")
-  if(a)
+  if (a) {
     details = a;
+  }
   details.style.display = "inline-block";
 
-  const author = {
+  res.author = {
     name: details.outerHTML,
     answered: time
   }
 
-  let editor = null;
   if (editions.length > 1) {
-    let name = editions[0].querySelector(queries.details).querySelector("a");
-    editor = {
-      name: name ? name.outerHTML : author.name,
-      answered: editions[0].querySelector(queries.time).outerHTML
+    let name = editions[0].querySelector(QUERIES.details).querySelector("a");
+    res.editor = {
+      name: name?.outerHTML ?? res.author.name,
+      answered: editions[0].querySelector(QUERIES.time).outerHTML
     }
   }
 
-  return {
-    title: doc.querySelector(queries.title).textContent,
-    link: `${from.link}#${acceptedAnswer.getAttribute(queries.attributeAnswerId)}`,
-    html: acceptedAnswer.querySelector(queries.bodyAnswer).innerHTML,
-    author: author,
-    editor: editor
-  }
+  return res;
 }
 
 function setStack(answer) {
-  const bodyPanel = document.createElement("div");
-  bodyPanel.className = "stackbody";
-  bodyPanel.innerHTML = answer.html;
+  const body = el("div", {className: 'stackbody'});
 
-  const footPanel = document.createElement("div");
-  footPanel.className = "stackfoot";
+  if (!answer.html){
+    body.innerHTML = `No answer on this question. You have the answer ? <a href="${answer.link}#post-form">Submit it !</a>`;
+    body.style.margin = '1rem 0px';
+    return {body};
+  }
+
+  body.innerHTML = answer.html;
+
+  const foot = document.createElement("div");
+  foot.className = "stackfoot";
   let foothtml = answer.author.name + (answer.author.answered ? ` – ${answer.author.answered}` : '');
   if (answer.editor) {
     foothtml += "<br>";
@@ -70,12 +96,9 @@ function setStack(answer) {
       foothtml += answer.editor.name;
     foothtml += ` – ${answer.editor.answered}`;
   }
-  footPanel.innerHTML = foothtml;
+  foot.innerHTML = foothtml;
 
-  return {
-    body: bodyPanel,
-    foot: footPanel
-  };
+  return {body, foot};
 }
 
 Sites.stackoverflow.msgApi = msgApi;

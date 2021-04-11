@@ -37,7 +37,7 @@ function toTeX(element) {
  */
 function createCopyButton(text) {
   const ICON_COPY =
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
     class="feather feather-copy">
     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -87,7 +87,7 @@ function el(tag, attr, parent) {
   return x;
 }
 
-function hline(parent){
+function hline(parent) {
   return el("hr", null, parent);
 }
 
@@ -95,29 +95,37 @@ function insertAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
-function nextElementNotVoid(p){
-  if(p.textContent.trim()!="")
-    return p;
-  else if(!p)
+/**
+ * 
+ * @param {Node} p 
+ * @returns The nex element that has text
+ */
+function nextElementNotVoid(p) {
+  if (!p)
     return null;
-  else
-    return nextElementNotVoid(p.nextSibling);
+  if (p.textContent.trim() != "" && p.tagName !== 'STYLE')
+    return p;
+  return nextElementNotVoid(p.nextSibling);
 }
 
-function underSummary(summary){
-  let underSummary = null;
-  if(summary){
-    const textSummary = summary.textContent.trim();
-    if(textSummary[textSummary.length-1]===':'){
-      underSummary = nextElementNotVoid(summary.nextSibling);
-    }
-  }
-  return underSummary;
+/**
+ * @param {Element} summary 
+ * @returns {Element} The next element that contains text if summary ends by a colon
+ */
+function underSummary(summary) {
+  if (!summary)
+    return null;
+
+  const textSummary = summary.textContent.trim();
+  if (textSummary[textSummary.length - 1] !== ':')
+    return null;
+
+  return nextElementNotVoid(summary.nextSibling);
 }
 
-function hrefPopUp(){
+function hrefPopUp() {
   document.querySelectorAll("a").forEach(ln => {
-    if(ln.href.startsWith("http"))
+    if (ln.href.startsWith("http"))
       ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
   })
 }
@@ -132,11 +140,13 @@ function isDarkMode() {
       .getPropertyValue("background-color");
     const matcher = colorStr.match(/\(([\d ,]+)\)/);
     const rgba = matcher[1].split(",").map((m) => parseInt(m));
-    if (rgba[3] === 0) return false;
-    else {
-      const av = rgba.slice(0, 3).reduce((a, v) => a + v) / 3;
-      return av < 128;
+    if (rgba[3] === 0){
+      return false;
     }
+
+    const av = rgba.slice(0, 3).reduce((a, v) => a + v) / 3;
+    return av < 128;
+
   } catch (e) {
     return false;
   }

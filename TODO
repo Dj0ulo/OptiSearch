@@ -1,34 +1,36 @@
-- link underline n'importe ou V
-- goes with dark reader V
-- checkbox uniques V
-- presse papier V
-- bang opti V
-- option afficher un nombre max de panneaux possibles V
-- activer / desactiver options pour chaque outils V
-- agrandir panel for ecosia V
-- remove doublons panels V
-- le panel passe au dessus des recherches associes dans google V
-- "https://fr.wikipedia.org/wiki/Le_Jeu_de_la_dame" wikipedia image V
-- calculatrice V
-- wikipedia sigle V
-- add privacy page V
-- "python plot stack" V
-- bug "plot python", copy paste V
-- other plot more pretty V
-- superuser.com V
-- fix bang V
-- genius V
-- pole plot X
-- problem back arrow privacy policy V
-- problem p = .16; q = 1 - p ; b = 1.96*sqrt(p*q/100); [p-b, p+b], overflow V
+- link underline n'importe ou ✅
+- goes with dark reader ✅
+- checkbox uniques ✅
+- presse papier ✅
+- bang opti ✅
+- option afficher un nombre max de panneaux possibles ✅
+- activer / desactiver options pour chaque outils ✅
+- agrandir panel for ecosia ✅
+- remove doublons panels ✅
+- le panel passe au dessus des recherches associes dans google ✅
+- "https://fr.wikipedia.org/wiki/Le_Jeu_de_la_dame" wikipedia image ✅
+- calculatrice ✅
+- wikipedia sigle ✅
+- add privacy page ✅
+- "python plot stack" ✅
+- bug "plot python", copy paste ✅
+- other plot more pretty ✅
+- superuser.com ✅
+- fix bang ✅
+- genius ✅
+- pole plot ❌
+- problem back arrow privacy policy ✅
+- problem p = .16; q = 1 - p ; b = 1.96*sqrt(p*q/100); [p-b, p+b], overflow ✅
+- bug w3schools "sql online" ✅
+- "express static ts file" no answer, propose to write an answer in optibox ✅
+- bug "crows foot" ✅
+- scipy ❌
+- add contact page -> submit feedback
 
 
-- scipy
 - cppreference
 - rabbattre le volet
-- add contact page
 - send feedback when no right pannel detected
 - option put on top of the panel that are already there
 - option remove panel already here
 - loading box
-- bug "crows foot"
