@@ -170,8 +170,8 @@ loadEngines().then(async (engines) => {
     PR.prettyPrint(); // when all possible panels were appended
   }
 
-  function panelFromSite({ site, title, link }, icon, {body, foot}) {
-    const panel = el("div", { className: `${PANEL_CLASS} fold` });
+  function panelFromSite({ site, title, link }, icon, { body, foot }) {
+    const panel = el("div", { className: `${PANEL_CLASS}` });
 
     //watermark
     el("div", { className: "watermark", textContent: "OptiSearch" }, panel);
@@ -185,9 +185,12 @@ loadEngines().then(async (engines) => {
     const linkElement = el("div", { className: "optilink result-url", textContent: link }, a);
     linkElement.prepend(el("img", { width: 16, height: 16, src: icon }));
 
+    if(body)
+      hline(panel);
+
+    const content = el('div', { className: "opticontent" }, panel);
     // BODY
     if (body) {
-      hline(panel);
       body.className += " optibody";
 
       if (site === "stackexchange") {
@@ -202,30 +205,21 @@ loadEngines().then(async (engines) => {
       const pres = body.querySelectorAll("pre");
       pres.forEach((pre) => {
         const surround = el("div", { innerHTML: pre.outerHTML, style: "position: relative" });
-        surround.appendChild(createCopyButton(pre.innerText));
+        surround.append(createCopyButton(pre.innerText));
 
         pre.parentNode.replaceChild(surround, pre);
       });
-      panel.appendChild(body);
+      content.append(body);
     }
 
     // FOOT
     if (foot) {
       foot.id = "output";
-      hline(panel);
-      panel.appendChild(foot);
+      hline(content);
+      content.append(foot);
     }
 
-    // const unfold = el('div', {className: 'unfold_button', textContent: '˅'}, panel);
-    // unfold.onclick = () => {
-    //   panel.style = "max-height: 800px"
-    //   panel.comput
-    //   // panel.classList.toggle('fold');
-    // }
-
-    
     writeHostOnLinks(link, panel);
-
 
     return panel;
   }
@@ -236,42 +230,67 @@ loadEngines().then(async (engines) => {
    * @returns {Element} the box where the panel is 
    */
   function appendPanel(panel) {
-    const selectorRightCol = engines[engine].rightColumn
+    const rightColumn = fixRightColumn();
+    if(!rightColumn)
+      return null;
+
+    const box = el("div", { className: `optisearchbox ${isDarkMode() ? "dark" : "bright"}` }, rightColumn);
+    if (engine == Ecosia)
+      box.style.marginTop = "20px";
+    box.style.marginBottom = "20px";
+    box.append(panel);
+
+
+    // hline(box);
+
+    // panel.style = "max-height: 400px"
+    // const unfold = el('div', { className: 'unfold_button', textContent: '˅' }, box);
+    // unfold.onclick = () => {
+    //   if (panel.classList.toggle('folded'))
+    //     panel.style = "max-height: 400px"
+    //   else
+    //     panel.style = "max-height: 1000px"
+    // }
+
+    return box;
+  }
+
+  /**
+   * Add right column to the results page if there isn't one
+   * @returns {Node} the rightColumn
+   */
+  function fixRightColumn() {
+    const selectorRightCol = engines[engine].rightColumn;
     let rightColumn = document.querySelector(selectorRightCol);
 
-    if (!rightColumn && engines[engine].centerColumn) {
-      const centerColumn = document.querySelector(engines[engine].centerColumn);
+    if(rightColumn)
+      return rightColumn;
 
-      // create a right column with the correct attributes
-      const [sr] = selectorRightCol.split(',');
-      const arr = [...sr.matchAll(/[\.#][^\.#,]+/g)]
-      let className = "", id = "";
-      const attr = {}
-      arr.map(a => a[0]).forEach(a => {
-        if (a[0] === '.')
-          className = (className && " ") + a.slice(1);
-        else if (a[0] === '#')
-          id = (id && " ") + a.slice(1);
-      })
-      if (id)
-        attr.id = id;
-      if (className)
-        attr.className = className;
+    if(!engines[engine].centerColumn)
+      console.warn("No right column...");
 
-      rightColumn = el('div', attr);
-      insertAfter(rightColumn, centerColumn);
-    }
-    if (!rightColumn) {
-      console.warn("No right column detected");
-    }
-    else {
-      const box = el("div", { className: `optisearchbox ${isDarkMode() ? "dark" : "bright"}` }, rightColumn);
-      if (engine == Ecosia)
-        box.style.marginTop = "20px";
-      box.style.marginBottom = "20px";
-      box.append(panel);
-      return box;
-    }
+    const centerColumn = document.querySelector(engines[engine].centerColumn);
+
+    // create a right column with the correct attributes
+    const [sr] = selectorRightCol.split(',');
+    const arr = [...sr.matchAll(/[\.#][^\.#,]+/g)]
+    let className = "", id = "";
+    const attr = {}
+    arr.map(a => a[0]).forEach(a => {
+      if (a[0] === '.')
+        className = (className && " ") + a.slice(1);
+      else if (a[0] === '#')
+        id = (id && " ") + a.slice(1);
+    })
+    if (id)
+      attr.id = id;
+    if (className)
+      attr.className = className;
+
+    rightColumn = el('div', attr);
+    insertAfter(rightColumn, centerColumn);
+
+    return rightColumn;
   }
 
 

@@ -27,32 +27,27 @@
   color: rgb(215, 210, 204);
 }
 
+.optisearchbox .unfold_button {
+  width: 100%;
+  text-align: center;
+  height: 2rem;
+  border: 1px black;
+  cursor: pointer;
+  /* box-shadow: 0px 0px 50px 5px #555; */
+}
+.optisearchbox .unfold_button:active{
+  background-color: rgb(177, 177, 177);
+}
+
 .optipanel {
   padding: 15px 15px;
   padding-bottom: 8px;
   padding-top: 8px;
   font-size: 15px;
   position: relative;
-  /* box-shadow: inset 0px 850px 500px -500px #000; */
-  transition-duration: 2s;
+  transition-duration: .5s;
 }
 
-.optipanel.fold {
-  /* max-height: 400px;
-  overflow: hidden; */
-}
-
-.optipanel .unfold_button {
-  width: 100%;
-  text-align: center;
-  height: 2rem;
-  border: 1px black;
-  cursor: pointer;
-  background-color: #fff4d1;
-  box-shadow: 0px 0px 50px 5px #555;
-  position: absolute;
-  bottom: 0px;
-}
 
 .optipanel .watermark {
   float: right;

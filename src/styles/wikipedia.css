@@ -5,6 +5,9 @@
   border-radius: 5px;
   margin: 10px;
 }
+.optipanel .optibody.wikibody p {
+  margin: 0.5em 0;
+}
 /* .optipanel .optibody.wikibody a { color: #0645ad; }
 .optipanel .optibody.wikibody a:visited { color: #0b0080; }
 

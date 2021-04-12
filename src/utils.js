@@ -100,12 +100,12 @@ function insertAfter(newNode, referenceNode) {
  * @param {Node} p 
  * @returns The nex element that has text
  */
-function nextElementNotVoid(p) {
+function nextListElement(p) {
   if (!p)
     return null;
-  if (p.textContent.trim() != "" && p.tagName !== 'STYLE')
+  if (p.textContent.trim() != "" && p.tagName === 'UL')
     return p;
-  return nextElementNotVoid(p.nextSibling);
+  return nextListElement(p.nextSibling);
 }
 
 /**
@@ -120,7 +120,7 @@ function underSummary(summary) {
   if (textSummary[textSummary.length - 1] !== ':')
     return null;
 
-  return nextElementNotVoid(summary.nextSibling);
+  return nextListElement(summary.nextSibling);
 }
 
 function hrefPopUp() {
