@@ -53,19 +53,19 @@ const Sites = Object.freeze({
   },
   stackoverflow: {
     name: "Stack Overflow",
-    link: "https://stackoverflow.com/questions/",
+    link: /https:\/\/stackoverflow.com\/((questions)|q)\//,
     icon: "https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico",
     href: "https://stackoverflow.com",
   },
   stackexchange: {
     name: "Stack Exchange",
-    link: "stackexchange.com/questions/",
+    link: /stackexchange.com\/((questions)|q)\//,
     icon: "https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico",
     href: "https://stackexchange.com/",
   },
   superuser: {
     name: "Super User",
-    link: "superuser.com/questions/",
+    link: /superuser.com\/((questions)|q)\//,
     icon: "https://cdn.sstatic.net/Sites/superuser/img/favicon.ico",
     href: "https://superuser.com/",
   },
@@ -102,7 +102,8 @@ const Options = Object.freeze({
       href: "https://duckduckgo.com/bang",
    },
     calculator: { 
-      name: "\"calculator\"",
+      name: "Calculator",
+      title: `Type "calculator" in your search engine`,
       href: "https://www.desmos.com/scientific",
     },
     plot: { 

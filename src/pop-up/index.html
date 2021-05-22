@@ -4,21 +4,64 @@
   <meta charset="UTF-8">
   <script src="../utils.js"></script>
   <script src="../settings.js"></script>
-  <script src="index.js"></script>
+  <script defer src="index.js"></script>
   <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
   <h2 class="title">
-    <a style="text-decoration: none;" href="https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae">
+    <a style="text-decoration: none;"
+      href="https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae">
       <img src="../../icon128.png" width=14 height=14>
     </a>
-    OptiSearch
+    <span>OptiSearch</span> <span id="version"></span>
   </h2>
-  <div id="engines">
-    <div class="titleOption">Supported engines : </div>
+
+  <div id="main" class="tab">
+    <div id="engines">
+      <div class="titleOption">Supported engines : </div>
+    </div>
+    <div id="options-container">
+
+    </div>
+    <hr />
+    <footer>
+      <div class="grid">
+        <span class="smiley left" style="display: none;">🤑</span>
+        <div id="donate">
+          <span>Donate</span>
+        </div>
+        <span class="smiley right" style="display: none;">🤑</span>
+      </div>
+      <a class="foota"
+        href="https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae/reviews">
+        Submit feedback</a>
+      <a class="foota privacy" href="#" style="float: right;">Privacy policy</a>
+
+    </footer>
+
   </div>
-  
+
+  <div id="privacy" class="tab" style="display: none;">
+    <div style="margin: 0 1rem 2rem 1rem">
+      <h1>
+        Privacy Policy
+      </h1>
+      <h2>
+        Personal data
+      </h2>
+      OptiSearch does not collect what you searched, your browser history, or any other personal information.
+      <br>
+      It just locally reads the result page to display adequate results.
+      <br><br>
+      Best,
+      <br><br>
+      <a href="https://github.com/Dj0ulo">Dj0ulo</a>
+    </div>
+
+    <h1 style="margin: 0 .5rem"><a href="#" class="main"><strong>&#129044;</strong></a></h1>
+  </div>
+
 </body>
 
 </html>

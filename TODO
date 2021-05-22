@@ -26,15 +26,22 @@
 - bug "crows foot" ✅
 - scipy ❌
 - add contact page -> submit feedback
+- "substring python" (stackoverflow.com/q/) ✅
+- copy button not positioned well firefox ✅
+- link in popup clean ✅
+- donate button ✅
 
+---------------------------------------------------------------
 
 - cppreference
+- man page
 - rabbattre le volet
 - send feedback when no right pannel detected
 - option put on top of the panel that are already there
 - option remove panel already here
 - loading box
-- copy button not positioned well firefox
-- no image wikipedia firefox duckduckgo
+- no image wikipedia firefox duckduckgo 
 - write version in pop-up (content security policy)
 - fold recherche associes duckduckgo
+- remove innerHTML assignment
+- option put at the place of the result

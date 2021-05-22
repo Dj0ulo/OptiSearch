@@ -18,8 +18,6 @@ else if (siteFound.search("baidu.com") != -1) engine = Baidu;
 
 //Not await !!
 loadEngines().then(async (engines) => {
-  // console.log(engines);
-  // console.log(document.body.innerHTML);
   const searchString = document.querySelector(engines[engine].searchBox)?.value;
   if (!searchString) console.warn("No search string detected");
 
@@ -82,7 +80,7 @@ loadEngines().then(async (engines) => {
       }
       str += "$";
 
-      const expr = el("div", { id: "optiexpr", innerHTML: str }, panel);
+      const expr = el("div", { id: "optiexpr", textContent: str }, panel);
       toTeX(expr);
       panel.appendChild(createCopyButton(answer.toString()))
       appendPanel(panel)
@@ -93,8 +91,13 @@ loadEngines().then(async (engines) => {
   const port = chrome.runtime.connect();
 
   let numberPanel = 0, links = [];
+
+  /**
+   * Take the result Element and send a request to the site if it is supported
+   * @param {Element} r 
+   */
   const handleResult = (r) => {
-    let link = r.querySelector("a")
+    let link = r.querySelector("a");
     if (!link) return;
     link = link.href;
     const found = Object.keys(Sites).find((site) => {
@@ -204,7 +207,7 @@ loadEngines().then(async (engines) => {
 
       const pres = body.querySelectorAll("pre");
       pres.forEach((pre) => {
-        const surround = el("div", { innerHTML: pre.outerHTML, style: "position: relative" });
+        const surround = el("div", { className: "pre-surround", innerHTML: pre.outerHTML, style: "position: relative" });
         surround.append(createCopyButton(pre.innerText));
 
         pre.parentNode.replaceChild(surround, pre);

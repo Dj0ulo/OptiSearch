@@ -3,29 +3,82 @@ const ARROW_DOWN = '&#9660;';
 
 const CLASS_CHECKDIV = 'checkdiv'
 
-document.addEventListener("DOMContentLoaded", async () => {
-  let save = await loadSettings();
+/**
+ * Create a title and a bar for an section in the options
+ * @param {string} name 
+ * @returns Element
+ */
+const titleSection = (name) => {
+  const title = el("span", { className: "menu_title" });
+  el("hr", { className: 'flexchild' }, title)
+  el("span", { textContent: name }, title);
+  el("hr", { className: 'flexchild' }, title)
+  return title;
+}
+
+const changePopupTab = (id) => {
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => t.style.display = 'none');
+  document.getElementById(id).style.display = 'unset';
+}
+
+const ver = document.querySelector('#version');
+ver.textContent = chrome.runtime.getManifest().version;
+
+Array.from(document.getElementsByClassName("main")).forEach(b => b.onclick = () => changePopupTab("main"));
+Array.from(document.getElementsByClassName("privacy")).forEach(e => e.onclick = () => changePopupTab("privacy"));
+
+const donate = document.getElementById("donate");
+donate.onclick = () => chrome.tabs.create({
+  active: true,
+  url: "https://www.paypal.com/donate?hosted_button_id=VPF2BYBDBU5AA"
+});
+
+donate.onmouseover = () => {
+  const smileys = document.querySelectorAll('.smiley');
+
+  smileys.forEach(smiley => smiley.style.display = "inline-block");
+
+  smileys[0].classList.remove('anim-left');
+  smileys[0].classList.add('anim-left');
+
+  smileys[1].classList.remove('anim-right');
+  smileys[1].classList.add('anim-right');
+}
+donate.onmouseout = () => {
+  document
+    .querySelectorAll('.smiley')
+    .forEach(smiley => smiley.style.display = "none");
+}
+
+//Not await !!
+loadSettings().then(async (save) => {
   const engines = await loadEngines();
 
-  // console.debug(save);
-  const body = document.body;
+  const mainPage = document.getElementById("main");
 
   const liEng = document.querySelector("#engines")
   Object.values(engines).forEach((e, i) => {
     if (e.active) {
       const div = el("div", {
         className: "engine",
-        style: `--order: ${i+1};`,
+        style: `--order: ${i + 1};`,
         onclick: () => chrome.tabs.create({ active: true, url: e.link })
       }, liEng);
 
-      el("img", { src: e.icon }, div);
+      el("img", {
+        src: e.icon,
+        title: Object.keys(engines)[i]
+      }, div);
     }
   })
 
-  body.append(titleSection("Options"))
+  const optionsContainer = document.getElementById("options-container");
 
-  const labelNumber = el("label", { className: "optiondiv" }, body);
+
+  optionsContainer.append(titleSection("Options"))
+
+  const labelNumber = el("label", { className: "optiondiv" }, optionsContainer);
 
   el("span", { className: "titleOption", innerHTML: "Max. number of results", style: "vertical-align: sub" }, labelNumber);
   el("input", {
@@ -37,17 +90,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     onchange: ({ target }) => {
       save.maxResults = target.value
       saveSettings(save);
-    }
+    },
   }, labelNumber)
 
-  const list = el('ul', null, document.body)
 
   //options
   Object.keys(Options).forEach((category) => {
-    const menu = el('li', { className: "menu" }, list);
-    menu.append(titleSection(category));
+    optionsContainer.append(titleSection(category));
 
-    const sublist = el("ul", { className: "sublist", style: "display: block" }, menu);
+    const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
 
     Object.entries(Options[category]).forEach(([o, spec]) => {
       const li = el("li", { id: o }, sublist);
@@ -59,10 +110,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       const spanImg = el("span", {
         className: "titleOption",
         innerHTML: spec.href ? `<a href=${spec.href}>${spec.name}</a>` : spec.name,
+        title: spec.title ?? "",
         style: "padding-bottom: 2px"
       }, label);
 
-      if(spec.icon)
+      if (spec.icon)
         spanImg.prepend(el("img", { width: 14, height: 14, src: spec.icon }));
 
       const checkDiv = el("div", {
@@ -82,30 +134,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     })
   })
 
-  const foot = el("div", {style: "margin: auto; width: 70%"}, body)
-  el("a",{
-    className: "foota", 
-    href: "https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae/reviews",
-    textContent: "Submit feedback"
-  }, foot);
-
-  // utils
-  hrefPopUp();
-
-  el("a",{
-    className: "foota", 
-    href: "privacy.html",
-    textContent: "Privacy policy",
-    style: "float: right"
-  }, foot);
-
-
-  function titleSection(name) {
-    const title = el("span", { className: "menu_title" });
-    el("span", { className: "arrow", innerHTML: ARROW_LEFT, value: "down" }, title);
-    el("span", { textContent: name }, title);
-    hline(title);
-    return title;
-  }
-
+  if (typeof browser === 'undefined') // if not browser then we are on chrome
+    hrefPopUp();
 });
