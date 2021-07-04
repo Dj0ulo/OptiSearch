@@ -9,11 +9,12 @@ let engine = "";
 const siteFound = window.location.hostname;
 
 if (siteFound.endsWith("ecosia.org")) engine = Ecosia;
-else if (siteFound.search(".bing.com") != -1) engine = Bing;
+else if (siteFound.endsWith(".bing.com")) engine = Bing;
 else if (siteFound.search(".google.") != -1) engine = Google;
 else if (siteFound.search(".yahoo.") != -1) engine = Yahoo;
-else if (siteFound.search("duckduckgo.com") != -1) engine = DuckDuckGo;
-else if (siteFound.search("baidu.com") != -1) engine = Baidu;
+else if (siteFound.endsWith("duckduckgo.com")) engine = DuckDuckGo;
+else if (siteFound.endsWith("baidu.com")) engine = Baidu;
+else if (siteFound.endsWith("search.brave.com")) engine = Brave;
 
 
 //Not await !!
@@ -97,9 +98,8 @@ loadEngines().then(async (engines) => {
    * @param {Element} r 
    */
   const handleResult = (r) => {
-    let link = r.querySelector("a");
+    const link = r.querySelector("a")?.href;
     if (!link) return;
-    link = link.href;
     const found = Object.keys(Sites).find((site) => {
       return save[site]
         && link.search(Sites[site].link) != -1

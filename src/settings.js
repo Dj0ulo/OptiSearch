@@ -1,13 +1,13 @@
-const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu";
+const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu", Brave = "Brave Search";
 
 const Engines = Object.freeze({
   "Google": {
     "link": "https://www.google.com",
     "icon": "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
+    "rightColumn": "#rhs",
     "centerColumn": ".D6j0vc",
-    "rightColumn": "#rhs, .rhscol",
     "resultRow": ".g",
-    "searchBox": ".gLFyf.gsfi",
+    "searchBox": "input.gLFyf.gsfi",
     "active": true
   },
   "Bing": {
@@ -83,7 +83,7 @@ const Sites = Object.freeze({
   mdn: {
     name: "MDN Web Docs",
     link: "https://developer.mozilla.org/",
-    icon: "https://developer.mozilla.org/static/img/favicon32.png",
+    icon: "https://developer.mozilla.org/favicon-48x48.97046865.png",
     href: "https://developer.mozilla.org/",
   },
   genius: {

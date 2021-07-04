@@ -76,7 +76,7 @@ function copyTextToClipboard(text) {
 /**
  * Create an element
  * @param {string} tag Tag name of the element
- * @param {Object} attributes
+ * @param {Object} attr attributes
  * @param {Element} parent
  * @returns {Element} Element created
  */
