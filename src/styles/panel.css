@@ -1,3 +1,6 @@
+:root{
+  --line-dark: #34363e
+}
 #optiexpr {
   padding-left: 20px;
   position: relative;
@@ -22,9 +25,14 @@
   min-width: 460px;
   max-width: 600px;
 }
+.optisearchbox.bright {
+  background: white;
+}
 .optisearchbox.dark {
-  border-color: rgb(38, 44, 46);
+  background: #282a31;
+  border-color: var(--line-dark);
   color: rgb(215, 210, 204);
+  color-scheme: dark;
 }
 
 .optisearchbox .unfold_button {
@@ -107,7 +115,7 @@
   border-bottom-color: rgb(220, 220, 220);
 }
 .dark .optipanel hr {
-  border-bottom-color: rgb(38, 44, 46);
+  border-bottom-color: var(--line-dark);
 }
 
 .optipanel .opticopy {
@@ -168,6 +176,7 @@
     sans-serif;
   padding: 2px 4px;
   border-radius: 3px;
+  font-size: 100%;
 }
 
 .optipanel pre.prettyprint code {
