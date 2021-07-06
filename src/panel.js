@@ -4,21 +4,16 @@ const PANEL_CLASS = "optipanel";
 const REGEX_LATEX = /\${1,2}([^\$]*)\${1,2}/;
 const REGEX_LATEX_G = /\${1,2}([^\$]*)\${1,2}/g;
 
-//engines
-let engine = "";
-const siteFound = window.location.hostname;
-
-if (siteFound.endsWith("ecosia.org")) engine = Ecosia;
-else if (siteFound.endsWith(".bing.com")) engine = Bing;
-else if (siteFound.search(".google.") != -1) engine = Google;
-else if (siteFound.search(".yahoo.") != -1) engine = Yahoo;
-else if (siteFound.endsWith("duckduckgo.com")) engine = DuckDuckGo;
-else if (siteFound.endsWith("baidu.com")) engine = Baidu;
-else if (siteFound.endsWith("search.brave.com")) engine = Brave;
-
-
 //Not await !!
 loadEngines().then(async (engines) => {
+
+  const siteFound = window.location.hostname;
+  const engine = Object.entries(engines)
+    .find(([_,e]) => siteFound.search(new RegExp(e.regex)) != -1)[0];
+
+  if(!engines[engine])
+    return;
+
   const searchString = document.querySelector(engines[engine].searchBox)?.value;
   if (!searchString) console.warn("No search string detected");
 
@@ -188,7 +183,7 @@ loadEngines().then(async (engines) => {
     const linkElement = el("div", { className: "optilink result-url", textContent: link }, a);
     linkElement.prepend(el("img", { width: 16, height: 16, src: icon }));
 
-    if(body)
+    if (body)
       hline(panel);
 
     const content = el('div', { className: "opticontent" }, panel);
@@ -234,7 +229,7 @@ loadEngines().then(async (engines) => {
    */
   function appendPanel(panel) {
     const rightColumn = fixRightColumn();
-    if(!rightColumn)
+    if (!rightColumn)
       return null;
 
     const box = el("div", { className: `optisearchbox ${isDarkMode() ? "dark" : "bright"}` }, rightColumn);
@@ -266,10 +261,10 @@ loadEngines().then(async (engines) => {
     const selectorRightCol = engines[engine].rightColumn;
     let rightColumn = document.querySelector(selectorRightCol);
 
-    if(rightColumn)
+    if (rightColumn)
       return rightColumn;
 
-    if(!engines[engine].centerColumn)
+    if (!engines[engine].centerColumn)
       console.warn("No right column...");
 
     const centerColumn = document.querySelector(engines[engine].centerColumn);

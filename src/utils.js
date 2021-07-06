@@ -140,7 +140,7 @@ function writeHostOnLinks(url, container) {
   const links = container.querySelectorAll("a");
   links.forEach(a => {
     const ahref = a.getAttribute("href");
-    if (ahref.startsWith("http") || ahref.startsWith("//")) {
+    if (!ahref || ahref.startsWith("http") || ahref.startsWith("//")) {
       return;
     }
 

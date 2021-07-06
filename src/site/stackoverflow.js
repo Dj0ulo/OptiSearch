@@ -39,6 +39,19 @@ const getStack = (from, doc) => {
   res.link = `${from.link}#${acceptedAnswer.getAttribute(QUERIES.attributeAnswerId)}`;
 
   // body
+  const bodyAnswer = acceptedAnswer.querySelector(QUERIES.bodyAnswer);
+  Array.from(bodyAnswer.querySelectorAll('.snippet'))
+    .forEach(s => {
+      if(s.previousElementSibling.outerHTML === "<p></p>")
+        s.previousElementSibling.remove();
+      if(s.nextElementSibling.outerHTML === "<p></p>")
+        s.nextElementSibling.remove();
+
+      s.classList.remove("snippet");
+      // s.className = "code-snippet";
+
+      // el("a", {textContent: "Try it Yourself »"}, s);
+    })
   res.html = acceptedAnswer.querySelector(QUERIES.bodyAnswer).innerHTML;
 
   // editions
@@ -77,12 +90,12 @@ const getStack = (from, doc) => {
 }
 
 function setStack(answer) {
-  const body = el("div", {className: 'stackbody'});
+  const body = el("div", { className: 'stackbody' });
 
-  if (!answer.html){
+  if (!answer.html) {
     body.innerHTML = `No answer on this question. You have the answer ? <a href="${answer.link}#post-form">Submit it !</a>`;
     body.style.margin = '1rem 0px';
-    return {body};
+    return { body };
   }
 
   body.innerHTML = answer.html;
@@ -98,7 +111,7 @@ function setStack(answer) {
   }
   foot.innerHTML = foothtml;
 
-  return {body, foot};
+  return { body, foot };
 }
 
 Sites.stackoverflow.msgApi = msgApi;

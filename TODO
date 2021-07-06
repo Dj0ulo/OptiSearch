@@ -31,6 +31,13 @@
 - link in popup clean ✅
 - donate button ✅
 - bug genius ✅
+- brave search engine ✅
+- manage snippet stackoverflow (e.g. "clock js") ✅
+- change scroll bar apparence when dark ✅
+- background color brave && duckduckgo ✅
+- size code brave ✅
+- knowing which engine directly in Engines not in panel.js ✅
+- genius only songs ✅
 
 ---------------------------------------------------------------
 
@@ -46,9 +53,3 @@
 - fold recherche associes duckduckgo
 - remove innerHTML assignment
 - option put at the place of the result
-- brave search engine
-- run snippet stackoverflow (e.g. "clock js")
-- change scroll bar apparence when dark
-- background color brave && duckduckgo
-- genius only songs
-- knowing which engine directly in Engines not in panel.js

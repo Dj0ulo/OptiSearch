@@ -8,7 +8,8 @@ const Engines = Object.freeze({
     "centerColumn": ".D6j0vc",
     "resultRow": ".g",
     "searchBox": "input.gLFyf.gsfi",
-    "active": true
+    "active": true,
+    "regex": "^www\\.google\\."
   },
   "Bing": {
     "link": "https://www.bing.com",
@@ -16,7 +17,8 @@ const Engines = Object.freeze({
     "rightColumn": "#b_context",
     "resultRow": ".b_algo",
     "searchBox": ".b_searchbox#sb_form_q",
-    "active": true
+    "active": true,
+    "regex": "\\.bing\\.com$"
   },
   "Ecosia": {
     "link": "https://www.ecosia.org",
@@ -24,7 +26,8 @@ const Engines = Object.freeze({
     "rightColumn": ".col-lg-4.col-sm-12",
     "resultRow": ".result.js-result",
     "searchBox": ".search-form-input.js-search-input",
-    "active": true
+    "active": true,
+    "regex": "\\.ecosia\\.org$"
   },
   "Yahoo": {
     "link": "https://www.yahoo.com",
@@ -32,7 +35,8 @@ const Engines = Object.freeze({
     "rightColumn": "#right",
     "resultRow": ".dd.algo",
     "searchBox": "#yschsp",
-    "active": false
+    "active": false,
+    "regex": "search\\.yahoo\\.com$"
   },
   "DuckDuckGo": {
     "link": "https://duckduckgo.com/",
@@ -41,7 +45,17 @@ const Engines = Object.freeze({
     "resultRow": ".result.results_links_deep",
     "searchBox": "#search_form_input",
     "resultsContainer": "#links",
-    "active": true
+    "active": true,
+    "regex": "duckduckgo\\.com$"
+  },
+  "Brave Search": {
+    "link": "https://search.brave.com/",
+    "icon": "https://cdn.search.brave.com/serp/v1/static/brand/16c26cd189da3f0f7ba4e55a584ddde6a7853c9cc340ff9f381afc6cb18e9a1e-favicon-32x32.png",
+    "rightColumn": "#side-right",
+    "resultRow": ".snippet.fdb",
+    "searchBox": "#searchbox",
+    "active": true,
+    "regex": "search\\.brave\\.com$"
   }
 })
 const Sites = Object.freeze({
@@ -88,7 +102,7 @@ const Sites = Object.freeze({
   },
   genius: {
     name: "Genius",
-    link: "https://genius.com/",
+    link: /https:\/\/genius.com\/[^\/]*$/,
     icon: "https://assets.genius.com/images/apple-touch-icon.png",
     href: "https://genius.com/",
   },

@@ -145,11 +145,17 @@
   padding-bottom: 0.25em;
 }
 
-.optipanel .optibody ul {
+/* .optipanel .optibody ul {
   padding-left: 20px;
-}
+} */
 .optipanel .optibody img {
   max-width: 100%;
+}
+
+.optipanel .optibody li, .optipanel .optibody ol{
+  list-style: initial;
+  margin: .4rem;
+  padding: 0 .4rem;
 }
 
 .optipanel blockquote {
