@@ -65,23 +65,12 @@ const Sites = Object.freeze({
     icon: "https://wikipedia.org/static/favicon/wikipedia.ico",
     href: "https://en.wikipedia.org/",
   },
-  stackoverflow: {
-    name: "Stack Overflow",
-    link: /https:\/\/stackoverflow.com\/((questions)|q)\//,
-    icon: "https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico",
-    href: "https://stackoverflow.com",
-  },
   stackexchange: {
-    name: "Stack Exchange",
-    link: /stackexchange.com\/((questions)|q)\//,
+    name: "Stack Exchange sites",
+    link: /((((stackexchange)|(stackoverflow)|(serverfault)|(superuser)|(askubuntu)|(stackapps))\.com)|(mathoverflow\.net))\/((questions)|q)\//,
+    title: "Includes Stack Overflow, Super User and many others",
     icon: "https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico",
-    href: "https://stackexchange.com/",
-  },
-  superuser: {
-    name: "Super User",
-    link: /superuser.com\/((questions)|q)\//,
-    icon: "https://cdn.sstatic.net/Sites/superuser/img/favicon.ico",
-    href: "https://superuser.com/",
+    href: "https://stackexchange.com/sites",
   },
   w3schools: {
     name: "W3Schools",
@@ -102,25 +91,31 @@ const Sites = Object.freeze({
   },
   genius: {
     name: "Genius",
-    link: /https:\/\/genius.com\/[^\/]*$/,
+    link: /https:\/\/genius\.com\/[^\/]*$/,
     icon: "https://assets.genius.com/images/apple-touch-icon.png",
     href: "https://genius.com/",
+  },
+  unity: {
+    name: "Unity Answers",
+    link: /https:\/\/answers\.unity\.com\/((questions)|q)\//,
+    icon: "https://answers.unity.com/themes/thub/images/favicon.ico",
+    href: "https://answers.unity.com/",
   },
 })
 
 const Options = Object.freeze({
   Sites: Sites,
   Tools: {
-    bangs: { 
+    bangs: {
       name: "DuckDuckGo Bangs !",
       href: "https://duckduckgo.com/bang",
-   },
-    calculator: { 
+    },
+    calculator: {
       name: "Calculator",
       title: `Type "calculator" in your search engine`,
       href: "https://www.desmos.com/scientific",
     },
-    plot: { 
+    plot: {
       name: "Plot",
       href: "https://plotly.com",
     }
@@ -180,7 +175,7 @@ const defaultSettings = () => {
 const loadSettings = () => {
   return new Promise(resolve => {
     chrome.storage.local.get([SAVE_OPTIONS_KEY], storage => {
-      resolve({...defaultSettings(), ...storage[SAVE_OPTIONS_KEY]});
+      resolve({ ...defaultSettings(), ...storage[SAVE_OPTIONS_KEY] });
     });
   })
 }

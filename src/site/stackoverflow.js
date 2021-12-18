@@ -1,24 +1,22 @@
-const QUERIES = {
-  "acceptedAnswer": ".accepted-answer",
-  "answer": ".answer",
-  "bodyAnswer": ".js-post-body",
-  "editions": ".user-info",
-  "time": ".user-action-time",
-  "details": ".user-details",
-  "title": "#question-header h1",
-  "attributeAnswerId": "data-answerid"
-}
-const msgApi = (link) => {
-  return {
-  }
-}
+Sites.stackexchange.msgApi = (_) => ({});
+
 /**
- * 
  * @param {*} from 
  * @param {Document} doc 
  * @returns 
  */
-const getStack = (from, doc) => {
+Sites.stackexchange.get = (from, doc) => {
+  const QUERIES = {
+    "acceptedAnswer": ".accepted-answer",
+    "answer": ".answer",
+    "bodyAnswer": ".js-post-body",
+    "editions": ".user-info",
+    "time": ".user-action-time",
+    "details": ".user-details",
+    "title": "#question-header h1",
+    "attributeAnswerId": "data-answerid"
+  }
+
   const body = doc.body;
   // link
   const isPointing = from.link.search('#:~:text');
@@ -36,15 +34,16 @@ const getStack = (from, doc) => {
     return res;
   }
 
+  res.icon = doc.querySelector(`[rel="shortcut icon"]`).href;
   res.link = `${from.link}#${acceptedAnswer.getAttribute(QUERIES.attributeAnswerId)}`;
 
   // body
   const bodyAnswer = acceptedAnswer.querySelector(QUERIES.bodyAnswer);
   Array.from(bodyAnswer.querySelectorAll('.snippet'))
     .forEach(s => {
-      if(s.previousElementSibling.outerHTML === "<p></p>")
+      if (s.previousElementSibling.outerHTML === "<p></p>")
         s.previousElementSibling.remove();
-      if(s.nextElementSibling.outerHTML === "<p></p>")
+      if (s.nextElementSibling.outerHTML === "<p></p>")
         s.nextElementSibling.remove();
 
       s.classList.remove("snippet");
@@ -89,11 +88,11 @@ const getStack = (from, doc) => {
   return res;
 }
 
-function setStack(answer) {
+Sites.stackexchange.set = (answer) => {
   const body = el("div", { className: 'stackbody' });
 
   if (!answer.html) {
-    body.innerHTML = `No answer on this question. You have the answer ? <a href="${answer.link}#post-form">Submit it !</a>`;
+    body.innerHTML = `No answer on this question... If you know the answer, <a href="${answer.link}#post-form">submit it</a>!`;
     body.style.margin = '1rem 0px';
     return { body };
   }
@@ -113,15 +112,3 @@ function setStack(answer) {
 
   return { body, foot };
 }
-
-Sites.stackoverflow.msgApi = msgApi;
-Sites.stackexchange.msgApi = msgApi;
-Sites.superuser.msgApi = msgApi;
-
-Sites.stackoverflow.get = getStack;
-Sites.stackexchange.get = getStack;
-Sites.superuser.get = getStack;
-
-Sites.stackoverflow.set = setStack;
-Sites.stackexchange.set = setStack;
-Sites.superuser.set = setStack;

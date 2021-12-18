@@ -1,17 +1,23 @@
 {
   "name": "OptiSearch",
-  "version": "1.3.3",
+  "version": "1.4",
   "manifest_version": 2,
   "description": "Upgrade and optimize your searches !",
   "permissions": [
     "storage",
-    "https://stackoverflow.com/",
-    "https://*.wikipedia.org/",
     "https://*.stackexchange.com/",
+    "https://stackoverflow.com/",
+    "https://*.stackoverflow.com/",
+    "https://serverfault.com/",
     "https://superuser.com/",
+    "https://askubuntu.com/",
+    "https://stackapps.com/",
+    "https://mathoverflow.net/",
+    "https://*.wikipedia.org/",
     "https://www.w3schools.com/",
     "https://developer.mozilla.org/",
-    "https://genius.com/"
+    "https://genius.com/",
+    "https://answers.unity.com/"
   ],
   "icons": {
     "128": "icon128.png"
@@ -28,7 +34,8 @@
       "src/site/mdn.js",
       "src/site/wikipedia.js",
       "src/site/w3schools.js",
-      "src/site/genius.js"
+      "src/site/genius.js",
+      "src/site/unity.js"
     ],
     "persistent": false
   },
@@ -55,7 +62,8 @@
         "src/site/mdn.js",
         "src/site/wikipedia.js",
         "src/site/w3schools.js",
-        "src/site/genius.js"
+        "src/site/genius.js",
+        "src/site/unity.js"
       ],
       "matches": [
         "*://duckduckgo.com/?*",

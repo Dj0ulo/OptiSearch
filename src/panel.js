@@ -9,9 +9,9 @@ loadEngines().then(async (engines) => {
 
   const siteFound = window.location.hostname;
   const engine = Object.entries(engines)
-    .find(([_,e]) => siteFound.search(new RegExp(e.regex)) != -1)[0];
+    .find(([_, e]) => siteFound.search(new RegExp(e.regex)) != -1)[0];
 
-  if(!engines[engine])
+  if (!engines[engine])
     return;
 
   const searchString = document.querySelector(engines[engine].searchBox)?.value;
@@ -95,11 +95,12 @@ loadEngines().then(async (engines) => {
   const handleResult = (r) => {
     const link = r.querySelector("a")?.href;
     if (!link) return;
-    const found = Object.keys(Sites).find((site) => {
-      return save[site]
+    const found = Object.keys(Sites)
+      .find(site => (
+        save[site]
         && link.search(Sites[site].link) != -1
-        && !links.find(l => link === l);// no duplicates
-    });
+        && !links.find(l => link === l)// no duplicates
+      ));
     if (found && numberPanel < save.maxResults) {
       links.push(link);
       port.postMessage({
@@ -142,7 +143,7 @@ loadEngines().then(async (engines) => {
     const content = site.set(msg); // set body and foot
 
     if (content && content.body.innerHTML && msg.title !== undefined) {
-      panels[msg.indexPanel] = panelFromSite(msg, site.icon, content);
+      panels[msg.indexPanel] = panelFromSite(msg, msg.icon ?? site.icon, content);
     } else {
       panels[msg.indexPanel] = null;
     }

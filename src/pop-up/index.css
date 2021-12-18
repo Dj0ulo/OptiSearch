@@ -179,13 +179,6 @@ footer {
   font-weight: bold;
 }
 
-.smiley {
-  font-size: 1.5rem;
-}
-.smiley.left{
-  text-align: right;
-}
-
 .anim-right {
   animation: slideInFromRight 0.5s ease forwards;
   grid-column: 3 /4;

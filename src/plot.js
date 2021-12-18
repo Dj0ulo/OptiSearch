@@ -1,5 +1,5 @@
 function isMathExpr(expr) {
-  function test(expr, variables) {
+  const test = (expr, variables) => {
     if (!variables)
       variables = [];
     try {
@@ -22,7 +22,7 @@ function isMathExpr(expr) {
         return test(expr, variables);
       }
       else if (error.message.startsWith("Unexpected operator , ")) {
-        return test(searchString.replace(/,/g, ";"), variables);
+        return test(expr.replace(/,/g, ";"), variables);
       }
     }
     return null;
@@ -138,7 +138,7 @@ function plotFun(fun, idDiv, range) {
   }
   //     autorange = false;
 
-  var layout = {
+  const layout = {
     margin: {
       l: 20,
       r: 20,
@@ -155,19 +155,19 @@ function plotFun(fun, idDiv, range) {
     dragmode: 'pan',
     xaxis: { range: [range.left, range.right] },
     yaxis: { range: [range.bottom, range.top], autorange: autorange },
+    // plot_bgcolor:"black",
+    // paper_bgcolor:"#FFF3",
   };
 
-
-  let plot = document.getElementById(idDiv);
-
   Plotly.newPlot(idDiv, data, layout);
-
-  plot.on('plotly_relayout', function (eventData) {
+  
+  const plot = document.getElementById(idDiv);
+  plot.on('plotly_relayout', (eventData) => {
     //console.log(eventData);
     if (eventData['xaxis.autorange'] == true)
       plotFun(fun, idDiv);
     if (eventData['xaxis.range[0]']) {
-      let range = {
+      const range = {
         left: eventData['xaxis.range[0]'],
         right: eventData['xaxis.range[1]'],
         bottom: eventData['yaxis.range[0]'],
