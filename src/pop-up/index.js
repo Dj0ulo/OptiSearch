@@ -1,61 +1,53 @@
-const ARROW_LEFT = '&#9654;';
-const ARROW_DOWN = '&#9660;';
+(async function () {
+  /**
+   * Create a title and a bar for an section in the options
+   * @param {string} name 
+   * @returns Element
+   */
+  const titleSection = (name) => {
+    const title = el("span", { className: "menu_title" });
+    el("hr", { className: 'flexchild' }, title)
+    el("span", { textContent: name }, title);
+    el("hr", { className: 'flexchild' }, title)
+    return title;
+  }
 
-const CLASS_CHECKDIV = 'checkdiv'
+  const changePopupTab = (id) => {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(t => t.style.display = 'none');
+    document.getElementById(id).style.display = 'unset';
+  }
 
-/**
- * Create a title and a bar for an section in the options
- * @param {string} name 
- * @returns Element
- */
-const titleSection = (name) => {
-  const title = el("span", { className: "menu_title" });
-  el("hr", { className: 'flexchild' }, title)
-  el("span", { textContent: name }, title);
-  el("hr", { className: 'flexchild' }, title)
-  return title;
-}
+  const ver = document.querySelector('#version');
+  ver.textContent = chrome.runtime.getManifest().version;
 
-const changePopupTab = (id) => {
-  const tabs = document.querySelectorAll('.tab');
-  tabs.forEach(t => t.style.display = 'none');
-  document.getElementById(id).style.display = 'unset';
-}
+  Array.from(document.getElementsByClassName("main")).forEach(b => b.onclick = () => changePopupTab("main"));
+  Array.from(document.getElementsByClassName("privacy")).forEach(e => e.onclick = () => changePopupTab("privacy"));
 
-const ver = document.querySelector('#version');
-ver.textContent = chrome.runtime.getManifest().version;
+  const donate = document.getElementById("donate");
+  donate.onclick = () => chrome.tabs.create({
+    active: true,
+    url: "https://www.paypal.com/donate?hosted_button_id=VPF2BYBDBU5AA"
+  });
 
-Array.from(document.getElementsByClassName("main")).forEach(b => b.onclick = () => changePopupTab("main"));
-Array.from(document.getElementsByClassName("privacy")).forEach(e => e.onclick = () => changePopupTab("privacy"));
+  donate.onmouseover = () => {
+    const smileys = document.querySelectorAll('.smiley');
 
-const donate = document.getElementById("donate");
-donate.onclick = () => chrome.tabs.create({
-  active: true,
-  url: "https://www.paypal.com/donate?hosted_button_id=VPF2BYBDBU5AA"
-});
+    smileys.forEach(smiley => smiley.style.display = "inline-block");
 
-donate.onmouseover = () => {
-  const smileys = document.querySelectorAll('.smiley');
+    smileys[0].classList.remove('anim-left');
+    smileys[0].classList.add('anim-left');
 
-  smileys.forEach(smiley => smiley.style.display = "inline-block");
+    smileys[1].classList.remove('anim-right');
+    smileys[1].classList.add('anim-right');
+  }
+  donate.onmouseout = () => {
+    document
+      .querySelectorAll('.smiley')
+      .forEach(smiley => smiley.style.display = "none");
+  }
 
-  smileys[0].classList.remove('anim-left');
-  smileys[0].classList.add('anim-left');
-
-  smileys[1].classList.remove('anim-right');
-  smileys[1].classList.add('anim-right');
-}
-donate.onmouseout = () => {
-  document
-    .querySelectorAll('.smiley')
-    .forEach(smiley => smiley.style.display = "none");
-}
-
-//Not await !!
-loadSettings().then(async (save) => {
-  const engines = await loadEngines();
-
-  const mainPage = document.getElementById("main");
+  const [save, engines] = await Promise.all([loadSettings(), loadEngines()]);
 
   const liEng = document.querySelector("#engines")
   Object.values(engines).forEach((e, i) => {
@@ -74,33 +66,14 @@ loadSettings().then(async (save) => {
   })
 
   const optionsContainer = document.getElementById("options-container");
-
-
-  optionsContainer.append(titleSection("Options"))
-
-  const labelNumber = el("label", { className: "optiondiv" }, optionsContainer);
-
-  el("span", { className: "titleOption", innerHTML: "Max. number of results", style: "vertical-align: sub" }, labelNumber);
-  el("input", {
-    type: "number",
-    style: "width: 2rem",
-    value: save.maxResults,
-    min: 0,
-    max: 9,
-    onchange: ({ target }) => {
-      save.maxResults = target.value
-      saveSettings(save);
-    },
-  }, labelNumber)
-
-
+  
   //options
-  Object.keys(Options).forEach((category) => {
+  Object.keys(Settings).forEach((category) => {
     optionsContainer.append(titleSection(category));
 
     const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
 
-    Object.entries(Options[category]).forEach(([o, spec]) => {
+    Object.entries(Settings[category]).forEach(([o, spec]) => {
       const li = el("li", { id: o }, sublist);
 
       const label = el("label", {
@@ -117,8 +90,23 @@ loadSettings().then(async (save) => {
       if (spec.icon)
         spanImg.prepend(el("img", { width: 14, height: 14, src: spec.icon }));
 
+      if(typeof spec.default === 'number'){
+        el("input", {
+          type: "number",
+          style: "width: 2rem",
+          value: save[o],
+          min: spec.min,
+          max: spec.max,
+          onchange: ({ target }) => {
+            save[o] = target.value
+            saveSettings(save);
+          },
+        }, label)
+        return;
+      }
+
       const checkDiv = el("div", {
-        className: CLASS_CHECKDIV,
+        className: 'checkdiv',
         style: "display: inline-block"
       }, label)
 
@@ -133,7 +121,6 @@ loadSettings().then(async (save) => {
       }, checkDiv)
     })
   })
-
   if (typeof browser === 'undefined') // if not browser then we are on chrome
     hrefPopUp();
-});
+})()

@@ -1,8 +1,22 @@
+function log(str){console.log('%c[OptiSearch]', `font-weight: bold;`,str)}
+function err(str){console.error('%c[OptiSearch]', `font-weight: bold;`,str)}
+function warn(str){console.warn('%c[OptiSearch]', `font-weight: bold;`,str)}
+function debug(str){console.debug('%c[OptiSearch]', `font-weight: bold;`,str)}
+
+/**
+ * Read file from this extension
+ * @param {string} url 
+ * @returns 
+ */
+const read = (url) => fetch(chrome.runtime.getURL(url))
+  .then(response => response.text());
+
 /**
  * Format all children from the element to LaTex
  * @param {Element} element
  */
 function childrenToTeX(element) {
+  const REGEX_LATEX = /\${1,2}([^\$]*)\${1,2}/;
   Array.from(element.querySelectorAll("*"))
     .filter((p) => p.textContent.search(REGEX_LATEX) != -1)
     .forEach(toTeX);
@@ -13,6 +27,7 @@ function childrenToTeX(element) {
  * @param {Element} element
  */
 function toTeX(element) {
+  const REGEX_LATEX_G = /\${1,2}([^\$]*)\${1,2}/g;
   element.innerHTML = element.innerHTML.replace(
     REGEX_LATEX_G,
     `<span style="display: inline-block;" class="mjx">$1</span>`
@@ -83,7 +98,11 @@ function copyTextToClipboard(text) {
 function el(tag, attr, parent) {
   const x = document.createElement(tag);
   if (parent) parent.appendChild(x);
-  if (attr) Object.entries(attr).forEach(([k, v]) => x[k] = v);
+  if (attr) {
+    attr.attributes?.forEach(a => x.setAttribute(a.name, a.value ?? ''));
+    delete attr.attributes;
+    Object.entries(attr).forEach(([k, v]) => x[k] = v);
+  }
   return x;
 }
 
@@ -98,7 +117,7 @@ function insertAfter(newNode, referenceNode) {
 /**
  * 
  * @param {Node} p 
- * @returns The nex element that has text
+ * @returns The next element that has text
  */
 function nextListElement(p) {
   if (!p)

@@ -1,4 +1,4 @@
-Step to add website xxx:
+Steps to add website xxx:
 
 - add the properties of the site in settings.js in the object Sites
 - create a file in src/site/xxx.js

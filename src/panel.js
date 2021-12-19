@@ -1,32 +1,45 @@
-console.debug("OptiSearch");
+(async function () {
+  debug("Hello !");
 
-const PANEL_CLASS = "optipanel";
-const REGEX_LATEX = /\${1,2}([^\$]*)\${1,2}/;
-const REGEX_LATEX_G = /\${1,2}([^\$]*)\${1,2}/g;
-
-//Not await !!
-loadEngines().then(async (engines) => {
+  const PANEL_CLASS = "optipanel";
+  const engines = await loadEngines();
 
   const siteFound = window.location.hostname;
-  const engine = Object.entries(engines)
+  const engineName = Object.entries(engines)
     .find(([_, e]) => siteFound.search(new RegExp(e.regex)) != -1)[0];
-
-  if (!engines[engine])
+  const engine = engines[engineName];
+  if (!engine)
     return;
 
-  const searchString = document.querySelector(engines[engine].searchBox)?.value;
-  if (!searchString) console.warn("No search string detected");
+  const searchString = document.querySelector(engine.searchBox)?.value;
+  if (!searchString) {
+    err("No search string detected");
+    return;
+  }
 
-  console.debug(`OptiSearch - ${engine} : "${searchString}"`);
+  debug(`${engineName} — "${searchString}"`);
 
   const save = await loadSettings();
 
+  // Change style
+  const style = engine.style;
+  if(style) el('style', { textContent: style }, document.head || document.documentElement);
+
+  // Bigger right column
+  const minW = 400;
+  const maxW = 600;
+
+  if (save['wideColumn']) {
+    const widthStyle = engine.widthStyle?.replace("${maxW}", maxW).replace("${minW}", minW);
+    if(widthStyle) el('style', { textContent: widthStyle }, document.head || document.documentElement);
+  }
+
   //Tools
-  if (save["bangs"] && engine !== DuckDuckGo) {
+  if (save["bangs"] && engineName !== DuckDuckGo) {
     const regexp = /[?|&]q=((%21|!)[^&]*)/;
     const reg = window.location.href.match(regexp);
     if (reg) {
-      console.log(reg["1"]);
+      log(reg["1"]);
       window.location.href = "https://duckduckgo.com/?q=" + reg["1"];
     }
   }
@@ -67,7 +80,7 @@ loadEngines().then(async (engines) => {
       let str = "$" + math.parse(rep.expr).toTex() + "~";
       let answer = rep.answer;
       if (typeof answer == "number") {
-        str += "=~" + answer;
+        str += "=~" + answer.toPrecision(4);
       } else if (typeof answer == "boolean") {
         str += ":~" + answer;
       } else if (rep.answer.entries) {
@@ -75,6 +88,7 @@ loadEngines().then(async (engines) => {
         str += "=~" + answer;
       }
       str += "$";
+
 
       const expr = el("div", { id: "optiexpr", textContent: str }, panel);
       toTeX(expr);
@@ -104,7 +118,7 @@ loadEngines().then(async (engines) => {
     if (found && numberPanel < save.maxResults) {
       links.push(link);
       port.postMessage({
-        engine: engine,
+        engine: engineName,
         link: link,
         site: found,
         type: "html",
@@ -115,9 +129,9 @@ loadEngines().then(async (engines) => {
     }
   }
 
-  const results = document.querySelectorAll(engines[engine].resultRow);
+  const results = document.querySelectorAll(engine.resultRow);
   if (results.length === 0) {
-    if (engine === DuckDuckGo) {
+    if (engineName === DuckDuckGo) {
       const links = document.querySelector(engines[DuckDuckGo].resultsContainer);
       links.addEventListener("DOMNodeInserted", ({ target }) => {
         const classNames = engines[DuckDuckGo].resultRow.slice(1).replace(/\./g, " ");
@@ -125,7 +139,7 @@ loadEngines().then(async (engines) => {
           handleResult(target)
       });
     } else {
-      console.warn("No result detected");
+      err("No result detected");
     }
   }
   else {
@@ -167,6 +181,10 @@ loadEngines().then(async (engines) => {
       currentPanelIndex++;
     }
     PR.prettyPrint(); // when all possible panels were appended
+  }
+
+  function panelSkeleton() {
+
   }
 
   function panelFromSite({ site, title, link }, icon, { body, foot }) {
@@ -229,14 +247,11 @@ loadEngines().then(async (engines) => {
    * @returns {Element} the box where the panel is 
    */
   function appendPanel(panel) {
-    const rightColumn = fixRightColumn();
+    const rightColumn = getRightColumn();
     if (!rightColumn)
       return null;
 
     const box = el("div", { className: `optisearchbox ${isDarkMode() ? "dark" : "bright"}` }, rightColumn);
-    if (engine == Ecosia)
-      box.style.marginTop = "20px";
-    box.style.marginBottom = "20px";
     box.append(panel);
 
 
@@ -255,37 +270,38 @@ loadEngines().then(async (engines) => {
   }
 
   /**
-   * Add right column to the results page if there isn't one
+   * Get and/or add right column to the results page if there isn't one
    * @returns {Node} the rightColumn
    */
-  function fixRightColumn() {
-    const selectorRightCol = engines[engine].rightColumn;
+  function getRightColumn() {
+    const selectorRightCol = engine.rightColumn;
     let rightColumn = document.querySelector(selectorRightCol);
-
     if (rightColumn)
       return rightColumn;
 
-    if (!engines[engine].centerColumn)
-      console.warn("No right column...");
+    if (!engine.centerColumn)
+      warn("No right column");
 
-    const centerColumn = document.querySelector(engines[engine].centerColumn);
+    const centerColumn = document.querySelector(engine.centerColumn);
 
     // create a right column with the correct attributes
     const [sr] = selectorRightCol.split(',');
-    const arr = [...sr.matchAll(/[\.#][^\.#,]+/g)]
-    let className = "", id = "";
+    const arr = [...sr.matchAll(/[\.#\[][^\.#,\[]+/g)]
     const attr = {}
-    arr.map(a => a[0]).forEach(a => {
-      if (a[0] === '.')
-        className = (className && " ") + a.slice(1);
-      else if (a[0] === '#')
-        id = (id && " ") + a.slice(1);
-    })
-    if (id)
-      attr.id = id;
-    if (className)
-      attr.className = className;
-
+    arr.map(a => a[0])
+      .forEach(token => {
+        switch (token[0]) {
+          case '.':
+            if (!attr.className) attr.className = ''
+            attr.className += (attr.className && ' ') + token.slice(1);
+            break;
+          case '#': attr.id = token.slice(1); break;
+          case '[':
+            const [ss] = [...token.matchAll(/\[([^\]=]+)(=([^\]]+))?\]/g)];
+            attr.attributes = [...(attr.attributes || []), { name: ss[1], value: ss[3] }];
+            break;
+        }
+      })
     rightColumn = el('div', attr);
     insertAfter(rightColumn, centerColumn);
 
@@ -311,4 +327,4 @@ loadEngines().then(async (engines) => {
       }
     }
   }, 200)
-});
+})()
