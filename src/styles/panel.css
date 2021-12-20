@@ -20,20 +20,19 @@
 }
 
 .optisearchbox {
-  margin-top: 20px;
+  margin: 20px 0 10px 0;
   border-radius: 8px;
   width: auto;
   min-width: 400px;
   max-width: 600px;
   padding: 5px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 1px 3px 8px 0px;
 }
+
 .optisearchbox.bright {
-  background: white;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 0px 1px 3px 0px;
+  background-color: #fff;
 }
 .optisearchbox.dark {
-  border: 1px solid var(--line-dark);
-  background: #282a31;
   color: rgb(215, 210, 204);
   color-scheme: dark;
 }
@@ -86,11 +85,13 @@
 }
 
 .optipanel .optilink {
+  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 400px;
   padding-top: 8px;
+  font-style: normal;
 }
 
 .bright .optipanel .optilink {
@@ -148,9 +149,9 @@
   padding-bottom: 0.25em;
 }
 
-/* .optipanel .optibody ul {
-  padding-left: 20px;
-} */
+.optipanel .optibody ul {
+  padding-left: 15px;
+}
 .optipanel .optibody img {
   max-width: 100%;
 }

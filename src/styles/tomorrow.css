@@ -1,10 +1,10 @@
 /*! Color themes for Google Code Prettify | MIT License | github.com/jmblog/color-themes-for-google-code-prettify */
-.bright .prettyprint { background: #f7f7f7; }
+.prettyprint { background: #f7f7f7; }
 
 a .prettyprint .pln,
 a .prettyprint .pun { color: #0077cc; }
 
-.bright .prettyprint .pln { color: #4d4d4c; }
+.prettyprint .pln { color: #4d4d4c; }
 
 /* Specify class=linenums on a pre to get line numbering */
 .prettyprint ol.linenums {

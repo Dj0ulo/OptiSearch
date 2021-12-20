@@ -1,7 +1,7 @@
-function log(str){console.log('%c[OptiSearch]', `font-weight: bold;`,str)}
-function err(str){console.error('%c[OptiSearch]', `font-weight: bold;`,str)}
-function warn(str){console.warn('%c[OptiSearch]', `font-weight: bold;`,str)}
-function debug(str){console.debug('%c[OptiSearch]', `font-weight: bold;`,str)}
+function log(str) { console.log('%c[OptiSearch]', `font-weight: bold;`, str) }
+function err(str) { console.error('%c[OptiSearch]', `font-weight: bold;`, str) }
+function warn(str) { console.warn('%c[OptiSearch]', `font-weight: bold;`, str) }
+function debug(str) { console.debug('%c[OptiSearch]', `font-weight: bold;`, str) }
 
 /**
  * Read file from this extension
@@ -122,8 +122,11 @@ function insertAfter(newNode, referenceNode) {
 function nextListElement(p) {
   if (!p)
     return null;
-  if (p.textContent.trim() != "" && p.tagName === 'UL')
+  console.log(p, p.tagName);
+  if (p.textContent.trim() !== "" && p.tagName === 'UL')
     return p;
+  if (p.tagName && p.tagName !== 'UL')
+    return null;
   return nextListElement(p.nextSibling);
 }
 
@@ -138,15 +141,8 @@ function underSummary(summary) {
   const textSummary = summary.textContent.trim();
   if (textSummary[textSummary.length - 1] !== ':')
     return null;
-
+  
   return nextListElement(summary.nextSibling);
-}
-
-function hrefPopUp() {
-  document.querySelectorAll("a").forEach(ln => {
-    if (ln.href.startsWith("http"))
-      ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
-  })
 }
 
 /**
@@ -163,7 +159,7 @@ function writeHostOnLinks(url, container) {
       return;
     }
 
-    if(ahref.startsWith("/")){
+    if (ahref.startsWith("/")) {
       a.href = host + ahref;
       return;
     }
@@ -173,13 +169,78 @@ function writeHostOnLinks(url, container) {
 }
 
 /**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param   Number  r       The red color value
+ * @param   Number  g       The green color value
+ * @param   Number  b       The blue color value
+ * @return  Array           The HSL representation
+ */
+function rgbToHsl(r, g, b) {
+  r /= 255, g /= 255, b /= 255;
+
+  var max = Math.max(r, g, b), min = Math.min(r, g, b);
+  var h, s, l = (max + min) / 2;
+
+  if (max == min) {
+    h = s = 0; // achromatic
+  } else {
+    var d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+
+    h /= 6;
+  }
+
+  return [h, s, l];
+}
+
+/**
+ * Change luminosity of color
+ * http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+ * @param {string} color Color in hexadecimal (ex. #fe34c5) or in rgb (ex. rgb(28, 65, 244))
+ * @param {number} lum Percentage [0.0-1.0] of change (negative if darker)
+ */
+
+function colorLuminance(color, lum) {
+  let rgb = []
+
+  if (color.startsWith('#')) {
+    color = color.replace(/[^0-9a-f]/gi, "");
+    if (color.length == 3)
+      color = color.replace(/(.)/g, '$1$1');
+    rgb = [...color.matchAll(/[0-9a-f]{2}/g)].map(x => parseInt(x[0], 16));
+  } else if (color.startsWith('rgb(')) {
+    rgb = [...color.matchAll(/\d{1,3}/g)].map(x => parseInt(x[0], 10));
+  }
+  lum = lum || 0;
+
+  let [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+  l = Math.min(Math.max(0, l + lum), 1);
+  return `hsl(${(h * 360).toPrecision(4)}, ${(s * 100).toPrecision(4)}%, ${(l * 100).toPrecision(4)}%)`;
+}
+
+/**
+ * @returns {string} background-color of the body
+ */
+function getBackgroundColor() {
+  return getComputedStyle(document.body, null)
+    .getPropertyValue("background-color");
+}
+/**
  * @returns {boolean} true if the body color is dark 
  */
 function isDarkMode() {
   try {
-    const colorStr = window
-      .getComputedStyle(document.body, null)
-      .getPropertyValue("background-color");
+    const colorStr = getBackgroundColor();
     const matcher = colorStr.match(/\(([\d ,]+)\)/);
     const rgba = matcher[1].split(",").map((m) => parseInt(m));
     if (rgba[3] === 0) {

@@ -30,97 +30,89 @@
     url: "https://www.paypal.com/donate?hosted_button_id=VPF2BYBDBU5AA"
   });
 
-  donate.onmouseover = () => {
-    const smileys = document.querySelectorAll('.smiley');
+  const liEng = document.querySelector("#engines");
 
-    smileys.forEach(smiley => smiley.style.display = "inline-block");
+  loadEngines().then(engines => {
+    Object.values(engines).forEach((e, i) => {
+      if (e.active) {
+        const div = el("div", {
+          className: "engine",
+          style: `--order: ${i + 1};`,
+          onclick: () => chrome.tabs.create({ active: true, url: e.link })
+        }, liEng);
+  
+        el("img", {
+          src: e.icon,
+          title: Object.keys(engines)[i],
+          className: 'icon',
+        }, div);
+      }
+    });
+  });
 
-    smileys[0].classList.remove('anim-left');
-    smileys[0].classList.add('anim-left');
-
-    smileys[1].classList.remove('anim-right');
-    smileys[1].classList.add('anim-right');
-  }
-  donate.onmouseout = () => {
-    document
-      .querySelectorAll('.smiley')
-      .forEach(smiley => smiley.style.display = "none");
-  }
-
-  const [save, engines] = await Promise.all([loadSettings(), loadEngines()]);
-
-  const liEng = document.querySelector("#engines")
-  Object.values(engines).forEach((e, i) => {
-    if (e.active) {
-      const div = el("div", {
-        className: "engine",
-        style: `--order: ${i + 1};`,
-        onclick: () => chrome.tabs.create({ active: true, url: e.link })
-      }, liEng);
-
-      el("img", {
-        src: e.icon,
-        title: Object.keys(engines)[i]
-      }, div);
-    }
-  })
 
   const optionsContainer = document.getElementById("options-container");
   
   //options
-  Object.keys(Settings).forEach((category) => {
-    optionsContainer.append(titleSection(category));
+  loadSettings().then(save => {
+    Object.keys(Settings).forEach((category) => {
+      optionsContainer.append(titleSection(category));
+  
+      const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
+  
+      Object.entries(Settings[category]).forEach(([o, spec]) => {
+        const li = el("li", { id: o }, sublist);
+  
+        const label = el("label", {
+          className: "optiondiv",
+          style: "display: inline-block"
+        }, li);
 
-    const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
-
-    Object.entries(Settings[category]).forEach(([o, spec]) => {
-      const li = el("li", { id: o }, sublist);
-
-      const label = el("label", {
-        className: "optiondiv",
-        style: "display: inline-block"
-      }, li);
-      const spanImg = el("span", {
-        className: "titleOption",
-        innerHTML: spec.href ? `<a href=${spec.href}>${spec.name}</a>` : spec.name,
-        title: spec.title ?? "",
-        style: "padding-bottom: 2px"
-      }, label);
-
-      if (spec.icon)
-        spanImg.prepend(el("img", { width: 14, height: 14, src: spec.icon }));
-
-      if(typeof spec.default === 'number'){
-        el("input", {
-          type: "number",
-          style: "width: 2rem",
-          value: save[o],
-          min: spec.min,
-          max: spec.max,
-          onchange: ({ target }) => {
-            save[o] = target.value
-            saveSettings(save);
-          },
-        }, label)
-        return;
-      }
-
-      const checkDiv = el("div", {
-        className: 'checkdiv',
-        style: "display: inline-block"
-      }, label)
-
-      el('input', {
-        className: "checkbox",
-        type: "checkbox",
-        checked: save[o],
-        onchange: ({ target }) => {
-          save[o] = target.checked
-          saveSettings(save);
+        const spanImg = el("span", {
+          className: "titleOption",
+          innerHTML: spec.href ? `<a href=${spec.href}>${spec.name}</a>` : spec.name,
+          title: spec.title ?? "",
+          style: "padding-bottom: 2px"
+        }, label);
+        
+        if (spec.icon){
+          const img = el("img", { className: 'icon', width: 14, height: 14, });
+          // img.src = spec.icon;
+          // img.onerror = () => console.log('cul');
+          spanImg.prepend(img);
         }
-      }, checkDiv)
-    })
-  })
-  if (typeof browser === 'undefined') // if not browser then we are on chrome
-    hrefPopUp();
-})()
+  
+        if(typeof spec.default === 'number'){
+          el("input", {
+            type: "number",
+            style: "width: 2rem",
+            value: save[o],
+            min: spec.min,
+            max: spec.max,
+            onchange: ({ target }) => {
+              save[o] = target.value
+              saveSettings(save);
+            },
+          }, label)
+          return;
+        }
+  
+        const checkDiv = el("div", {
+          className: 'checkdiv',
+          style: "display: inline-block"
+        }, label)
+  
+        el('input', {
+          className: "checkbox",
+          type: "checkbox",
+          checked: save[o],
+          onchange: ({ target }) => {
+            save[o] = target.checked
+            saveSettings(save);
+          }
+        }, checkDiv)
+
+      })
+    });
+  });
+})();

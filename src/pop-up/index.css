@@ -10,14 +10,14 @@ body {
   text-align: center;
   margin-bottom: 1em;
 }
-img {
+.icon {
   margin-right: 0.5em;
 }
 
 #engines {
   height: 20px;
 }
-.engine img {
+.engine .icon {
   width: 16px;
   height: 16px;
   display: block;

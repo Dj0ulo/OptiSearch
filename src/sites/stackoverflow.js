@@ -28,7 +28,7 @@ Sites.stackexchange.get = (from, doc) => {
     title: doc.querySelector(QUERIES.title).textContent,
   }
 
-  const acceptedAnswer = body.querySelector(QUERIES.acceptedAnswer) || body.querySelector(QUERIES.answer);
+  const acceptedAnswer = body.querySelector(QUERIES.answer); // always answer with most upvotes
 
   if (!acceptedAnswer) {
     return res;
@@ -102,12 +102,12 @@ Sites.stackexchange.set = (answer) => {
   const foot = document.createElement("div");
   foot.className = "stackfoot";
   let foothtml = answer.author.name + (answer.author.answered ? ` – ${answer.author.answered}` : '');
-  if (answer.editor) {
-    foothtml += "<br>";
-    if (answer.editor.name != answer.author.name)
-      foothtml += answer.editor.name;
-    foothtml += ` – ${answer.editor.answered}`;
-  }
+  // if (answer.editor) {
+  //   foothtml += "<br>";
+  //   if (answer.editor.name != answer.author.name)
+  //     foothtml += answer.editor.name;
+    // foothtml += ` – ${answer.editor.answered}`;
+  // }
   foot.innerHTML = foothtml;
 
   return { body, foot };

@@ -1,7 +1,14 @@
 (async function () {
   debug("Hello !");
 
+  // Inject style
+  const docHead = document.head || document.documentElement;
+  const styles = ['panel', 'tomorrow', 'sunburst', 'w3schools', 'wikipedia', 'genius'];
+  const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`)));
+  el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, docHead);
+
   const PANEL_CLASS = "optipanel";
+
   const engines = await loadEngines();
 
   const siteFound = window.location.hostname;
@@ -19,20 +26,20 @@
 
   debug(`${engineName} — "${searchString}"`);
 
-  const save = await loadSettings();
 
-  // Change style
+  // Change style based on the search engine
   const style = engine.style;
-  if(style) el('style', { textContent: style }, document.head || document.documentElement);
+  if (style) el('style', { textContent: style, className: `optistyle-${engineName}` }, docHead);
 
+  const save = await loadSettings();
   // Bigger right column
   const minW = 400;
   const maxW = 600;
-
   if (save['wideColumn']) {
     const widthStyle = engine.widthStyle?.replace("${maxW}", maxW).replace("${minW}", minW);
-    if(widthStyle) el('style', { textContent: widthStyle }, document.head || document.documentElement);
+    if (widthStyle) el('style', { textContent: widthStyle, className: `optistyle-${engineName}` }, docHead);
   }
+
 
   //Tools
   if (save["bangs"] && engineName !== DuckDuckGo) {
@@ -199,8 +206,9 @@
 
     toTeX(el("div", { className: "title result-title", textContent: title }, a));
 
-    const linkElement = el("div", { className: "optilink result-url", textContent: link }, a);
-    linkElement.prepend(el("img", { width: 16, height: 16, src: icon }));
+    const linkElement = el("cite", { className: "optilink result-url" }, a);
+    el("img", { width: 16, height: 16, src: icon }, linkElement);
+    el("span", { textContent: link }, linkElement);
 
     if (body)
       hline(panel);
@@ -222,7 +230,7 @@
       const pres = body.querySelectorAll("pre");
       pres.forEach((pre) => {
         const surround = el("div", { className: "pre-surround", innerHTML: pre.outerHTML, style: "position: relative" });
-        surround.append(createCopyButton(pre.innerText));
+        surround.append(createCopyButton(pre.innerText.trim()));
 
         pre.parentNode.replaceChild(surround, pre);
       });
@@ -251,8 +259,9 @@
     if (!rightColumn)
       return null;
 
-    const box = el("div", { className: `optisearchbox ${isDarkMode() ? "dark" : "bright"}` }, rightColumn);
+    const box = el("div", { className: `optisearchbox bright ${engineName}` }, rightColumn);
     box.append(panel);
+    updateColor();
 
 
     // hline(box);
@@ -309,22 +318,37 @@
   }
 
 
+  function updateColor() {
+    const bg = getBackgroundColor();
+    const dark = isDarkMode();
+    const panels = document.querySelectorAll(".optisearchbox");
+
+    let style = document.querySelector('#optisearch-bg');
+    if (!style) 
+      style = el('style', { id: 'optisearch-bg' }, docHead);
+
+    if (dark) {
+      style.textContent = `.optisearchbox.dark {background-color: ${colorLuminance(bg, 0.02)}}
+      .dark .optipanel .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}
+      .dark .prettyprint, .dark .pre-surround .prettyprint {background-color: ${colorLuminance(bg, -0.02)}}`;
+    }
+    for (let p of panels) {
+      if (dark)
+        p.className = p.className.replace("bright", "dark");
+      else
+        p.className = p.className.replace("dark", "bright");
+    }
+  }
+
   /**
    * Update color if the theme has somehow changed
    */
-  let wasDark = isDarkMode();
+  let prevBg = null;
   setInterval(() => {
-    const dark = isDarkMode();
-    if (dark !== wasDark) {
-      wasDark = dark;
-      const panels = document.querySelectorAll(".optisearchbox")
-
-      for (let p of panels) {
-        if (dark)
-          p.className = p.className.replace("bright", "dark");
-        else
-          p.className = p.className.replace("dark", "bright");
-      }
-    }
+    const bg = getBackgroundColor();
+    if (bg === prevBg)
+      return;
+    prevBg = bg;
+    updateColor();
   }, 200)
 })()

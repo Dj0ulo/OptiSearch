@@ -2,7 +2,10 @@
 
 ### Canceled ❌
 - ❌ pole plot 
-- ❌scipy
+- ❌ scipy
+- ❌ submit feedback depending on chrome and firefox
+- ❌ "Flutter position stack widget in center" scroll bar in bright theme
+
 ### Done ✅
 - ✅ link underline n'importe ou 
 - ✅ goes with dark reader 
@@ -46,8 +49,13 @@
 - ✅ answers.unity.com 
 - ✅ run_at document_end
 - ✅ increase width of right column
+- ✅ injecter les feuilles de style manuellement pr que le dark mode soit auto
+- ✅ move to dir "site" -> "sites"
+- ✅ copy no endline atthe end
+- ✅ bug liste des chansons michael jackson
 
 ### In progress
+- bug popup wait too long -> icones
 ### Todo 
 - loading box
 - manifest 3.0
@@ -58,12 +66,8 @@
 - option put on top of the panel that are already there
 - option remove panel already here
 - no image wikipedia firefox duckduckgo 
-- write version in pop-up (content security policy)
 - fold recherche associes duckduckgo
 - remove innerHTML assignment
 - option put at the place of the result
-- submit feedback depending on chrome and firefox
 - fast duckduckgo bang
-- injecter les feuilles de style manuellement pr que le dark mode soit auto
-- bug liste des chansons michael jackson
-- "Flutter position stack widget in center" scroll bar in bright theme
+- wikipedia list with headlines (for sigle)

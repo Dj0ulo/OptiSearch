@@ -29,7 +29,8 @@
         "searchBox": ".search-form__input",
         "active": true,
         "regex": "\\.ecosia\\.org$",
-        "widthStyle": ".web[data-v-ba1469fa] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}"
+        "widthStyle": ".web[data-v-ba1469fa] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
+        "style": ".optipanel .title {color: #1a0dab;}"
     },
     "Yahoo": {
         "link": "https://www.yahoo.com",
@@ -49,7 +50,7 @@
         "resultsContainer": "#links",
         "active": true,
         "regex": "duckduckgo\\.com$",
-        "widthStyle": ".is-link-style-exp.is-not-mobile-device .results--sidebar {max-width: ${maxW}px;}"
+        "widthStyle": ".results--sidebar {max-width: ${maxW}px !important; } .cw{max-width:unset;}"
     },
     "Brave Search": {
         "link": "https://search.brave.com/",
