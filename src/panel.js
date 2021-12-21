@@ -157,7 +157,7 @@
   let currentPanelIndex = 0, panels = [];
 
   // receive parsed data from html page
-  function handleSiteResponse(resp) {
+  async function handleSiteResponse(resp) {
     if(!resp) return;
     const [msg, text] = resp;
     const site = Sites[msg.site];
@@ -170,7 +170,7 @@
       default: return;
     }
     
-    const siteData = {...msg, ...site.get(msg, doc)};
+    const siteData = {...msg, ...(await site.get(msg, doc))};
     const content = site.set(siteData); // set body and foot
 
     if (content && content.body.innerHTML && siteData.title !== undefined)

@@ -4,6 +4,12 @@ function warn(str) { console.warn('%c[OptiSearch]', `font-weight: bold;`, str) }
 function debug(str) { console.debug('%c[OptiSearch]', `font-weight: bold;`, str) }
 
 /**
+ * 
+ * @returns {boolean} true if we are on a chromium browser (otherwise we probably are on firefox)
+ */
+function onChrome() {return typeof browser === 'undefined';}
+
+/**
  * Read file from this extension
  * @param {string} url 
  * @returns 
@@ -122,7 +128,6 @@ function insertAfter(newNode, referenceNode) {
 function nextListElement(p) {
   if (!p)
     return null;
-  console.log(p, p.tagName);
   if (p.textContent.trim() !== "" && p.tagName === 'UL')
     return p;
   if (p.tagName && p.tagName !== 'UL')
@@ -260,4 +265,26 @@ function isDarkMode() {
   } catch (e) {
     return false;
   }
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, _) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+}
+
+
+/**
+ * 
+ * @param {HTMLImageElement} img 
+ */
+function srcToBase64(src){
+  return new Promise((resolve) => {
+    chrome.runtime
+      .sendMessage(
+        { action: 'get-image-blob', url: src }, async (r) => resolve(await blobToBase64(r))
+      )
+  })
 }

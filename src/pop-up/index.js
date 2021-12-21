@@ -113,7 +113,6 @@
 
     })
   });
-  
-  if (typeof browser === 'undefined') // if not browser then we are on chrome
-    hrefPopUp();
+
+  if (onChrome()) hrefPopUp();
 })();

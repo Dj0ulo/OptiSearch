@@ -62,9 +62,8 @@
 #### In progress
 - bug popup wait too long -> icones
 #### Urgent for next version
-- no image wikipedia firefox duckduckgo 
+- no image wikipedia/stackoverflow,... on firefox with duckduckgo/ecosia...
 - wikipedia list with headlines (for sigle) (ex. "crows foot")
-- fast duckduckgo bang
 #### Later
 - fold the panel
 - option put on top of the panel that are already there
@@ -73,6 +72,7 @@
 - option put at the place of the result
 - plot in dark mode
 - send feedback when no right pannel detected
+- remove duckduckgo bang
 #### Maybe
 - cppreference
 - man page
