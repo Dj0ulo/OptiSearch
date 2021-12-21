@@ -25,8 +25,8 @@
   width: auto;
   min-width: 400px;
   max-width: 600px;
-  padding: 5px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 1px 3px 8px 0px;
+  overflow: hidden;
 }
 
 .optisearchbox.bright {
@@ -39,25 +39,38 @@
 
 .optisearchbox .unfold_button {
   width: 100%;
-  text-align: center;
+  text-align: left;
   height: 2rem;
-  border: 1px black;
+  border: 1px rgb(220, 220, 220);
   cursor: pointer;
-  /* box-shadow: 0px 0px 50px 5px #555; */
+  position: relative;
+  box-shadow: rgb(255 255 255) 0px -15px 20px -3px;
+  padding: 10px 0px 0px 10px;
+  font-size: smaller;
+}
+.dark.optisearchbox .unfold_button{
+  box-shadow: rgb(0,0,0) 0px -15px 20px -3px;
 }
 .optisearchbox .unfold_button:active{
   background-color: rgb(177, 177, 177);
 }
 
 .optipanel {
+  margin: 0px 5px 0px 5px;
   padding: 15px 15px;
   padding-bottom: 8px;
   padding-top: 8px;
   font-size: 15px;
   position: relative;
-  transition-duration: .5s;
+  transition: max-height 5s;
+  /* overflow-y: auto; */
+  max-height: initial;
 }
 
+.folded {
+  overflow-y: hidden;
+  max-height: 400px;
+}
 
 .optipanel .watermark {
   float: right;

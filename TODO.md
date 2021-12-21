@@ -5,6 +5,7 @@
 - ❌ scipy
 - ❌ submit feedback depending on chrome and firefox
 - ❌ "Flutter position stack widget in center" scroll bar in bright theme
+- ❌ remove innerHTML assignment
 
 ### Done ✅
 - ✅ link underline n'importe ou 
@@ -31,7 +32,6 @@
 - ✅ problem p = .16; q = 1 - p ; b = 1.96*sqrt(p*q/100); [p-b, p+b], overflow 
 - ✅ bug w3schools "sql online" 
 - ✅ "express static ts file" no answer, propose to write an answer in optibox 
-- ✅ bug "crows foot" 
 - ✅ add contact page → submit feedback
 - ✅ "substring python" (stackoverflow.com/q/) 
 - ✅ copy button not positioned well firefox 
@@ -51,25 +51,29 @@
 - ✅ increase width of right column
 - ✅ injecter les feuilles de style manuellement pr que le dark mode soit auto
 - ✅ move to dir "site" -> "sites"
-- ✅ copy no endline atthe end
+- ✅ copy no endline at the end
 - ✅ bug liste des chansons michael jackson
 - ✅ icon for stackoverflow when no response is wrong
 - ✅ manifest 3.0
 
-### In progress
+
+## TO-DO 
+#### In progress
 - bug popup wait too long -> icones
-### Todo 
-- loading box
-- cppreference
-- man page
-- rabbattre le volet
-- send feedback when no right pannel detected
+#### Urgent for next version
+- no image wikipedia firefox duckduckgo 
+- wikipedia list with headlines (for sigle) (ex. "crows foot")
+- fast duckduckgo bang
+#### Later
+- fold the panel
 - option put on top of the panel that are already there
 - option remove panel already here
-- no image wikipedia firefox duckduckgo 
 - fold recherche associes duckduckgo
-- remove innerHTML assignment
 - option put at the place of the result
-- fast duckduckgo bang
-- wikipedia list with headlines (for sigle)
 - plot in dark mode
+- send feedback when no right pannel detected
+#### Maybe
+- cppreference
+- man page
+- loading box
+

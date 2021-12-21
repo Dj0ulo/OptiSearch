@@ -272,17 +272,9 @@
     box.append(panel);
     updateColor();
 
-
-    // hline(box);
-
-    // panel.style = "max-height: 400px"
-    // const unfold = el('div', { className: 'unfold_button', textContent: '˅' }, box);
-    // unfold.onclick = () => {
-    //   if (panel.classList.toggle('folded'))
-    //     panel.style = "max-height: 400px"
-    //   else
-    //     panel.style = "max-height: 1000px"
-    // }
+    // const unfold = el('div', { className: 'unfold_button', textContent: 'Display more' }, box);
+    // panel.classList.toggle('folded')
+    // unfold.onclick = () => panel.classList.toggle('folded');
 
     return box;
   }
