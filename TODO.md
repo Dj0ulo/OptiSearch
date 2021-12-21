@@ -55,6 +55,7 @@
 - ✅ bug liste des chansons michael jackson
 - ✅ icon for stackoverflow when no response is wrong
 - ✅ manifest 3.0
+- ✅ bug click sur les sites dans le popup
 
 
 ## TO-DO 

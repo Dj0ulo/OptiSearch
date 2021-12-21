@@ -32,89 +32,88 @@
 
   const liEng = document.querySelector("#engines");
 
-  loadEngines().then(engines => {
-    Object.values(engines).forEach((e, i) => {
-      if (e.active) {
-        const div = el("div", {
-          className: "engine",
-          style: `--order: ${i + 1};`,
-          onclick: () => chrome.tabs.create({ active: true, url: e.link })
-        }, liEng);
+  const [engines, save] = await Promise.all([loadEngines(), loadSettings()]);
 
-        el("img", {
-          src: e.icon,
-          title: Object.keys(engines)[i],
-          className: 'icon',
-        }, div);
-      }
-    });
+  Object.values(engines).forEach((e, i) => {
+    if (e.active) {
+      const div = el("div", {
+        className: "engine",
+        style: `--order: ${i + 1};`,
+        onclick: () => chrome.tabs.create({ active: true, url: e.link })
+      }, liEng);
+
+      el("img", {
+        src: e.icon,
+        title: Object.keys(engines)[i],
+        className: 'icon',
+      }, div);
+    }
   });
 
 
   const optionsContainer = document.getElementById("options-container");
 
   //options
-  loadSettings().then(save => {
-    Object.keys(Settings).forEach((category) => {
-      optionsContainer.append(titleSection(category));
+  Object.keys(Settings).forEach((category) => {
+    optionsContainer.append(titleSection(category));
 
-      const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
+    const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
 
-      Object.entries(Settings[category]).forEach(([o, spec]) => {
-        const li = el("li", { id: o }, sublist);
+    Object.entries(Settings[category]).forEach(([o, spec]) => {
+      const li = el("li", { id: o }, sublist);
 
-        const label = el("label", {
-          className: "optiondiv",
-          style: "display: inline-block"
-        }, li);
+      const label = el("label", {
+        className: "optiondiv",
+        style: "display: inline-block"
+      }, li);
 
-        const spanImg = el("span", {
-          className: "titleOption",
-          innerHTML: spec.href ? `<a href=${spec.href}>${spec.name}</a>` : spec.name,
-          title: spec.title ?? "",
-          style: "padding-bottom: 2px"
-        }, label);
+      const spanImg = el("span", {
+        className: "titleOption",
+        innerHTML: spec.href ? `<a href=${spec.href}>${spec.name}</a>` : spec.name,
+        title: spec.title ?? "",
+        style: "padding-bottom: 2px"
+      }, label);
 
-        if (spec.icon) {
-          const img = el("img", { className: 'icon', width: 14, height: 14, });
-          // img.src = spec.icon;
-          // img.onerror = () => console.log('cul');
-          spanImg.prepend(img);
-        }
+      if (spec.icon) {
+        const img = el("img", { className: 'icon', width: 14, height: 14, });
+        // img.src = spec.icon;
+        // img.onerror = () => console.log('cul');
+        spanImg.prepend(img);
+      }
 
-        if (typeof spec.default === 'number') {
-          el("input", {
-            type: "number",
-            style: "width: 2rem",
-            value: save[o],
-            min: spec.min,
-            max: spec.max,
-            onchange: ({ target }) => {
-              save[o] = target.value
-              saveSettings(save);
-            },
-          }, label)
-          return;
-        }
-
-        const checkDiv = el("div", {
-          className: 'checkdiv',
-          style: "display: inline-block"
-        }, label)
-
-        el('input', {
-          className: "checkbox",
-          type: "checkbox",
-          checked: save[o],
+      if (typeof spec.default === 'number') {
+        el("input", {
+          type: "number",
+          style: "width: 2rem",
+          value: save[o],
+          min: spec.min,
+          max: spec.max,
           onchange: ({ target }) => {
-            save[o] = target.checked
+            save[o] = target.value
             saveSettings(save);
-          }
-        }, checkDiv)
+          },
+        }, label)
+        return;
+      }
 
-      })
-    });
+      const checkDiv = el("div", {
+        className: 'checkdiv',
+        style: "display: inline-block"
+      }, label)
+
+      el('input', {
+        className: "checkbox",
+        type: "checkbox",
+        checked: save[o],
+        onchange: ({ target }) => {
+          save[o] = target.checked
+          saveSettings(save);
+        }
+      }, checkDiv)
+
+    })
   });
+  
   if (typeof browser === 'undefined') // if not browser then we are on chrome
     hrefPopUp();
 })();

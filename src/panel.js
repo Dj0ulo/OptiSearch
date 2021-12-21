@@ -20,7 +20,7 @@
 
   const searchString = document.querySelector(engine.searchBox)?.value;
   if (!searchString) {
-    err("No search string detected");
+    warn("No search string detected");
     return;
   }
 
@@ -143,11 +143,11 @@
       const links = document.querySelector(engines[DuckDuckGo].resultsContainer);
       links.addEventListener("DOMNodeInserted", ({ target }) => {
         const classNames = engines[DuckDuckGo].resultRow.slice(1).replace(/\./g, " ");
-        if (target.className.search(classNames) != -1)
+        if (target.className && target.className.search(classNames) != -1)
           handleResult(target)
       });
     } else {
-      err("No result detected");
+      warn("No result detected");
     }
   }
   else {

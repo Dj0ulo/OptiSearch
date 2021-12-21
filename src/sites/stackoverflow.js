@@ -24,8 +24,12 @@ Sites.stackexchange.get = (from, doc) => {
     from.link = from.link.substring(0, isPointing);
   }
 
+  const title = doc.querySelector(QUERIES.title);
+  if (!title)
+    return;
+
   const res = {
-    title: doc.querySelector(QUERIES.title).textContent,
+    title: title.textContent,
     icon: doc.querySelector(`[rel="shortcut icon"]`).href
   }
 
@@ -102,12 +106,6 @@ Sites.stackexchange.set = (answer) => {
   const foot = document.createElement("div");
   foot.className = "stackfoot";
   let foothtml = answer.author.name + (answer.author.answered ? ` – ${answer.author.answered}` : '');
-  // if (answer.editor) {
-  //   foothtml += "<br>";
-  //   if (answer.editor.name != answer.author.name)
-  //     foothtml += answer.editor.name;
-    // foothtml += ` – ${answer.editor.answered}`;
-  // }
   foot.innerHTML = foothtml;
 
   return { body, foot };
