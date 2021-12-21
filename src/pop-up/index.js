@@ -40,7 +40,7 @@
           style: `--order: ${i + 1};`,
           onclick: () => chrome.tabs.create({ active: true, url: e.link })
         }, liEng);
-  
+
         el("img", {
           src: e.icon,
           title: Object.keys(engines)[i],
@@ -52,17 +52,17 @@
 
 
   const optionsContainer = document.getElementById("options-container");
-  
+
   //options
   loadSettings().then(save => {
     Object.keys(Settings).forEach((category) => {
       optionsContainer.append(titleSection(category));
-  
+
       const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
-  
+
       Object.entries(Settings[category]).forEach(([o, spec]) => {
         const li = el("li", { id: o }, sublist);
-  
+
         const label = el("label", {
           className: "optiondiv",
           style: "display: inline-block"
@@ -74,15 +74,15 @@
           title: spec.title ?? "",
           style: "padding-bottom: 2px"
         }, label);
-        
-        if (spec.icon){
+
+        if (spec.icon) {
           const img = el("img", { className: 'icon', width: 14, height: 14, });
           // img.src = spec.icon;
           // img.onerror = () => console.log('cul');
           spanImg.prepend(img);
         }
-  
-        if(typeof spec.default === 'number'){
+
+        if (typeof spec.default === 'number') {
           el("input", {
             type: "number",
             style: "width: 2rem",
@@ -96,12 +96,12 @@
           }, label)
           return;
         }
-  
+
         const checkDiv = el("div", {
           className: 'checkdiv',
           style: "display: inline-block"
         }, label)
-  
+
         el('input', {
           className: "checkbox",
           type: "checkbox",
@@ -115,4 +115,6 @@
       })
     });
   });
+  if (typeof browser === 'undefined') // if not browser then we are on chrome
+    hrefPopUp();
 })();

@@ -145,6 +145,13 @@ function underSummary(summary) {
   return nextListElement(summary.nextSibling);
 }
 
+function hrefPopUp() {
+  document.querySelectorAll("a").forEach(ln => {
+    if (ln.href.startsWith("http"))
+      ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
+  })
+}
+
 /**
  * Put the host in every link of the element
  * @param {string} url 
