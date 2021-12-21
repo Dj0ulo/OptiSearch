@@ -26,6 +26,7 @@ Sites.stackexchange.get = (from, doc) => {
 
   const res = {
     title: doc.querySelector(QUERIES.title).textContent,
+    icon: doc.querySelector(`[rel="shortcut icon"]`).href
   }
 
   const acceptedAnswer = body.querySelector(QUERIES.answer); // always answer with most upvotes
@@ -34,7 +35,6 @@ Sites.stackexchange.get = (from, doc) => {
     return res;
   }
 
-  res.icon = doc.querySelector(`[rel="shortcut icon"]`).href;
   res.link = `${from.link}#${acceptedAnswer.getAttribute(QUERIES.attributeAnswerId)}`;
 
   // body

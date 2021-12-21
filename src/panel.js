@@ -104,9 +104,6 @@
     }
   }
 
-  //Sites
-  const port = chrome.runtime.connect();
-
   let numberPanel = 0, links = [];
 
   /**
@@ -116,22 +113,26 @@
   const handleResult = (r) => {
     const link = r.querySelector("a")?.href;
     if (!link) return;
+
     const found = Object.keys(Sites)
       .find(site => (
         save[site]
         && link.search(Sites[site].link) != -1
         && !links.find(l => link === l)// no duplicates
       ));
+
     if (found && numberPanel < save.maxResults) {
       links.push(link);
-      port.postMessage({
+
+      chrome.runtime.sendMessage({
         engine: engineName,
         link: link,
         site: found,
         type: "html",
         indexPanel: numberPanel,
         ...Sites[found].msgApi(link),
-      });
+      }, handleSiteResponse);
+
       numberPanel++;
     }
   }
@@ -156,22 +157,30 @@
   let currentPanelIndex = 0, panels = [];
 
   // receive parsed data from html page
-  port.onMessage.addListener((msg) => {
-    if (!Sites.hasOwnProperty(msg.site))
-      return;
-
+  function handleSiteResponse(resp) {
+    if(!resp) return;
+    const [msg, text] = resp;
     const site = Sites[msg.site];
-    const content = site.set(msg); // set body and foot
+    if (!site) return;
 
-    if (content && content.body.innerHTML && msg.title !== undefined) {
-      panels[msg.indexPanel] = panelFromSite(msg, msg.icon ?? site.icon, content);
-    } else {
-      panels[msg.indexPanel] = null;
+    let doc;
+    switch(msg.type){
+      case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
+      case 'json': doc = JSON.parse(text); break;
+      default: return;
     }
+    
+    const siteData = {...msg, ...site.get(msg, doc)};
+    const content = site.set(siteData); // set body and foot
 
-    updatePanels()
-  })
+    if (content && content.body.innerHTML && siteData.title !== undefined)
+      panels[siteData.indexPanel] = panelFromSite(siteData, siteData.icon ?? site.icon, content);
+    else
+      panels[siteData.indexPanel] = null;
 
+
+    updatePanels();
+  }
 
   /**
    * Draw the panels in order. Only when the previous are not undefined
@@ -324,7 +333,7 @@
     const panels = document.querySelectorAll(".optisearchbox");
 
     let style = document.querySelector('#optisearch-bg');
-    if (!style) 
+    if (!style)
       style = el('style', { id: 'optisearch-bg' }, docHead);
 
     if (dark) {

@@ -53,12 +53,13 @@
 - ✅ move to dir "site" -> "sites"
 - ✅ copy no endline atthe end
 - ✅ bug liste des chansons michael jackson
+- ✅ icon for stackoverflow when no response is wrong
+- ✅ manifest 3.0
 
 ### In progress
 - bug popup wait too long -> icones
 ### Todo 
 - loading box
-- manifest 3.0
 - cppreference
 - man page
 - rabbattre le volet
@@ -71,3 +72,4 @@
 - option put at the place of the result
 - fast duckduckgo bang
 - wikipedia list with headlines (for sigle)
+- plot in dark mode
