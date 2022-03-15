@@ -3,11 +3,12 @@
         "link": "https://www.google.com",
         "icon": "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
         "rightColumn": "#rhs",
-        "centerColumn": ".D6j0vc",
+        "centerColumn": "#center_col",
         "resultRow": ".g",
         "searchBox": "input.gLFyf.gsfi",
         "active": true,
-        "regex": "^www\\.google\\."
+        "regex": "^www\\.google\\.",
+        "widthStyle": "#rcnt {max-width: max-content;} .optisearchbox{min-width: ${maxW}px;}"
     },
     "Bing": {
         "link": "https://www.bing.com",
@@ -23,13 +24,13 @@
     "Ecosia": {
         "link": "https://www.ecosia.org",
         "icon": "https://cdn.ecosia.org/assets/images/ico/favicon.ico",
-        "rightColumn": ".sidebar.web__sidebar[data-v-ba1469fa]",
+        "rightColumn": ".sidebar.web__sidebar[data-test-id=sidebar]",
         "centerColumn": ".mainline",
         "resultRow": ".result__body",
         "searchBox": ".search-form__input",
         "active": true,
         "regex": "\\.ecosia\\.org$",
-        "widthStyle": ".web[data-v-ba1469fa] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
+        "widthStyle": ".web[data-test-id=layout-content] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
         "style": ".optipanel .title {color: #1a0dab;}"
     },
     "Yahoo": {

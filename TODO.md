@@ -56,15 +56,20 @@
 - ✅ icon for stackoverflow when no response is wrong
 - ✅ manifest 3.0
 - ✅ bug click sur les sites dans le popup
+- ✅ bug popup wait too long -> icones
+- ✅ size box bug with google
+- ✅ no image wikipedia/stackoverflow,... on firefox with duckduckgo/ecosia...
+- ✅ bug genius
+- ✅ reverif all sites
+
 
 
 ## TO-DO 
 #### In progress
-- bug popup wait too long -> icones
 #### Urgent for next version
-- no image wikipedia/stackoverflow,... on firefox with duckduckgo/ecosia...
-- wikipedia list with headlines (for sigle) (ex. "crows foot")
+- ecosia optiserachbox, sometimes disapearing
 #### Later
+- wikipedia list with headlines (for sigle) (ex. "crows foot")
 - fold the panel
 - option put on top of the panel that are already there
 - option remove panel already here
@@ -73,6 +78,7 @@
 - plot in dark mode
 - send feedback when no right pannel detected
 - remove duckduckgo bang
+- https://stackoverflow.com/questions/44782476/split-a-numpy-array-both-horizontally-and-vertically#44782633 comment python not good
 #### Maybe
 - cppreference
 - man page

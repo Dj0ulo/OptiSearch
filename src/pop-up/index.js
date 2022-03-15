@@ -74,10 +74,13 @@
         style: "padding-bottom: 2px"
       }, label);
 
-      if (spec.icon) {
-        const img = el("img", { className: 'icon', width: 14, height: 14, });
-        // img.src = spec.icon;
-        // img.onerror = () => console.log('cul');
+      if (spec.local_icon) {
+        const img = el("div", { className: "icon" }, spanImg);
+        img.style = `background-image: url(../sites/icons/${spec.local_icon});
+                    background-size: contain;
+                    width: 14px;
+                    height: 14px;
+                    display: inline-block;`;
         spanImg.prepend(img);
       }
 

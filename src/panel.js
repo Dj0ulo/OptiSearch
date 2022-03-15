@@ -33,9 +33,9 @@
 
   const save = await loadSettings();
   // Bigger right column
-  const minW = 400;
-  const maxW = 600;
   if (save['wideColumn']) {
+    const minW = 600;
+    const maxW = 600;
     const widthStyle = engine.widthStyle?.replace("${maxW}", maxW).replace("${minW}", minW);
     if (widthStyle) el('style', { textContent: widthStyle, className: `optistyle-${engineName}` }, docHead);
   }
@@ -289,10 +289,10 @@
     if (rightColumn)
       return rightColumn;
 
-    if (!engine.centerColumn)
-      warn("No right column");
-
+      
     const centerColumn = document.querySelector(engine.centerColumn);
+    if (!centerColumn)
+      warn("No right column");
 
     // create a right column with the correct attributes
     const [sr] = selectorRightCol.split(',');
