@@ -83,4 +83,5 @@
 - cppreference
 - man page
 - loading box
+- compart.com or other sites to copy utf-8 symbols
 

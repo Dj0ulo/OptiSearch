@@ -49,6 +49,13 @@ const Sites = Object.freeze({
     local_icon: "unity.ico",
     href: "https://answers.unity.com/",
   },
+  unity: {
+    name: "Unity Answers",
+    link: /https:\/\/answers\.unity\.com\/((questions)|q)\//,
+    icon: "https://answers.unity.com/themes/thub/images/favicon.ico",
+    local_icon: "unity.ico",
+    href: "https://answers.unity.com/",
+  },
 })
 
 const Settings = Object.freeze({
@@ -109,7 +116,7 @@ const fetchEngines = (local = false) => {
     });
 }
 
-fetchEngines(true)//.then(r => console.log("Engines: ", r))
+fetchEngines(false)//.then(r => console.log("Engines: ", r))
 
 const loadEngines = () => {
   return new Promise(resolve => {

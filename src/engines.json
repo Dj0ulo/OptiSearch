@@ -1,66 +1,66 @@
 {
-    "Google": {
-        "link": "https://www.google.com",
-        "icon": "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
-        "rightColumn": "#rhs",
-        "centerColumn": "#center_col",
-        "resultRow": ".g",
-        "searchBox": "input.gLFyf.gsfi",
-        "active": true,
-        "regex": "^www\\.google\\.",
-        "widthStyle": "#rcnt {max-width: max-content;} .optisearchbox{min-width: ${maxW}px;}"
-    },
-    "Bing": {
-        "link": "https://www.bing.com",
-        "icon": "https://www.bing.com/sa/simg/bing_p_rr_teal_min.ico",
-        "rightColumn": "#b_context",
-        "resultRow": ".b_algo",
-        "searchBox": ".b_searchbox#sb_form_q",
-        "active": true,
-        "regex": "\\.bing\\.com$",
-        "widthStyle": "#b_context {width: auto;  min-width: ${minW}px;  max-width: ${maxW-40}px;} #b_context .b_ans{max-width: 432px;}",
-        "style": ".optisearchbox {margin-right: -20px;  margin-left: -20px;}"
-    },
-    "Ecosia": {
-        "link": "https://www.ecosia.org",
-        "icon": "https://cdn.ecosia.org/assets/images/ico/favicon.ico",
-        "rightColumn": ".sidebar.web__sidebar[data-test-id=sidebar]",
-        "centerColumn": ".mainline",
-        "resultRow": ".result__body",
-        "searchBox": ".search-form__input",
-        "active": true,
-        "regex": "\\.ecosia\\.org$",
-        "widthStyle": ".web[data-test-id=layout-content] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
-        "style": ".optipanel .title {color: #1a0dab;}"
-    },
-    "Yahoo": {
-        "link": "https://www.yahoo.com",
-        "icon": "https://s.yimg.com/oa/build/images/favicons/yahoo.png",
-        "rightColumn": "#right",
-        "resultRow": ".dd.algo",
-        "searchBox": "#yschsp",
-        "active": false,
-        "regex": "search\\.yahoo\\.com$"
-    },
-    "DuckDuckGo": {
-        "link": "https://duckduckgo.com/",
-        "icon": "https://duckduckgo.com/favicon.ico",
-        "rightColumn": "div.results--sidebar",
-        "resultRow": ".result.results_links_deep",
-        "searchBox": "#search_form_input",
-        "resultsContainer": "#links",
-        "active": true,
-        "regex": "duckduckgo\\.com$",
-        "widthStyle": ".results--sidebar {max-width: ${maxW}px !important; } .cw{max-width:unset;}"
-    },
-    "Brave Search": {
-        "link": "https://search.brave.com/",
-        "icon": "https://cdn.search.brave.com/serp/v1/static/brand/16c26cd189da3f0f7ba4e55a584ddde6a7853c9cc340ff9f381afc6cb18e9a1e-favicon-32x32.png",
-        "rightColumn": "#side-right",
-        "resultRow": ".snippet.fdb",
-        "searchBox": "#searchbox",
-        "active": true,
-        "regex": "search\\.brave\\.com$",
-        "widthStyle": "#side-right {--width: unset;  max-width: ${maxW}px;}"
-    }
+  "Google": {
+    "link": "https://www.google.com",
+    "icon": "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
+    "rightColumn": "#rhs",
+    "centerColumn": "#center_col",
+    "resultRow": ".g",
+    "searchBox": "input.gLFyf.gsfi",
+    "active": true,
+    "regex": "^www\\.google\\.",
+    "widthStyle": "#rcnt {max-width: max-content;} .optisearchbox{min-width: ${maxW}px;}"
+  },
+  "Bing": {
+    "link": "https://www.bing.com",
+    "icon": "https://www.bing.com/sa/simg/bing_p_rr_teal_min.ico",
+    "rightColumn": "#b_context",
+    "resultRow": ".b_algo",
+    "searchBox": ".b_searchbox#sb_form_q",
+    "active": true,
+    "regex": "\\.bing\\.com$",
+    "widthStyle": "#b_context {width: auto;  min-width: ${minW}px;  max-width: ${maxW-40}px;} #b_context .b_ans{max-width: 432px;}",
+    "style": ".optisearchbox {margin-right: -20px;  margin-left: -20px;}"
+  },
+  "Ecosia": {
+    "link": "https://www.ecosia.org",
+    "icon": "https://cdn.ecosia.org/assets/images/ico/favicon.ico",
+    "rightColumn": ".sidebar.web__sidebar[data-test-id=sidebar]",
+    "centerColumn": ".mainline",
+    "resultRow": ".result__body",
+    "searchBox": ".search-form__input",
+    "active": true,
+    "regex": "\\.ecosia\\.org$",
+    "widthStyle": ".web[data-test-id=layout-content] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
+    "style": ".optipanel .title {color: #1a0dab;} .sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;}"
+  },
+  "Yahoo": {
+    "link": "https://www.yahoo.com",
+    "icon": "https://s.yimg.com/oa/build/images/favicons/yahoo.png",
+    "rightColumn": "#right",
+    "resultRow": ".dd.algo",
+    "searchBox": "#yschsp",
+    "active": false,
+    "regex": "search\\.yahoo\\.com$"
+  },
+  "DuckDuckGo": {
+    "link": "https://duckduckgo.com/",
+    "icon": "https://duckduckgo.com/favicon.ico",
+    "rightColumn": "div.results--sidebar",
+    "resultRow": ".result.results_links_deep",
+    "searchBox": "#search_form_input",
+    "resultsContainer": "#links",
+    "active": true,
+    "regex": "duckduckgo\\.com$",
+    "widthStyle": ".results--sidebar {max-width: ${maxW}px !important; } .cw{max-width:unset;}"
+  },
+  "Brave Search": {
+    "link": "https://search.brave.com/",
+    "icon": "https://cdn.search.brave.com/serp/v1/static/brand/16c26cd189da3f0f7ba4e55a584ddde6a7853c9cc340ff9f381afc6cb18e9a1e-favicon-32x32.png",
+    "rightColumn": "#side-right",
+    "resultRow": ".snippet.fdb",
+    "searchBox": "#searchbox",
+    "active": true,
+    "regex": "search\\.brave\\.com$",
+    "widthStyle": "#side-right {--width: unset;  max-width: ${maxW}px;}"
+  }
 }
