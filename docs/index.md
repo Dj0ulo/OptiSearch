@@ -1,7 +1,7 @@
 # OptiSearch
 
 ## Description
-OptiSearch retrieve the important content from some sites and puts them in the results page of your favourite search engine.
+When you make a search, OptiSearch retrieve the important content from the sites and puts them in the results page of your favourite search engine.
 
 For instance, it will put the most pertinent answer from StackOverflow next to the Google results when you ask Google for a dev question. This will save you many clicks and will unlock you the next level of coding speed !
 

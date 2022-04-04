@@ -12,17 +12,8 @@
     return title;
   }
 
-  const changePopupTab = (id) => {
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(t => t.style.display = 'none');
-    document.getElementById(id).style.display = 'unset';
-  }
-
   const ver = document.querySelector('#version');
   ver.textContent = chrome.runtime.getManifest().version;
-
-  Array.from(document.getElementsByClassName("main")).forEach(b => b.onclick = () => changePopupTab("main"));
-  Array.from(document.getElementsByClassName("privacy")).forEach(e => e.onclick = () => changePopupTab("privacy"));
 
   const donate = document.getElementById("donate");
   donate.onclick = () => chrome.tabs.create({
