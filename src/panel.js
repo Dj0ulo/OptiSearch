@@ -20,7 +20,7 @@
 
   const searchString = document.querySelector(engine.searchBox)?.value;
   if (!searchString) {
-    warn("No search string detected");
+    debug("No search string detected");
     return;
   }
 
@@ -147,7 +147,7 @@
           handleResult(target)
       });
     } else {
-      warn("No result detected");
+      debug("No result detected");
     }
   }
   else {
@@ -292,7 +292,7 @@
       
     const centerColumn = document.querySelector(engine.centerColumn);
     if (!centerColumn)
-      warn("No right column");
+      debug("No right column");
 
     // create a right column with the correct attributes
     const [sr] = selectorRightCol.split(',');
