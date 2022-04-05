@@ -23,11 +23,6 @@ const Sites = Object.freeze({
     local_icon: "w3schools.ico",
     href: "https://www.w3schools.com/",
   },
-  // cplusplus: {
-  //   name: "cplusplus",
-  //   link: "https://www.cplusplus.com/reference/",
-  //   icon: "https://www.cplusplus.com/favicon.ico"
-  // },
   mdn: {
     name: "MDN Web Docs",
     link: "https://developer.mozilla.org/",
@@ -56,7 +51,7 @@ const Sites = Object.freeze({
     local_icon: "unity.ico",
     href: "https://answers.unity.com/",
   },
-})
+});
 
 const Settings = Object.freeze({
   Options: {
@@ -87,43 +82,17 @@ const Settings = Object.freeze({
       href: "https://plotly.com",
     }
   }
-})
-
-const GIST = "https://gist.githubusercontent.com/Dj0ulo/7224203ee9be47ba5be6f57be1cd22c5/raw"
+});
 
 const SAVE_QUERIES_ENGINE = "save_queries_engine"
 const SAVE_OPTIONS_KEY = "save_options_key";
 
-const fetchEngines = (local = false) => {
-  let url = local ? chrome.runtime.getURL(`./src/engines.json`) : `${GIST}/engines.json`;
-  return fetch(url)
-    .then(response => {
-      if (!response.ok)
-        throw response
-      else
-        return response.json()
-    })
-    .then(json => {
-      chrome.storage.local.set({
-        [SAVE_QUERIES_ENGINE]: json
-      })
-      return json;
-    })
-    .catch(() => {
-      chrome.storage.local.get([SAVE_QUERIES_ENGINE], storage => {
-        return storage[SAVE_QUERIES_ENGINE] || Engines;
-      })
-    });
-}
-
-fetchEngines(false)//.then(r => console.log("Engines: ", r))
-
 const loadEngines = () => {
   return new Promise(resolve => {
-    chrome.storage.local.get([SAVE_QUERIES_ENGINE], storage => {
-      resolve(storage[SAVE_QUERIES_ENGINE] || Engines);
-    })
-  })
+    chrome.storage.local.get(SAVE_QUERIES_ENGINE, async (storage) => {
+      resolve(storage[SAVE_QUERIES_ENGINE] ?? await fetch(chrome.runtime.getURL(`./src/engines.json`)).then(res => res.json()));
+    });
+  });
 }
 
 const defaultSettings = () => {

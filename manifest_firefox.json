@@ -1,6 +1,6 @@
 {
     "name": "OptiSearch",
-    "version": "1.5",
+    "version": "1.5.2",
     "manifest_version": 2,
     "description": "Upgrade and optimize your searches !",
     "permissions": [
