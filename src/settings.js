@@ -44,12 +44,12 @@ const Sites = Object.freeze({
     local_icon: "unity.ico",
     href: "https://answers.unity.com/",
   },
-  unity: {
-    name: "Unity Answers",
-    link: /https:\/\/answers\.unity\.com\/((questions)|q)\//,
-    icon: "https://answers.unity.com/themes/thub/images/favicon.ico",
-    local_icon: "unity.ico",
-    href: "https://answers.unity.com/",
+  mathworks: {
+    name: "MATLAB Answers",
+    link: "https://www.mathworks.com/matlabcentral/answers/",
+    icon: "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/favicon.20220502122634643.ico",
+    local_icon: "mathworks.ico",
+    href: "https://www.mathworks.com/matlabcentral/answers/",
   },
 });
 

@@ -61,7 +61,7 @@
 - ✅ no image wikipedia/stackoverflow,... on firefox with duckduckgo/ecosia...
 - ✅ bug genius
 - ✅ reverif all sites
-
+- ✅ mathworks.com : https://www.mathworks.com/matlabcentral/answers/217867-how-can-i-calculate-mse-and-psnr-of-rgb-color-image
 
 
 ## TO-DO 

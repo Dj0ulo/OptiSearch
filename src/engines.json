@@ -27,7 +27,7 @@
     "rightColumn": ".sidebar.web__sidebar[data-test-id=sidebar]",
     "centerColumn": ".mainline",
     "resultRow": ".result__body",
-    "searchBox": ".search-form__input",
+    "searchBox": ".search-form__input, search-form-input",
     "active": true,
     "regex": "\\.ecosia\\.org$",
     "widthStyle": ".web[data-test-id=layout-content] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
