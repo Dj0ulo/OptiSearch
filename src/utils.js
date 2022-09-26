@@ -164,19 +164,20 @@ function hrefPopUp() {
  */
 function writeHostOnLinks(url, container) {
   const host = url.match("https?://[^/]+")[0];
-  const links = container.querySelectorAll("a");
+  const links = container.querySelectorAll("a, img");
   links.forEach(a => {
-    const ahref = a.getAttribute("href");
+    const attr = a.tagName === 'A' ? 'href' : 'src';
+    const ahref = a.getAttribute(attr);
     if (!ahref || ahref.startsWith("http") || ahref.startsWith("//")) {
       return;
     }
 
     if (ahref.startsWith("/")) {
-      a.href = host + ahref;
+      a[attr] = host + ahref;
       return;
     }
 
-    a.href = `${url.replace(/\/[^\/]*$/, "")}/${ahref}`;
+    a[attr] = `${url.replace(/\/[^\/]*$/, "")}/${ahref}`;
   });
 }
 

@@ -111,7 +111,8 @@
    * @param {Element} r 
    */
   const handleResult = (r) => {
-    const link = r.querySelector("a")?.href;
+    const linksResult = [...r.querySelectorAll("a")].map(a => a.href);
+    const link = linksResult.find(l => !l.startsWith(engine.link));
     if (!link) return;
 
     const found = Object.keys(Sites)
@@ -140,12 +141,20 @@
   const results = document.querySelectorAll(engine.resultRow);
   if (results.length === 0) {
     if (engineName === DuckDuckGo) {
-      const links = document.querySelector(engines[DuckDuckGo].resultsContainer);
-      links.addEventListener("DOMNodeInserted", ({ target }) => {
-        const classNames = engines[DuckDuckGo].resultRow.slice(1).replace(/\./g, " ");
-        if (target.className && target.className.search(classNames) != -1)
-          handleResult(target)
+      const resultsContainer = document.querySelector(engines[DuckDuckGo].resultsContainer);
+      const observer = new MutationObserver((mutationRecords) => {
+        // Handle mutations
+        mutationRecords.map(mr => mr.addedNodes[0])
+          .filter(n => n?.matches(engine.resultRow))
+          .forEach(handleResult);
       });
+
+      observer.observe(resultsContainer, {
+        subtree: false,  // observe the subtree rooted at myNode
+        childList: true,  // include information childNode insertion/removals
+        attribute: false  // include information about changes to attributes within the subtree
+      });
+
     } else {
       debug("No result detected");
     }
@@ -158,19 +167,19 @@
 
   // receive parsed data from html page
   async function handleSiteResponse(resp) {
-    if(!resp) return;
+    if (!resp) return;
     const [msg, text] = resp;
     const site = Sites[msg.site];
     if (!site) return;
 
     let doc;
-    switch(msg.type){
+    switch (msg.type) {
       case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
       case 'json': doc = JSON.parse(text); break;
       default: return;
     }
-    
-    const siteData = {...msg, ...(await site.get(msg, doc))};
+
+    const siteData = { ...msg, ...(await site.get(msg, doc)) };
     const content = site.set(siteData); // set body and foot
 
     if (content && content.body.innerHTML && siteData.title !== undefined)
@@ -289,7 +298,7 @@
     if (rightColumn)
       return rightColumn;
 
-      
+
     const centerColumn = document.querySelector(engine.centerColumn);
     if (!centerColumn)
       debug("No right column");
@@ -330,8 +339,8 @@
 
     if (dark) {
       style.textContent = `.optisearchbox.dark {background-color: ${colorLuminance(bg, 0.02)}}
-      .dark .optipanel .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}
-      .dark .prettyprint, .dark .pre-surround .prettyprint {background-color: ${colorLuminance(bg, -0.02)}}`;
+      .optisearchbox.dark .optipanel .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}
+      .optisearchbox.dark .prettyprint, .optisearchbox.dark .pre-surround .prettyprint {background-color: ${colorLuminance(bg, -0.02)}}`;
     }
     for (let p of panels) {
       if (dark)

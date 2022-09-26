@@ -48,7 +48,7 @@
   padding: 10px 0px 0px 10px;
   font-size: smaller;
 }
-.dark.optisearchbox .unfold_button{
+.optisearchbox.dark .unfold_button{
   box-shadow: rgb(0,0,0) 0px -15px 20px -3px;
 }
 .optisearchbox .unfold_button:active{
@@ -110,7 +110,7 @@
 .bright .optipanel .optilink {
   color: #3c4043 !important;
 }
-.dark .optipanel .optilink {
+.optisearchbox.dark .optipanel .optilink {
   color: rgb(167, 159, 147) !important;
 }
 
@@ -131,7 +131,7 @@
   border-right: 0px;
   border-bottom-color: rgb(220, 220, 220);
 }
-.dark .optipanel hr {
+.optisearchbox.dark .optipanel hr {
   border-bottom-color: var(--line-dark);
 }
 
@@ -229,7 +229,7 @@
 .bright .optipanel a {
   color: #0077cc
 }
-.dark .optipanel a {
+.optisearchbox.dark .optipanel a {
   color: #8ab4f8
 }
 .optipanel a:hover {

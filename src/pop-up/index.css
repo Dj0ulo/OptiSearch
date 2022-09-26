@@ -4,7 +4,6 @@ body {
   font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
   width: 300px;
   font-size: 12px;
-  overflow: hidden;
 }
 .title {
   text-align: center;

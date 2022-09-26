@@ -68,7 +68,9 @@
 #### In progress
 #### Urgent for next version
 - ecosia optiserachbox, sometimes disapearing
+- don't work with bing when not connected because of redirection link
 #### Later
+- vote button stack overflow
 - wikipedia list with headlines (for sigle) (ex. "crows foot")
 - fold the panel
 - option put on top of the panel that are already there
@@ -79,6 +81,7 @@
 - send feedback when no right pannel detected
 - remove duckduckgo bang
 - https://stackoverflow.com/questions/44782476/split-a-numpy-array-both-horizontally-and-vertically#44782633 comment python not good
+- bug Excel Color Scales in w3scools
 #### Maybe
 - cppreference
 - man page
