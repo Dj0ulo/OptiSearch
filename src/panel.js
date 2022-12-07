@@ -138,7 +138,7 @@
     }
   }
 
-  const results = document.querySelectorAll(engine.resultRow);
+  const results = $$(engine.resultRow);
   if (results.length === 0) {
     if (engineName === DuckDuckGo) {
       const resultsContainer = document.querySelector(engines[DuckDuckGo].resultsContainer);
@@ -160,7 +160,7 @@
     }
   }
   else {
-    Array.from(results).forEach(handleResult);
+    results.forEach(handleResult);
   }
 
   let currentPanelIndex = 0, panels = [];
@@ -208,11 +208,7 @@
     PR.prettyPrint(); // when all possible panels were appended
   }
 
-  function panelSkeleton() {
-
-  }
-
-  function panelFromSite({ site, title, link }, icon, { body, foot }) {
+  function panelFromSite({ site, title, link }, icon, { header, body, foot }) {
     const panel = el("div", { className: `${PANEL_CLASS}` });
 
     //watermark
@@ -232,18 +228,22 @@
       hline(panel);
 
     const content = el('div', { className: "opticontent" }, panel);
+
+    // FOOT
+    if (header) {
+      content.append(header);
+      hline(content);
+    }
     // BODY
     if (body) {
-      body.className += " optibody";
+      body.classList.add("optibody");
 
       if (site === "stackexchange") {
         childrenToTeX(body);
       }
 
       const codes = body.querySelectorAll("code, pre");
-      codes.forEach((c) => {
-        c.className += ` prettyprint`;
-      });
+      codes.forEach(c => c.classList.add("prettyprint"));
 
       const pres = body.querySelectorAll("pre");
       pres.forEach((pre) => {

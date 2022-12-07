@@ -69,8 +69,11 @@
 #### Urgent for next version
 - ecosia optiserachbox, sometimes disapearing
 - don't work with bing when not connected because of redirection link
+- "debug log php" bad formating
+- bug panel linux 
 #### Later
 - vote button stack overflow
+- switch answer
 - wikipedia list with headlines (for sigle) (ex. "crows foot")
 - fold the panel
 - option put on top of the panel that are already there

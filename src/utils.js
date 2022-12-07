@@ -4,6 +4,19 @@ function warn(str) { console.warn('%c[OptiSearch]', `font-weight: bold;`, str) }
 function debug(str) { console.debug('%c[OptiSearch]', `font-weight: bold;`, str) }
 
 /**
+ * @param {string} query
+ * @param {HTMLElement} element
+ * @returns result of query
+ */
+const $ = (query, element) => (element ?? document).querySelector(query);
+/**
+ * @param {string} query
+ * @param {HTMLElement} element
+ * @returns array of results of query
+ */
+const $$ = (query, element) => [...(element ?? document).querySelectorAll(query)];
+
+/**
  * 
  * @returns {boolean} true if we are on a chromium browser (otherwise we probably are on firefox)
  */
