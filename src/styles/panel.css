@@ -244,9 +244,63 @@
 }
 
 .optipanel .stackfoot {
-  margin-top: 15px;
+  margin-top: 10px;
   line-height: 23px;
   font-size: small;
+}
+.optipanel .stackheader {
+  display: flex;
+}
+.optipanel .arrowbutton{
+  cursor: pointer;
+}
+.optipanel .hiddenAnswer{
+  display: none;
+}
+.optipanel .stack-stats{
+  margin-right: 5px;
+}
+.optipanel .stack-index-container{
+  display: inline-block;
+  margin: 0 auto;
+  user-select: none;
+}
+.optipanel .stack-votecount{
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-left: 5px;
+  min-width: 3em;
+}
+.optipanel .stack-vote-buttons-container{
+  fill:rgb(167, 159, 147);
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 5px;
+
+  line-height: 8px;
+  vertical-align: middle;
+}
+.optipanel .stack-vote-button > svg{
+  fill:rgb(167, 159, 147);
+  height: 15px;
+  width: 15px;
+}
+.optipanel .iconCheckmarkLg{
+  fill: #6cc644;
+  vertical-align: middle;
+  height: 25px;
+  width: 20px;
+  /* float: left; */
+}
+.optipanel .stack-accepted{
+  float: right;
+  width: 30px;
+}
+.optipanel .stackhidden{
+  display: none;
+}
+.optisearchbox.dark .optipanel .iconCheckmarkLg{
+  fill: hsl(140,39.5%,69.5%); 
 }
 
 /*recherche associes position fixed google*/
