@@ -63,6 +63,8 @@
         "src/plot.js",
         "src/utils.js",
         "src/panel.js",
+        "src/tools.js",
+        "src/init.js",
         "src/sites/stackoverflow.js",
         "src/sites/mdn.js",
         "src/sites/wikipedia.js",
