@@ -84,7 +84,7 @@
 }
 
 .optipanel .title {
-  font-size: x-large;
+  font-size: large;
   font-weight: bold;
   line-height: initial;
   word-wrap: break-word;
@@ -103,8 +103,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 400px;
-  padding-top: 8px;
+  padding-top: 5px;
   font-style: normal;
+  font-size: small;
 }
 
 .bright .optipanel .optilink {
@@ -123,16 +124,17 @@
   margin-right: 5px;
   margin-top: -3px;
   max-width: 16px;
+  display: inline;
 }
 
 .optipanel hr {
-  border-left: 0px;
-  border-top: 0px;
-  border-right: 0px;
-  border-bottom-color: rgb(220, 220, 220);
+  height: 1px;
+  margin: .5em;
+  border: 0px;
+  background-color: rgb(220, 220, 220);
 }
 .optisearchbox.dark .optipanel hr {
-  border-bottom-color: var(--line-dark);
+  background-color: var(--line-dark);
 }
 
 .optipanel .opticopy {

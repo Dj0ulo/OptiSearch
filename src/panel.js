@@ -1,6 +1,6 @@
 class Context {
   static PANEL_CLASS = "optipanel";
-
+  static gpt = new ChatGPTSession();
   static async init() {
     debug("Hello !");
 
@@ -90,7 +90,7 @@ class Context {
           const content = site.set(siteData); // set body and foot
 
           if (content && content.body.innerHTML && siteData.title !== undefined)
-            Context.panels[siteData.indexPanel] = Context.panelFromSite(siteData, siteData.icon ?? site.icon, content);
+            Context.panels[siteData.indexPanel] = Context.panelFromSite({...siteData, icon: siteData.icon ?? site.icon, ...content});
           else
             Context.panels[siteData.indexPanel] = null;
 
@@ -150,6 +150,7 @@ class Context {
     el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
   }
   static executeTools() {
+    if (Context.isActive("chatgpt")) Context.chatgpt();
     if (Context.isActive("bangs")) Context.bangs();
     if (Context.isActive("calculator")) Context.calculator();
     if (Context.isActive("calculator") || Context.isActive("plot")) Context.plotOrCompute();
@@ -172,7 +173,7 @@ class Context {
     PR.prettyPrint(); // when all possible panels were appended
   }
 
-  static panelFromSite({ site, title, link }, icon, { header, body, foot }) {
+  static panelFromSite({ site, title, link, icon, header, body, foot }) {
     const panel = el("div", { className: `${Context.PANEL_CLASS}` });
 
     //watermark
@@ -193,7 +194,7 @@ class Context {
 
     const content = el('div', { className: "opticontent" }, panel);
 
-    // FOOT
+    // HEADER
     if (header) {
       content.append(header);
       hline(content);

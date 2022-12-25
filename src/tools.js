@@ -64,3 +64,36 @@ Context.plotOrCompute = () => {
     Context.isActive("calculator") && Context.compute(rep);
   }
 };
+
+Context.chatgpt = async () => {
+  const body = el("div");
+  const textContainer = el("div", { textContent: "Waiting for ChatGPT..." }, body);
+  const panel = Context.panelFromSite({
+    title: Settings.Tools.chatgpt.name,
+    link: Settings.Tools.chatgpt.link,
+    body,
+  });
+  Context.appendPanel(panel);
+  panel.querySelector('img').src = chrome.runtime.getURL(Settings.Tools.chatgpt.icon);
+
+  try {
+    await Context.gpt.init();
+    const text = await Context.gpt.send(Context.searchString, (text) => {
+      textContainer.textContent = text;
+    });
+    console.log(text);
+    console.log(await Context.gpt.fetchConversations());
+    console.log(await Context.gpt.removeConversation());
+    console.log(await Context.gpt.fetchConversations());
+  }
+  catch (error) {
+    console.error(error);
+    el("a", {
+      href: ChatGPTSession.URL_SESSION,
+      textContent: "Click here to verify session"
+    }, body);
+  }
+
+
+
+};

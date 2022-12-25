@@ -1,0 +1,108 @@
+class ChatGPTSession {
+  static LOCAL_STORAGE = "SAVE_CHATGPT"
+  static URL_SESSION = "https://chat.openai.com/api/auth/session"
+  constructor() {
+    this.messages = []
+    this.conversation_id = null
+  }
+  static generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+  async init() {
+    await this.fetchSession();
+    await this.fetchModels();
+  }
+  backendApi(service, body) {
+    const params = {
+      "headers": {
+        "authorization": `Bearer ${this.session.accessToken}`,
+        ...(body && { "content-type": "application/json" }),
+      },
+      "credentials": "include",
+      "method": body ? "POST" : "GET",
+      ...(body && { "body": JSON.stringify(body) }),
+    }
+    return bgFetch(`https://chat.openai.com/backend-api/${service}`, params);
+  }
+  async fetchSession() {
+    const r = await bgFetch(ChatGPTSession.URL_SESSION);
+    if(!r.accessToken)
+      throw "ChatGPT Error: Session token not retrieved";
+    this.session = r;
+    return this.session;
+  }
+  async fetchModels() {
+    this.models = (await this.backendApi("models")).models;
+    return this.models;
+  }
+  async fetchConversations() {
+    this.conversations = await this.backendApi("conversations?offset=0&limit=20");
+    return this.conversations;
+  }
+  async send(question, callback) {
+    const id = ChatGPTSession.generateUUID();
+    const pid = ChatGPTSession.generateUUID();
+    const res = await this.backendApi(`conversation`, {
+      action: "next",
+      model: this.models[0].slug,
+      parent_message_id: pid,
+      messages: [{
+        id,
+        role: "user",
+        content: {
+          content_type: "text",
+          parts: [question],
+        }
+      }]
+    });
+    return new Promise(resolve => {
+      if (!res.eventStream){
+        res.detail && callback(res.detail);
+        throw res;
+      }
+      this.messages.push({ id, pid, eventStreamIndex: res.index, text: "", question, callback });
+      resolve(this.next(this.messages.length - 1));
+    });
+  }
+  next(messageIndex = 0) {
+    return new Promise((resolve, reject) => {
+      if (this.messages.length <= messageIndex)
+        throw "Error invalid message index";
+
+      const msg = this.messages[messageIndex];
+
+      chrome.runtime.sendMessage({
+        action: "event-stream",
+        index: msg.eventStreamIndex,
+      }, r => {
+        if (r.isError || !r.value){
+          reject("Error with ChatGPT: " + r)
+          return;
+        }
+
+        if (r?.done || r.value.startsWith("data: [DONE]")) {
+          resolve(this.messages[messageIndex].text);
+          return;
+        }
+        const startJSON = r.value.lastIndexOf(`data: {"message": {"id": `) + 6;
+        const data = JSON.parse(r.value.substr(startJSON));
+        this.conversation_id = data.conversation_id;
+        const text = data.message.content.parts[0];
+        this.messages[messageIndex].text = text;
+        this.messages[messageIndex].callback(text);
+        resolve(this.next(messageIndex));
+      })
+    })
+  }
+  lastText() {
+    return this.messages.at(-1).text;
+  }
+  removeConversation() {
+    return this.backendApi(`conversation/${this.conversation_id}`, {
+      is_visible: false
+    });
+  }
+}

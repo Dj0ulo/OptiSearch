@@ -68,6 +68,13 @@ const Settings = Object.freeze({
   },
   Sites: Sites,
   Tools: {
+    chatgpt: {
+      name: "ChatGPT",
+      link: "https://chat.openai.com/chat",
+      icon: "src/sites/icons/chatgpt.png",
+      local_icon: "chatgpt.png",
+      href: "https://chat.openai.com/chat",
+    },
     bangs: {
       name: "DuckDuckGo Bangs !",
       href: "https://duckduckgo.com/bang",

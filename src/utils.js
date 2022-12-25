@@ -20,7 +20,7 @@ const $$ = (query, element) => [...(element ?? document).querySelectorAll(query)
  * 
  * @returns {boolean} true if we are on a chromium browser (otherwise we probably are on firefox)
  */
-function onChrome() {return typeof browser === 'undefined';}
+function onChrome() { return typeof browser === 'undefined'; }
 
 /**
  * Read file from this extension
@@ -126,7 +126,7 @@ function el(tag, attr, parent) {
 }
 
 function hline(parent) {
-  return el("hr", null, parent);
+  return el("hr", {}, parent);
 }
 
 function insertAfter(newNode, referenceNode) {
@@ -159,7 +159,7 @@ function underSummary(summary) {
   const textSummary = summary.textContent.trim();
   if (textSummary[textSummary.length - 1] !== ':')
     return null;
-  
+
   return nextListElement(summary.nextSibling);
 }
 
@@ -294,11 +294,27 @@ function blobToBase64(blob) {
  * 
  * @param {HTMLImageElement} img 
  */
-function srcToBase64(src){
+function srcToBase64(src) {
   return new Promise((resolve) => {
     chrome.runtime
       .sendMessage(
         { action: 'get-image-blob', url: src }, async (r) => resolve(await blobToBase64(r))
       )
   })
+}
+
+/**
+ * 
+ * @param {URL} url
+ * @param {RequestInfo | undefined} params
+ * @returns {Promise<Response>}
+ */
+function bgFetch(url, params) {
+  return new Promise(resolve => {
+    chrome.runtime.sendMessage({ action: 'fetch', url, params: JSON.stringify(params) }, r => {
+      if (r.isError)
+        throw `Error while fetching in the service worker:\n${r.errorMsg}`;
+      resolve(r);
+    });
+  });
 }
