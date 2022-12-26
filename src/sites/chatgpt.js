@@ -15,21 +15,23 @@ class ChatGPTSession {
     await this.fetchSession();
     await this.fetchModels();
   }
-  backendApi(service, body) {
+  backendApi(service, body, method) {
+    if (!method)
+      method = body ? "POST" : "GET";
     const params = {
       "headers": {
         "authorization": `Bearer ${this.session.accessToken}`,
         ...(body && { "content-type": "application/json" }),
       },
       "credentials": "include",
-      "method": body ? "POST" : "GET",
+      method,
       ...(body && { "body": JSON.stringify(body) }),
     }
     return bgFetch(`https://chat.openai.com/backend-api/${service}`, params);
   }
   async fetchSession() {
     const r = await bgFetch(ChatGPTSession.URL_SESSION);
-    if(!r.accessToken)
+    if (!r.accessToken)
       throw "ChatGPT Error: Session token not retrieved";
     this.session = r;
     return this.session;
@@ -59,11 +61,11 @@ class ChatGPTSession {
       }]
     });
     return new Promise(resolve => {
-      if (!res.eventStream){
+      if (!res.eventStream) {
         res.detail && callback(res.detail);
         throw res;
       }
-      this.messages.push({ id, pid, eventStreamIndex: res.index, text: "", question, callback });
+      this.messages.push({ id, pid, eventStreamIndex: res.index, text: "", buffer: "", question, callback });
       resolve(this.next(this.messages.length - 1));
     });
   }
@@ -78,21 +80,31 @@ class ChatGPTSession {
         action: "event-stream",
         index: msg.eventStreamIndex,
       }, r => {
-        if (r.isError || !r.value){
+        if (r.isError || !r.value) {
           reject("Error with ChatGPT: " + r)
           return;
         }
-
-        if (r?.done || r.value.startsWith("data: [DONE]")) {
-          resolve(this.messages[messageIndex].text);
+        if (r.value.startsWith("data: [DONE]")) {
+          resolve(msg.text);
           return;
         }
-        const startJSON = r.value.lastIndexOf(`data: {"message": {"id": `) + 6;
-        const data = JSON.parse(r.value.substr(startJSON));
-        this.conversation_id = data.conversation_id;
-        const text = data.message.content.parts[0];
-        this.messages[messageIndex].text = text;
-        this.messages[messageIndex].callback(text);
+
+        msg.buffer += r.value;
+        const startJSON = msg.buffer.lastIndexOf(`data: {"message": {"id": `) + 6;
+        const toParse = msg.buffer.substr(startJSON);
+        try {
+          const data = JSON.parse(toParse);
+          this.conversation_id = data.conversation_id;
+          const text = data.message.content.parts[0];
+          msg.text = text;
+          msg.buffer = "";
+          msg.callback(text);
+        }
+        catch (e) {
+          if (!e instanceof SyntaxError)
+            // Unable to parse JSON because the whole packet has not been received yet
+            throw e;
+        }
         resolve(this.next(messageIndex));
       })
     })
@@ -103,6 +115,6 @@ class ChatGPTSession {
   removeConversation() {
     return this.backendApi(`conversation/${this.conversation_id}`, {
       is_visible: false
-    });
+    }, 'PATCH');
   }
 }

@@ -67,33 +67,33 @@ Context.plotOrCompute = () => {
 
 Context.chatgpt = async () => {
   const body = el("div");
-  const textContainer = el("div", { textContent: "Waiting for ChatGPT..." }, body);
+  const textContainer = el("p", { textContent: "Waiting for ChatGPT..." }, body);
+
   const panel = Context.panelFromSite({
     title: Settings.Tools.chatgpt.name,
     link: Settings.Tools.chatgpt.link,
     body,
   });
-  Context.appendPanel(panel);
   panel.querySelector('img').src = chrome.runtime.getURL(Settings.Tools.chatgpt.icon);
+  Context.appendPanel(panel);
 
   try {
     await Context.gpt.init();
     const text = await Context.gpt.send(Context.searchString, (text) => {
-      textContainer.textContent = text;
+      textContainer.innerHTML = escapeHtml(text)
+        .replaceAll(/```\w*(\n((?!```).)*)(```|$)/gs, "<pre>$1</pre>")
+        .replaceAll(/`(((?!`).)*)(`|$)/g, "<code>$1</code>");
+      Context.prettifyCode(body);
     });
     console.log(text);
-    console.log(await Context.gpt.fetchConversations());
-    console.log(await Context.gpt.removeConversation());
-    console.log(await Context.gpt.fetchConversations());
+    Context.gpt.removeConversation();
   }
   catch (error) {
-    console.error(error);
-    el("a", {
-      href: ChatGPTSession.URL_SESSION,
-      textContent: "Click here to verify session"
+    const verifyButton = el("a", {
+      textContent: "Click here to verify session",
     }, body);
+    verifyButton.onclick = () => {
+      window.open(Settings.Tools.chatgpt.link, "ChatGPT Cloudflare verification", "width=200,height=100");
+    }
   }
-
-
-
 };

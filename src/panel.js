@@ -90,7 +90,7 @@ class Context {
           const content = site.set(siteData); // set body and foot
 
           if (content && content.body.innerHTML && siteData.title !== undefined)
-            Context.panels[siteData.indexPanel] = Context.panelFromSite({...siteData, icon: siteData.icon ?? site.icon, ...content});
+            Context.panels[siteData.indexPanel] = Context.panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
           else
             Context.panels[siteData.indexPanel] = null;
 
@@ -170,7 +170,18 @@ class Context {
       }
       Context.currentPanelIndex++;
     }
-    PR.prettyPrint(); // when all possible panels were appended
+  }
+
+  static prettifyCode(element) {
+    $$("code, pre", element).forEach(c => c.classList.add("prettyprint"));
+
+    $$("pre", element).forEach((pre) => {
+      const surround = el("div", { className: "pre-surround", innerHTML: pre.outerHTML, style: "position: relative" });
+      surround.append(createCopyButton(pre.innerText.trim()));
+
+      pre.parentNode.replaceChild(surround, pre);
+    });
+    PR.prettyPrint();
   }
 
   static panelFromSite({ site, title, link, icon, header, body, foot }) {
@@ -207,16 +218,7 @@ class Context {
         childrenToTeX(body);
       }
 
-      const codes = body.querySelectorAll("code, pre");
-      codes.forEach(c => c.classList.add("prettyprint"));
-
-      const pres = body.querySelectorAll("pre");
-      pres.forEach((pre) => {
-        const surround = el("div", { className: "pre-surround", innerHTML: pre.outerHTML, style: "position: relative" });
-        surround.append(createCopyButton(pre.innerText.trim()));
-
-        pre.parentNode.replaceChild(surround, pre);
-      });
+      Context.prettifyCode(body);
       content.append(body);
     }
 
