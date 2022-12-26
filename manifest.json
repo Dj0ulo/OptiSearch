@@ -61,6 +61,7 @@
         "src/libs/math.min.js",
         "src/libs/run_prettify.js",
         "src/libs/tex-svg.js",
+        "src/libs/drawdown.js",
         "src/settings.js",
         "src/plot.js",
         "src/utils.js",

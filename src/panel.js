@@ -145,7 +145,7 @@ class Context {
     return Context.save[tool];
   }
   static async injectStyle() {
-    const styles = ['panel', 'tomorrow', 'sunburst', 'w3schools', 'wikipedia', 'genius'];
+    const styles = ['chatgpt', 'panel', 'tomorrow', 'sunburst', 'w3schools', 'wikipedia', 'genius'];
     const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`)));
     el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
   }
@@ -170,9 +170,10 @@ class Context {
       }
       Context.currentPanelIndex++;
     }
+    PR.prettyPrint();
   }
 
-  static prettifyCode(element) {
+  static prettifyCode(element, runPrettify = false) {
     $$("code, pre", element).forEach(c => c.classList.add("prettyprint"));
 
     $$("pre", element).forEach((pre) => {
@@ -181,7 +182,7 @@ class Context {
 
       pre.parentNode.replaceChild(surround, pre);
     });
-    PR.prettyPrint();
+    runPrettify && PR.prettyPrint();
   }
 
   static panelFromSite({ site, title, link, icon, header, body, foot }) {

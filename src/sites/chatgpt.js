@@ -1,6 +1,8 @@
 class ChatGPTSession {
-  static LOCAL_STORAGE = "SAVE_CHATGPT"
-  static URL_SESSION = "https://chat.openai.com/api/auth/session"
+  static LOCAL_STORAGE = "SAVE_CHATGPT";
+  static URL_SESSION = "https://chat.openai.com/api/auth/session";
+  static ERROR_CLOUDFLARE = "ChatGPT Error: Cloudflare check";
+  static ERROR_SESSION = "ChatGPT Error: User not logged in";
   constructor() {
     this.messages = []
     this.conversation_id = null
@@ -31,8 +33,10 @@ class ChatGPTSession {
   }
   async fetchSession() {
     const r = await bgFetch(ChatGPTSession.URL_SESSION);
+    if(r.status === 403)
+      throw ChatGPTSession.ERROR_CLOUDFLARE;
     if (!r.accessToken)
-      throw "ChatGPT Error: Session token not retrieved";
+      throw ChatGPTSession.ERROR_SESSION;
     this.session = r;
     return this.session;
   }

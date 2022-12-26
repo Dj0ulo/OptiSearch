@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
             eventStreams.push(r.body.getReader());
             return { eventStream: true, index: eventStreams.length - 1 };
           }
-          else if(!r.ok)
+          else if (!r.ok)
             return {
               status: r.status,
               body: await r.text(),
@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         .then(sendResponse)
       break;
     case 'event-stream':
-      if (!eventStreams[msg.index]){
+      if (!eventStreams[msg.index]) {
         sendResponse({ isError: true, errorMsg: `Error: event-stream ${msg.index} not available` })
         return true;
       }
@@ -38,6 +38,17 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           value: [...value.values()].map(c => String.fromCharCode(c)).join('')
         })
       });
+      break;
+    case 'window':
+      chrome.windows.create({
+        url: msg.url,
+        width: 800,
+        height: 800,
+        focused: true,
+      }, (window) => {
+        console.log(window)
+      });
+      sendResponse();
       break;
     default:
       let url = String(msg.api || msg.link);

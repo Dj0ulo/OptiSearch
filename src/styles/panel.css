@@ -158,13 +158,15 @@
   cursor: pointer;
 }
 .optipanel .optibody p,
-.optipanel .optibody ul {
-  line-height: 1.35;
+.optipanel .optibody ul,
+.optipanel .optibody ol {
+  line-height: 1.5;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
 }
 
-.optipanel .optibody ul {
+.optipanel .optibody ul,
+.optipanel .optibody ol {
   padding-left: 15px;
 }
 .optipanel .optibody img {
