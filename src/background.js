@@ -1,9 +1,54 @@
+const eventStreams = [];
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   switch (msg.action) {
     case 'get-image-blob':
       fetch(msg.url)
         .then(response => response.blob())
         .then(imageBlob => sendResponse(imageBlob));
+      break;
+    case 'fetch':
+      fetch(msg.url, msg.params && JSON.parse(msg.params))
+        .catch(e => sendResponse({ isError: true, errorMsg: e.toString() }))
+        .then(async r => {
+          if (r.headers.get("content-type").startsWith("application/json"))
+            return await r.json();
+          else if (r.headers.get("content-type").startsWith("text/event-stream")) {
+            eventStreams.push(r.body.getReader());
+            return { eventStream: true, index: eventStreams.length - 1 };
+          }
+          else if (!r.ok)
+            return {
+              status: r.status,
+              body: await r.text(),
+            };
+          else
+            return await r.text();
+        })
+        .then(sendResponse)
+      break;
+    case 'event-stream':
+      if (!eventStreams[msg.index]) {
+        sendResponse({ isError: true, errorMsg: `Error: event-stream ${msg.index} not available` })
+        return true;
+      }
+      eventStreams[msg.index].read().then(({ done, value }) => {
+        sendResponse({
+          done,
+          value: [...value.values()].map(c => String.fromCharCode(c)).join('')
+        })
+      });
+      break;
+    case 'window':
+      chrome.windows.create({
+        url: msg.url,
+        width: 800,
+        height: 800,
+        focused: true,
+      }, (window) => {
+        console.log(window)
+      });
+      sendResponse();
       break;
     default:
       let url = String(msg.api || msg.link);
@@ -24,14 +69,14 @@ const fetchEngines = (local = false) => {
   let url = local ? chrome.runtime.getURL(`./src/engines.json`) : `${GIST}/engines.json`;
   return fetch(url)
     .then(async response => {
-      if (!response.ok) 
+      if (!response.ok)
         throw response
       const json = await response.json();
-      chrome.storage.local.set({[SAVE_QUERIES_ENGINE]: json});
+      chrome.storage.local.set({ [SAVE_QUERIES_ENGINE]: json });
       return json;
     })
     .catch(async () => {
-      if(local) 
+      if (local)
         throw new Error("No local engines found...");
       return fetchEngines(true);
     });

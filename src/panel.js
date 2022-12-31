@@ -1,215 +1,192 @@
-(async function () {
-  debug("Hello !");
+class Context {
+  static PANEL_CLASS = "optipanel";
+  static gpt = new ChatGPTSession();
+  static async init() {
+    debug("Hello !");
 
-  // Inject style
-  const docHead = document.head || document.documentElement;
-  const styles = ['panel', 'tomorrow', 'sunburst', 'w3schools', 'wikipedia', 'genius'];
-  const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`)));
-  el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, docHead);
+    Context.docHead = document.head || document.documentElement;
 
-  const PANEL_CLASS = "optipanel";
+    await Context.injectStyle();
 
-  const engines = await loadEngines();
+    const engines = await loadEngines();
 
-  const siteFound = window.location.hostname;
-  const engineName = Object.entries(engines)
-    .find(([_, e]) => siteFound.search(new RegExp(e.regex)) != -1)[0];
-  const engine = engines[engineName];
-  if (!engine)
-    return;
+    const siteFound = window.location.hostname;
+    Context.engineName = Object.entries(engines)
+      .find(([_, e]) => siteFound.search(new RegExp(e.regex)) != -1)[0];
+    Context.engine = engines[Context.engineName];
+    if (!Context.engine)
+      return;
 
-  const searchString = document.querySelector(engine.searchBox)?.value;
-  if (!searchString) {
-    debug("No search string detected");
-    return;
-  }
-
-  debug(`${engineName} — "${searchString}"`);
-
-
-  // Change style based on the search engine
-  const style = engine.style;
-  if (style) el('style', { textContent: style, className: `optistyle-${engineName}` }, docHead);
-
-  const save = await loadSettings();
-  // Bigger right column
-  if (save['wideColumn']) {
-    const minW = 600;
-    const maxW = 600;
-    const widthStyle = engine.widthStyle?.replace("${maxW}", maxW).replace("${minW}", minW);
-    if (widthStyle) el('style', { textContent: widthStyle, className: `optistyle-${engineName}` }, docHead);
-  }
-
-
-  //Tools
-  if (save["bangs"] && engineName !== DuckDuckGo) {
-    const regexp = /[?|&]q=((%21|!)[^&]*)/;
-    const reg = window.location.href.match(regexp);
-    if (reg) {
-      log(reg["1"]);
-      window.location.href = "https://duckduckgo.com/?q=" + reg["1"];
+    Context.searchString = $(Context.engine.searchBox)?.value;
+    if (!Context.searchString) {
+      debug("No search string detected");
+      return;
     }
-  }
 
-  if (save["calculator"]) {
-    if (window.location.href.search(/[?|&]q=calculator(&?|$)/) != -1) {
-      const iframe = el("iframe", {
-        className: PANEL_CLASS,
-        id: "opticalculator",
-        src: "https://www.desmos.com/scientific"
-      });
-      appendPanel(iframe);
+    debug(`${Context.engineName} — "${Context.searchString}"`);
+
+
+    // Change style based on the search engine
+    const style = Context.engine.style;
+    if (style) el('style', { textContent: style, className: `optistyle-${Context.engineName}` }, Context.docHead);
+
+    Context.save = await loadSettings();
+    // Bigger right column
+    if (Context.isActive('wideColumn')) {
+      const minW = 600;
+      const maxW = 600;
+      const widthStyle = Context.engine.widthStyle?.replace("${maxW}", maxW).replace("${minW}", minW);
+      if (widthStyle) el('style', { textContent: widthStyle, className: `optistyle-${Context.engineName}` }, Context.docHead);
     }
-  }
 
-  const rep = isMathExpr(searchString);
-  if (rep) {
-    if (rep.vars.length > 0) {
-      if (save["plot"]) {
-        let fun = {
-          expr: rep.expr,
-          vars: rep.vars,
-        };
-        let graph = document.createElement("div");
-        graph.id = "optiplot";
-        graph.className = PANEL_CLASS;
-        appendPanel(graph);
-        plotFun(fun, "optiplot");
+    Context.executeTools();
+
+    Context.numberPanel = 0;
+    Context.currentPanelIndex = 0;
+    Context.panels = [];
+
+
+    const links = [];
+    /**
+     * Take the result Element and send a request to the site if it is supported
+     * @param {Element} r 
+     */
+    const handleResult = (r) => {
+      const linksResult = [...r.querySelectorAll("a")].map(a => a.href);
+      const link = linksResult.find(l => !l.startsWith(Context.engine.link));
+      if (!link) return;
+
+      const found = Object.keys(Sites)
+        .find(site => (
+          Context.save[site]
+          && link.search(Sites[site].link) != -1
+          && !links.find(l => link === l)// no duplicates
+        ));
+
+      if (found && Context.numberPanel < Context.save.maxResults) {
+        links.push(link);
+
+        chrome.runtime.sendMessage({
+          engine: Context.engineName,
+          link: link,
+          site: found,
+          type: "html",
+          indexPanel: Context.numberPanel,
+          ...Sites[found].msgApi(link),
+        }, async (resp) => {
+          if (!resp) return;
+          const [msg, text] = resp;
+          const site = Sites[msg.site];
+          if (!site) return;
+
+          let doc;
+          switch (msg.type) {
+            case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
+            case 'json': doc = JSON.parse(text); break;
+            default: return;
+          }
+
+          const siteData = { ...msg, ...(await site.get(msg, doc)) };
+          const content = site.set(siteData); // set body and foot
+
+          if (content && content.body.innerHTML && siteData.title !== undefined)
+            Context.panels[siteData.indexPanel] = Context.panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
+          else
+            Context.panels[siteData.indexPanel] = null;
+
+
+          Context.updatePanels();
+        });
+
+        Context.numberPanel++;
       }
-    } else if (
-      save["calculator"] &&
-      (typeof rep.answer == "number" ||
-        typeof rep.answer == "boolean" ||
-        rep.answer.entries)
-    ) {
-      const panel = el("div", { className: PANEL_CLASS });
+    }
 
-      let str = "$" + math.parse(rep.expr).toTex() + "~";
-      let answer = rep.answer;
-      if (typeof answer == "number") {
-        str += "=~" + answer.toPrecision(4);
-      } else if (typeof answer == "boolean") {
-        str += ":~" + answer;
-      } else if (rep.answer.entries) {
-        answer = answer.entries[0];
-        str += "=~" + answer;
+    const results = $$(Context.engine.resultRow);
+    if (results.length === 0) {
+      if (Context.engineName === DuckDuckGo) {
+        const resultsContainer = $(Context.engine.resultsContainer);
+        const observer = new MutationObserver((mutationRecords) => {
+          // Handle mutations
+          mutationRecords.map(mr => mr.addedNodes[0])
+            .filter(n => n?.matches(Context.engine.resultRow))
+            .forEach(handleResult);
+        });
+
+        observer.observe(resultsContainer, {
+          subtree: false,  // observe the subtree rooted at myNode
+          childList: true,  // include information childNode insertion/removals
+          attribute: false  // include information about changes to attributes within the subtree
+        });
+
+      } else {
+        debug("No result detected");
       }
-      str += "$";
-
-
-      const expr = el("div", { id: "optiexpr", textContent: str }, panel);
-      toTeX(expr);
-      panel.appendChild(createCopyButton(answer.toString()))
-      appendPanel(panel)
     }
-  }
-
-  let numberPanel = 0, links = [];
-
-  /**
-   * Take the result Element and send a request to the site if it is supported
-   * @param {Element} r 
-   */
-  const handleResult = (r) => {
-    const linksResult = [...r.querySelectorAll("a")].map(a => a.href);
-    const link = linksResult.find(l => !l.startsWith(engine.link));
-    if (!link) return;
-
-    const found = Object.keys(Sites)
-      .find(site => (
-        save[site]
-        && link.search(Sites[site].link) != -1
-        && !links.find(l => link === l)// no duplicates
-      ));
-
-    if (found && numberPanel < save.maxResults) {
-      links.push(link);
-
-      chrome.runtime.sendMessage({
-        engine: engineName,
-        link: link,
-        site: found,
-        type: "html",
-        indexPanel: numberPanel,
-        ...Sites[found].msgApi(link),
-      }, handleSiteResponse);
-
-      numberPanel++;
-    }
-  }
-
-  const results = $$(engine.resultRow);
-  if (results.length === 0) {
-    if (engineName === DuckDuckGo) {
-      const resultsContainer = document.querySelector(engines[DuckDuckGo].resultsContainer);
-      const observer = new MutationObserver((mutationRecords) => {
-        // Handle mutations
-        mutationRecords.map(mr => mr.addedNodes[0])
-          .filter(n => n?.matches(engine.resultRow))
-          .forEach(handleResult);
-      });
-
-      observer.observe(resultsContainer, {
-        subtree: false,  // observe the subtree rooted at myNode
-        childList: true,  // include information childNode insertion/removals
-        attribute: false  // include information about changes to attributes within the subtree
-      });
-
-    } else {
-      debug("No result detected");
-    }
-  }
-  else {
-    results.forEach(handleResult);
-  }
-
-  let currentPanelIndex = 0, panels = [];
-
-  // receive parsed data from html page
-  async function handleSiteResponse(resp) {
-    if (!resp) return;
-    const [msg, text] = resp;
-    const site = Sites[msg.site];
-    if (!site) return;
-
-    let doc;
-    switch (msg.type) {
-      case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
-      case 'json': doc = JSON.parse(text); break;
-      default: return;
+    else {
+      results.forEach(handleResult);
     }
 
-    const siteData = { ...msg, ...(await site.get(msg, doc)) };
-    const content = site.set(siteData); // set body and foot
+    /**
+     * Update color if the theme has somehow changed
+     */
+    let prevBg = null;
+    setInterval(() => {
+      const bg = getBackgroundColor();
+      if (bg === prevBg)
+        return;
+      prevBg = bg;
+      Context.updateColor();
+    }, 200)
 
-    if (content && content.body.innerHTML && siteData.title !== undefined)
-      panels[siteData.indexPanel] = panelFromSite(siteData, siteData.icon ?? site.icon, content);
-    else
-      panels[siteData.indexPanel] = null;
+  }
 
-
-    updatePanels();
+  static isActive(tool) {
+    return Context.save[tool];
+  }
+  static async injectStyle() {
+    const styles = ['chatgpt', 'panel', 'tomorrow', 'sunburst', 'w3schools', 'wikipedia', 'genius'];
+    const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`)));
+    el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
+  }
+  static executeTools() {
+    if (Context.isActive("chatgpt")) Context.chatgpt();
+    if (Context.isActive("bangs")) Context.bangs();
+    if (Context.isActive("calculator")) Context.calculator();
+    if (Context.isActive("calculator") || Context.isActive("plot")) Context.plotOrCompute();
   }
 
   /**
    * Draw the panels in order. Only when the previous are not undefined
    */
-  function updatePanels() {
-    while (currentPanelIndex < numberPanel) {
-      const panel = panels[currentPanelIndex];
+  static updatePanels() {
+    while (Context.currentPanelIndex < Context.numberPanel) {
+      const panel = Context.panels[Context.currentPanelIndex];
       if (panel === undefined) {
         return;
       }
       if (panel !== null) {
-        appendPanel(panel);
+        Context.appendPanel(panel);
       }
-      currentPanelIndex++;
+      Context.currentPanelIndex++;
     }
-    PR.prettyPrint(); // when all possible panels were appended
+    PR.prettyPrint();
   }
 
-  function panelFromSite({ site, title, link }, icon, { header, body, foot }) {
-    const panel = el("div", { className: `${PANEL_CLASS}` });
+  static prettifyCode(element, runPrettify = false) {
+    $$("code, pre", element).forEach(c => c.classList.add("prettyprint"));
+
+    $$("pre", element).forEach((pre) => {
+      const surround = el("div", { className: "pre-surround", innerHTML: pre.outerHTML, style: "position: relative" });
+      surround.append(createCopyButton(pre.innerText.trim()));
+
+      pre.parentNode.replaceChild(surround, pre);
+    });
+    runPrettify && PR.prettyPrint();
+  }
+
+  static panelFromSite({ site, title, link, icon, header, body, foot }) {
+    const panel = el("div", { className: `${Context.PANEL_CLASS}` });
 
     //watermark
     el("div", { className: "watermark", textContent: "OptiSearch" }, panel);
@@ -229,7 +206,7 @@
 
     const content = el('div', { className: "opticontent" }, panel);
 
-    // FOOT
+    // HEADER
     if (header) {
       content.append(header);
       hline(content);
@@ -242,16 +219,7 @@
         childrenToTeX(body);
       }
 
-      const codes = body.querySelectorAll("code, pre");
-      codes.forEach(c => c.classList.add("prettyprint"));
-
-      const pres = body.querySelectorAll("pre");
-      pres.forEach((pre) => {
-        const surround = el("div", { className: "pre-surround", innerHTML: pre.outerHTML, style: "position: relative" });
-        surround.append(createCopyButton(pre.innerText.trim()));
-
-        pre.parentNode.replaceChild(surround, pre);
-      });
+      Context.prettifyCode(body);
       content.append(body);
     }
 
@@ -272,14 +240,14 @@
    * @param {Element} panel the content of the panel
    * @returns {Element} the box where the panel is 
    */
-  function appendPanel(panel) {
-    const rightColumn = getRightColumn();
+  static appendPanel(panel) {
+    const rightColumn = Context.getRightColumn();
     if (!rightColumn)
       return null;
 
-    const box = el("div", { className: `optisearchbox bright ${engineName}` }, rightColumn);
+    const box = el("div", { className: `optisearchbox bright ${Context.engineName}` }, rightColumn);
     box.append(panel);
-    updateColor();
+    Context.updateColor();
 
     // const unfold = el('div', { className: 'unfold_button', textContent: 'Display more' }, box);
     // panel.classList.toggle('folded')
@@ -292,14 +260,14 @@
    * Get and/or add right column to the results page if there isn't one
    * @returns {Node} the rightColumn
    */
-  function getRightColumn() {
-    const selectorRightCol = engine.rightColumn;
-    let rightColumn = document.querySelector(selectorRightCol);
+  static getRightColumn() {
+    const selectorRightCol = Context.engine.rightColumn;
+    let rightColumn = $(selectorRightCol);
     if (rightColumn)
       return rightColumn;
 
 
-    const centerColumn = document.querySelector(engine.centerColumn);
+    const centerColumn = $(Context.engine.centerColumn);
     if (!centerColumn)
       debug("No right column");
 
@@ -328,37 +296,25 @@
   }
 
 
-  function updateColor() {
+  static updateColor() {
     const bg = getBackgroundColor();
     const dark = isDarkMode();
-    const panels = document.querySelectorAll(".optisearchbox");
+    const allPanels = $$(".optisearchbox");
 
-    let style = document.querySelector('#optisearch-bg');
+    let style = $('#optisearch-bg');
     if (!style)
-      style = el('style', { id: 'optisearch-bg' }, docHead);
+      style = el('style', { id: 'optisearch-bg' }, Context.docHead);
 
     if (dark) {
       style.textContent = `.optisearchbox.dark {background-color: ${colorLuminance(bg, 0.02)}}
       .optisearchbox.dark .optipanel .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}
       .optisearchbox.dark .prettyprint, .optisearchbox.dark .pre-surround .prettyprint {background-color: ${colorLuminance(bg, -0.02)}}`;
     }
-    for (let p of panels) {
+    for (let p of allPanels) {
       if (dark)
         p.className = p.className.replace("bright", "dark");
       else
         p.className = p.className.replace("dark", "bright");
     }
   }
-
-  /**
-   * Update color if the theme has somehow changed
-   */
-  let prevBg = null;
-  setInterval(() => {
-    const bg = getBackgroundColor();
-    if (bg === prevBg)
-      return;
-    prevBg = bg;
-    updateColor();
-  }, 200)
-})()
+}

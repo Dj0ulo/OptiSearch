@@ -1,6 +1,6 @@
 {
   "name": "OptiSearch",
-  "version": "1.5.2",
+  "version": "1.6",
   "manifest_version": 3,
   "description": "Upgrade and optimize your searches !",
   "permissions": [
@@ -20,7 +20,8 @@
     "https://developer.mozilla.org/",
     "https://genius.com/",
     "https://answers.unity.com/",
-    "https://*.mathworks.com/"
+    "https://*.mathworks.com/",
+    "https://*.openai.com/"
   ],
   "icons": {
     "128": "icon128.png"
@@ -31,7 +32,8 @@
   "web_accessible_resources": [{
 		"resources": [
       "src/engines.json",
-      "src/styles/*"
+      "src/styles/*",
+      "src/sites/icons/*"
     ],
     "matches": [
       "*://duckduckgo.com/*",
@@ -59,10 +61,14 @@
         "src/libs/math.min.js",
         "src/libs/run_prettify.js",
         "src/libs/tex-svg.js",
+        "src/libs/drawdown.js",
         "src/settings.js",
         "src/plot.js",
         "src/utils.js",
+        "src/sites/chatgpt.js",
         "src/panel.js",
+        "src/tools.js",
+        "src/init.js",
         "src/sites/stackoverflow.js",
         "src/sites/mdn.js",
         "src/sites/wikipedia.js",
