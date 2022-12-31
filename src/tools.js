@@ -111,9 +111,6 @@ Context.chatgpt = async () => {
   Context.appendPanel(panel);
 
   const formatText = (text) => markdown(escapeHtml(text.trim()))
-  // .replaceAll(/```\w*(\n((?!```).)*)(```|$)/gs, "<pre>$1</pre>")
-  // .replaceAll(/`(((?!`).)*)(`|$)/g, "<code>$1</code>")
-  // .replaceAll(/\n/g, "<br>");
   const test = true;
   try {
     !test && await Context.gpt.init();

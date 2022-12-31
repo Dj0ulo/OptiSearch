@@ -29,7 +29,7 @@
 
 .chatgpt-button,
 .optisearchbox.dark .optipanel .optibody .text-area-container{
-  border-color: #6a6a6a;
+  border-color: #222222;
   background-color: #3b3b3b;
 }
 .optisearchbox.dark .optipanel .optibody .text-area-container:has(textarea:focus){
