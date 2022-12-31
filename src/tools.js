@@ -111,7 +111,7 @@ Context.chatgpt = async () => {
   Context.appendPanel(panel);
 
   const formatText = (text) => markdown(escapeHtml(text.trim()))
-  const test = true;
+  const test = false;
   try {
     !test && await Context.gpt.init();
     send.onclick = async () => {
