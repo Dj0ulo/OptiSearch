@@ -5,7 +5,7 @@
     "rightColumn": "#rhs",
     "centerColumn": "#center_col",
     "resultRow": ".g",
-    "searchBox": "input.gLFyf.gsfi",
+    "searchBox": "input.gLFyf.gsfi, input.gLFyf",
     "active": true,
     "regex": "^www\\.google\\.",
     "widthStyle": "#rcnt {max-width: max-content;} .optisearchbox{min-width: ${maxW}px;}"
@@ -23,15 +23,15 @@
   },
   "Ecosia": {
     "link": "https://www.ecosia.org",
-    "icon": "https://cdn.ecosia.org/assets/images/ico/favicon.ico",
+    "icon": "https://cdn-static.ecosia.org/static/icons/favicon.ico",
     "rightColumn": ".sidebar.web__sidebar[data-test-id=sidebar]",
     "centerColumn": ".mainline",
     "resultRow": ".result__body",
-    "searchBox": ".search-form__input, search-form-input",
+    "searchBox": ".search-form__input, #search-form-input",
     "active": true,
     "regex": "\\.ecosia\\.org$",
     "widthStyle": ".web[data-test-id=layout-content] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
-    "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;}"
+    "style": ".optipanel .title {color: #1a0dab;} .sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;}"
   },
   "Yahoo": {
     "link": "https://www.yahoo.com",
@@ -43,10 +43,10 @@
     "regex": "search\\.yahoo\\.com$"
   },
   "DuckDuckGo": {
-    "link": "https://duckduckgo.com/",
+    "link": "https://duckduckgo.com",
     "icon": "https://duckduckgo.com/favicon.ico",
     "rightColumn": "div.results--sidebar",
-    "resultRow": ".nrn-react-div",
+    "resultRow": ".result.results_links_deep",
     "searchBox": "#search_form_input",
     "resultsContainer": "#links",
     "active": true,
@@ -54,7 +54,7 @@
     "widthStyle": ".results--sidebar {max-width: ${maxW}px !important; } .cw{max-width:unset;}"
   },
   "Brave Search": {
-    "link": "https://search.brave.com/",
+    "link": "https://search.brave.com",
     "icon": "https://cdn.search.brave.com/serp/v1/static/brand/16c26cd189da3f0f7ba4e55a584ddde6a7853c9cc340ff9f381afc6cb18e9a1e-favicon-32x32.png",
     "rightColumn": "#side-right",
     "resultRow": ".snippet.fdb",
