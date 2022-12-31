@@ -17,8 +17,7 @@ class Context {
     if (!Context.engine)
       return;
 
-    Context.searchString = $(Context.engine.searchBox)?.value;
-    if (!Context.searchString) {
+    if (!Context.parseSearchString()) {
       debug("No search string detected");
       return;
     }
@@ -143,6 +142,10 @@ class Context {
 
   static isActive(tool) {
     return Context.save[tool];
+  }
+  static parseSearchString() {
+    Context.searchString = $(Context.engine.searchBox)?.value;
+    return Context.searchString;
   }
   static async injectStyle() {
     const styles = ['chatgpt', 'panel', 'tomorrow', 'sunburst', 'w3schools', 'wikipedia', 'genius'];

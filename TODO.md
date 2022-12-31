@@ -71,6 +71,7 @@
 - don't work with bing when not connected because of redirection link
 - "debug log php" bad formating
 - bug panel linux 
+- "puppeteer extension disbaled" bug formatting stackoverflow
 #### Later
 - vote button stack overflow
 - switch answer

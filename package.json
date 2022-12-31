@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "mocha": "^10.2.0",
+    "puppeteer": "^19.4.1"
+  },
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha test.js"
+  }
+}
