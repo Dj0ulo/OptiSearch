@@ -254,24 +254,28 @@ function colorLuminance(color, lum) {
   return `hsl(${(h * 360).toPrecision(4)}, ${(s * 100).toPrecision(4)}%, ${(l * 100).toPrecision(4)}%)`;
 }
 
-/**
- * @returns {string} background-color of the body
+/** 
+ * @param {string} colorStr of the body 
+ * @returns {int[]} RGBA values
  */
-function getBackgroundColor() {
-  return getComputedStyle(document.body, null)
-    .getPropertyValue("background-color");
+function textColorToRGBA(colorStr) {
+  const matcher = colorStr.match(/\(([\d ,]+)\)/);
+  return matcher[1].split(",").map((m) => parseInt(m));
 }
-/**
- * @returns {boolean} true if the body color is dark 
- */
+
+/** @returns {string} background-color of the body */
+function getBackgroundColor() {
+  const bodyBackColorStr = getComputedStyle(document.body, null).getPropertyValue("background-color");
+  let rgba = textColorToRGBA(bodyBackColorStr);
+  if(rgba[3] === 0)
+    return getComputedStyle(document.querySelector('html'), null).getPropertyValue("background-color");
+  return bodyBackColorStr
+}
+
+/** @returns {boolean} true if the body color is dark  */
 function isDarkMode() {
   try {
-    const colorStr = getBackgroundColor();
-    const matcher = colorStr.match(/\(([\d ,]+)\)/);
-    const rgba = matcher[1].split(",").map((m) => parseInt(m));
-    if (rgba[3] === 0) {
-      return false;
-    }
+    const rgba = textColorToRGBA(getBackgroundColor());
 
     const av = rgba.slice(0, 3).reduce((a, v) => a + v) / 3;
     return av < 128;

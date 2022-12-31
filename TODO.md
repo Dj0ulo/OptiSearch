@@ -62,6 +62,7 @@
 - ✅ bug genius
 - ✅ reverif all sites
 - ✅ mathworks.com : https://www.mathworks.com/matlabcentral/answers/217867-how-can-i-calculate-mse-and-psnr-of-rgb-color-image
+- ✅ bug style dark ecosia
 
 
 ## TO-DO 
@@ -86,6 +87,8 @@
 - remove duckduckgo bang
 - https://stackoverflow.com/questions/44782476/split-a-numpy-array-both-horizontally-and-vertically#44782633 comment python not good
 - bug Excel Color Scales in w3scools
+- make responsive column instead of checkbox max width
+- forum odoo
 #### Maybe
 - cppreference
 - man page
