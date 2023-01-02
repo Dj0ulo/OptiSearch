@@ -2,7 +2,7 @@
   "name": "OptiSearch",
   "version": "2.0",
   "manifest_version": 3,
-  "description": "Upgrade and optimize your searches !",
+  "description": "Display ChatGPT, StackOverflow, Wikipedia, etc. answers alongside Google Search results !",
   "permissions": [
     "storage"
   ],

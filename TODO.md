@@ -73,6 +73,8 @@
 - "debug log php" bad formating
 - bug panel linux 
 - "puppeteer extension disbaled" bug formatting stackoverflow
+- duckduckgo not displaying panel from site
+
 #### Later
 - vote button stack overflow
 - switch answer
