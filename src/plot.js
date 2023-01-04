@@ -13,7 +13,6 @@ function isMathExpr(expr) {
         expr: expr
       };
     } catch (error) {
-      //console.log("test", error);
       if (error.message.startsWith("Undefined symbol ")) {
         let symbol = error.message.slice("Undefined symbol ".length);
         if ((symbol != 'x' && symbol != 'y' && symbol != 'z') || variables.length >= 2)
@@ -163,7 +162,6 @@ function plotFun(fun, idDiv, range) {
   
   const plot = document.getElementById(idDiv);
   plot.on('plotly_relayout', (eventData) => {
-    //console.log(eventData);
     if (eventData['xaxis.autorange'] == true)
       plotFun(fun, idDiv);
     if (eventData['xaxis.range[0]']) {

@@ -135,7 +135,7 @@ Context.chatgpt = async () => {
     disableInputArea(true);
     const texts = {};
     if (error === ChatGPTSession.ERROR_CLOUDFLARE) {
-      texts.p = "Please pass the Cloudflare check on ChatGPT, then refresh this page :";
+      texts.p = "Please pass the Cloudflare check (and login) on ChatGPT, then refresh this page :";
       texts.button = "Cloudflare check";
     }
     else {
@@ -150,9 +150,7 @@ Context.chatgpt = async () => {
       className: "chatgpt-button",
       textContent: texts.button,
     }, body).addEventListener("click", () => {
-      chrome.runtime.sendMessage({ action: 'window', url: Settings.Tools.chatgpt.link }, r => {
-        console.log(r);
-      });
+      chrome.runtime.sendMessage({ action: 'window', url: Settings.Tools.chatgpt.link });
     })
   }
 };

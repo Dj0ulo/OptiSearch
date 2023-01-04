@@ -51,7 +51,6 @@ Sites.mathworks.get = (from, doc) => {
   });
 
   let time = editions[0].querySelector(QUERIES.time);
-  console.log(time);
   if (time) {
     time = time.outerHTML;
   }

@@ -43,88 +43,9 @@ class Context {
     Context.numberPanel = 0;
     Context.currentPanelIndex = 0;
     Context.panels = [];
+    Context.links = [];
 
-
-    const links = [];
-    /**
-     * Take the result Element and send a request to the site if it is supported
-     * @param {Element} r 
-     */
-    const handleResult = (r) => {
-      const linksResult = [...r.querySelectorAll("a")].map(a => a.href);
-      const link = linksResult.find(l => !l.startsWith(Context.engine.link));
-      if (!link) return;
-
-      const found = Object.keys(Sites)
-        .find(site => (
-          Context.save[site]
-          && link.search(Sites[site].link) != -1
-          && !links.find(l => link === l)// no duplicates
-        ));
-
-      if (found && Context.numberPanel < Context.save.maxResults) {
-        links.push(link);
-
-        chrome.runtime.sendMessage({
-          engine: Context.engineName,
-          link: link,
-          site: found,
-          type: "html",
-          indexPanel: Context.numberPanel,
-          ...Sites[found].msgApi(link),
-        }, async (resp) => {
-          if (!resp) return;
-          const [msg, text] = resp;
-          const site = Sites[msg.site];
-          if (!site) return;
-
-          let doc;
-          switch (msg.type) {
-            case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
-            case 'json': doc = JSON.parse(text); break;
-            default: return;
-          }
-
-          const siteData = { ...msg, ...(await site.get(msg, doc)) };
-          const content = site.set(siteData); // set body and foot
-
-          if (content && content.body.innerHTML && siteData.title !== undefined)
-            Context.panels[siteData.indexPanel] = Context.panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
-          else
-            Context.panels[siteData.indexPanel] = null;
-
-
-          Context.updatePanels();
-        });
-
-        Context.numberPanel++;
-      }
-    }
-
-    const results = $$(Context.engine.resultRow);
-    if (results.length === 0) {
-      if (Context.engineName === DuckDuckGo) {
-        const resultsContainer = $(Context.engine.resultsContainer);
-        const observer = new MutationObserver((mutationRecords) => {
-          // Handle mutations
-          mutationRecords.map(mr => mr.addedNodes[0])
-            .filter(n => n?.matches(Context.engine.resultRow))
-            .forEach(handleResult);
-        });
-
-        observer.observe(resultsContainer, {
-          subtree: false,  // observe the subtree rooted at myNode
-          childList: true,  // include information childNode insertion/removals
-          attribute: false  // include information about changes to attributes within the subtree
-        });
-
-      } else {
-        debug("No result detected");
-      }
-    }
-    else {
-      results.forEach(handleResult);
-    }
+    Context.parseResults();
 
     /**
      * Update color if the theme has somehow changed
@@ -157,6 +78,84 @@ class Context {
     if (Context.isActive("bangs")) Context.bangs();
     if (Context.isActive("calculator")) Context.calculator();
     if (Context.isActive("calculator") || Context.isActive("plot")) Context.plotOrCompute();
+  }
+
+  static parseResults() {
+    const results = $$(Context.engine.resultRow);
+    if (results.length > 0) {
+      results.forEach(Context.handleResult);
+      return;
+    }
+    if (Context.engineName !== DuckDuckGo) {
+      debug("No result detected");
+      return;
+    }
+
+    const resultsContainer = $(Context.engine.resultsContainer);
+    const observer = new MutationObserver((mutationRecords) => {
+      // Handle mutations
+      mutationRecords
+        .filter(mr => mr.addedNodes.length > 0)
+        .map(mr => mr.addedNodes[0])
+        .filter(n => n?.matches(Context.engine.resultRow))
+        .forEach(Context.handleResult);
+    });
+
+    observer.observe(resultsContainer, { childList: true });
+  }
+
+  /**
+     * Take the result Element and send a request to the site if it is supported
+     * @param {Element} r the result
+     */
+  static handleResult(r) {
+    const linksResult = [...r.querySelectorAll("a")].map(a => a.href);
+    const link = linksResult.find(l => !l.startsWith(Context.engine.link));
+    if (!link) return;
+
+    const found = Object.keys(Sites)
+      .find(site => (
+        Context.save[site]
+        && link.search(Sites[site].link) != -1
+        && !Context.links.find(l => link === l)// no duplicates
+      ));
+
+    if (found && Context.numberPanel < Context.save.maxResults) {
+      Context.links.push(link);
+
+      chrome.runtime.sendMessage({
+        engine: Context.engineName,
+        link,
+        site: found,
+        type: "html",
+        indexPanel: Context.numberPanel,
+        ...Sites[found].msgApi(link),
+      }, async (resp) => {
+        if (!resp) return;
+        const [msg, text] = resp;
+        const site = Sites[msg.site];
+        if (!site) return;
+
+        let doc;
+        switch (msg.type) {
+          case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
+          case 'json': doc = JSON.parse(text); break;
+          default: return;
+        }
+
+        const siteData = { ...msg, ...(await site.get(msg, doc)) };
+        const content = site.set(siteData); // set body and foot
+
+        if (content && content.body.innerHTML && siteData.title !== undefined)
+          Context.panels[siteData.indexPanel] = Context.panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
+        else
+          Context.panels[siteData.indexPanel] = null;
+
+        Context.updatePanels();
+      });
+
+      Context.numberPanel++;
+    }
   }
 
   /**
@@ -251,16 +250,12 @@ class Context {
     box.append(panel);
     Context.updateColor();
 
-    // const unfold = el('div', { className: 'unfold_button', textContent: 'Display more' }, box);
-    // panel.classList.toggle('folded')
-    // unfold.onclick = () => panel.classList.toggle('folded');
-
     return box;
   }
 
   /**
    * Get and/or add right column to the results page if there isn't one
-   * @returns {Node} the rightColumn
+   * @returns {Node} Context.rightColumn
    */
   static parseRightColumn() {
     const selectorRightCol = Context.engine.rightColumn;
@@ -297,7 +292,6 @@ class Context {
     if (Context.engine.rightColumnRemovable) {
       const observer = new MutationObserver((_) => {
         if ($(Context.engine.rightColumn)) return;
-        console.log('inserted');
         insertAfter(Context.rightColumn, $(Context.engine.centerColumn));
       });
 

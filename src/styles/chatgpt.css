@@ -1,4 +1,4 @@
-.chatgpt-button{
+.optipanel .optibody .chatgpt-button{
   padding: 0.5em;
   font-size: large;
   font-weight: 700;
@@ -8,10 +8,10 @@
   transition: 0.3s;
 
 }
-.chatgpt-button:hover{
-  color: white;
+.optipanel .optibody .chatgpt-button:hover{
+  color: black;
 }
-.chatgpt-button,
+.optipanel .optibody .chatgpt-button,
 .optipanel .optibody .text-area-container {
   width: calc(100% - 22px);
   padding: 8px 10px;
@@ -23,18 +23,11 @@
 .optipanel .optibody .text-area-container {
   display: flex;
 }
+.optipanel .optibody .chatgpt-button:active,
 .optipanel .optibody .text-area-container:has(textarea:focus){
   border-color: #bbc0c4;
 }
 
-.chatgpt-button,
-.optisearchbox.dark .optipanel .optibody .text-area-container{
-  border-color: #222222;
-  background-color: #3b3b3b;
-}
-.optisearchbox.dark .optipanel .optibody .text-area-container:has(textarea:focus){
-  border-color: #979797;
-}
 
 .optipanel .optibody .text-area-container.sent {
   border: 0;
@@ -60,15 +53,9 @@
   transition: 0.3s;
   fill: rgb(65, 65, 65);
 }
-.optisearchbox.dark .optipanel .optibody .text-area-container button{
-  fill: rgb(212, 212, 212);
-}
 
 .optipanel .optibody .text-area-container button:hover{
   fill: rgb(46, 46, 46);
-}
-.optisearchbox.dark .optipanel .optibody .text-area-container button:hover{
-  fill: white;
 }
 
 .optipanel .optibody .text-area-container.sent button {
@@ -78,4 +65,24 @@
   width: 2em;
   height: 1.5em;
   transform: rotate(90deg);
+}
+
+
+.dark.optisearchbox .optipanel .optibody .chatgpt-button,
+.dark.optisearchbox .optipanel .optibody .text-area-container{
+  border-color: #222222;
+  background-color: #3b3b3b;
+}
+.dark.optisearchbox .optipanel .optibody .text-area-container button{
+  fill: rgb(212, 212, 212);
+}
+.dark.optisearchbox .optipanel .optibody .text-area-container button:hover{
+  fill: white;
+}
+.dark.optisearchbox .optipanel .optibody .chatgpt-button:active,
+.dark.optisearchbox .optipanel .optibody .text-area-container:has(textarea:focus){
+  border-color: #979797;
+}
+.dark.optisearchbox .optipanel .optibody .chatgpt-button:hover{
+  color: white;
 }

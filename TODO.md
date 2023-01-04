@@ -6,6 +6,8 @@
 - ❌ submit feedback depending on chrome and firefox
 - ❌ "Flutter position stack widget in center" scroll bar in bright theme
 - ❌ remove innerHTML assignment
+- ❌ don't work with bing when not connected because of redirection link ➖ Not the case anymore
+
 
 ### Done ✅
 - ✅ link underline n'importe ou 
@@ -65,17 +67,16 @@
 - ✅ bug style dark ecosia
 - ✅ ecosia optiserachbox, sometimes disapearing
 - ✅ duckduckgo not displaying panel from site
+- ✅ bug panel linux 
 
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
-- don't work with bing when not connected because of redirection link
-- "debug log php" bad formating
-- bug panel linux 
-- "puppeteer extension disbaled" bug formatting stackoverflow
 
 #### Later
+- "debug log php" bad formating
+- "puppeteer extension disabled" bug formatting stackoverflow
 - vote button stack overflow
 - switch answer
 - wikipedia list with headlines (for sigle) (ex. "crows foot")

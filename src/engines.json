@@ -47,7 +47,7 @@
     "link": "https://duckduckgo.com",
     "icon": "https://duckduckgo.com/favicon.ico",
     "rightColumn": "div.results--sidebar",
-    "resultRow": "[data-nrn='result']",
+    "resultRow": ".nrn-react-div",
     "searchBox": "#search_form_input",
     "resultsContainer": "#links",
     "active": true,

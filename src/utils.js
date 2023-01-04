@@ -128,9 +128,13 @@ function el(tag, attr, parent) {
 function hline(parent) {
   return el("hr", {}, parent);
 }
-
+/**
+ * Insert an Element after another one
+ * @param {Element} newNode Element to insert
+ * @param {Element} referenceNode the other one
+ */
 function insertAfter(newNode, referenceNode) {
-  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+  return referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
 /**
