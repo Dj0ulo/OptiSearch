@@ -63,17 +63,17 @@
 - ✅ reverif all sites
 - ✅ mathworks.com : https://www.mathworks.com/matlabcentral/answers/217867-how-can-i-calculate-mse-and-psnr-of-rgb-color-image
 - ✅ bug style dark ecosia
+- ✅ ecosia optiserachbox, sometimes disapearing
+- ✅ duckduckgo not displaying panel from site
 
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
-- ecosia optiserachbox, sometimes disapearing
 - don't work with bing when not connected because of redirection link
 - "debug log php" bad formating
 - bug panel linux 
 - "puppeteer extension disbaled" bug formatting stackoverflow
-- duckduckgo not displaying panel from site
 
 #### Later
 - vote button stack overflow

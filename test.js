@@ -121,20 +121,38 @@ describe('OptiPanel', function () {
 
       await Promise.all(pages.map(p=> {
         if(p.engineName === "DuckDuckGo")
-          return p.goto(`${p.engine.link}/?q=setinterval%20js`);
-        return p.goto(`${p.engine.link}/search?q=setinterval%20js`);
+          return p.goto(`${p.engine.link}/?q=setinterval%20js%20w3schools`);
+        return p.goto(`${p.engine.link}/search?q=setinterval%20js%20w3schools`);
       }));
         
       await helloPromises;
     });
 
     // Functionality
+    it('Right Column', async () => {
+      await Promise.all(pages.map(async p => {
+        const el = await p.$(p.engine.rightColumn);
+        p.assertOk(el);
+      }));
+    });
     it('Search string', async () => {
       await Promise.all(pages.map(async p => {
         const el = await p.$(p.engine.searchBox);
-        p.assertEqual(await el.get("value", p), "setinterval js");
+        p.assertEqual(await el.get("value", p), "setinterval js w3schools");
       }));
-    })
+    });
+    it('Result row', async () => {
+      await Promise.all(pages.map(async p => {
+        const els = await p.$$(p.engine.resultRow);
+        p.assertOk(els.length > 0,"Failed to parse results row");
+      }));
+    });
+    it('W3Schools panel', async () => {
+      await Promise.all(pages.map(async p => {
+        const els = await p.$$(".w3body.optibody");
+        p.assertOk(els.length > 0,'No w3schools panel found');
+      }));
+    });
   });
 
   // after(async () => await browser.close());

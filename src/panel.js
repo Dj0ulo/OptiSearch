@@ -37,7 +37,7 @@ class Context {
       const widthStyle = Context.engine.widthStyle?.replace("${maxW}", maxW).replace("${minW}", minW);
       if (widthStyle) el('style', { textContent: widthStyle, className: `optistyle-${Context.engineName}` }, Context.docHead);
     }
-
+    Context.parseRightColumn();
     Context.executeTools();
 
     Context.numberPanel = 0;
@@ -244,11 +244,10 @@ class Context {
    * @returns {Element} the box where the panel is 
    */
   static appendPanel(panel) {
-    const rightColumn = Context.getRightColumn();
-    if (!rightColumn)
+    if (!Context.rightColumn)
       return null;
 
-    const box = el("div", { className: `optisearchbox bright ${Context.engineName}` }, rightColumn);
+    const box = el("div", { className: `optisearchbox bright ${Context.engineName}` }, Context.rightColumn);
     box.append(panel);
     Context.updateColor();
 
@@ -263,11 +262,11 @@ class Context {
    * Get and/or add right column to the results page if there isn't one
    * @returns {Node} the rightColumn
    */
-  static getRightColumn() {
+  static parseRightColumn() {
     const selectorRightCol = Context.engine.rightColumn;
-    let rightColumn = $(selectorRightCol);
-    if (rightColumn)
-      return rightColumn;
+    Context.rightColumn = $(selectorRightCol);
+    if (Context.rightColumn)
+      return Context.rightColumn;
 
 
     const centerColumn = $(Context.engine.centerColumn);
@@ -292,10 +291,23 @@ class Context {
             break;
         }
       })
-    rightColumn = el('div', attr);
-    insertAfter(rightColumn, centerColumn);
+    Context.rightColumn = el('div', attr);
+    insertAfter(Context.rightColumn, centerColumn);
 
-    return rightColumn;
+    if (Context.engine.rightColumnRemovable) {
+      const observer = new MutationObserver((_) => {
+        if ($(Context.engine.rightColumn)) return;
+        console.log('inserted');
+        insertAfter(Context.rightColumn, $(Context.engine.centerColumn));
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    return Context.rightColumn;
   }
 
 
