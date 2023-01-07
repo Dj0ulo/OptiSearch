@@ -67,90 +67,114 @@ Context.plotOrCompute = () => {
 
 Context.chatgpt = async () => {
   const body = el("div");
-
-  const inputContainer = el("div", { className: "text-area-container" }, body);
-  const inputArea = el("textarea", {
-    value: Context.searchString,
-  }, inputContainer);
-
-  const send = el("button", {
-    innerHTML: `<svg viewBox="0 0 20 20">
-<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-</svg>`,
-    title: "Send to ChatGPT"
-  }, inputContainer);
-  inputContainer.addEventListener("click", () => {
-    inputArea.focus();
-  });
-  inputArea.addEventListener("input", (event) => {
-    event.target.style.height = "";
-    event.target.style.height = event.target.scrollHeight + "px"
-  });
-  inputArea.addEventListener("keypress", (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      send.click();
-    }
-  });
-  const disableInputArea = (invisible = false) => {
-    inputContainer.classList.add("sent");
-    inputArea.disabled = true;
-    invisible && (inputContainer.style.display = 'none');
-  }
-
-  const textContainer = el("div", { textContent: "" }, body);
-  textContainer.style.display = "none";
-
-
   const panel = Context.panelFromSite({
     title: Settings.Tools.chatgpt.name,
     link: Settings.Tools.chatgpt.link,
     body,
   });
   panel.querySelector('img').src = chrome.runtime.getURL(Settings.Tools.chatgpt.icon);
-  Context.appendPanel(panel);
 
-  const formatText = (text) => markdown(escapeHtml(text.trim()))
-  const test = false;
-  try {
-    !test && await Context.gpt.init();
-    send.onclick = async () => {
-      disableInputArea();
-      textContainer.style.display = "block";
-      if (!test) {
-        const text = await Context.gpt.send(inputArea.value, (text) => {
-          textContainer.innerHTML = formatText(text);
-          Context.prettifyCode(body, true);
-        });
-        debug(text);
-        Context.gpt.removeConversation();
-      } else {
-        const text = `This is a test`;
-        textContainer.innerHTML = formatText(text);
-        Context.prettifyCode(body, true);
+  const inputContainer = el("div", { className: "text-area-container" }, body);
+  const inputArea = el("textarea", { value: Context.searchString, }, inputContainer);
+  const sendButton = el("button", {
+    innerHTML: `<svg viewBox="0 0 20 20">
+<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+</svg>`,
+    title: "Send to ChatGPT"
+  }, inputContainer);
+  const responseContainer = el("div", { textContent: "" }, body);
+  responseContainer.style.display = "none";
+
+  const infoContainer = el("p", {}, body);
+
+  const refreshButton = el("div", {
+    type: "button",
+    className: "chatgpt-button",
+    textContent: "Refresh",
+  }, body)
+  refreshButton.style.display = "none";
+  refreshButton.addEventListener("click", () => {
+    refreshButton.style.display = "none";  
+    pingChatGPT();  
+  });
+
+  const actionButton = el("div", {
+    type: "button",
+    className: "chatgpt-button",
+  }, body);
+  actionButton.style.display = "none";
+  actionButton.addEventListener("click", () => {
+    openWindowLogin();
+    refreshButton.style.display = "";
+    actionButton.style.display = "none";
+  });
+
+  inputContainer.addEventListener("click", () => inputArea.focus());
+  inputArea.addEventListener("input", (event) => {
+    event.target.style.height = "";
+    event.target.style.height = event.target.scrollHeight + "px"
+  });
+  inputArea.addEventListener("keypress", (event) => {
+    if (event.key !== "Enter" || event.shiftKey)
+      return;
+    event.preventDefault();
+    sendInput();
+  });
+  sendButton.addEventListener("click", sendInput);
+  pingChatGPT();
+  Context.appendPanel(panel, true);
+
+
+
+  async function pingChatGPT(){
+    try {
+      infoContainer.textContent = "Waiting for ChatGPT...";
+      inputContainer.style.display = "none";
+
+      await Context.gpt.init();
+
+      infoContainer.style.display = "none";
+      inputContainer.style.display = "";
+    }
+    catch (error) {
+      inputContainer.style.display = 'none';
+  
+      const strings = {};
+      if (error === ChatGPTSession.ERROR_CLOUDFLARE) {
+        strings.p = "Please pass the Cloudflare check (and login) on ChatGPT, then refresh :";
+        strings.button = "Cloudflare check";
       }
+      else {
+        strings.p = "Please login to ChatGPT, then refresh :";
+        strings.button = "Login to ChatGPT";
+      }
+      infoContainer.style.display = "";
+      infoContainer.textContent = strings.p;
+      actionButton.style.display = "";
+      actionButton.textContent = strings.button;
     }
+  } 
+
+  async function sendInput() {
+    inputContainer.classList.add("sent");
+    inputArea.disabled = true;
+
+    responseContainer.style.display = "block";
+    await Context.gpt.send(inputArea.value, text => {
+      responseContainer.innerHTML = formatText(text);
+      Context.prettifyCode(body, true);
+    });
+    Context.gpt.removeConversation();
   }
-  catch (error) {
-    disableInputArea(true);
-    const texts = {};
-    if (error === ChatGPTSession.ERROR_CLOUDFLARE) {
-      texts.p = "Please pass the Cloudflare check (and login) on ChatGPT, then refresh this page :";
-      texts.button = "Cloudflare check";
-    }
-    else {
-      texts.p = "Please login to ChatGPT, then refresh this page :";
-      texts.button = "Login to ChatGPT";
-    }
-    el("p", {
-      textContent: texts.p,
-    }, body);
-    el("div", {
-      type: "button",
-      className: "chatgpt-button",
-      textContent: texts.button,
-    }, body).addEventListener("click", () => {
-      chrome.runtime.sendMessage({ action: 'window', url: Settings.Tools.chatgpt.link });
-    })
+
+  function openWindowLogin() {
+    chrome.runtime.sendMessage({
+      action: 'window',
+      url: Settings.Tools.chatgpt.link
+    });
+  }
+
+  function formatText(text) {
+    return markdown(escapeHtml(text.trim()));
   }
 };

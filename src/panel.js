@@ -242,11 +242,16 @@ class Context {
    * @param {Element} panel the content of the panel
    * @returns {Element} the box where the panel is 
    */
-  static appendPanel(panel) {
+  static appendPanel(panel, prepend=false) {
     if (!Context.rightColumn)
       return null;
 
-    const box = el("div", { className: `optisearchbox bright ${Context.engineName}` }, Context.rightColumn);
+    const box = el("div", { className: `optisearchbox bright ${Context.engineName}` });
+    if(prepend)
+      Context.rightColumn.prepend(box);
+    else
+      Context.rightColumn.append(box);
+    
     box.append(panel);
     Context.updateColor();
 
