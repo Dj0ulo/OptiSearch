@@ -31,37 +31,33 @@ const read = (url) => fetch(chrome.runtime.getURL(url))
   .then(response => response.text());
 
 /**
- * Format all children from the element to LaTex
- * @param {Element} element
- */
-function childrenToTeX(element) {
-  const REGEX_LATEX = /\${1,2}([^\$]*)\${1,2}/;
-  Array.from(element.querySelectorAll("*"))
-    .filter((p) => p.textContent.search(REGEX_LATEX) != -1)
-    .forEach(toTeX);
-}
-
-/**
  * Format a text element into LaTeX
  * @param {Element} element
+ * @param {boolean} convertWhole If true convert element.innerHTML to TeX,
+ *  otherwise only the part of it that have $ or $$ around
  */
-function toTeX(element) {
+function toTeX(element, convertWhole = true) {
   const REGEX_LATEX_G = /\${1,2}([^\$]*)\${1,2}/g;
-  element.innerHTML = element.innerHTML.replace(
-    REGEX_LATEX_G,
-    `<span style="display: inline-block;" class="mjx">$1</span>`
-  );
-
-  const texs = element.querySelectorAll(".mjx");
-
+  if (convertWhole)
+    element.innerHTML = element.innerHTML.replace(REGEX_LATEX_G, '$1');
+  else
+    element.innerHTML = element.innerHTML.replace(
+      REGEX_LATEX_G,
+      `<span style="display: inline-block;" class="math-container">$1</span>`
+    );
   MathJax.texReset();
-  texs.forEach(async (t) => {
-    const options = MathJax.getMetricsFor(t);
 
-    const node = await MathJax.tex2svgPromise(t.textContent, options);
-    t.innerHTML = "";
-    t.appendChild(node);
-  });
+  async function TeXThis(element) {
+    const options = MathJax.getMetricsFor(element);
+    const node = await MathJax.tex2svgPromise(element.textContent, options);
+    element.innerHTML = "";
+    element.appendChild(node);
+  }
+
+  if (convertWhole)
+    TeXThis(element);
+  else
+    $$(".math-container", element).forEach((e) => TeXThis(e));
 }
 
 /**
@@ -271,7 +267,7 @@ function textColorToRGBA(colorStr) {
 function getBackgroundColor() {
   const bodyBackColorStr = getComputedStyle(document.body, null).getPropertyValue("background-color");
   let rgba = textColorToRGBA(bodyBackColorStr);
-  if(rgba[3] === 0)
+  if (rgba[3] === 0)
     return getComputedStyle(document.querySelector('html'), null).getPropertyValue("background-color");
   return bodyBackColorStr
 }

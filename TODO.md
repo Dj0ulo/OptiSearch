@@ -68,15 +68,13 @@
 - ✅ ecosia optiserachbox, sometimes disapearing
 - ✅ duckduckgo not displaying panel from site
 - ✅ bug panel linux 
+- ✅ "puppeteer extension disabled", "debug log php" and "write file php" and many other bad formating
 
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
-
 #### Later
-- "debug log php" bad formating
-- "puppeteer extension disabled" bug formatting stackoverflow
 - vote button stack overflow
 - switch answer
 - wikipedia list with headlines (for sigle) (ex. "crows foot")

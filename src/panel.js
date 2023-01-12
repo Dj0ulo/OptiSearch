@@ -197,7 +197,7 @@ class Context {
 
     const a = el("a", { href: link }, headPanel);
 
-    toTeX(el("div", { className: "title result-title", textContent: title }, a));
+    toTeX(el("div", { className: "title result-title", textContent: title }, a), false);
 
     const linkElement = el("cite", { className: "optilink result-url" }, a);
     el("img", { width: 16, height: 16, src: icon }, linkElement);
@@ -216,9 +216,9 @@ class Context {
     // BODY
     if (body) {
       body.classList.add("optibody");
-
+      
       if (site === "stackexchange") {
-        childrenToTeX(body);
+        $$('.math-container', body).forEach((e) => toTeX(e, true));
       }
 
       Context.prettifyCode(body);
