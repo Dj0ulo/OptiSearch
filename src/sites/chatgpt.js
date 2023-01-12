@@ -1,4 +1,5 @@
 class ChatGPTSession {
+  static DEBUG = false;
   static LOCAL_STORAGE = "SAVE_CHATGPT";
   static URL_SESSION = "https://chat.openai.com/api/auth/session";
   static ERROR_CLOUDFLARE = "ChatGPT Error: Cloudflare check";
@@ -14,6 +15,8 @@ class ChatGPTSession {
     });
   }
   async init() {
+    if(ChatGPTSession.DEBUG)
+      return;
     await this.fetchSession();
     await this.fetchModels();
   }
@@ -49,6 +52,13 @@ class ChatGPTSession {
     return this.conversations;
   }
   async send(question, callback) {
+    if(ChatGPTSession.DEBUG){
+      const txt = await bgFetch("https://raw.githubusercontent.com/googlearchive/code-prettify/master/README.md");
+      debug(txt);
+      callback(txt);
+      return txt;
+    }
+
     const id = ChatGPTSession.generateUUID();
     const pid = ChatGPTSession.generateUUID();
     const res = await this.backendApi(`conversation`, {
@@ -117,6 +127,8 @@ class ChatGPTSession {
     return this.messages.at(-1).text;
   }
   removeConversation() {
+    if(ChatGPTSession.DEBUG)
+      return;
     return this.backendApi(`conversation/${this.conversation_id}`, {
       is_visible: false
     }, 'PATCH');

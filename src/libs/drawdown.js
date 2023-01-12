@@ -1,5 +1,5 @@
 /**
- * drawdown.js
+ * https://github.com/adamvleggett/drawdown
  * (c) Adam Leggett
  */
 
@@ -23,7 +23,7 @@
     var rx_row = /.*\n/g;
     var rx_cell = /\||(.*?[^\\])\|/g;
     var rx_heading = /(?=^|>|\n)([>\s]*?)(#{1,6}) (.*?)( #*)? *(?=\n|$)/g;
-    var rx_para = /(?=^|>|\n)\s*\n+([^<]+?)\n+\s*(?=\n|<|$)/g;
+    var rx_para = /(?=^|>|\n)\s*\n+([^<]+?)\n+\s*(?=\n|<|$)/g;
     var rx_stash = /-\d+\uf8ff/g;
 
     function replace(rex, fn) {
@@ -79,21 +79,21 @@
     replace(rx_gt, '&gt;');
     replace(rx_space, '  ');
 
-    // blockquote
-    src = blockquote(src);
-
-    // horizontal rule
-    replace(rx_hr, '<hr/>');
-
-    // list
-    src = list(src);
-    replace(rx_listjoin, '');
-
     // multiline code
     replace(rx_code, (all, p1) => {
         stash[--si] = element('pre', p1.trim());
         return si + '\uf8ff';
     });
+
+    // blockquote
+    src = blockquote(src);
+
+    // horizontal rule
+    replace(rx_hr, '<hr/>');
+    
+    // list
+    src = list(src);
+    replace(rx_listjoin, '');
 
     // link or image
     replace(rx_link, (all, p1, p2, p3, p4, p5, p6) => {
