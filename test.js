@@ -85,6 +85,9 @@ const boot = async () => {
 /** @type {puppeteer.Page[]} */
 let pages = [];
 
+async function ap(testFun) {
+  await Promise.all(pages.map(testFun));
+}
 
 
 // Type of test
@@ -94,11 +97,11 @@ describe('OptiPanel', function () {
     await boot();
     engines = JSON.parse(await read(`./src/engines.json`));
   });
-  
+
   // Part of the app
   describe('Engines selector', async () => {
     before(async () => {
-      pages = await Promise.all(Object.entries(engines).filter(([e,v])=>v.active).map(async ([e,v]) => {
+      pages = await Promise.all(Object.entries(engines).filter(([e, v]) => v.active).map(async ([e, v]) => {
         const p = await browser.newPage();
         p.logs = [];
         p.engine = v;
@@ -119,40 +122,32 @@ describe('OptiPanel', function () {
         p.on('console', () => p.logs.some((l) => l.text === "Hello !" && resolve()));
       })));
 
-      await Promise.all(pages.map(p=> {
-        if(p.engineName === "DuckDuckGo")
+      await Promise.all(pages.map(p => {
+        if (p.engineName === "DuckDuckGo")
           return p.goto(`${p.engine.link}/?q=setinterval%20js%20w3schools`);
         return p.goto(`${p.engine.link}/search?q=setinterval%20js%20w3schools`);
       }));
-        
+
       await helloPromises;
     });
 
     // Functionality
-    it('Right Column', async () => {
-      await Promise.all(pages.map(async p => {
-        const el = await p.$(p.engine.rightColumn);
-        p.assertOk(el);
-      }));
-    });
-    it('Search string', async () => {
-      await Promise.all(pages.map(async p => {
-        const el = await p.$(p.engine.searchBox);
-        p.assertEqual(await el.get("value", p), "setinterval js w3schools");
-      }));
-    });
-    it('Result row', async () => {
-      await Promise.all(pages.map(async p => {
-        const els = await p.$$(p.engine.resultRow);
-        p.assertOk(els.length > 0,"Failed to parse results row");
-      }));
-    });
-    it('W3Schools panel', async () => {
-      await Promise.all(pages.map(async p => {
-        const els = await p.$$(".w3body.optibody");
-        p.assertOk(els.length > 0,'No w3schools panel found');
-      }));
-    });
+    it('Right Column', async () => await ap(async p => {
+      const el = await p.$(p.engine.rightColumn);
+      p.assertOk(el);
+    }));
+    it('Search string', async () => await ap(async p => {
+      const el = await p.$(p.engine.searchBox);
+      p.assertEqual(await el.get("value", p), "setinterval js w3schools");
+    }));
+    it('Result row', async () => await ap(async p => {
+      const els = await p.$$(p.engine.resultRow);
+      p.assertOk(els.length > 0, "Failed to parse results row");
+    }));
+    it('W3Schools panel', async () => await ap(async p => {
+      const els = await p.$$(".w3body.optibody");
+      p.assertOk(els.length > 0, 'No w3schools panel found');
+    }));
   });
 
   // after(async () => await browser.close());
