@@ -1,23 +1,25 @@
 # OptiSearch
 
 ## Description
-When you make a search, OptiSearch retrieve the important content from the sites and puts them in the results page of your favourite search engine.
+Save some time and energy when you work !
 
-For instance, it will put the most pertinent answer from StackOverflow next to the Google results when you ask Google for a dev question. This will save you many clicks and will unlock you the next level of coding speed !
+OptiSearch brings the useful content from the Google results and displays it alongside them.
 
-It works for these sites :
+It can show you the most pertinent StackOverflow answer, give you an example from W3Schools and even ask ChatGPT ! 
+
+Currently, the following sites are supported:
+- ChatGPT
 - All StackExchange sites
 - Wikipedia
 - W3Schools
 - MDN Web Docs
 - Genius
 - Unity Answers
+- MATLAB Answers
 
-The compatible search engines are Google, Bing, DuckDuckGo, Ecosia, Brave Search.
+In bonus, it also works with Bing, DuckDuckGo, Ecosia and Brave Search !
 
-OptiSearch can even do more things ! 
-
-It can plot graphs and display results of calculations typed in the search bars. It also allows you to use DuckDuckGo Bangs in all search engines mentioned above !
+OptiSearch can also plot graphs and evaluate math expression typed in the search bar.
 
 ## Privacy Policy
 You can read the privacy policy [by clicking here](./privacy.html).
