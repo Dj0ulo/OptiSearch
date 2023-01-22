@@ -77,7 +77,6 @@
 #### Later
 - vote button stack overflow
 - switch answer stack overflow
-- wikipedia list with headlines (for sigle) (ex. "crows foot")
 - fold the panel
 - option put on top of the panel that are already there
 - option remove panel already here
@@ -86,15 +85,16 @@
 - plot in dark mode
 - send feedback when no right pannel detected
 - remove duckduckgo bang and make separate extension
-- https://stackoverflow.com/questions/44782476/split-a-numpy-array-both-horizontally-and-vertically#44782633 comment python not good
 - bug Excel Color Scales in w3scools
 - make responsive column instead of checkbox max width
-- forum odoo
-#### Maybe
 - go opensource
 - make the addition on a site standard and enable anyone to create one for the site he needs 
+#### Maybe
+- forum odoo
 - cppreference
 - man page
 - loading box
 - compart.com or other sites to copy utf-8 symbols
+- wikipedia list with headlines (for sigle) (ex. "crows foot")
+- https://stackoverflow.com/questions/44782476/split-a-numpy-array-both-horizontally-and-vertically#44782633 comment python not good
 

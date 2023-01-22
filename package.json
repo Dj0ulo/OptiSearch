@@ -4,6 +4,6 @@
     "puppeteer": "^19.4.1"
   },
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha test.js"
+    "test": "node ./node_modules/mocha/bin/mocha ./tests/test.js"
   }
 }

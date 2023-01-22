@@ -49,7 +49,7 @@ Page.prototype.assertOk = function (value, message) {
   assert.ok(value, `"${this.engineName}": ${message}`);
 }
 
-const EXTENSION_PATH = __dirname;
+const EXTENSION_PATH = __dirname+"/..";
 
 const read = (file) => new Promise((resolve, reject) => {
   fs.readFile(path.join(EXTENSION_PATH, file), { encoding: 'utf-8' }, (err, data) => {
