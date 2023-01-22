@@ -181,7 +181,7 @@ function writeHostOnLinks(url, container) {
   links.forEach(a => {
     const attr = a.tagName === 'A' ? 'href' : 'src';
     const ahref = a.getAttribute(attr);
-    if (!ahref || ahref.startsWith("http") || ahref.startsWith("//")) {
+    if (!ahref || ahref.startsWith("http") || ahref.startsWith("//") || ahref.startsWith("data:")) {
       return;
     }
 

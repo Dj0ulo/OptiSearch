@@ -76,7 +76,7 @@
 #### Urgent for next version
 #### Later
 - vote button stack overflow
-- switch answer
+- switch answer stack overflow
 - wikipedia list with headlines (for sigle) (ex. "crows foot")
 - fold the panel
 - option put on top of the panel that are already there
@@ -85,7 +85,7 @@
 - option put at the place of the result
 - plot in dark mode
 - send feedback when no right pannel detected
-- remove duckduckgo bang
+- remove duckduckgo bang and make separate extension
 - https://stackoverflow.com/questions/44782476/split-a-numpy-array-both-horizontally-and-vertically#44782633 comment python not good
 - bug Excel Color Scales in w3scools
 - make responsive column instead of checkbox max width
