@@ -6,7 +6,6 @@
 - ❌ submit feedback depending on chrome and firefox
 - ❌ "Flutter position stack widget in center" scroll bar in bright theme
 - ❌ remove innerHTML assignment
-- ❌ don't work with bing when not connected because of redirection link ➖ Not the case anymore
 
 
 ### Done ✅
@@ -69,6 +68,7 @@
 - ✅ duckduckgo not displaying panel from site
 - ✅ bug panel linux 
 - ✅ "puppeteer extension disabled", "debug log php" and "write file php" and many other bad formating
+- ✅ don't work with bing when not connected because of redirection link (with firefox)
 
 
 ## TO-DO 
@@ -91,6 +91,8 @@
 - make responsive column instead of checkbox max width
 - forum odoo
 #### Maybe
+- go opensource
+- make the addition on a site standard and enable anyone to create one for the site he needs 
 - cppreference
 - man page
 - loading box

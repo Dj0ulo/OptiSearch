@@ -311,7 +311,7 @@ function srcToBase64(src) {
  * 
  * @param {URL} url
  * @param {RequestInfo | undefined} params
- * @returns {Promise<Response>}
+ * @returns {Promise<string|{status:number,body:text}|{ eventStream: boolean, index: number }|{}>}
  */
 function bgFetch(url, params) {
   return new Promise(resolve => {

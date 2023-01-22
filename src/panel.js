@@ -1,6 +1,8 @@
 class Context {
   static PANEL_CLASS = "optipanel";
   static gpt = new ChatGPTSession();
+  /**@type string[] */
+  static links = [];
   static async init() {
     debug("Hello !");
 
@@ -106,56 +108,77 @@ class Context {
 
   /**
      * Take the result Element and send a request to the site if it is supported
-     * @param {Element} r the result
+     * @param {Element} result the result
      */
-  static handleResult(r) {
-    const linksResult = [...r.querySelectorAll("a")].map(a => a.href);
-    const link = linksResult.find(l => !l.startsWith(Context.engine.link));
-    if (!link) return;
+  static async handleResult(result) {
+    if (Context.numberPanel >= Context.save.maxResults)
+      return;
 
-    const found = Object.keys(Sites)
-      .find(site => (
-        Context.save[site]
-        && link.search(Sites[site].link) != -1
-        && !Context.links.find(l => link === l)// no duplicates
-      ));
-
-    if (found && Context.numberPanel < Context.save.maxResults) {
-      Context.links.push(link);
-
-      chrome.runtime.sendMessage({
-        engine: Context.engineName,
-        link,
-        site: found,
-        type: "html",
-        indexPanel: Context.numberPanel,
-        ...Sites[found].msgApi(link),
-      }, async (resp) => {
-        if (!resp) return;
-        const [msg, text] = resp;
-        const site = Sites[msg.site];
-        if (!site) return;
-
-        let doc;
-        switch (msg.type) {
-          case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
-          case 'json': doc = JSON.parse(text); break;
-          default: return;
-        }
-
-        const siteData = { ...msg, ...(await site.get(msg, doc)) };
-        const content = site.set(siteData); // set body and foot
-
-        if (content && content.body.innerHTML && siteData.title !== undefined)
-          Context.panels[siteData.indexPanel] = Context.panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
-        else
-          Context.panels[siteData.indexPanel] = null;
-
-        Context.updatePanels();
-      });
-
-      Context.numberPanel++;
+    const linksInResultContainer = $$("a", result).map(a => a.href);
+    let siteLink = linksInResultContainer.find(l => !l.startsWith(Context.engine.link) && l !== 'javascript:void(0)');
+    let intermediateLink = null;
+    if (!siteLink && Context.engineName === Bing) {
+      siteLink = $('cite', result)?.textContent;
+      intermediateLink = linksInResultContainer[0];
     }
+    if (!siteLink)
+      return;
+
+    if (Context.links.some(l => siteLink === l))
+      return;
+
+    const find = Object.entries(Sites).find(([_, { link }]) => siteLink.search(link) !== -1);
+    if (!find)
+      return;
+    const [siteName, siteProps] = find;
+    if (!Context.isActive(siteName))
+      return;
+    
+    Context.numberPanel++;
+    const paramsToSend = {
+      engine: Context.engineName,
+      link: siteLink,
+      site: siteName,
+      type: "html",
+      indexPanel: Context.numberPanel-1,
+      ...siteProps.msgApi(siteLink),
+    };
+
+    if(intermediateLink){
+      const html = await bgFetch(intermediateLink);
+      const start = html.lastIndexOf('"',html.search(siteProps.link))+1;
+      const end = html.indexOf('"',start);
+      siteLink = html.substring(start,end);
+      paramsToSend.link = siteLink; 
+    }
+
+    Context.links.push(siteLink);
+
+    chrome.runtime.sendMessage(paramsToSend, async (resp) => {
+      if (!resp)
+        return;
+      const [msg, text] = resp;
+      const site = Sites[msg.site];
+      if (!site)
+        return;
+
+      let doc;
+      switch (msg.type) {
+        case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
+        case 'json': doc = JSON.parse(text); break;
+        default: return;
+      }
+
+      const siteData = { ...msg, ...(await site.get(msg, doc)) };
+      const content = site.set(siteData); // set body and foot
+
+      if (content && content.body.innerHTML && siteData.title !== undefined)
+        Context.panels[siteData.indexPanel] = Context.panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
+      else
+        Context.panels[siteData.indexPanel] = null;
+
+      Context.updatePanels();
+    });
   }
 
   /**
@@ -216,7 +239,7 @@ class Context {
     // BODY
     if (body) {
       body.classList.add("optibody");
-      
+
       if (site === "stackexchange") {
         $$('.math-container', body).forEach((e) => toTeX(e, true));
       }
@@ -242,16 +265,16 @@ class Context {
    * @param {Element} panel the content of the panel
    * @returns {Element} the box where the panel is 
    */
-  static appendPanel(panel, prepend=false) {
+  static appendPanel(panel, prepend = false) {
     if (!Context.rightColumn)
       return null;
 
     const box = el("div", { className: `optisearchbox bright ${Context.engineName}` });
-    if(prepend)
+    if (prepend)
       Context.rightColumn.prepend(box);
     else
       Context.rightColumn.append(box);
-    
+
     box.append(panel);
     Context.updateColor();
 
