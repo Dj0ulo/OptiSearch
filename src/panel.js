@@ -42,10 +42,10 @@ class Context {
     Context.parseRightColumn();
     Context.executeTools();
 
-    Context.numberPanel = 0;
     Context.currentPanelIndex = 0;
     Context.panels = [];
     Context.links = [];
+    Context.resultLinks = [];
 
     Context.parseResults();
 
@@ -111,7 +111,7 @@ class Context {
      * @param {Element} result the result
      */
   static async handleResult(result) {
-    if (Context.numberPanel >= Context.save.maxResults)
+    if (Context.links.length >= Context.save.maxResults)
       return;
 
     const linksInResultContainer = $$("a", result).map(a => a.href);
@@ -124,23 +124,18 @@ class Context {
     if (!siteLink)
       return;
 
-    if (Context.links.some(l => siteLink === l))
-      return;
-
     const find = Object.entries(Sites).find(([_, { link }]) => siteLink.search(link) !== -1);
     if (!find)
       return;
     const [siteName, siteProps] = find;
     if (!Context.isActive(siteName))
       return;
-    
-    Context.numberPanel++;
+
     const paramsToSend = {
       engine: Context.engineName,
       link: siteLink,
       site: siteName,
       type: "html",
-      indexPanel: Context.numberPanel-1,
       ...siteProps.msgApi(siteLink),
     };
 
@@ -149,10 +144,16 @@ class Context {
       const start = html.lastIndexOf('"',html.search(siteProps.link))+1;
       const end = html.indexOf('"',start);
       siteLink = html.substring(start,end);
-      paramsToSend.link = siteLink; 
+      paramsToSend.link = siteLink;
     }
 
-    Context.links.push(siteLink);
+    const isSameURL = (a, b) => a.host === b.host && a.pathname === b.pathname && a.search === b.search;
+
+    const urlLink = new URL(siteLink);
+    if (Context.links.some(l => isSameURL(l, urlLink)))
+      return;
+    const panelIndex = Context.links.length;
+    Context.links.push(new URL(siteLink));
 
     chrome.runtime.sendMessage(paramsToSend, async (resp) => {
       if (!resp)
@@ -173,9 +174,9 @@ class Context {
       const content = site.set(siteData); // set body and foot
 
       if (content && content.body.innerHTML && siteData.title !== undefined)
-        Context.panels[siteData.indexPanel] = Context.panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
+        Context.panels[panelIndex] = Context.panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
       else
-        Context.panels[siteData.indexPanel] = null;
+        Context.panels[panelIndex] = null;
 
       Context.updatePanels();
     });
@@ -185,7 +186,7 @@ class Context {
    * Draw the panels in order. Only when the previous are not undefined
    */
   static updatePanels() {
-    while (Context.currentPanelIndex < Context.numberPanel) {
+    while (Context.currentPanelIndex < Context.links.length) {
       const panel = Context.panels[Context.currentPanelIndex];
       if (panel === undefined) {
         return;
