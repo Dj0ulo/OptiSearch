@@ -26,7 +26,7 @@ class Context {
 
     debug(`${Context.engineName} — "${Context.searchString}"`);
 
-
+    
     // Change style based on the search engine
     const style = Context.engine.style;
     if (style) el('style', { textContent: style, className: `optistyle-${Context.engineName}` }, Context.docHead);
@@ -139,11 +139,11 @@ class Context {
       ...siteProps.msgApi(siteLink),
     };
 
-    if(intermediateLink){
+    if (intermediateLink) {
       const html = await bgFetch(intermediateLink);
-      const start = html.lastIndexOf('"',html.search(siteProps.link))+1;
-      const end = html.indexOf('"',start);
-      siteLink = html.substring(start,end);
+      const start = html.lastIndexOf('"', html.search(siteProps.link)) + 1;
+      const end = html.indexOf('"', start);
+      siteLink = html.substring(start, end);
       paramsToSend.link = siteLink;
     }
 
@@ -301,33 +301,31 @@ class Context {
     const [sr] = selectorRightCol.split(',');
     const arr = [...sr.matchAll(/[\.#\[][^\.#,\[]+/g)]
     const attr = {}
-    arr.map(a => a[0])
-      .forEach(token => {
-        switch (token[0]) {
-          case '.':
-            if (!attr.className) attr.className = ''
-            attr.className += (attr.className && ' ') + token.slice(1);
-            break;
-          case '#': attr.id = token.slice(1); break;
-          case '[':
-            const [ss] = [...token.matchAll(/\[([^\]=]+)(=([^\]]+))?\]/g)];
-            attr.attributes = [...(attr.attributes || []), { name: ss[1], value: ss[3] }];
-            break;
-        }
-      })
+    arr.map(a => a[0]).forEach(token => {
+      switch (token[0]) {
+        case '.':
+          if (!attr.className) attr.className = ''
+          attr.className += (attr.className && ' ') + token.slice(1);
+          break;
+        case '#': attr.id = token.slice(1); break;
+        case '[':
+          const [ss] = [...token.matchAll(/\[([^\]=]+)(=([^\]]+))?\]/g)];
+          attr.attributes = [...(attr.attributes || []), { name: ss[1], value: ss[3] }];
+          break;
+      }
+    });
+
     Context.rightColumn = el('div', attr);
     insertAfter(Context.rightColumn, centerColumn);
+    if (Context.engineName === Ecosia) {
+      const searchNav = $(Context.engine.searchNav);
 
-    if (Context.engine.rightColumnRemovable) {
-      const observer = new MutationObserver((_) => {
-        if ($(Context.engine.rightColumn)) return;
-        insertAfter(Context.rightColumn, $(Context.engine.centerColumn));
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-      });
+      new MutationObserver(_ => {
+        if (!$(Context.engine.searchNav))
+          insertAfter(searchNav, $(Context.engine.searchNavNeighbor));
+        if (!$(Context.engine.rightColumn))
+          insertAfter(Context.rightColumn, $(Context.engine.centerColumn));
+      }).observe($('#__layout'), { childList: true });
     }
 
     return Context.rightColumn;

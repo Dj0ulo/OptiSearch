@@ -130,6 +130,8 @@ function hline(parent) {
  * @param {Element} referenceNode the other one
  */
 function insertAfter(newNode, referenceNode) {
+  if(!referenceNode.nextSibling)
+    return referenceNode.parentNode.append(newNode);
   return referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "OptiSearch",
-  "version": "2.3",
+  "version": "2.4",
   "manifest_version": 3,
   "description": "Display ChatGPT, StackOverflow, Wikipedia, etc. answers alongside Google Search results !",
   "permissions": [

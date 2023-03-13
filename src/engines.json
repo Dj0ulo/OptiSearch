@@ -26,6 +26,8 @@
     "icon": "https://cdn-static.ecosia.org/static/icons/favicon.ico",
     "rightColumn": ".sidebar.web__sidebar[data-test-id=sidebar]",
     "rightColumnRemovable": true,
+    "searchNav": "div.main-header__search-navigation",
+    "searchNavNeighbor": "div.main-header__navigation",
     "centerColumn": ".mainline",
     "resultRow": ".result__body",
     "searchBox": ".search-form__input, #search-form-input",
