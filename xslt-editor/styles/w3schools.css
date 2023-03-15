@@ -1,0 +1,19 @@
+.optipanel .optibody.w3body h3 {
+  font-weight: bold;
+  color: #4a4a4a;
+}
+.optisearchbox.dark .optipanel .optibody.w3body h3{
+  color: #b5b5b5;
+}
+.optipanel .optibody.w3body b {
+  font-weight: bold;
+}
+.optipanel .optibody.w3body .w3-example {
+  background-color: #eff0f1;
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-size: small;
+}
+.optipanel .optibody.w3body .w3-example h3 {
+  margin: initial;
+}

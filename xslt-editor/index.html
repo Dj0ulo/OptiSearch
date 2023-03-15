@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link href="style.css" rel="stylesheet">
+    <link href="styles/panel.css" rel="stylesheet">
+    <link href="styles/tomorrow.css" rel="stylesheet">
+    <script defer src="index.js"></script>
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="editor-container">
+        <textarea id="editor" spellcheck="false"></textarea>
+      </div>
+      <div id="xslt-result-container">
+        <div class="xslt-result">
+          <form onsubmit="updatePanel(event)"><input name="url" type="text"><input type="submit" ></form>
+          <div class="optisearchbox dark">
+            <div class="optipanel">
+              <div class="watermark">OptiSearch</div>
+              <div class="optiheader"><a href="https://developer.mozilla.org/en-US/docs/Web/API/setInterval">
+                  <div class="title result-title">setInterval()</div><cite class="optilink result-url"><img width="16"
+                      height="16"
+                      src="https://developer.mozilla.org/favicon-48x48.cbbd161b.png"><span>https://developer.mozilla.org/en-US/docs/Web/API/setInterval</span></cite>
+                </a></div>
+              <hr>
+              <div class="opticontent">
+                <div class="mdnbody optibody">
+                  <p>
+                    The <strong><code class="prettyprint prettyprinted"
+                        style=""><span class="pln">setInterval</span><span class="pun">()</span></code></strong> method,
+                    offered on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window"><code
+                        class="prettyprint prettyprinted" style=""><span class="typ">Window</span></code></a> and <a
+                      href="https://developer.mozilla.org/en-US/docs/Web/API/Worker"><code
+                        class="prettyprint prettyprinted" style=""><span class="typ">Worker</span></code></a>
+                    interfaces, repeatedly
+                    calls a function or executes a code snippet, with a fixed time delay between each
+                    call.
+                  </p>
+                  <div class="pre-surround" style="position: relative;">
+                    <pre class="brush: js notranslate prettyprint prettyprinted" style=""><code class="prettyprint"><span class="token function"><span class="pln">setInterval</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="pln">code</span><span class="token punctuation"><span class="pun">)</span></span><span class="pln">
+</span><span class="token function"><span class="pln">setInterval</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="pln">code</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> delay</span><span class="token punctuation"><span class="pun">)</span></span><span class="pln">
+  
+</span><span class="token function"><span class="pln">setInterval</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="pln">func</span><span class="token punctuation"><span class="pun">)</span></span><span class="pln">
+</span><span class="token function"><span class="pln">setInterval</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="pln">func</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> delay</span><span class="token punctuation"><span class="pun">)</span></span><span class="pln">
+</span><span class="token function"><span class="pln">setInterval</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="pln">func</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> delay</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> arg0</span><span class="token punctuation"><span class="pun">)</span></span><span class="pln">
+</span><span class="token function"><span class="pln">setInterval</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="pln">func</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> delay</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> arg0</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> arg1</span><span class="token punctuation"><span class="pun">)</span></span><span class="pln">
+</span><span class="token function"><span class="pln">setInterval</span></span><span class="token punctuation"><span class="pun">(</span></span><span class="pln">func</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> delay</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> arg0</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> arg1</span><span class="token punctuation"><span class="pun">,</span></span><span class="pln"> </span><span class="token comment"><span class="com">/* … ,*/</span></span><span class="pln"> argN</span><span class="token punctuation"><span class="pun">)</span></span>
+  </code></pre>
+                    <div class="opticopy"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-copy">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>

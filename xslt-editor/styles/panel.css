@@ -1,0 +1,259 @@
+:root{
+  --line-dark: #34363e
+}
+#optiexpr {
+  padding-left: 20px;
+  position: relative;
+  overflow: auto;
+  font-size: 18px;
+}
+#optiplot {
+  padding: 0px;
+  margin: 5px;
+  overflow: auto;
+}
+
+#opticalculator {
+  height: 400px;
+  width: 400px;
+  padding: 0px;
+}
+
+.optisearchbox {
+  margin: 20px 0 10px 0;
+  border-radius: 8px;
+  width: auto;
+  min-width: 400px;
+  max-width: 600px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 1px 3px 8px 0px;
+  overflow: hidden;
+}
+
+.optisearchbox.bright {
+  background-color: #fff;
+}
+.optisearchbox.dark {
+  color: rgb(215, 210, 204);
+  color-scheme: dark;
+}
+
+.optisearchbox .unfold_button {
+  width: 100%;
+  text-align: left;
+  height: 2rem;
+  border: 1px rgb(220, 220, 220);
+  cursor: pointer;
+  position: relative;
+  box-shadow: rgb(255 255 255) 0px -15px 20px -3px;
+  padding: 10px 0px 0px 10px;
+  font-size: smaller;
+}
+.optisearchbox.dark .unfold_button{
+  box-shadow: rgb(0,0,0) 0px -15px 20px -3px;
+}
+.optisearchbox .unfold_button:active{
+  background-color: rgb(177, 177, 177);
+}
+
+.optipanel {
+  margin: 0px 5px 0px 5px;
+  padding: 15px 15px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  font-size: 15px;
+  position: relative;
+  transition: max-height 5s;
+  /* overflow-y: auto; */
+  max-height: initial;
+}
+
+.folded {
+  overflow-y: hidden;
+  max-height: 400px;
+}
+
+.optipanel .watermark {
+  float: right;
+  font-size: x-small;
+  color: #999999;
+}
+
+.optipanel .optiheader {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.optipanel .title {
+  font-size: large;
+  font-weight: bold;
+  line-height: initial;
+  word-wrap: break-word;
+}
+.optisearchbox.bright .optipanel .title {
+  color: #1a0dab;
+}
+
+.optipanel .optiheader:hover .title {
+  text-decoration: underline;
+}
+
+.optipanel .optilink {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+  padding-top: 5px;
+  font-style: normal;
+  font-size: small;
+}
+
+.bright .optipanel .optilink {
+  color: #3c4043 !important;
+}
+.optisearchbox.dark .optipanel .optilink {
+  color: rgb(167, 159, 147) !important;
+}
+
+.optipanel .optiheader a:link {
+  text-decoration: none !important;
+}
+
+.optipanel .optilink img {
+  vertical-align: middle;
+  margin-right: 5px;
+  margin-top: -3px;
+  max-width: 16px;
+  display: inline;
+}
+
+.optipanel hr {
+  height: 1px;
+  margin: .5em;
+  border: 0px;
+  background-color: rgb(220, 220, 220);
+}
+.optisearchbox.dark .optipanel hr {
+  background-color: var(--line-dark);
+}
+
+.optipanel .opticopy {
+  position: absolute;
+  width: auto;
+  height: auto;
+  right: 6px;
+  top: 6px;
+  user-select: none;
+  font-size: x-small;
+  opacity: 70%;
+}
+
+.optipanel .opticopy svg {
+  width: 15px;
+  height: 15px;
+  stroke: #bbc0c4;
+}
+.optipanel .opticopy svg:hover {
+  stroke: #9fa6ad;
+  cursor: pointer;
+}
+.optipanel .optibody p,
+.optipanel .optibody ul,
+.optipanel .optibody ol {
+  line-height: 1.5;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+
+.optipanel .optibody ul,
+.optipanel .optibody ol {
+  padding-left: 15px;
+}
+.optipanel .optibody img {
+  max-width: 100%;
+}
+
+.optipanel .optibody li, .optipanel .optibody ol{
+  list-style: initial;
+  margin: .4rem;
+  padding: 0 .4rem;
+}
+
+.optipanel blockquote {
+  position: relative;
+  padding-left: 12px;
+}
+
+.optipanel blockquote:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  height: inherit;
+  border-radius: 8px;
+  background: #c8ccd0;
+}
+
+.optipanel code {
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace,
+    sans-serif;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 100%;
+}
+
+.optipanel pre.prettyprint code {
+  display: block;
+}
+
+.optipanel pre.prettyprint {
+  border: 0px;
+  margin-bottom: 1em;
+  padding: 12px 8px;
+  width: auto;
+  max-height: 600px;
+  overflow: auto;
+  font-family: Consolas, Menlo, Monaco, monospace;
+  font-size: 13px;
+  border-radius: 3px;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.optipanel .optibody {
+  overflow: auto;
+}
+
+.optipanel a {
+  text-decoration: none;
+}
+.bright .optipanel a {
+  color: #0077cc
+}
+.optisearchbox.dark .optipanel a {
+  color: #8ab4f8
+}
+.optipanel a:hover {
+  text-decoration: underline;
+}
+
+.optipanel span.mwe-math-element {
+  display: inline-flex;
+}
+.optipanel .stackfoot .d-none {
+  display: none;
+}
+
+.optipanel .stackfoot {
+  margin-top: 15px;
+  line-height: 23px;
+  font-size: small;
+}
+
+/*recherche associes position fixed google*/
+#rhs .z2QsLb {
+  position: unset !important;
+}

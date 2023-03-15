@@ -1,0 +1,88 @@
+.optipanel .optibody .chatgpt-button{
+  padding: 0.5em;
+  font-size: large;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  display: block;
+  transition: 0.3s;
+
+}
+.optipanel .optibody .chatgpt-button:hover{
+  color: black;
+}
+.optipanel .optibody .chatgpt-button,
+.optipanel .optibody .text-area-container {
+  width: calc(100% - 22px);
+  padding: 8px 10px;
+  margin: .5em 0;
+  border-radius: 5px;
+  background: #f7f7f7;
+  border: 1px solid rgb(220, 220, 220);
+}
+.optipanel .optibody .text-area-container {
+  display: flex;
+}
+.optipanel .optibody .chatgpt-button:active,
+.optipanel .optibody .text-area-container:has(textarea:focus){
+  border-color: #bbc0c4;
+}
+
+
+.optipanel .optibody .text-area-container.sent {
+  border: 0;
+}
+.optipanel .optibody .text-area-container > textarea {
+  width: 100%;
+  height: 1.2em;
+  border: 0;
+  resize: none;
+  padding: 0;
+  font-family: inherit;
+  background-color: unset;
+  font-size: medium;
+  outline: unset;
+  overflow-y: hidden;
+}
+
+.optipanel .optibody .text-area-container button{
+  border: 0;
+  background-color: unset;
+  margin-left: auto;
+  cursor: pointer;
+  transition: 0.3s;
+  fill: rgb(65, 65, 65);
+}
+
+.optipanel .optibody .text-area-container button:hover{
+  fill: rgb(46, 46, 46);
+}
+
+.optipanel .optibody .text-area-container.sent button {
+  display: none;
+}
+.optipanel .optibody .text-area-container svg{
+  width: 2em;
+  height: 1.5em;
+  transform: rotate(90deg);
+}
+
+
+.dark.optisearchbox .optipanel .optibody .chatgpt-button,
+.dark.optisearchbox .optipanel .optibody .text-area-container{
+  border-color: #222222;
+  background-color: #3b3b3b;
+}
+.dark.optisearchbox .optipanel .optibody .text-area-container button{
+  fill: rgb(212, 212, 212);
+}
+.dark.optisearchbox .optipanel .optibody .text-area-container button:hover{
+  fill: white;
+}
+.dark.optisearchbox .optipanel .optibody .chatgpt-button:active,
+.dark.optisearchbox .optipanel .optibody .text-area-container:has(textarea:focus){
+  border-color: #979797;
+}
+.dark.optisearchbox .optipanel .optibody .chatgpt-button:hover{
+  color: white;
+}

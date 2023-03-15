@@ -1,0 +1,59 @@
+html{
+  background-color: #333;
+}
+
+body{
+  font-family: arial,sans-serif;
+}
+#main{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 800px;
+  height: 100%;
+}
+#main > div{
+  flex: 1;
+  margin: 0 20px;
+  padding: 2em;
+}
+#editor{
+  height: 100%;
+  width: 100%;
+  resize: none;
+  font-family: monospace;
+  color: #eee;
+  background-color: #222;
+  border: none;
+  border-radius: 1em;
+  overflow: scroll;
+  white-space: nowrap;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 1px 3px 8px 0px;
+  padding: 2em;
+
+}
+#editor-container{
+}
+#xslt-result-container{
+  max-height: 800px;
+  overflow-y: scroll;
+}
+input[name="url"]{
+  width: 400px;
+  margin-right:5px;
+}
+input{
+  color: #eee;
+  background-color: #222;
+  height: 2em;
+  padding: .2em .5em;
+  border: none;
+  border-radius: .3em;
+}
+textarea:focus, input:focus{
+  outline: none;
+}
+.optisearchbox{
+  background-color: #222;
+
+}
