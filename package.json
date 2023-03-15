@@ -1,9 +1,14 @@
 {
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha ./tests/test.js",
+    "test-templates": "node ./node_modules/mocha/bin/mocha ./tests/test_templates.js"
+  },
   "dependencies": {
+    "xslt-processor": "^0.11.7"
+  },
+  "devDependencies": {
+    "jsdom-global": "3.0.2",
     "mocha": "^10.2.0",
     "puppeteer": "^19.4.1"
-  },
-  "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha ./tests/test.js"
   }
 }

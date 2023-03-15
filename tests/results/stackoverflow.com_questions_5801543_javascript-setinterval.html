@@ -1,0 +1,23 @@
+<body>
+  <p><strong>Passing a string to <code>setInterval</code> is fine</strong>, and is one of two ways to use <code>setInterval</code>, the other is passing a function pointer. It is not wrong in any way like the other answers state, but it is not as efficient (as the code must be reparsed) nor is it necessary for your purpose. Both</p>
+  
+  <pre><code>setInterval('doSome();', 60000); // this runs doSome from the global scope
+                                   // in the global scope
+  </code></pre>
+  
+  <p>and</p>
+  
+  <pre><code>setInterval(doSome, 60000);      // this runs doSome from the local scope
+                                   // in the global scope
+  </code></pre>
+  
+  <p>are correct, though they have a <strong>slightly different meaning</strong>. If <code>doSome</code> is local to some non-global scope, calling the latter from within the same scope will run the local <code>doSome</code> at 60000ms intervals. Calling the former code will always look for <code>doSome</code> in the global scope, and will fail if there is no <code>doSome</code> function in the global scope.</p>
+  
+  <p>The function will reliably be triggered, regardless of tab focus, at intervals of <strong><em>at least</em> 60000ms</strong>, but usually slightly more due to overheads and delays.</p>
+  
+  <p><strong>All browsers clamp the interval value</strong> to at least a certain value to avoid intervals being too frequent (I think it's a minimum of 10ms or 4ms or something, I can't exactly remember).</p>
+  
+  <p>Note that some browsers (the upcoming Firefox 5 is one, but there are probably others that I don't know of) further clamp <code>setInterval</code> drastically to e.g. 1000ms if the tab is not focused. (<a href="https://developer.mozilla.org/en/docs/Web/API/window.setInterval#Inactive_tabs" rel="noreferrer">Reference</a>)</p>
+      </body><footer><a href="/users/330644/delan-azabani" style="display: inline-block;">Delan Azabani</a> – <div class="user-action-time" style="display: inline-block;">
+          answered <span title="2011-04-27 09:07:12Z" class="relativetime">Apr 27, 2011 at 9:07</span>
+      </div></footer>
