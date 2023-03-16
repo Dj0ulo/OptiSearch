@@ -62,7 +62,6 @@
         className: "titleOption",
         innerHTML: spec.href ? `<a href=${spec.href}>${spec.name}</a>` : spec.name,
         title: spec.title ?? "",
-        style: "padding-bottom: 2px"
       }, label);
 
       if (spec.local_icon) {
@@ -89,7 +88,20 @@
         }, label)
         return;
       }
-
+      if (spec.options) {
+        const select = el("select", {
+          value: save[o],
+          onchange: ({ target }) => {
+            save[o] = target.value
+            saveSettings(save);
+          },
+        }, label);
+        Object.entries(spec.options).forEach(([key, props]) => {
+          el('option', {value: key, text: props.name, selected: save[o] === key}, select);
+        });
+        return;
+      }
+      
       const checkDiv = el("div", {
         className: 'checkdiv',
         style: "display: inline-block"

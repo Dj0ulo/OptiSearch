@@ -53,6 +53,23 @@ const Sites = Object.freeze({
   },
 });
 
+const AIAssistant = Object.freeze({
+  bingchat: {
+    name: "Bing Chat",
+    link: "https://www.bing.com/search",
+    icon: "src/sites/icons/bingchat.png",
+    local_icon: "bingchat.png",
+    href: "https://www.bing.com/search",
+  },
+  chatgpt: {
+    name: "ChatGPT",
+    link: "https://chat.openai.com/chat",
+    icon: "src/sites/icons/chatgpt.png",
+    local_icon: "chatgpt.png",
+    href: "https://chat.openai.com/chat",
+  },
+});
+
 const Settings = Object.freeze({
   Options: {
     maxResults: {
@@ -66,15 +83,19 @@ const Settings = Object.freeze({
       default: false,
     },
   },
+  "AI Assitant":{
+    aichat: {
+      name: "AI Assistant",
+      options: {...AIAssistant, [false] : {name: 'Disabled'}},
+      default: 'bingchat',
+    },
+    directchat: {
+      name: "Ask AI chat directly",
+      default: true,
+    },
+  },
   Sites: Sites,
   Tools: {
-    chatgpt: {
-      name: "ChatGPT",
-      link: "https://chat.openai.com/chat",
-      icon: "src/sites/icons/chatgpt.png",
-      local_icon: "chatgpt.png",
-      href: "https://chat.openai.com/chat",
-    },
     bangs: {
       name: "DuckDuckGo Bangs !",
       href: "https://duckduckgo.com/bang",
@@ -87,8 +108,8 @@ const Settings = Object.freeze({
     plot: {
       name: "Plot",
       href: "https://plotly.com",
-    }
-  }
+    },
+  },
 });
 
 const SAVE_QUERIES_ENGINE = "save_queries_engine"

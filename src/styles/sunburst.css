@@ -3,7 +3,6 @@
 
 .optisearchbox.dark .prettyprint , .optisearchbox.dark .pre-surround .prettyprint{
   background: #222;
-  border-radius: 8px;
 }
 
 .optisearchbox.dark .prettyprint .str { color: #65B042; } /* string  - green */
@@ -18,20 +17,10 @@
 .optisearchbox.dark .prettyprint .atv { color: #65B042; } /* html/xml attribute value - green */
 .optisearchbox.dark .prettyprint .dec { color: #3387CC; } /* decimal - blue */
 
-
-.optisearchbox.dark .pre.prettyprint {
-  width: 95%;
-  margin: 1em auto;
-  padding: 1em;
-  white-space: pre-wrap;
-}
-
-
 /* Specify class=linenums on a pre to get line numbering */
 .optisearchbox.dark ol.linenums { margin-top: 0; margin-bottom: 0; color: #AEAEAE; } /* IE indents via margin-left */
-.optisearchbox.dark li.L0, .optisearchbox.dark li.L1, .optisearchbox.dark li.L2, .optisearchbox.dark li.L3, .optisearchbox.dark li.L5, .optisearchbox.dark li.L6, .optisearchbox.dark li.L7, .optisearchbox.dark li.L8 { list-style-type: none }
 /* Alternate shading for lines */
-.optisearchbox.dark li.L1, .optisearchbox.dark li.L3, .optisearchbox.dark li.L5, .optisearchbox.dark li.L7, .optisearchbox.dark li.L9 { }
+.optisearchbox.dark li.L0, .optisearchbox.dark li.L1, .optisearchbox.dark li.L2, .optisearchbox.dark li.L3, .optisearchbox.dark li.L5, .optisearchbox.dark li.L6, .optisearchbox.dark li.L7, .optisearchbox.dark li.L8 { list-style-type: none }
 
 @media print {
   .optisearchbox.dark .prettyprint .str { color: #060; }

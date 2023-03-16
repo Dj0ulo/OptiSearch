@@ -1,6 +1,6 @@
 class Context {
   static PANEL_CLASS = "optipanel";
-  static gpt = new ChatGPTSession();
+  static AIChatSession = null;
   /**@type string[] */
   static links = [];
   static async init() {
@@ -76,10 +76,10 @@ class Context {
     el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
   }
   static executeTools() {
-    if (Context.isActive("chatgpt")) Context.chatgpt();
+    if (Context.isActive("aichat")) Context.aichat();
     if (Context.isActive("bangs")) Context.bangs();
     if (Context.isActive("calculator")) Context.calculator();
-    if (Context.isActive("calculator") || Context.isActive("plot")) Context.plotOrCompute();
+    if (Context.isActive("plot") || Context.isActive("calculator")) Context.plotOrCompute();
   }
 
   static parseResults() {
@@ -251,6 +251,7 @@ class Context {
 
     // FOOT
     if (foot) {
+      foot.classList.add("optifoot")
       foot.id = "output";
       hline(content);
       content.append(foot);

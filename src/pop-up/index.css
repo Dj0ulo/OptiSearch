@@ -1,21 +1,55 @@
-body {
-  background-color: #1c1c1c;
-  color: rgb(215, 210, 204);
-  font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
-  width: 300px;
-  font-size: 12px;
+:root {
+  --color: rgb(215, 210, 204);
+  --bg: #1c1c1c;
+  --dark-grey: rgb(51, 51, 51);
+  --grey: rgb(104, 104, 104);
+  --scroll-bar-color: var(--grey);
+  --scroll-bar-bg-color: var(--bg);
 }
+body {
+  background-color: var(--bg);
+  color: var(--color);
+  font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
+  width: 320px;
+  font-size: 12px;
+  margin: 0
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scroll-bar-bg-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-bar-color);
+  border-radius: 20px;
+  border: 3px solid var(--scroll-bar-bg-color);
+}
+
 .title {
   text-align: center;
   margin-bottom: 1em;
 }
+
 .icon {
   margin-right: 0.5em;
+  padding-top: -23px;
+  top: 2px;
+  position: relative;
+}
+
+#main{
+  padding: 8px;
 }
 
 #engines {
   height: 20px;
 }
+
 .engine .icon {
   width: 16px;
   height: 16px;
@@ -25,6 +59,7 @@ body {
   padding-right: 2px;
   padding-bottom: 5px;
 }
+
 .engine {
   display: inline-block;
   margin-left: 0.5rem;
@@ -36,6 +71,7 @@ body {
   animation: dropIn 1s ease forwards;
   animation-delay: calc(var(--order) * 100ms);
 }
+
 @keyframes dropIn {
   from {
     transform: translateY(-2rem);
@@ -50,6 +86,7 @@ ul {
   list-style-type: none;
   padding-inline-start: 0px;
 }
+
 body > ul {
   padding-inline-start: 0px;
 }
@@ -57,22 +94,15 @@ body > ul {
 #version {
   font-size: smaller;
 }
+
 .menu {
   margin: 5px;
 }
-.arrow {
-  float: left;
-  padding-left: 5px;
-  padding-right: 5px;
-  display: inline-block;
-}
+
 .menu_title {
   display: block;
   white-space: nowrap;
-  /* border: 1px solid #aaaaaa;
-    border-radius: 4px; */
   font-weight: bold;
-  /* cursor: pointer; */
   user-select: none;
   font-size: x-small;
   overflow: hidden;
@@ -81,18 +111,22 @@ body > ul {
   margin-bottom: 1em;
   margin-top: 1em;
 }
+
 .menu_title > span {
-  /* padding: 0 2em; */
+  padding: 0 2em;
   flex: 1 1 100px;
   text-align: center;
 }
+
 .menu_title > span > span {
   vertical-align: top;
 }
+
 hr {
   border-color: rgb(38, 44, 46);
   height: 0.5px;
 }
+
 hr.flexchild {
   display: inline-block;
   flex: 1 1 200px;
@@ -102,6 +136,7 @@ hr.flexchild {
   /* user-select: none; */
   overflow: hidden;
 }
+
 .titleOption {
   display: inline-block;
   text-align: right;
@@ -110,14 +145,16 @@ hr.flexchild {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-right: 10px;
+  position: relative;
 }
+
 .titleOption .input {
   margin-left: 20px;
 }
 
 .checkbox {
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
   cursor: pointer;
 }
 
@@ -125,18 +162,41 @@ a {
   text-decoration: none;
   color: #4590c5;
 }
+
 a:hover {
   text-decoration: underline;
 }
 
+select,
 input {
-  background-color: rgb(51, 51, 51);
-  color: rgb(215, 210, 204);
+  background-color: var(--dark-grey);
+  color: var(--color);
+  border-radius: 2px;
+  padding: 2px 5px;
+  cursor: pointer;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+}
+
+/*** FOOTER ***/
+
+.clear{
+  height: 70px; /* Height of the footer */
 }
 
 footer {
   margin: auto;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 70px; /* Height of the footer */
+  background-color: var(--bg);
+  box-shadow: 0px 1px 20px 0px black;
 }
+
 .foota {
   margin: 0 8px;
 }
@@ -145,6 +205,9 @@ footer {
   display: grid;
   grid-template-columns: 1fr 1.5fr 1fr;
 }
+
+/*** DONATE BUTTON ***/
+
 #donate {
   grid-column: 2 / 3;
 
@@ -153,7 +216,7 @@ footer {
 
   border-radius: 3px;
   margin-bottom: 0.5em;
-  margin-top: 0.5em;
+  margin-top: 1em;
 
   cursor: pointer;
 

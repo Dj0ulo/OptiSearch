@@ -130,7 +130,7 @@ function hline(parent) {
  * @param {Element} referenceNode the other one
  */
 function insertAfter(newNode, referenceNode) {
-  if(!referenceNode.nextSibling)
+  if (!referenceNode.nextSibling)
     return referenceNode.parentNode.append(newNode);
   return referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
@@ -288,25 +288,20 @@ function isDarkMode() {
 }
 
 function blobToBase64(blob) {
-  return new Promise((resolve, _) => {
+  return new Promise(resolve => {
     const reader = new FileReader();
     reader.onloadend = () => resolve(reader.result);
     reader.readAsDataURL(blob);
   });
 }
 
-
 /**
  * 
  * @param {HTMLImageElement} img 
  */
-function srcToBase64(src) {
-  return new Promise((resolve) => {
-    chrome.runtime
-      .sendMessage(
-        { action: 'get-image-blob', url: src }, async (r) => resolve(await blobToBase64(r))
-      )
-  })
+async function srcToBase64(src) {
+  const data = await bgWorker({ action: 'image-blob', url: src });
+  return blobToBase64(data);
 }
 
 /**
@@ -317,19 +312,48 @@ function srcToBase64(src) {
  */
 function bgFetch(url, params) {
   return new Promise(resolve => {
-    chrome.runtime.sendMessage({ action: 'fetch', url, params: JSON.stringify(params) }, r => {
-      if (r.isError)
-        throw `Error while fetching in the service worker:\n${r.errorMsg}`;
+    chrome.runtime.sendMessage({ action: 'fetch', url, params: JSON.stringify(params) },
+      (response) => {
+        if (response && response.error)
+          throw `Error while fetching in the service worker:\n${r.error}`;
+        resolve(response);
+      });
+  });
+}
+
+/**
+ * Execute an action in the background using service worker
+ * @param {*} params 
+ * @returns 
+ */
+function bgWorker(params) {
+  return new Promise(resolve => {
+    chrome.runtime.sendMessage(params, r => {
+      if (r.error)
+        throw `ServiceWorker Error:\n${r.error}`;
       resolve(r);
     });
   });
 }
 
-const escapeHtml = (unsafe) => {
+function escapeHtml(unsafe) {
   return unsafe
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
+}
+
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+function runMarkdown(text) {
+  if (typeof (text) !== 'string')
+    return '';
+  return markdown(escapeHtml(text.trim()));
 }
