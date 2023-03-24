@@ -25,7 +25,8 @@
 
   const [engines, save] = await Promise.all([loadEngines(), loadSettings()]);
 
-  Object.values(engines).forEach((e, i) => {
+  OrderEngines.forEach((engineName, i) => {
+    const e = engines[engineName];
     if (e.active) {
       const div = el("div", {
         className: "engine",

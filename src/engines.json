@@ -65,5 +65,15 @@
     "active": true,
     "regex": "search\\.brave\\.com$",
     "widthStyle": "#side-right {--width: unset;  max-width: ${maxW}px;}"
+  },
+  "Baidu": {
+    "link": "https://www.baidu.com/",
+    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAPFBMVEVHcEz////////9/f/////p6/2srvK6vPXZ2vrIyvcACt8LG+A9ReUbJuFpb+ooMeFWXOeLj+2bn+98gexUG/hRAAAABHRSTlMAEaz5aKQWgAAAAU9JREFUeAGF092SgyAMBWCr/J54DOr7v+tCRqhdZ7fchJJvMk2QaXrNi/tjLfOr5t2/6zXNY+9DtJhCfoN5GvUTRNYaI4htgGUa21VVJTgnNeJdY4CEmuDmklh8gtgSuvb4BNkSpccncHL9B1j8BJHYXYYI648DRHFJsS0dZKgi3Odg9Vg6KFqXuPsK1my6ABuAt2nGbGBrZxIvgA6WAhGJHTAY6LwNk0arONiLNuDB1oY7LW8JOzpHm/7cQrslhZhY+9F9UNas3YQ1+JxkgA6gXJff4AQBqYBsgEyfoIgcLSYkRx5uJ/IdnNJ6TsmAGLAmRxdoYyDkDrgPYB+JfVJ3oPoGQRTOlasCsRvgG2TpBROixQpYBrDrki157yvNNfiTKuEGYhUUAUACIkLlerW5WMhEy5f9ODZtAmd/OP3ppZx9f01130c9f3+8357/D50CHYMuiWz1AAAAAElFTkSuQmCC",
+    "rightColumn": "#content_right",
+    "resultRow": ".result",
+    "searchBox": "#kw",
+    "active": true,
+    "regex": "www\\.baidu\\.com$",
+    "widthStyle": "#container{ width: 1280px; } #content_right{ width: ${maxW}px !important;}"
   }
 }
