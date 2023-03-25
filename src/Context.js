@@ -37,7 +37,7 @@ class Context {
   static async execute() {
     await Context.injectStyle();
 
-    if (Context.engineName === Baidu) {
+    if (Context.engineName === Baidu && $(Context.engine.centerColumn)) {
       const parseSearchParam = (url) => new URL(url).searchParams.get("wd");
       let oldSearchParam = parseSearchParam(document.location.href);
 
