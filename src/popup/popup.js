@@ -12,8 +12,15 @@
     return title;
   }
 
-  const ver = document.querySelector('#version');
-  ver.textContent = chrome.runtime.getManifest().version;
+  const manifest = chrome.runtime.getManifest();
+  $('#name').textContent = manifest.name;
+  $('#version').textContent = manifest.version;
+  const webstore = manifest.name === 'OptiSearch' ?
+    'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae'
+    : 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng';
+
+  $('.title > a').href = webstore;
+  $('#feedback').href = webstore + '/reviews';
 
   const donate = document.getElementById("donate");
   donate.onclick = () => chrome.tabs.create({
@@ -23,7 +30,8 @@
 
   const liEng = document.querySelector("#engines");
 
-  const [engines, save] = await Promise.all([loadEngines(), loadSettings()]);
+  const [settings, engines, save] = await Promise.all([getSettings(), loadEngines(), loadSettings()]);
+  console.log(settings);
 
   OrderEngines.forEach((engineName, i) => {
     const e = engines[engineName];
@@ -46,12 +54,12 @@
   const optionsContainer = document.getElementById("options-container");
 
   //options
-  Object.keys(Settings).forEach((category) => {
+  Object.keys(settings).forEach((category) => {
     optionsContainer.append(titleSection(category));
 
     const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
 
-    Object.entries(Settings[category]).forEach(([o, spec]) => {
+    Object.entries(settings[category]).forEach(([o, spec]) => {
       const li = el("li", { id: o }, sublist);
 
       const label = el("label", {
@@ -67,7 +75,7 @@
 
       if (spec.local_icon) {
         const img = el("div", { className: "icon" }, spanImg);
-        img.style = `background-image: url(../sites/icons/${spec.local_icon});
+        img.style = `background-image: url(../images/${spec.local_icon});
                     background-size: contain;
                     width: 14px;
                     height: 14px;
@@ -98,11 +106,11 @@
           },
         }, label);
         Object.entries(spec.options).forEach(([key, props]) => {
-          el('option', {value: key, text: props.name, selected: save[o] === key}, select);
+          el('option', { value: key, text: props.name, selected: save[o] === key }, select);
         });
         return;
       }
-      
+
       const checkDiv = el("div", {
         className: 'checkdiv',
         style: "display: inline-block"

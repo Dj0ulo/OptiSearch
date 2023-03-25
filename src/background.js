@@ -1,4 +1,4 @@
-fetchEngines(true);
+fetchEngines();
 
 chrome.runtime.onMessage.addListener((action, _, sendResponse) => {
   handleAction(action).then(sendResponse);

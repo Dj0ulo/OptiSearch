@@ -5,7 +5,7 @@ class ChatSession {
   static #nameError = "The inherited class from ChatSession should be given a name";
   static errors = {};
   get properties() {
-    return AIAssistant[this.name];
+    return Chat[this.name];
   }
   static get storageKey() {
     throw ChatSession.#abstractMethodError;
@@ -134,23 +134,21 @@ class ChatSession {
   }
 
   panelBlueprint(body, foot) {
-    const panel = el("div", { className: `${Context.PANEL_CLASS}` });
+    const panel = el("div", { className: `${Context.PANEL_CLASS} optichat` });
 
     panel.innerHTML = `
-<div class="opticontent">
-  <div class="watermark">OptiSearch</div>
-  <div class="optiheader">
-    <div class="ai-name">
-      <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
-      <span class="title chat-title" style="bottom: 10px">${this.properties.name}</span>
-      <span class="switch">⇌</span>
+    <div class="watermark">OptiSearch</div>
+    <div class="optiheader">
+      <div class="ai-name">
+        <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
+        <span class="title chat-title" style="bottom: 10px">${this.properties.name}</span>
+        <span class="switch">⇌</span>
+      </div>
     </div>
-  </div>
-  <hr>
-  <div class="optibody"></div>
-  <hr class="optifoot-hr">
-  <div class="optifoot"></div>
-</div>    
+    <hr>
+    <div class="optibody"></div>
+    <hr class="optifoot-hr">
+    <div class="optifoot"></div>
     `;
     $('.ai-name', panel).onclick = () => {
       Context.save['aichat'] = this.name === 'bingchat' ? 'chatgpt' : 'bingchat'

@@ -1,9 +1,7 @@
 class Context {
   static PANEL_CLASS = "optipanel";
-  static AIChatSession = null;
-  /**@type string[] */
-  static links = [];
-  static async init() {
+  
+  static async run() {
     debug("Hello !");
 
     Context.docHead = document.head || document.documentElement;
@@ -26,7 +24,6 @@ class Context {
 
     debug(`${Context.engineName} — "${Context.searchString}"`);
 
-    
     // Change style based on the search engine
     const style = Context.engine.style;
     if (style) el('style', { textContent: style, className: `optistyle-${Context.engineName}` }, Context.docHead);
@@ -41,13 +38,6 @@ class Context {
     }
     Context.parseRightColumn();
     Context.executeTools();
-
-    Context.currentPanelIndex = 0;
-    Context.panels = [];
-    Context.links = [];
-    Context.resultLinks = [];
-
-    Context.parseResults();
 
     /**
      * Update color if the theme has somehow changed
@@ -66,137 +56,24 @@ class Context {
   static isActive(tool) {
     return Context.save[tool];
   }
+
   static parseSearchString() {
     Context.searchString = $(Context.engine.searchBox)?.value;
     return Context.searchString;
   }
+
   static async injectStyle() {
     const styles = ['chatgpt', 'panel', 'tomorrow', 'sunburst', 'w3schools', 'wikipedia', 'genius'];
-    const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`)));
+    const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`).catch(() => '')));
     el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
   }
+
   static executeTools() {
     if (Context.isActive("aichat")) Context.aichat();
     if (Context.isActive("bangs")) Context.bangs();
     if (Context.isActive("calculator")) Context.calculator();
     if (Context.isActive("plot") || Context.isActive("calculator")) Context.plotOrCompute();
-  }
-
-  static parseResults() {
-    const results = $$(Context.engine.resultRow);
-    if (results.length > 0) {
-      results.forEach(Context.handleResult);
-      return;
-    }
-    if (Context.engineName !== DuckDuckGo) {
-      debug("No result detected");
-      return;
-    }
-
-    const resultsContainer = $(Context.engine.resultsContainer);
-    const observer = new MutationObserver((mutationRecords) => {
-      // Handle mutations
-      mutationRecords
-        .filter(mr => mr.addedNodes.length > 0)
-        .map(mr => mr.addedNodes[0])
-        .filter(n => n?.matches(Context.engine.resultRow))
-        .forEach(Context.handleResult);
-    });
-
-    observer.observe(resultsContainer, { childList: true });
-  }
-
-  /**
-     * Take the result Element and send a request to the site if it is supported
-     * @param {Element} result the result
-     */
-  static async handleResult(result) {
-    if (Context.links.length >= Context.save.maxResults)
-      return;
-
-    const linksInResultContainer = $$("a", result).map(a => a.href);
-    let siteLink = linksInResultContainer.find(l => !l.startsWith(Context.engine.link) && l !== 'javascript:void(0)');
-    let intermediateLink = null;
-    if (!siteLink && Context.engineName === Bing) {
-      siteLink = $('cite', result)?.textContent;
-      intermediateLink = linksInResultContainer[0];
-    }
-    if (!siteLink)
-      return;
-
-    const find = Object.entries(Sites).find(([_, { link }]) => siteLink.search(link) !== -1);
-    if (!find)
-      return;
-    const [siteName, siteProps] = find;
-    if (!Context.isActive(siteName))
-      return;
-
-    const paramsToSend = {
-      engine: Context.engineName,
-      link: siteLink,
-      site: siteName,
-      type: "html",
-      ...siteProps.msgApi(siteLink),
-    };
-
-    if (intermediateLink) {
-      const html = await bgFetch(intermediateLink);
-      const start = html.lastIndexOf('"', html.search(siteProps.link)) + 1;
-      const end = html.indexOf('"', start);
-      siteLink = html.substring(start, end);
-      paramsToSend.link = siteLink;
-    }
-
-    const isSameURL = (a, b) => a.host === b.host && a.pathname === b.pathname && a.search === b.search;
-
-    const urlLink = new URL(siteLink);
-    if (Context.links.some(l => isSameURL(l, urlLink)))
-      return;
-    const panelIndex = Context.links.length;
-    Context.links.push(new URL(siteLink));
-
-    chrome.runtime.sendMessage(paramsToSend, async (resp) => {
-      if (!resp)
-        return;
-      const [msg, text] = resp;
-      const site = Sites[msg.site];
-      if (!site)
-        return;
-
-      let doc;
-      switch (msg.type) {
-        case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
-        case 'json': doc = JSON.parse(text); break;
-        default: return;
-      }
-
-      const siteData = { ...msg, ...(await site.get(msg, doc)) };
-      const content = site.set(siteData); // set body and foot
-
-      if (content && content.body.innerHTML && siteData.title !== undefined)
-        Context.panels[panelIndex] = Context.panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
-      else
-        Context.panels[panelIndex] = null;
-
-      Context.updatePanels();
-    });
-  }
-
-  /**
-   * Draw the panels in order. Only when the previous are not undefined
-   */
-  static updatePanels() {
-    while (Context.currentPanelIndex < Context.links.length) {
-      const panel = Context.panels[Context.currentPanelIndex];
-      if (panel === undefined) {
-        return;
-      }
-      if (panel !== null) {
-        Context.appendPanel(panel);
-      }
-      Context.currentPanelIndex++;
-    }
-    PR.prettyPrint();
+    if (typeof Sites !== 'undefined') Context.parseResults();
   }
 
   static prettifyCode(element, runPrettify = false) {
@@ -209,57 +86,6 @@ class Context {
       pre.parentNode.replaceChild(surround, pre);
     });
     runPrettify && PR.prettyPrint();
-  }
-
-  static panelFromSite({ site, title, link, icon, header, body, foot }) {
-    const panel = el("div", { className: `${Context.PANEL_CLASS}` });
-
-    //watermark
-    el("div", { className: "watermark", textContent: "OptiSearch" }, panel);
-
-    const headPanel = el("div", { className: "optiheader" }, panel);
-
-    const a = el("a", { href: link }, headPanel);
-
-    toTeX(el("div", { className: "title result-title", textContent: title }, a), false);
-
-    const linkElement = el("cite", { className: "optilink result-url" }, a);
-    el("img", { width: 16, height: 16, src: icon }, linkElement);
-    el("span", { textContent: link }, linkElement);
-
-    if (body)
-      hline(panel);
-
-    const content = el('div', { className: "opticontent" }, panel);
-
-    // HEADER
-    if (header) {
-      content.append(header);
-      hline(content);
-    }
-    // BODY
-    if (body) {
-      body.classList.add("optibody");
-
-      if (site === "stackexchange") {
-        $$('.math-container', body).forEach((e) => toTeX(e, true));
-      }
-
-      Context.prettifyCode(body);
-      content.append(body);
-    }
-
-    // FOOT
-    if (foot) {
-      foot.classList.add("optifoot")
-      foot.id = "output";
-      hline(content);
-      content.append(foot);
-    }
-
-    writeHostOnLinks(link, panel);
-
-    return panel;
   }
 
   /**
@@ -292,7 +118,6 @@ class Context {
     Context.rightColumn = $(selectorRightCol);
     if (Context.rightColumn)
       return Context.rightColumn;
-
 
     const centerColumn = $(Context.engine.centerColumn);
     if (!centerColumn)
@@ -331,7 +156,6 @@ class Context {
 
     return Context.rightColumn;
   }
-
 
   static updateColor() {
     const bg = getBackgroundColor();

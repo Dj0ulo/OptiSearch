@@ -25,6 +25,7 @@ function onChrome() { return typeof browser === 'undefined'; }
 /**
  * Read file from this extension
  * @param {string} url 
+ * @param {string} defaultValue 
  * @returns 
  */
 const read = (url) => fetch(chrome.runtime.getURL(url))

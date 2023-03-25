@@ -125,6 +125,8 @@ describe('OptiPanel', function () {
       await Promise.all(pages.map(p => {
         if (p.engineName === "DuckDuckGo")
           return p.goto(`${p.engine.link}/?q=setinterval%20js%20w3schools`);
+        if (p.engineName === "Baidu")
+          return p.goto(`${p.engine.link}/s?wd=setinterval%20js%20w3schools`);
         return p.goto(`${p.engine.link}/search?q=setinterval%20js%20w3schools`);
       }));
 

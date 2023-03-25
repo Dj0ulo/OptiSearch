@@ -29,13 +29,13 @@
     "16": "icons/icon_16.png"
   },
   "action": {
-    "default_popup": "src/pop-up/index.html"
+    "default_popup": "src/popup/popup.html"
   },
   "web_accessible_resources": [{
 		"resources": [
       "src/engines.json",
       "src/styles/*",
-      "src/sites/icons/*"
+      "src/images/*"
     ],
     "matches": [
       "*://duckduckgo.com/*",
@@ -66,22 +66,33 @@
         "src/libs/run_prettify.js",
         "src/libs/tex-svg.js",
         "src/libs/drawdown.js",
-        "src/settings.js",
-        "src/plot.js",
+
         "src/utils.js",
+
+        "src/tools/Tools.js",
+        "src/chat/Chat.js",
+        "src/sites/Sites.js",
+        "src/settings.js",
+
         "src/chat/ChatSession.js",
         "src/chat/BingChatSession.js",
         "src/chat/ChatGPTSession.js",
-        "src/panel.js",
-        "src/tools.js",
-        "src/init.js",
+
+        "src/Context.js",
+        "src/sites/results.js",
+        "src/tools/plot.js",
+        "src/tools/init.js",
+        "src/chat/init.js",
+
         "src/sites/stackoverflow.js",
         "src/sites/mdn.js",
         "src/sites/wikipedia.js",
         "src/sites/w3schools.js",
         "src/sites/genius.js",
         "src/sites/unity.js",
-        "src/sites/mathworks.js"
+        "src/sites/mathworks.js",
+
+        "src/run.js"
       ]
     }
   ]

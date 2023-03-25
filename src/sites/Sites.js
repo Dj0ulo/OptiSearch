@@ -1,0 +1,52 @@
+const Sites = Object.freeze({
+  wikipedia: {
+    name: "Wikipedia",
+    link: "wikipedia.org/wiki/",
+    icon: "https://wikipedia.org/static/favicon/wikipedia.ico",
+    local_icon: "wikipedia.ico",
+    href: "https://en.wikipedia.org/",
+  },
+  stackexchange: {
+    name: "Stack Exchange sites",
+    link: /((((stackexchange)|(stackoverflow)|(serverfault)|(superuser)|(askubuntu)|(stackapps))\.com)|(mathoverflow\.net))\/((questions)|q)\//,
+    title: "Includes Stack Overflow, Super User and many others",
+    icon: "https://cdn.sstatic.net/Sites/stackexchange/img/favicon.ico",
+    local_icon: "stackexchange.ico",
+    href: "https://stackexchange.com/sites",
+  },
+  w3schools: {
+    name: "W3Schools",
+    link: "https://www.w3schools.com/",
+    icon: "https://www.w3schools.com/favicon.ico",
+    local_icon: "w3schools.ico",
+    href: "https://www.w3schools.com/",
+  },
+  mdn: {
+    name: "MDN Web Docs",
+    link: "https://developer.mozilla.org/",
+    icon: "https://developer.mozilla.org/favicon-48x48.cbbd161b.png",
+    local_icon: "mdn.png",
+    href: "https://developer.mozilla.org/",
+  },
+  genius: {
+    name: "Genius",
+    link: /https:\/\/genius\.com\/[^\/]*$/,
+    icon: "https://assets.genius.com/images/apple-touch-icon.png",
+    local_icon: "genius.png",
+    href: "https://genius.com/",
+  },
+  unity: {
+    name: "Unity Answers",
+    link: /https:\/\/answers\.unity\.com\/((questions)|q)\//,
+    icon: "https://answers.unity.com/themes/thub/images/favicon.ico",
+    local_icon: "unity.ico",
+    href: "https://answers.unity.com/",
+  },
+  mathworks: {
+    name: "MATLAB Answers",
+    link: "https://www.mathworks.com/matlabcentral/answers/",
+    icon: "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/favicon.20220502122634643.ico",
+    local_icon: "mathworks.ico",
+    href: "https://www.mathworks.com/matlabcentral/answers/",
+  },
+});

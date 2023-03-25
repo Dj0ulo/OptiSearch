@@ -16,7 +16,7 @@
   border: 1px solid;
 }
 
-.optisearchbox .optifoot a{
+.optisearchbox .optichat .optifoot a{
   white-space: nowrap;
   padding: 3px  5px;
   border-radius: 3px;
@@ -83,9 +83,9 @@
   color: white;
 }
 
-.bright.optisearchbox .optifoot a{
+.bright.optisearchbox .optichat .optifoot a{
   background-color: #f6f6f6;
 }
-.dark.optisearchbox .optifoot a{
+.dark.optisearchbox .optichat .optifoot a{
   background-color: #363636;
 }
