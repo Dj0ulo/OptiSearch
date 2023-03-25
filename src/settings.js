@@ -1,18 +1,15 @@
 const isOptiSearch = chrome.runtime.getManifest().name === 'OptiSearch';
+if (!isOptiSearch) {
+  delete Chat['chatgpt'];
+}
 
 const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu", Brave = "Brave Search";
 const OrderEngines = [Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave, Yahoo];
 
-const Settings = Object.freeze({
+const Settings = {
   Options: {
-    maxResults: {
-      name: "Max. number of results",
-      default: 3,
-      min: 0,
-      max: 9,
-    },
     wideColumn: {
-      name: "Force wide right column",
+      name: "Force large panel width",
       default: false,
     },
   },
@@ -27,11 +24,20 @@ const Settings = Object.freeze({
       default: true,
     },
   },
-  Sites,
-  Tools,
-});
+};
 
-const getSettings= () => Settings;
+if (isOptiSearch) {
+  Settings['Sites'] = Sites;
+  Settings['Tools'] = Tools;
+  Settings['Options']['maxResults'] = {
+    name: "Max. site results panels",
+    default: 3,
+    min: 0,
+    max: 9,
+  };
+}
+
+const getSettings = () => Settings;
 
 const SAVE_QUERIES_ENGINE = "save_queries_engine"
 const SAVE_OPTIONS_KEY = "save_options_key";

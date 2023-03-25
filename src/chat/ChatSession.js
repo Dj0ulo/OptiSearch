@@ -142,7 +142,7 @@ class ChatSession {
       <div class="ai-name">
         <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
         <span class="title chat-title" style="bottom: 10px">${this.properties.name}</span>
-        <span class="switch">⇌</span>
+        ${Object.entries(Chat).length > 1 ? '<span class="switch">⇌</span>' : ''}
       </div>
     </div>
     <hr>
@@ -150,11 +150,15 @@ class ChatSession {
     <hr class="optifoot-hr">
     <div class="optifoot"></div>
     `;
-    $('.ai-name', panel).onclick = () => {
-      Context.save['aichat'] = this.name === 'bingchat' ? 'chatgpt' : 'bingchat'
-      saveSettings(Context.save);
-      panel.parentNode.remove()
-      Context.aichat();
+    if (Object.entries(Chat).length > 1) {
+      const titleElement = $('.ai-name', panel);
+      titleElement.style.cursor = 'pointer';
+      titleElement.onclick = () => {
+        Context.save['aichat'] = this.name === 'bingchat' ? 'chatgpt' : 'bingchat'
+        saveSettings(Context.save);
+        panel.parentNode.remove()
+        Context.aichat();
+      }
     }
     if (body) {
       body.classList.add('optibody');

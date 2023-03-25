@@ -63,7 +63,9 @@ class Context {
   }
 
   static async injectStyle() {
-    const styles = ['chatgpt', 'panel', 'tomorrow', 'sunburst', 'w3schools', 'wikipedia', 'genius'];
+    let styles = ['chatgpt', 'panel', 'tomorrow', 'sunburst'];
+    if(isOptiSearch)
+      styles = [...styles, ...['w3schools', 'wikipedia', 'genius']];
     const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`).catch(() => '')));
     el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
   }

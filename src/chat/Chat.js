@@ -1,4 +1,4 @@
-const Chat = Object.freeze({
+const Chat = {
   bingchat: {
     name: "Bing Chat",
     link: "https://www.bing.com/search",
@@ -13,4 +13,4 @@ const Chat = Object.freeze({
     local_icon: "chatgpt.png",
     href: "https://chat.openai.com/chat",
   },
-});
+};

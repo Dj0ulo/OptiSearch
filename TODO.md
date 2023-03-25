@@ -71,6 +71,7 @@
 - ✅ don't work with bing when not connected because of redirection link (with firefox)
 - ✅ Baidu search
 - ✅ better alignment with the existing panels of google
+- ✅ fast copy paste source code to bingchat extension
 
 ## TO-DO 
 #### In progress
@@ -80,8 +81,8 @@
 - close window when refreh after connecting to bing
 - continue chat (maybe use declarativeNetRequest to intercept the referer field in the header)
 - languages (english, spanish, french, german, chinese, russian, arabic)
-- fast copy paste code to bingchat extension
 - allow chrome user to use bing chat
+- sometimes test is not in paragraph and thus have a bad line-height 
 #### Later
 - vote button stack overflow
 - switch answer stack overflow

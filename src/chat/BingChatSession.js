@@ -65,7 +65,7 @@ class BingChatSession extends ChatSession {
       let msg = null;
       switch (body.type) {
         case 1: msg = body.arguments[0]?.messages && body.arguments[0]?.messages[0]; break;
-        case 2: msg = body.item?.messages?.find(m => !m.messageType); break;
+        case 2: msg = body.item?.messages?.find(m => !m.messageType && m.author === 'bot'); break;
         default: return;
       }
       const validTypes = ['InternalSearchQuery', undefined];
@@ -160,9 +160,11 @@ class BingChatSession extends ChatSession {
             "responsible_ai_policy_235",
             "enablemm",
             "galileo",
-            "wlthrottle",
-            "blocklistv2",
-            "disbing",
+            "deepleofreq",
+            "saharafreq",
+            "cpcttl1d",
+            "cachewriteext",
+            "e2ecachewrite",
             "dv3sugg"
           ],
           "allowedMessageTypes": [
@@ -178,29 +180,34 @@ class BingChatSession extends ChatSession {
             "SearchQuery"
           ],
           "sliceIds": [
-            "checkauthcf",
-            "scfraithtr5",
-            "scraith50",
-            "revdv3cf",
-            "perfinstcf",
-            "linkimgintf",
+            "anidtest",
+            "321bic62ups0",
+            "styleqnatg",
+            "creatorv2c",
+            "sydpayajax",
             "sydperfinput",
-            "308jbfs0",
-            "228h3adss0",
-            "h3adss0",
-            "314offfreqs0",
-            "0310wlthrot",
-            "0228caches0",
-            "302blocklist",
-            "308disbing"
+            "toneexpcf",
+            "321toppfp3pp3",
+            "323freps0",
+            "303hubcancls0",
+            "321jobsgndv0",
+            "cache0321s0",
+            "ssoverlap100",
+            "ssploff",
+            "sssreduceoff",
+            "sswebtop3",
+            "saharasscf",
+            "316cache_sss0",
+            "316e2ecache"
           ],
+          "verbosity": "verbose",
           "isStartOfSession": true,
           "message": {
             "timestamp": timestamp(),
             "author": "user",
             "inputMethod": "Keyboard",
             "text": prompt,
-            "messageType": "SearchQuery"
+            "messageType": "Chat"
           },
           conversationSignature,
           "participant": {
