@@ -86,7 +86,7 @@
       if (typeof spec.default === 'number') {
         el("input", {
           type: "number",
-          style: "width: 2rem",
+          style: "width: 2em",
           value: save[o],
           min: spec.min,
           max: spec.max,

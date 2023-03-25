@@ -124,10 +124,10 @@ describe('OptiPanel', function () {
 
       await Promise.all(pages.map(p => {
         if (p.engineName === "DuckDuckGo")
-          return p.goto(`${p.engine.link}/?q=setinterval%20js%20w3schools`);
+          return p.goto(`${p.engine.link}/?q=setinterval%20js%20stackoverflow`);
         if (p.engineName === "Baidu")
-          return p.goto(`${p.engine.link}/s?wd=setinterval%20js%20w3schools`);
-        return p.goto(`${p.engine.link}/search?q=setinterval%20js%20w3schools`);
+          return p.goto(`${p.engine.link}/s?wd=setinterval%20js%20stackoverflow`);
+        return p.goto(`${p.engine.link}/search?q=setinterval%20js%20stackoverflow`);
       }));
 
       await helloPromises;
@@ -140,15 +140,15 @@ describe('OptiPanel', function () {
     }));
     it('Search string', async () => await ap(async p => {
       const el = await p.$(p.engine.searchBox);
-      p.assertEqual(await el.get("value", p), "setinterval js w3schools");
+      p.assertEqual(await el.get("value", p), "setinterval js stackoverflow");
     }));
     it('Result row', async () => await ap(async p => {
       const els = await p.$$(p.engine.resultRow);
       p.assertOk(els.length > 0, "Failed to parse results row");
     }));
-    it('W3Schools panel', async () => await ap(async p => {
-      const els = await p.$$(".w3body.optibody");
-      p.assertOk(els.length > 0, 'No w3schools panel found');
+    it('Stackoverflow panel', async () => await ap(async p => {
+      const els = await p.$$(".stackbody.optibody");
+      p.assertOk(els.length > 0, 'No Stackoverflow panel found');
     }));
   });
 

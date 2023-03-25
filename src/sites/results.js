@@ -35,7 +35,13 @@
     if (Context.links.length >= Context.save.maxResults)
       return;
 
-    const linksInResultContainer = $$("a", result).map(a => a.href);
+    let linksInResultContainer = [];
+    if(Context.engineName === Baidu) {
+      linksInResultContainer = [result.getAttribute('mu')];
+    } else {
+      linksInResultContainer = $$("a", result).map(a => a.href);
+    }
+    
     let siteLink = linksInResultContainer.find(l => !l.startsWith(Context.engine.link) && l !== 'javascript:void(0)');
     let intermediateLink = null;
     if (!siteLink && Context.engineName === Bing) {

@@ -1,26 +1,63 @@
 class Context {
   static PANEL_CLASS = "optipanel";
-  
+
+  /** Start the content script, should be run only once */
   static async run() {
     debug("Hello !");
 
     Context.docHead = document.head || document.documentElement;
 
+    Context.engines = await loadEngines();
+    const matches = Object.entries(Context.engines)
+      .find(([_, { regex }]) => window.location.hostname.search(new RegExp(regex)) !== -1);
+    if (!matches) {
+      debug("Not valid engine");
+      return;
+    }
+    Context.engineName = matches[0];
+    Context.engine = Context.engines[Context.engineName];
+    if (!Context.engine) {
+      debug("Not valid engine");
+      return;
+    }
+    // Update color if the theme has somehow changed
+    let prevBg = null;
+    setInterval(() => {
+      const bg = getBackgroundColor();
+      if (bg === prevBg)
+        return;
+      prevBg = bg;
+      Context.updateColor();
+    }, 200);
+
+    Context.execute();
+  }
+
+  /** Parse document and execute tools, might be run multiple times if the parsing failed once */
+  static async execute() {
     await Context.injectStyle();
 
-    const engines = await loadEngines();
+    if (Context.engineName === Baidu) {
+      const parseSearchParam = (url) => new URL(url).searchParams.get("wd");
+      let oldSearchParam = parseSearchParam(document.location.href);
 
-    const siteFound = window.location.hostname;
-    Context.engineName = Object.entries(engines)
-      .find(([_, e]) => siteFound.search(new RegExp(e.regex)) != -1)[0];
-    Context.engine = engines[Context.engineName];
-    if (!Context.engine)
-      return;
+      const observer = new MutationObserver(mutations => {
+        const searchParam = parseSearchParam(document.location.href);
+        if (oldSearchParam !== searchParam) {
+          oldSearchParam = searchParam;
+          observer.disconnect();
+          Context.execute();
+        }
+      });
+      observer.observe($('#wrapper_wrapper'), { childList: true});
+    }
 
-    if (!Context.parseSearchString()) {
+    const searchElement = await Context.awaitElement(Context.engine.searchBox);
+    if (!searchElement) {
       debug("No search string detected");
       return;
     }
+    Context.searchString = searchElement.value;
 
     debug(`${Context.engineName} — "${Context.searchString}"`);
 
@@ -36,35 +73,17 @@ class Context {
       const widthStyle = Context.engine.widthStyle?.replace("${maxW}", maxW).replace("${minW}", minW);
       if (widthStyle) el('style', { textContent: widthStyle, className: `optistyle-${Context.engineName}` }, Context.docHead);
     }
-    Context.parseRightColumn();
-    Context.executeTools();
-
-    /**
-     * Update color if the theme has somehow changed
-     */
-    let prevBg = null;
-    setInterval(() => {
-      const bg = getBackgroundColor();
-      if (bg === prevBg)
-        return;
-      prevBg = bg;
-      Context.updateColor();
-    }, 200)
-
+    if (Context.parseRightColumn())
+      Context.executeTools();
   }
 
   static isActive(tool) {
     return Context.save[tool];
   }
 
-  static parseSearchString() {
-    Context.searchString = $(Context.engine.searchBox)?.value;
-    return Context.searchString;
-  }
-
   static async injectStyle() {
     let styles = ['chatgpt', 'panel', 'tomorrow', 'sunburst'];
-    if(isOptiSearch)
+    if (isOptiSearch)
       styles = [...styles, ...['w3schools', 'wikipedia', 'genius']];
     const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`).catch(() => '')));
     el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
@@ -122,8 +141,11 @@ class Context {
       return Context.rightColumn;
 
     const centerColumn = $(Context.engine.centerColumn);
-    if (!centerColumn)
+    if (!centerColumn) {
       debug("No right column");
+      Context.awaitElement(Context.engine.centerColumn).then(() => Context.execute());
+      return false;
+    }
 
     // create a right column with the correct attributes
     const [sr] = selectorRightCol.split(',');
@@ -179,5 +201,23 @@ class Context {
       else
         p.className = p.className.replace("dark", "bright");
     }
+  }
+
+  static awaitElement(selector) {
+    return new Promise(resolve => {
+      const el = $(selector);
+      if (el) {
+        resolve(el);
+        return;
+      }
+      const observer = new MutationObserver(() => {
+        const el = $(selector);
+        if (el) {
+          observer.disconnect();
+          resolve(el);
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
   }
 }

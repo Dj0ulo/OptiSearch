@@ -78,7 +78,7 @@ Sites.mathworks.set = (answer) => {
 
   if (!answer.html) {
     body.innerHTML = `No answer on this question... If you know the answer, <a href="${answer.link}&form_type=community">submit it</a>!`;
-    body.style.margin = '1rem 0px';
+    body.style.margin = '1em 0px';
     return { body };
   }
 

@@ -72,21 +72,19 @@
 - ✅ Baidu search
 - ✅ better alignment with the existing panels of google
 - ✅ fast copy paste source code to bingchat extension
+- ✅ Make Baidu working with results
+- ✅ Baidu sometimes disappearing
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
 - button to expand and force right column directly on the panel
 - just number in links bing chat with hover explain
-- close window when refreh after connecting to bing
-- continue chat (maybe use declarativeNetRequest to intercept the referer field in the header)
+- continue chat (maybe use declarativeNetRequest to intercept the referer field in the header) (https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1)
 - languages (english, spanish, french, german, chinese, russian, arabic)
 - allow chrome user to use bing chat
 - sometimes test is not in paragraph and thus have a bad line-height 
 #### Later
-- vote button stack overflow
-- switch answer stack overflow
-- fold the panel
 - option put on top of the panel that are already there
 - option remove panel already here
 - fold recherche associes duckduckgo
@@ -98,6 +96,7 @@
 - make responsive column instead of checkbox max width
 - go opensource
 - make the addition on a site standard and enable anyone to create one for the site he needs
+- close window when refreh after connecting to bing or chatgpt
 #### Maybe
 - forum odoo
 - cppreference
@@ -106,4 +105,6 @@
 - compart.com or other sites to copy utf-8 symbols
 - wikipedia list with headlines (for sigle) (ex. "crows foot")
 - https://stackoverflow.com/questions/44782476/split-a-numpy-array-both-horizontally-and-vertically#44782633 comment python not good
-
+- vote button stack overflow
+- switch answer stack overflow
+- fold the panel

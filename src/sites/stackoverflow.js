@@ -97,7 +97,7 @@ Sites.stackexchange.set = (answer) => {
 
   if (!answer.html) {
     body.innerHTML = `No answer on this question... If you know the answer, <a href="${answer.link}#post-form">submit it</a>!`;
-    body.style.margin = '1rem 0px';
+    body.style.margin = '1em 0px';
     return { body };
   }
 
