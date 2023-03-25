@@ -76,9 +76,8 @@ class BingChatSession extends ChatSession {
         this.onmessage(ChatSession.infoHTML(`🔍 ${msg.text.replace(/`([^`]*)`/, '<strong>$1</strong>')}`));
         return;
       }
-
-      const refs = msg.adaptiveCards[0]?.body[0]?.text
-          .split('\n')
+      const refText = msg.adaptiveCards && msg.adaptiveCards[0]?.body[0]?.text;
+      const refs = refText?.split('\n')
           .map(s => s.match(/\[(\d+)]: (http[^ ]+) \"(.*)\"/))
           .filter(r => r).map(([_, n, href, title]) => ({ n, href, title }));
       const bodyHTML = runMarkdown(msg.text)
@@ -86,7 +85,7 @@ class BingChatSession extends ChatSession {
           const ref = refs.find(r => r.n == n);
           return ref ? `<a href="${ref.href}" title="${ref.title}"><sup>${n}</sup></a>` : '';
         });
-      const footHTML = runMarkdown(msg.adaptiveCards[0]?.body[1]?.text);
+      const footHTML = runMarkdown(msg.adaptiveCards && msg.adaptiveCards[0]?.body[1]?.text);
 
       this.onmessage(bodyHTML, footHTML);
     }

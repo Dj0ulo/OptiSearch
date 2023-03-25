@@ -8,7 +8,8 @@
     "searchBox": "input.gLFyf.gsfi, input.gLFyf",
     "active": true,
     "regex": "^www\\.google\\.",
-    "widthStyle": "#rcnt {max-width: max-content;} .optisearchbox{min-width: ${maxW}px;}"
+    "widthStyle": "#rcnt {max-width: max-content;} .optisearchbox{min-width: ${maxW}px;}",
+    "style": ".optisearchbox {margin-left: -21px;}"
   },
   "Bing": {
     "link": "https://www.bing.com",

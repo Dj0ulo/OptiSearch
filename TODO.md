@@ -69,11 +69,19 @@
 - ✅ bug panel linux 
 - ✅ "puppeteer extension disabled", "debug log php" and "write file php" and many other bad formating
 - ✅ don't work with bing when not connected because of redirection link (with firefox)
-
+- ✅ Baidu search
+- ✅ better alignment with the existing panels of google
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
+- button to expand and force right column directly on the panel
+- just number in links bing chat with hover explain
+- close window when refreh after connecting to bing
+- continue chat (maybe use declarativeNetRequest to intercept the referer field in the header)
+- languages (english, spanish, french, german, chinese, russian, arabic)
+- fast copy paste code to bingchat extension
+- allow chrome user to use bing chat
 #### Later
 - vote button stack overflow
 - switch answer stack overflow
@@ -88,7 +96,7 @@
 - bug Excel Color Scales in w3scools
 - make responsive column instead of checkbox max width
 - go opensource
-- make the addition on a site standard and enable anyone to create one for the site he needs 
+- make the addition on a site standard and enable anyone to create one for the site he needs
 #### Maybe
 - forum odoo
 - cppreference

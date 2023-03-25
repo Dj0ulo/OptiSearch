@@ -1,4 +1,4 @@
-.optipanel .optibody .chatgpt-button{
+.optisearchbox .chatgpt-button{
   padding: 0.5em;
   font-size: large;
   font-weight: 700;
@@ -6,80 +6,29 @@
   text-align: center;
   display: block;
   transition: 0.3s;
+}
 
-}
-.optipanel .optibody .chatgpt-button:hover{
-  color: black;
-}
-.optipanel .optibody .chatgpt-button,
-.optipanel .optibody .text-area-container {
+.optisearchbox .chatgpt-button {
   width: 100%;
   padding: 8px 10px;
   margin: .5em 0;
   border-radius: 5px;
-  background: #f7f7f7;
-  border: 1px solid rgb(220, 220, 220);
-}
-.optipanel .optibody .text-area-container {
-  display: flex;
-}
-.optipanel .optibody .chatgpt-button:active,
-.optipanel .optibody .text-area-container:has(textarea:focus){
-  border-color: #bbc0c4;
+  border: 1px solid;
 }
 
-
-.optipanel .optibody .text-area-container.sent {
-  border: 0;
-}
-.optipanel .optibody .text-area-container > textarea {
-  width: 100%;
-  height: 1.2em;
-  border: 0;
-  resize: none;
-  padding: 0;
-  font-family: inherit;
-  background-color: unset;
-  font-size: medium;
-  outline: unset;
-  overflow-y: hidden;
-}
-
-.optipanel .optibody .text-area-container button{
-  border: 0;
-  background-color: unset;
-  margin-left: auto;
-  cursor: pointer;
-  transition: 0.3s;
-  fill: rgb(65, 65, 65);
-}
-
-.optipanel .optibody .text-area-container button:hover{
-  fill: rgb(46, 46, 46);
-}
-
-.optipanel .optibody .text-area-container.sent button {
-  display: none;
-}
-.optipanel .optibody .text-area-container svg{
-  width: 2em;
-  height: 1.5em;
-  transform: rotate(90deg);
-}
-.optipanel .optifoot a{
+.optisearchbox .optifoot a{
   white-space: nowrap;
-  background-color: #f6f6f6;
   padding: 3px  5px;
   border-radius: 3px;
   margin: 2px;
   line-height: 1.8em;
 }
-.optipanel .chat-title{
+.optisearchbox .chat-title{
   bottom: 7px;
   position: relative;
   margin: 0px 10px;
 }
-.optipanel .chat-info{
+.optisearchbox .chat-info{
   margin-top: 1em;
   margin-bottom: 1em;
 }
@@ -100,36 +49,43 @@
   cursor: pointer;
 }
 
-.optipanel .optiheader:hover .switch {
+.optisearchbox .optiheader:hover .switch {
   opacity: 1;
 }
 
-.dark.optisearchbox .optipanel .switch {
-  border-top: 5px solid #fff;
+/* COLOR THEMES */
+
+.bright.optisearchbox .chatgpt-button{
+  color: #222222;
+  border-color: #dcdcdc;
+  background: #f7f7f7;
 }
 
-.dark.optisearchbox .dropdown-content .option:hover {
-  background-color: #222222;
-}
-.dark.optisearchbox .optipanel .optibody .chatgpt-button,
-.dark.optisearchbox .optipanel .optibody .text-area-container,
-.dark.optisearchbox .dropdown-content{
+.dark.optisearchbox .chatgpt-button{
+  color: #dcdcdc;
   border-color: #222222;
   background-color: #3b3b3b;
 }
-.dark.optisearchbox .optipanel .optibody .text-area-container button{
-  fill: rgb(212, 212, 212);
+
+.bright.optisearchbox .chatgpt-button:active{
+  border-color: #bbc0c4;
 }
-.dark.optisearchbox .optipanel .optibody .text-area-container button:hover{
-  fill: white;
-}
-.dark.optisearchbox .optipanel .optibody .chatgpt-button:active,
-.dark.optisearchbox .optipanel .optibody .text-area-container:has(textarea:focus){
+
+.dark.optisearchbox .chatgpt-button:active{
   border-color: #979797;
 }
-.dark.optisearchbox .optipanel .optibody .chatgpt-button:hover{
+
+.bright.optisearchbox .chatgpt-button:hover{
+  color: black;
+}
+
+.dark.optisearchbox .chatgpt-button:hover{
   color: white;
 }
-.dark.optisearchbox .optipanel .optifoot a{
+
+.bright.optisearchbox .optifoot a{
+  background-color: #f6f6f6;
+}
+.dark.optisearchbox .optifoot a{
   background-color: #363636;
 }
