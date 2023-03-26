@@ -27,7 +27,17 @@
   bottom: 7px;
   position: relative;
   margin: 0px 10px;
+  cursor: pointer;
 }
+
+.optisearchbox a.chat-title {
+  color: inherit !important;
+}
+
+.optisearchbox .chat-title:hover{
+  text-decoration: underline;
+}
+
 .optisearchbox .chat-info{
   margin-top: 1em;
   margin-bottom: 1em;
@@ -44,6 +54,7 @@
   bottom: 30%;
   transition: opacity 0.2s;
   opacity: 0;
+  cursor: pointer;
 }
 
 .optisearchbox .optiheader:hover .switch {

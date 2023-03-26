@@ -141,7 +141,7 @@ class ChatSession {
     <div class="optiheader">
       <div class="ai-name">
         <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
-        <span class="title chat-title" style="bottom: 10px">${this.properties.name}</span>
+        <a href="${this.properties.href}" class="title chat-title" style="bottom: 10px">${this.properties.name}</a>
         ${Object.entries(Chat).length > 1 ? '<span class="switch">⇌</span>' : ''}
       </div>
     </div>
@@ -151,9 +151,7 @@ class ChatSession {
     <div class="optifoot"></div>
     `;
     if (Object.entries(Chat).length > 1) {
-      const titleElement = $('.ai-name', panel);
-      titleElement.style.cursor = 'pointer';
-      titleElement.onclick = () => {
+      $('.switch', panel).onclick = () => {
         Context.save['aichat'] = this.name === 'bingchat' ? 'chatgpt' : 'bingchat'
         saveSettings(Context.save);
         panel.parentNode.remove()

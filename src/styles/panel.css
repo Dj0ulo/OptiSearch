@@ -116,7 +116,7 @@
   color: rgb(167, 159, 147) !important;
 }
 
-.optipanel .optiheader a:link {
+.optipanel .optiheader a:has(> .result-title):link {
   text-decoration: none !important;
 }
 
