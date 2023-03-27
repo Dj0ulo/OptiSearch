@@ -16,15 +16,22 @@
   border: 1px solid;
 }
 
-.optisearchbox .optichat .optifoot a{
+.optisearchbox .optichat .optifoot a.source{
   white-space: nowrap;
   padding: 3px  5px;
   border-radius: 3px;
   margin: 2px;
   line-height: 1.8em;
 }
+.optisearchbox .optichat a.source.superscript{
+  font-size: smaller;
+  bottom: 0.5em;
+  padding: 1px 4px;
+  position: relative;
+  border-radius: 3px;
+}
 .optisearchbox .chat-title{
-  bottom: 7px;
+  bottom: 10px;
   position: relative;
   margin: 0px 10px;
   cursor: pointer;
@@ -61,6 +68,16 @@
   opacity: 1;
 }
 
+.learnmore > a[invisible="0"]{
+  display: none;
+}
+.learnmore > .showmore{
+  cursor: pointer;
+}
+.learnmore:has(> a.showmore) > a[more] {
+  display: none;
+}
+
 /* COLOR THEMES */
 
 .bright.optisearchbox .chatgpt-button{
@@ -91,9 +108,10 @@
   color: white;
 }
 
-.bright.optisearchbox .optichat .optifoot a{
-  background-color: #f6f6f6;
+.bright.optisearchbox .optichat a.source{
+  color: #123BB6;
+  background-color: #d1dbfa;
 }
-.dark.optisearchbox .optichat .optifoot a{
-  background-color: #363636;
+.dark.optisearchbox .optichat a.source{
+  background-color: #293740;
 }

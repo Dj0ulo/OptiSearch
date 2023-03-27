@@ -66,6 +66,7 @@
   transition: max-height 5s;
   /* overflow-y: auto; */
   max-height: initial;
+  line-height: 1.5em;
 }
 
 .folded {

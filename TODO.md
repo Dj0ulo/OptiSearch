@@ -74,16 +74,21 @@
 - ✅ fast copy paste source code to bingchat extension
 - ✅ Make Baidu working with results
 - ✅ Baidu sometimes disappearing
-
+- ✅ sometimes stops without chat (should be resolved if we only accepts the chats messages)
+- ✅ sometimes test is not in paragraph and thus have a bad line-height 
+- ✅ hides some sources when too many
 ## TO-DO 
 #### In progress
 #### Urgent for next version
 - button to expand and force right column directly on the panel
 - just number in links bing chat with hover explain
-- continue chat (maybe use declarativeNetRequest to intercept the referer field in the header) (https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1)
+- continue chat (maybe use declarativeNetRequest to intercept the referer field in the header) (https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1) --> seems impossible
 - languages (english, spanish, french, german, chinese, russian, arabic)
 - allow chrome user to use bing chat
-- sometimes test is not in paragraph and thus have a bad line-height 
+- bug formatting
+- 3 modes of bingchat
+- improve perf by asking bingchat before loading the page
+
 #### Later
 - option put on top of the panel that are already there
 - option remove panel already here

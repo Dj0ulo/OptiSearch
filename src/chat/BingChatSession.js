@@ -41,7 +41,7 @@ class BingChatSession extends ChatSession {
 
   async send(prompt) {
     super.send(prompt);
-    if(ChatSession.debug)
+    if (ChatSession.debug)
       return;
 
     this.socketID = await BingChatSession.createSocket();
@@ -72,21 +72,35 @@ class BingChatSession extends ChatSession {
       if (!(msg && validTypes.some(t => t === msg.messageType)))
         return;
 
-      if(msg.messageType === 'InternalSearchQuery'){
+      if (msg.messageType === 'InternalSearchQuery') {
         this.onmessage(ChatSession.infoHTML(`🔍 ${msg.text.replace(/`([^`]*)`/, '<strong>$1</strong>')}`));
         return;
       }
       const refText = msg.adaptiveCards && msg.adaptiveCards[0]?.body[0]?.text;
       const refs = refText?.split('\n')
-          .map(s => s.match(/\[(\d+)]: (http[^ ]+) \"(.*)\"/))
-          .filter(r => r).map(([_, n, href, title]) => ({ n, href, title }));
-      const bodyHTML = runMarkdown(msg.text)
-        .replace(/\[<sup>(\d+)<\/sup>\]/g, (_, n) => {
-          const ref = refs.find(r => r.n == n);
-          return ref ? `<a href="${ref.href}" title="${ref.title}"><sup>${n}</sup></a>` : '';
-        });
-      const footHTML = runMarkdown(msg.adaptiveCards && msg.adaptiveCards[0]?.body[1]?.text);
+        .map(s => s.match(/\[(\d+)]: (http[^ ]+) \"(.*)\"/)) // parse links
+        .filter(r => !!r).map(([_, n, href, title]) => ({ n, href, title }));
+      const learnMore = msg.adaptiveCards && msg.adaptiveCards[0]?.body[1]?.text;
+      let text = msg.text;
+      const sources = {};
+      if (learnMore) {
+        [...learnMore.matchAll(/\[(\d+)\. [^\]]+\]\(([^ ]+)\) ?/g)].forEach(([_, n, href]) => sources[href] = n);
+        console.log(sources, refs);
+        text = text.replace(/\[\^(\d+)\^\]/g, '\uF8FD$1\uF8Fe');
+      }
 
+      const bodyHTML = runMarkdown(text).replace(/\uF8FD(\d+)\uF8FE/g, (_, nRef) => {
+        const ref = refs.find(r => r.n == nRef);
+        console.log(ref);
+        const nSource = sources[ref.href];
+        return ref ? `<a href="${ref.href}" title="${ref.title}" class="source superscript">${nSource}</a>` : '';
+      });
+      const maxVisible = 2;
+      const invisible = Math.max(0, Object.keys(sources).length - maxVisible);
+      const footHTML = Object.keys(sources).length === 0 ? '' : `<div class="learnmore" 
+          >Learn more&nbsp: ${Object.entries(sources).map(([href, n], i) => 
+          `<a class="source" href="${href}" ${i >= maxVisible ? 'more' : ''}>${n}. ${new URL(href).host}</a>`).join('\n')}
+          <a class="showmore source" title="Show more" invisible=${invisible}>+${invisible} more</a></div>`;
       this.onmessage(bodyHTML, footHTML);
     }
     packet.split('\x1e')
@@ -170,14 +184,14 @@ class BingChatSession extends ChatSession {
           "allowedMessageTypes": [
             "Chat",
             "InternalSearchQuery",
-            "InternalSearchResult",
-            "Disengaged",
-            "InternalLoaderMessage",
-            "RenderCardRequest",
-            "AdsQuery",
-            "SemanticSerp",
-            "GenerateContentQuery",
-            "SearchQuery"
+            // "InternalSearchResult",
+            // "Disengaged",
+            // "InternalLoaderMessage",
+            // "RenderCardRequest",
+            // "AdsQuery",
+            // "SemanticSerp",
+            // "GenerateContentQuery",
+            // "SearchQuery"
           ],
           "sliceIds": [
             "anidtest",

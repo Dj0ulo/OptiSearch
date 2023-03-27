@@ -125,6 +125,7 @@ class Stream {
   }
 
   write(data) {
+    console.debug('WebSocket receives: ', data);
     this.buffer.push(data);
     if (this.readPromise !== null) {
       this.resolveReadPromise(this.buffer.shift());

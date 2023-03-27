@@ -48,11 +48,18 @@ class ChatSession {
       throw ChatSession.#abstractMethodError;
     if (ChatSession.debug) {
       this.onmessage(ChatSession.infoHTML('🔍 Searching for: <strong>setInterval()</strong>'));
-      await new Promise(r => setTimeout(r, 3000));
+      await new Promise(r => setTimeout(r, 500));
       this.onmessage(
-        `<p><code>setInterval()</code> is a JavaScript method that repeats a block of code at every given timing event. The commonly used syntax of <code>setInterval()</code> is: <code>setInterval(function, milliseconds);</code><a href="https://www.programiz.com/javascript/setInterval" title="Javascript setInterval() - Programiz"><sup>1</sup></a> <a href="https://www.javatpoint.com/javascript-setinterval-method" title="JavaScript setInterval() method - javatpoint"><sup>2</sup></a> <a href="https://developer.mozilla.org/en-US/docs/Web/API/setInterval" title="setInterval() - Web APIs | MDN - Mozilla"><sup>4</sup></a> <a href="https://www.w3schools.com/jsref/met_win_setinterval.asp" title="Window setInterval() Method - W3Schools"><sup>5</sup></a> </p><p>Is there anything else you would like to know about <code>setInterval()</code>?</p>`,
-        `Learn more: <a href="https://www.programiz.com/javascript/setInterval">1. www.programiz.com</a> <a href="https://www.javatpoint.com/javascript-setinterval-method">2. www.javatpoint.com</a> <a href="https://developer.mozilla.org/en-US/docs/Web/API/setInterval">3. developer.mozilla.org</a> <a href="https://www.w3schools.com/jsref/met_win_setinterval.asp">4. www.w3schools.com</a>`
-      );
+        `<p><code>stdnum</code> is a Python module that provides functions to parse, validate and reformat standard numbers and codes in different formats. It contains a large collection of number formats<a href="https://github.com/arthurdejong/python-stdnum/" title="GitHub - arthurdejong/python-stdnum: A Python library to provide ..." class="source"><sup>1</sup></a> <a href="https://pypi.org/project/python-stdnum/" title="python-stdnum · PyPI" class="source"><sup>2</sup></a>. Basically any number or code that has some validation mechanism available or some common formatting is eligible for inclusion in this library<a href="https://pypi.org/project/python-stdnum/" title="python-stdnum · PyPI" class="source"><sup>2</sup></a>.</p>
+        You can find more information about this module at <a href="https://arthurdejong.org/python-stdnum/">https://arthurdejong.org/python-stdnum/</a>
+        <a href="https://pypi.org/project/python-stdnum/" title="python-stdnum · PyPI" class="source superscript">2</a>.`,
+        `<div class="learnmore" 
+        >Learn more&nbsp: <a class="source" href="https://github.com/arthurdejong/python-stdnum/" >1. github.com</a>
+<a class="source" href="https://pypi.org/project/python-stdnum/" >2. pypi.org</a>
+<a class="source" href="https://arthurdejong.org/python-stdnum/doc/1.8/index" more>3. arthurdejong.org</a>
+<a class="source" href="https://pypi.org/project/python-stdnum-do/" more>4. pypi.org</a>
+        <a class="showmore source" title="Show more" invisible=2>+ 2 more</a></div>`
+        );
       return;
     }
   }
@@ -60,8 +67,8 @@ class ChatSession {
   panel() {
     let lastError = null;
 
-    const body = el("div");
-    const foot = el("div");
+    const body = el("div", {className: 'optibody'});
+    const foot = el("div", {className: 'optifoot'});
     const panel = this.panelBlueprint(body, foot);
     const hrFoot = $('.optifoot-hr', panel);
     const responseContainer = el("div", {}, body);
@@ -119,6 +126,9 @@ class ChatSession {
       const hr = $('.optifoot-hr', panel);
       if (footHTML) {
         foot.innerHTML = footHTML;
+        const showmore = $('.showmore', foot);
+        if(showmore)
+          showmore.onclick = () => showmore.remove();
         display(hr);
       } else {
         hide(hr);
@@ -131,6 +141,7 @@ class ChatSession {
     else
       setCurrentAction('send');
     Context.appendPanel(panel, true);
+    return panel;
   }
 
   panelBlueprint(body, foot) {
@@ -141,14 +152,11 @@ class ChatSession {
     <div class="optiheader">
       <div class="ai-name">
         <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
-        <a href="${this.properties.href}" class="title chat-title" style="bottom: 10px">${this.properties.name}</a>
+        <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
         ${Object.entries(Chat).length > 1 ? '<span class="switch">⇌</span>' : ''}
       </div>
     </div>
     <hr>
-    <div class="optibody"></div>
-    <hr class="optifoot-hr">
-    <div class="optifoot"></div>
     `;
     if (Object.entries(Chat).length > 1) {
       $('.switch', panel).onclick = () => {
@@ -158,12 +166,9 @@ class ChatSession {
         Context.aichat();
       }
     }
-    if (body) {
-      body.classList.add('optibody');
-      $('.optibody', panel).replaceWith(body);
-    }
-    if (foot)
-      $('.optifoot', panel).append(foot);
+    panel.append(body);
+    el('hr', { className: 'optifoot-hr' }, panel);
+    panel.append(foot);
 
     return panel;
   }
