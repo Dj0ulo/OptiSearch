@@ -61,19 +61,37 @@ class BingChatSession extends ChatSession {
     if (readyState === WebSocket.CLOSED)
       return;
 
+    /**
+     * body.type: 1 = Invocation, 2 = StreamItem, 3 = Completion, 4 = StreamInvocation, 5 = CancelInvocation, 6 = Ping, 7 = Close
+     * @param {*} body 
+     * @returns 
+     */
     const parseResponseBody = (body) => {
       let msg = null;
       switch (body.type) {
         case 1: msg = body.arguments[0]?.messages && body.arguments[0]?.messages[0]; break;
-        case 2: msg = body.item?.messages?.find(m => !m.messageType && m.author === 'bot'); break;
+        case 2:
+          msg = body.item?.messages?.find(m => !m.messageType && m.author === 'bot');
+          if (!msg)
+            msg = body.item?.messages?.find(m => m.messageType === 'InternalSearchResult' && m.author === 'bot');
+          break;
         default: return;
       }
-      const validTypes = ['InternalSearchQuery', undefined];
+      const validTypes = ['InternalSearchQuery', 'InternalSearchResult', undefined];
       if (!(msg && validTypes.some(t => t === msg.messageType)))
         return;
 
       if (msg.messageType === 'InternalSearchQuery') {
         this.onmessage(ChatSession.infoHTML(`🔍 ${msg.text.replace(/`([^`]*)`/, '<strong>$1</strong>')}`));
+        return;
+      }
+      if (msg.messageType === 'InternalSearchResult') {
+        const results = msg.groundingInfo?.web_search_results;
+        if (!results) return;
+        const resultsHTML = '<ul>' + results.map(r => `<li>${r.snippets.map(s => `<p>${s}
+        <a href="${r.url}" title="${r.title}" class="source superscript">${r.index}</a></p>`).join('\n')}</li>`).join('\n')
+          + '</ul>';
+        this.onmessage(resultsHTML);
         return;
       }
       const refText = msg.adaptiveCards && msg.adaptiveCards[0]?.body[0]?.text;
@@ -98,8 +116,8 @@ class BingChatSession extends ChatSession {
       const maxVisible = 2;
       const invisible = Math.max(0, Object.keys(sources).length - maxVisible);
       const footHTML = Object.keys(sources).length === 0 ? '' : `<div class="learnmore" 
-          >Learn more&nbsp: ${Object.entries(sources).map(([href, n], i) => 
-          `<a class="source" href="${href}" ${i >= maxVisible ? 'more' : ''}>${n}. ${new URL(href).host}</a>`).join('\n')}
+          >Learn more&nbsp: ${Object.entries(sources).map(([href, n], i) =>
+        `<a class="source" href="${href}" ${i >= maxVisible ? 'more' : ''}>${n}. ${new URL(href).host}</a>`).join('\n')}
           <a class="showmore source" title="Show more" invisible=${invisible}>+${invisible} more</a></div>`;
       this.onmessage(bodyHTML, footHTML);
     }
@@ -184,7 +202,7 @@ class BingChatSession extends ChatSession {
           "allowedMessageTypes": [
             "Chat",
             "InternalSearchQuery",
-            // "InternalSearchResult",
+            "InternalSearchResult",
             // "Disengaged",
             // "InternalLoaderMessage",
             // "RenderCardRequest",

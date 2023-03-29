@@ -74,9 +74,10 @@
 - ✅ fast copy paste source code to bingchat extension
 - ✅ Make Baidu working with results
 - ✅ Baidu sometimes disappearing
-- ✅ sometimes stops without chat (should be resolved if we only accepts the chats messages)
 - ✅ sometimes test is not in paragraph and thus have a bad line-height 
 - ✅ hides some sources when too many
+- ✅ sometimes stops without chat, should handle this case (not resolved even if we only accepts the chats messages) -> just show the results
+
 ## TO-DO 
 #### In progress
 #### Urgent for next version
