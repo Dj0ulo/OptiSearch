@@ -145,10 +145,10 @@ class ChatSession {
   }
 
   panelBlueprint(body, foot) {
-    const panel = el("div", { className: `${Context.PANEL_CLASS} optichat` });
+    const panel = el("div", { className: `${Context.PANEL_CLASS} optichat ${isOptiSearch ? 'optisearch' : 'bingchat'}` });
 
     panel.innerHTML = `
-    <div class="watermark">OptiSearch</div>
+    ${isOptiSearch ? `<div class="watermark">OptiSearch</div>` : ''}
     <div class="optiheader">
       <div class="ai-name">
         <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />

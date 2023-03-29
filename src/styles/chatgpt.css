@@ -1,3 +1,7 @@
+body:has(.optipanel.optichat:not(.bingchat)) .optisearchbox:has(> .optipanel.bingchat) {
+  display: none;
+}
+
 .optisearchbox .chatgpt-button{
   padding: 0.5em;
   font-size: large;
