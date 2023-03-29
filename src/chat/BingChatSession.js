@@ -99,17 +99,15 @@ class BingChatSession extends ChatSession {
         .map(s => s.match(/\[(\d+)]: (http[^ ]+) \"(.*)\"/)) // parse links
         .filter(r => !!r).map(([_, n, href, title]) => ({ n, href, title }));
       const learnMore = msg.adaptiveCards && msg.adaptiveCards[0]?.body[1]?.text;
-      let text = msg.text;
+      let text = msg.text || msg.spokenText;
       const sources = {};
       if (learnMore) {
         [...learnMore.matchAll(/\[(\d+)\. [^\]]+\]\(([^ ]+)\) ?/g)].forEach(([_, n, href]) => sources[href] = n);
-        console.log(sources, refs);
         text = text.replace(/\[\^(\d+)\^\]/g, '\uF8FD$1\uF8Fe');
       }
 
       const bodyHTML = runMarkdown(text).replace(/\uF8FD(\d+)\uF8FE/g, (_, nRef) => {
         const ref = refs.find(r => r.n == nRef);
-        console.log(ref);
         const nSource = sources[ref.href];
         return ref ? `<a href="${ref.href}" title="${ref.title}" class="source superscript">${nSource}</a>` : '';
       });
