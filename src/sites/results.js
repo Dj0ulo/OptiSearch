@@ -42,7 +42,7 @@
       linksInResultContainer = $$("a", result).map(a => a.href);
     }
     
-    let siteLink = linksInResultContainer.find(l => !l.startsWith(Context.engine.link) && l !== 'javascript:void(0)');
+    let siteLink = linksInResultContainer.find(l => !l?.startsWith(Context.engine.link) && l !== 'javascript:void(0)');
     let intermediateLink = null;
     if (!siteLink && Context.engineName === Bing) {
       siteLink = $('cite', result)?.textContent;
