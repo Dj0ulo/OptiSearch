@@ -26,6 +26,8 @@ if __name__ == "__main__":
         manifest_v2["description"] = manifest_v3["description"]
 
         # Add the optional fields to the version 2 manifest, if they are present in the version 3 manifest
+        if "default_locale" in manifest_v3:
+            manifest_v2["default_locale"] = manifest_v3["default_locale"]
         if "author" in manifest_v3:
             manifest_v2["author"] = manifest_v3["author"]
         if "icons" in manifest_v3:
