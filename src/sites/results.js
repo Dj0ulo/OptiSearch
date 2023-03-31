@@ -117,7 +117,7 @@
 
     const headPanel = el("div", { className: "optiheader" }, panel);
 
-    const a = el("a", { href: link }, headPanel);
+    const a = el("a", { href: link, className: "result-link" }, headPanel);
 
     toTeX(el("div", { className: "title result-title", textContent: title }, a), false);
 

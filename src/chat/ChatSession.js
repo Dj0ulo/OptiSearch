@@ -127,8 +127,12 @@ class ChatSession {
       if (footHTML) {
         foot.innerHTML = footHTML;
         const showmore = $('.showmore', foot);
-        if(showmore)
-          showmore.onclick = () => showmore.remove();
+        if(showmore){
+          showmore.onclick = () => {
+            showmore.parentElement.classList.remove('less');
+            showmore.remove();
+          }
+        }
         display(hr);
       } else {
         hide(hr);

@@ -78,7 +78,7 @@ body:has(.optipanel.optichat:not(.bingchat)) .optisearchbox:has(> .optipanel.bin
 .learnmore > .showmore{
   cursor: pointer;
 }
-.learnmore:has(> a.showmore) > a[more] {
+.learnmore.less > a[more] {
   display: none;
 }
 

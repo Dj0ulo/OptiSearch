@@ -113,7 +113,7 @@ class BingChatSession extends ChatSession {
       });
       const maxVisible = 2;
       const invisible = Math.max(0, Object.keys(sources).length - maxVisible);
-      const footHTML = Object.keys(sources).length === 0 ? '' : `<div class="learnmore" 
+      const footHTML = Object.keys(sources).length === 0 ? '' : `<div class="learnmore less" 
           >Learn more&nbsp: ${Object.entries(sources).map(([href, n], i) =>
         `<a class="source" href="${href}" ${i >= maxVisible ? 'more' : ''}>${n}. ${new URL(href).host}</a>`).join('\n')}
           <a class="showmore source" title="Show more" invisible=${invisible}>+${invisible} more</a></div>`;
