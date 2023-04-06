@@ -73,8 +73,14 @@ class Context {
       const widthStyle = Context.engine.widthStyle?.replace("${maxW}", maxW).replace("${minW}", minW);
       if (widthStyle) el('style', { textContent: widthStyle, className: `optistyle-${Context.engineName}` }, Context.docHead);
     }
-    if (Context.parseRightColumn())
-      Context.executeTools();
+    if (!Context.parseRightColumn())
+      return;
+
+    if($$(Context.engine.resultRow).length === 0 && Context.engineName !== DuckDuckGo)
+    // Probably not on a result page adapted to the display of a panel
+      return;
+
+    Context.executeTools();
   }
 
   static isActive(tool) {
