@@ -14,6 +14,8 @@ class ChatSession {
   name = null;
   messages = [];
   session = null;
+  /**@type {HTMLElement | null} */
+  panel = null;
 
   constructor(name) {
     if (this.constructor === ChatSession)
@@ -59,16 +61,16 @@ class ChatSession {
 <a class="source" href="https://arthurdejong.org/python-stdnum/doc/1.8/index" more>3. arthurdejong.org</a>
 <a class="source" href="https://pypi.org/project/python-stdnum-do/" more>4. pypi.org</a>
         <a class="showmore source" title="Show more" invisible=2>+ 2 more</a></div>`
-        );
+      );
       return;
     }
   }
 
-  panel() {
+  createPanel(directchat = true) {
     let lastError = null;
 
-    const body = el("div", {className: 'optibody'});
-    const foot = el("div", {className: 'optifoot'});
+    const body = el("div", { className: 'optibody' });
+    const foot = el("div", { className: 'optifoot' });
     const panel = this.panelBlueprint(body, foot);
     const hrFoot = $('.optifoot-hr', panel);
     const responseContainer = el("div", {}, body);
@@ -77,7 +79,7 @@ class ChatSession {
     const display = e => e.style.display = '';
     const hide = e => e.style.display = 'none';
 
-    const sendInput = () => this.send(Context.searchString);
+    const sendInput = () => this.send(Context.parseSearchParam());
 
     const setCurrentAction = (action) => {
       if (action)
@@ -121,13 +123,13 @@ class ChatSession {
 
     this.onmessage = (bodyHTML, footHTML) => {
       responseContainer.innerHTML = bodyHTML;
-      Context.prettifyCode(body, true);
+      prettifyCode(responseContainer, true);
 
       const hr = $('.optifoot-hr', panel);
       if (footHTML) {
         foot.innerHTML = footHTML;
         const showmore = $('.showmore', foot);
-        if(showmore){
+        if (showmore) {
           showmore.onclick = () => {
             showmore.parentElement.classList.remove('less');
             showmore.remove();
@@ -140,16 +142,17 @@ class ChatSession {
     };
 
     hide(hrFoot);
-    if (Context.isActive('directchat'))
+    if (directchat)
       ping();
     else
       setCurrentAction('send');
-    Context.appendPanel(panel, true);
-    return panel;
+    this.panel = panel;
+    return this.panel;
   }
 
   panelBlueprint(body, foot) {
     const panel = el("div", { className: `${Context.PANEL_CLASS} optichat ${isOptiSearch ? 'optisearch' : 'bingchat'}` });
+    panel.dataset.chat = this.name;
 
     panel.innerHTML = `
     ${isOptiSearch ? `<div class="watermark">OptiSearch</div>` : ''}
@@ -157,17 +160,14 @@ class ChatSession {
       <div class="ai-name">
         <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
         <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
-        ${Object.entries(Chat).length > 1 ? '<span class="switch">⇌</span>' : ''}
+        ${Object.entries(Chat).length > 1 ? '<span class="switchchat">⇌</span>' : ''}
       </div>
     </div>
     <hr>
     `;
     if (Object.entries(Chat).length > 1) {
-      $('.switch', panel).onclick = () => {
-        Context.save['aichat'] = this.name === 'bingchat' ? 'chatgpt' : 'bingchat'
-        saveSettings(Context.save);
-        panel.parentNode.remove()
-        Context.aichat();
+      $('.switchchat', panel).onclick = async () => {
+        Context.aichat(this.name === 'bingchat' ? 'chatgpt' : 'bingchat');
       }
     }
     panel.append(body);

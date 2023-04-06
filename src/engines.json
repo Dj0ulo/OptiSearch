@@ -77,6 +77,7 @@
     "active": true,
     "regex": "www\\.baidu\\.com$",
     "widthStyle": "#container{ width: 1280px; } #content_right{ width: ${maxW}px !important;}",
-    "style": "#container.sam_newgrid .right-ceiling {position: static !important;}"
+    "style": "#container.sam_newgrid .right-ceiling {position: static !important;}",
+    "searchParam": "wd"
   }
 }

@@ -64,6 +64,23 @@ function toTeX(element, convertWhole = true) {
 }
 
 /**
+ * Prettyfy code
+ * @param {Element} element 
+ * @param {boolean} runPrettify if false, only put "prettyprint" class on <code> and <pre>. If true, run prettyPrint 
+ */
+function prettifyCode(element, runPrettify = false) {
+  $$("code, pre", element).forEach(c => c.classList.add("prettyprint"));
+
+  $$("pre", element).forEach((pre) => {
+    const surround = el("div", { className: "pre-surround", innerHTML: pre.outerHTML, style: "position: relative" });
+    surround.append(createCopyButton(pre.innerText.trim()));
+
+    pre.parentNode.replaceChild(surround, pre);
+  });
+  runPrettify && PR.prettyPrint();
+}
+
+/**
  * Create a copy button that copy a text in the clipboard when clicked
  * @param {string} text
  * @returns {Element}
@@ -110,8 +127,8 @@ function copyTextToClipboard(text) {
  * Create an element
  * @param {string} tag Tag name of the element
  * @param {Object} attr attributes
- * @param {Element} parent
- * @returns {Element} Element created
+ * @param {HTMLElement} parent
+ * @returns {HTMLElement} Element created
  */
 function el(tag, attr, parent) {
   const x = document.createElement(tag);

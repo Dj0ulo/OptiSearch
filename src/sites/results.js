@@ -9,22 +9,22 @@
       results.forEach(handleResult);
       return;
     }
-    if (Context.engineName !== DuckDuckGo) {
-      debug("No result detected");
-      return;
+
+    if (Context.engineName === DuckDuckGo) {
+      const resultsContainer = $(Context.engine.resultsContainer);
+      const observer = new MutationObserver((mutationRecords) => {
+        // Handle mutations
+        mutationRecords
+          .filter(mr => mr.addedNodes.length > 0)
+          .map(mr => mr.addedNodes[0])
+          .filter(n => n?.matches(Context.engine.resultRow))
+          .forEach(handleResult);
+      });
+  
+      observer.observe(resultsContainer, { childList: true });
     }
-
-    const resultsContainer = $(Context.engine.resultsContainer);
-    const observer = new MutationObserver((mutationRecords) => {
-      // Handle mutations
-      mutationRecords
-        .filter(mr => mr.addedNodes.length > 0)
-        .map(mr => mr.addedNodes[0])
-        .filter(n => n?.matches(Context.engine.resultRow))
-        .forEach(handleResult);
-    });
-
-    observer.observe(resultsContainer, { childList: true });
+    
+    debug("No result detected");
   }
 
   /**
@@ -143,7 +143,7 @@
         $$('.math-container', body).forEach((e) => toTeX(e, true));
       }
 
-      Context.prettifyCode(body);
+      prettifyCode(body);
       content.append(body);
     }
 

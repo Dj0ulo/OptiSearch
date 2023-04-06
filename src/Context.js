@@ -1,5 +1,6 @@
 class Context {
   static PANEL_CLASS = "optipanel";
+  static save = {}
 
   /** Start the content script, should be run only once */
   static async run() {
@@ -20,6 +21,8 @@ class Context {
       debug("Not valid engine");
       return;
     }
+    debug(`${Context.engineName} — "${Context.parseSearchParam()}"`);
+
     // Update color if the theme has somehow changed
     let prevBg = null;
     setInterval(() => {
@@ -38,11 +41,10 @@ class Context {
     await Context.injectStyle();
 
     if (Context.engineName === Baidu && $(Context.engine.centerColumn)) {
-      const parseSearchParam = (url) => new URL(url).searchParams.get("wd");
-      let oldSearchParam = parseSearchParam(document.location.href);
+      let oldSearchParam = Context.parseSearchParam();
 
-      const observer = new MutationObserver(mutations => {
-        const searchParam = parseSearchParam(document.location.href);
+      const observer = new MutationObserver(_ => {
+        const searchParam = Context.parseSearchParam();
         if (oldSearchParam !== searchParam) {
           oldSearchParam = searchParam;
           observer.disconnect();
@@ -58,8 +60,6 @@ class Context {
       return;
     }
     Context.searchString = searchElement.value;
-
-    debug(`${Context.engineName} — "${Context.searchString}"`);
 
     // Change style based on the search engine
     const style = Context.engine.style;
@@ -96,23 +96,17 @@ class Context {
   }
 
   static executeTools() {
-    if (Context.isActive("aichat")) Context.aichat();
+    if (Context.isActive("aichat")) Context.aichat(Context.save['aichat']);
     if (Context.isActive("bangs")) Context.bangs();
     if (Context.isActive("calculator")) Context.calculator();
     if (Context.isActive("plot") || Context.isActive("calculator")) Context.plotOrCompute();
     if (typeof Sites !== 'undefined') Context.parseResults();
   }
 
-  static prettifyCode(element, runPrettify = false) {
-    $$("code, pre", element).forEach(c => c.classList.add("prettyprint"));
-
-    $$("pre", element).forEach((pre) => {
-      const surround = el("div", { className: "pre-surround", innerHTML: pre.outerHTML, style: "position: relative" });
-      surround.append(createCopyButton(pre.innerText.trim()));
-
-      pre.parentNode.replaceChild(surround, pre);
-    });
-    runPrettify && PR.prettyPrint();
+  static parseSearchParam() {
+    const searchParamName = Context.engine.searchParam || "q";
+    const searchParam = new URL(document.location.href).searchParams.get(searchParamName);
+    return searchParam;
   }
 
   /**

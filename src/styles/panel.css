@@ -260,3 +260,12 @@
 #rhs .z2QsLb {
   position: unset !important;
 }
+
+.dark.optisearchbox.DuckDuckGo {
+  background-color: #282828;
+}
+
+.dark.optisearchbox.DuckDuckGo pre, 
+.dark.optisearchbox.DuckDuckGo code {
+  background-color: #222; 
+}
