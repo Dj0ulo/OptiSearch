@@ -1,6 +1,19 @@
 class Context {
   static PANEL_CLASS = "optipanel";
+  static RIGHT_COLUMN_CLASS = 'optisearch-column';
+  static WIDE_COLUMN_CLASS = 'optisearch-column-wide';
+
   static save = {}
+  /** @type {HTMLElement | null} */
+  static rightColumnElement = null;
+  static set rightColumn(value) {
+    Context.rightColumnElement = value;
+    if(value)
+      Context.rightColumnElement.classList.add(Context.RIGHT_COLUMN_CLASS);
+  }
+  static get rightColumn() {
+    return Context.rightColumnElement;
+  }
 
   /** Start the content script, should be run only once */
   static async run() {
@@ -54,32 +67,28 @@ class Context {
       observer.observe($('#wrapper_wrapper'), { childList: true});
     }
 
-    const searchElement = await Context.awaitElement(Context.engine.searchBox);
-    if (!searchElement) {
-      debug("No search string detected");
-      return;
-    }
-    Context.searchString = searchElement.value;
-
-    // Change style based on the search engine
-    const style = Context.engine.style;
-    if (style) el('style', { textContent: style, className: `optistyle-${Context.engineName}` }, Context.docHead);
+    Context.searchString = Context.parseSearchParam();
 
     Context.save = await loadSettings();
-    // Bigger right column
-    if (Context.isActive('wideColumn')) {
-      const minW = 600;
-      const maxW = 600;
-      const widthStyle = Context.engine.widthStyle?.replace("${maxW}", maxW).replace("${minW}", minW);
-      if (widthStyle) el('style', { textContent: widthStyle, className: `optistyle-${Context.engineName}` }, Context.docHead);
-    }
     if (!Context.parseRightColumn())
       return;
+
+    // Bigger right column
+    if (Context.isActive('wideColumn'))
+      Context.wideColumn(true, true);
+    
+    chrome.runtime.onMessage.addListener((message) => {
+      if('wideColumn' in message){
+        Context.save['wideColumn'] = message.wideColumn;
+        Context.wideColumn(message.wideColumn, false);
+      }
+      return true;
+    });
+      
 
     if($$(Context.engine.resultRow).length === 0 && Context.engineName !== DuckDuckGo)
     // Probably not on a result page adapted to the display of a panel
       return;
-
     Context.executeTools();
   }
 
@@ -93,6 +102,15 @@ class Context {
       styles = [...styles, ...['w3schools', 'wikipedia', 'genius']];
     const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`).catch(() => '')));
     el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
+    
+    if (!Context.engine.style)
+      return;
+
+    // Change style based on the search engine
+    el('style', {
+      textContent: Context.engine.style,
+      className: `optistyle-${Context.engineName}` 
+    }, Context.docHead);
   }
 
   static executeTools() {
@@ -117,6 +135,16 @@ class Context {
   static appendPanel(panel, prepend = false) {
     if (!Context.rightColumn)
       return null;
+
+    const header = $('.optiheader', panel);
+    if (header){
+      const expandArrow = el('div', { className: 'expand-arrow headerhover', textContent:'\u21e5' }, header);
+      expandArrow.addEventListener('click', () => {
+        Context.save['wideColumn'] = !Context.save['wideColumn'];
+        saveSettings(Context.save);
+        Context.wideColumn(Context.save['wideColumn']);
+      })
+    }
 
     const box = el("div", { className: `optisearchbox bright ${Context.engineName}` });
     if (prepend)
@@ -143,18 +171,18 @@ class Context {
     const centerColumn = $(Context.engine.centerColumn);
     if (!centerColumn) {
       debug("No right column");
-      Context.awaitElement(Context.engine.centerColumn).then(() => Context.execute());
+      awaitElement(Context.engine.centerColumn).then(() => Context.execute());
       return false;
     }
 
     // create a right column with the correct attributes
     const [sr] = selectorRightCol.split(',');
     const arr = [...sr.matchAll(/[\.#\[][^\.#,\[]+/g)]
-    const attr = {}
+    const attr = { className: 'optisearch-created' };
     arr.map(a => a[0]).forEach(token => {
       switch (token[0]) {
         case '.':
-          if (!attr.className) attr.className = ''
+          attr.className ??= '';
           attr.className += (attr.className && ' ') + token.slice(1);
           break;
         case '#': attr.id = token.slice(1); break;
@@ -203,21 +231,16 @@ class Context {
     }
   }
 
-  static awaitElement(selector) {
-    return new Promise(resolve => {
-      const el = $(selector);
-      if (el) {
-        resolve(el);
-        return;
-      }
-      const observer = new MutationObserver(() => {
-        const el = $(selector);
-        if (el) {
-          observer.disconnect();
-          resolve(el);
-        }
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    });
+  static wideColumn(wide=true, start=false) {
+    if(!start && !$(`style.${Context.WIDE_COLUMN_CLASS}`)){
+      el('style', {
+        className: Context.WIDE_COLUMN_CLASS,
+        textContent:  '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
+      }, Context.docHead);
+    }
+    if(wide)
+      Context.rightColumn.classList.add(Context.WIDE_COLUMN_CLASS);
+    else
+      Context.rightColumn.classList.remove(Context.WIDE_COLUMN_CLASS);
   }
 }

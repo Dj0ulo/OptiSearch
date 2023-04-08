@@ -30,6 +30,7 @@ body:has(.optipanel.optichat:not(.bingchat)) .optisearchbox:has(> .optipanel.bin
 }
 
 .optisearchbox .optichat .optifoot a.source{
+  position: relative;
   white-space: nowrap;
   padding: 3px  5px;
   border-radius: 3px;
@@ -72,13 +73,7 @@ body:has(.optipanel.optichat:not(.bingchat)) .optisearchbox:has(> .optipanel.bin
 .optisearchbox .switchchat {
   position: absolute;
   bottom: 30%;
-  transition: opacity 0.2s;
-  opacity: 0;
   cursor: pointer;
-}
-
-.optisearchbox .optiheader:hover .switchchat {
-  opacity: 1;
 }
 
 .learnmore > a[invisible="0"]{

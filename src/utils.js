@@ -377,3 +377,25 @@ function runMarkdown(text) {
     return '';
   return markdown(escapeHtml(text.trim()));
 }
+
+/**
+ * Returns a promise that resolves when the element is found
+ * @param {string} selector 
+ */
+function awaitElement(selector) {
+  return new Promise(resolve => {
+    const el = $(selector);
+    if (el) {
+      resolve(el);
+      return;
+    }
+    const observer = new MutationObserver(() => {
+      const el = $(selector);
+      if (el) {
+        observer.disconnect();
+        resolve(el);
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+}

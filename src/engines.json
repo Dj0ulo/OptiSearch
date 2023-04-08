@@ -8,8 +8,8 @@
     "searchBox": "input.gLFyf.gsfi, input.gLFyf, textarea.gLFyf",
     "active": true,
     "regex": "^www\\.google\\.",
-    "widthStyle": "#rcnt {max-width: max-content;} .optisearchbox{min-width: ${maxW}px;}",
-    "style": ".optisearchbox {margin-left: -21px;}"
+    "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
+    "style": ".optisearchbox {margin-left: -21px;} #rcnt {max-width: max-content;}"
   },
   "Bing": {
     "link": "https://www.bing.com",
@@ -19,7 +19,7 @@
     "searchBox": ".b_searchbox#sb_form_q",
     "active": true,
     "regex": "\\.bing\\.com$",
-    "widthStyle": "#b_context {width: auto;  min-width: ${minW}px;  max-width: ${maxW-40}px;} #b_context .b_ans{max-width: 432px;}",
+    "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
     "style": ".optisearchbox {margin-right: -20px;  margin-left: -20px;}"
   },
   "Ecosia": {
@@ -35,7 +35,7 @@
     "active": true,
     "regex": "\\.ecosia\\.org$",
     "widthStyle": ".web[data-test-id=layout-content] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
-    "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;}"
+    "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;} .optisearchbox .optichat .title { bottom: 0; }"
   },
   "Yahoo": {
     "link": "https://www.yahoo.com",
@@ -55,7 +55,8 @@
     "resultsContainer": "#links",
     "active": true,
     "regex": "duckduckgo\\.com$",
-    "widthStyle": ".results--sidebar {max-width: ${maxW}px !important; } .cw{max-width:unset;}"
+    "widthStyle": ".results--sidebar {max-width: ${maxW}px !important; } .cw{max-width:unset;}",
+    "style": ".optisearch-column-wide { max-width: var(--opti-max-width) !important; } .cw{max-width:unset;}"
   },
   "Brave Search": {
     "link": "https://search.brave.com",
@@ -65,7 +66,8 @@
     "searchBox": "#searchbox",
     "active": true,
     "regex": "search\\.brave\\.com$",
-    "widthStyle": "#side-right {--width: unset;  max-width: ${maxW}px;}"
+    "widthStyle": "#side-right {--width: ${maxW}px;}",
+    "style": ".optisearch-column-wide {max-width: var(--opti-max-width); min-width: var(--opti-max-width) !important;}"
   },
   "Baidu": {
     "link": "https://www.baidu.com/",

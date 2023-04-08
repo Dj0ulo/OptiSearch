@@ -121,8 +121,13 @@
         type: "checkbox",
         checked: save[o],
         onchange: ({ target }) => {
-          save[o] = target.checked
+          save[o] = target.checked;
           saveSettings(save);
+          if (o === 'wideColumn') {
+            chrome.tabs.query({}, (tabs) => {
+              tabs.forEach(({ id }) => chrome.tabs.sendMessage(id, { wideColumn: save[o] }));
+            });
+          }
         }
       }, checkDiv)
 

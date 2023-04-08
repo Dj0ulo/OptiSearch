@@ -77,18 +77,21 @@
 - ✅ sometimes test is not in paragraph and thus have a bad line-height 
 - ✅ hides some sources when too many
 - ✅ sometimes stops without chat, should handle this case (not resolved even if we only accepts the chats messages) -> just show the results
+- ✅ languages (english, spanish, french, german, chinese, russian, arabic)
+- ✅ button to expand and force right column directly on the panel
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
-- button to expand and force right column directly on the panel
 - just number in links bing chat with hover explain
+- 3 modes of bingchat
 - continue chat (maybe use declarativeNetRequest to intercept the referer field in the header) (https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1) --> seems impossible
-- languages (english, spanish, french, german, chinese, russian, arabic)
 - allow chrome user to use bing chat
 - bug formatting
-- 3 modes of bingchat
 - improve perf by asking bingchat before loading the page
+- put bingchat in this repo and make build scripts
+- get rid of chat in optisearch
+- option all chats one under the other
 
 #### Later
 - option put on top of the panel that are already there
@@ -103,6 +106,7 @@
 - go opensource
 - make the addition on a site standard and enable anyone to create one for the site he needs
 - close window when refreh after connecting to bing or chatgpt
+- add reddit
 #### Maybe
 - forum odoo
 - cppreference

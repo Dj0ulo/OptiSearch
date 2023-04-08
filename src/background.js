@@ -1,4 +1,4 @@
-fetchEngines();
+fetchEngines(false);
 
 chrome.runtime.onMessage.addListener((action, _, sendResponse) => {
   handleAction(action).then(sendResponse);
@@ -8,27 +8,21 @@ chrome.runtime.onMessage.addListener((action, _, sendResponse) => {
 const eventStreams = [];
 const websockets = [];
 
-function handleAction(action) {
+async function handleAction(action) {
   const { action: actionType } = action;
+  if(!actionType)
+    return;
   const handlers = {
     'fetch': handleActionFetch,
+    'fetch-result' : handleActionFetchResult,
     'image-blob': handleActionImageBlob,
     'window': handleActionWindow,
     'event-stream': handleActionEventStream,
     'websocket': handleActionWebsocket,
   };
-  let handler = handleActionDefault;
   if (actionType in handlers)
-    handler = handlers[actionType];
-  return new Promise((resolve) => resolve(handler(action)));
-}
-
-async function handleActionDefault(action) {
-  let url = String(action.api || action.link);
-  if (url.startsWith('http://'))
-    url = 'https' + url.slice(4);
-  const response = await fetch(url, { credentials: 'omit' }).catch(e => ({ error: e.toString() }));
-  return [action, await response.text()]
+    return handlers[actionType](action);
+  throw new Error(`Unknown action type: "${actionType}"`);
 }
 
 /** Handles fetch action */
@@ -47,6 +41,15 @@ async function handleActionFetch(action) {
   if (!response.ok)
     return { status: response.status, body: await response.text() };
   return response.text();
+}
+
+/** Fetch from site result using defined api or link url */
+async function handleActionFetchResult(action) {
+  let url = String(action.api || action.link);
+  if (url.startsWith('http://'))
+    url = 'https' + url.slice(4);
+  const response = await fetch(url, { credentials: 'omit' }).catch(e => ({ error: e.toString() }));
+  return [action, await response.text()]
 }
 
 /** Fetch image blob from source */
@@ -125,7 +128,7 @@ class Stream {
   }
 
   write(data) {
-    console.debug('WebSocket receives: ', data);
+    // console.debug('WebSocket receives: ', data);
     this.buffer.push(data);
     if (this.readPromise !== null) {
       this.resolveReadPromise(this.buffer.shift());

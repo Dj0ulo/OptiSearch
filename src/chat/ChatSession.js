@@ -155,19 +155,21 @@ class ChatSession {
     panel.dataset.chat = this.name;
 
     panel.innerHTML = `
-    ${isOptiSearch ? `<div class="watermark">OptiSearch</div>` : ''}
     <div class="optiheader">
+      ${isOptiSearch ? `<div class="watermark">OptiSearch</div>` : ''}
       <div class="ai-name">
         <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
         <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
-        ${Object.entries(Chat).length > 1 ? '<span class="switchchat">⇌</span>' : ''}
+        ${Object.entries(Chat).length > 1 ? '<span class="switchchat headerhover">⇌</span>' : ''}
       </div>
     </div>
     <hr>
     `;
     if (Object.entries(Chat).length > 1) {
       $('.switchchat', panel).onclick = async () => {
-        Context.aichat(this.name === 'bingchat' ? 'chatgpt' : 'bingchat');
+        Context.save['aichat'] = this.name === 'bingchat' ? 'chatgpt' : 'bingchat'
+        saveSettings(Context.save);
+        Context.aichat(Context.save['aichat']);
       }
     }
     panel.append(body);

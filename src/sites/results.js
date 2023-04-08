@@ -59,6 +59,7 @@
       return;
 
     const paramsToSend = {
+      action: 'fetch-result',
       engine: Context.engineName,
       link: siteLink,
       site: siteName,
@@ -111,11 +112,9 @@
 
   function panelFromSite({ site, title, link, icon, header, body, foot }) {
     const panel = el("div", { className: `${Context.PANEL_CLASS}` });
-
-    //watermark
-    el("div", { className: "watermark", textContent: "OptiSearch" }, panel);
-
     const headPanel = el("div", { className: "optiheader" }, panel);
+    //watermark
+    el("div", { className: "watermark", textContent: "OptiSearch" }, headPanel);
 
     const a = el("a", { href: link, className: "result-link" }, headPanel);
 
