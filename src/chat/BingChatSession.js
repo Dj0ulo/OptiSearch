@@ -20,6 +20,7 @@ class BingChatSession extends ChatSession {
   constructor() {
     super('bingchat');
     this.socketID = null;
+    this.uuid = generateUUID(); // for conversation continuation
   }
 
   async init() {
@@ -43,6 +44,10 @@ class BingChatSession extends ChatSession {
     super.send(prompt);
     if (ChatSession.debug)
       return;
+
+    const link = $('.ai-name > a', this.panel);
+    link.href = `https://www.bing.com/search?form=MY0291&OCID=MY0291&q=${Context.parseSearchParam()}&showconv=1&continuesession=${this.uuid}`;
+    bgWorker({ action: 'session-storage', type: 'set', key: this.uuid, value: this.session });
 
     this.socketID = await BingChatSession.createSocket();
     const { packet } = await this.socketReceive();
@@ -71,9 +76,27 @@ class BingChatSession extends ChatSession {
       switch (body.type) {
         case 1: msg = body.arguments[0]?.messages && body.arguments[0]?.messages[0]; break;
         case 2:
-          msg = body.item?.messages?.find(m => !m.messageType && m.author === 'bot');
+          if (!body.item) {
+            this.onmessage(ChatSession.infoHTML('⚠️&nbsp;Sorry, an error occured. Please try again.'));
+            return;
+          }
+          if (body.item.result) {
+            if (body.item.result.value === 'Throttled') {
+              this.onmessage(ChatSession.infoHTML("⚠️&nbsp;Sorry, you've reached the limit of messages you can send to Bing within 24 hours. Check back soon!"));
+              return;
+            }
+            if (body.item.result.error) {
+              this.onmessage(ChatSession.infoHTML(body.item.result.message));
+              return;
+            }
+          }
+          if (!body.item.messages) {
+            this.onmessage(ChatSession.infoHTML('⚠️&nbsp;Sorry, an error occured. Please try again.'));
+            return;
+          }
+          msg = body.item.messages.find(m => !m.messageType && m.author === 'bot');
           if (!msg)
-            msg = body.item?.messages?.find(m => m.messageType === 'InternalSearchResult' && m.author === 'bot');
+            msg = body.item.messages.find(m => m.messageType === 'InternalSearchResult' && m.author === 'bot');
           break;
         default: return;
       }

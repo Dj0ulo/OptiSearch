@@ -79,21 +79,22 @@
 - ✅ sometimes stops without chat, should handle this case (not resolved even if we only accepts the chats messages) -> just show the results
 - ✅ languages (english, spanish, french, german, chinese, russian, arabic)
 - ✅ button to expand and force right column directly on the panel
+- ✅ continue chat with bing
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
-- just number in links bing chat with hover explain
 - 3 modes of bingchat
-- continue chat (maybe use declarativeNetRequest to intercept the referer field in the header) (https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1) --> seems impossible
 - allow chrome user to use bing chat
 - bug formatting
 - improve perf by asking bingchat before loading the page
 - put bingchat in this repo and make build scripts
 - get rid of chat in optisearch
 - option all chats one under the other
+- remove bing chat from optisearch
 
 #### Later
+- links bing chat with hover title, icon
 - option put on top of the panel that are already there
 - option remove panel already here
 - fold recherche associes duckduckgo

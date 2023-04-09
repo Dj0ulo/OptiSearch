@@ -1,4 +1,4 @@
-fetchEngines(false);
+fetchEngines();
 
 chrome.runtime.onMessage.addListener((action, _, sendResponse) => {
   handleAction(action).then(sendResponse);
@@ -10,12 +10,13 @@ const websockets = [];
 
 async function handleAction(action) {
   const { action: actionType } = action;
-  if(!actionType)
+  if (!actionType)
     return;
   const handlers = {
     'fetch': handleActionFetch,
-    'fetch-result' : handleActionFetchResult,
+    'fetch-result': handleActionFetchResult,
     'image-blob': handleActionImageBlob,
+    'session-storage': handleSessionStorage,
     'window': handleActionWindow,
     'event-stream': handleActionEventStream,
     'websocket': handleActionWebsocket,
@@ -57,10 +58,18 @@ function handleActionImageBlob({ url }) {
   return fetch(url).then(r => r.blob());
 }
 
+async function handleSessionStorage({ type, key, value }) {
+  console.log(type, key, value);
+  if (type == 'set')
+    return new Promise(resolve => chrome.storage.session.set({ [key]: value }, () => resolve({ status: 'Success' })));
+  if (type == 'get')
+    return new Promise(resolve => chrome.storage.session.get([key], ({ [key]: value }) => resolve(value)));
+}
+
 /** Fetch image blob from source */
 function handleActionWindow({ url }) {
   chrome.windows.create({ url, width: 800, height: 800, focused: true });
-  return {status: 'Window created !'};
+  return { status: 'Window created !' };
 }
 
 /** Handles new data received from an event-stream */
@@ -128,7 +137,7 @@ class Stream {
   }
 
   write(data) {
-    // console.debug('WebSocket receives: ', data);
+    console.debug('WebSocket receives: ', data);
     this.buffer.push(data);
     if (this.readPromise !== null) {
       this.resolveReadPromise(this.buffer.shift());

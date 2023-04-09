@@ -35,7 +35,8 @@
 		"resources": [
       "src/engines.json",
       "src/styles/*",
-      "src/images/*"
+      "src/images/*",
+      "src/chat/BingChatContinueScript.js"
     ],
     "matches": [
       "*://duckduckgo.com/*",
@@ -50,6 +51,15 @@
     "service_worker": "src/background.js"
   },
   "content_scripts": [
+    {
+      "matches": [
+        "*://www.bing.com/search?*"
+      ],
+      "run_at": "document_end",
+      "js": [
+        "src/chat/BingChatContinue.js"
+      ]
+    },
     {
       "matches": [
         "*://duckduckgo.com/?*",
