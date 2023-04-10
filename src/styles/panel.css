@@ -31,9 +31,6 @@
   transition: min-width var(--expand-time) linear;
 }
 
-.optisearch-column.optisearch-created {
-  min-width: 400px;
-}
 .optisearch-column-wide .optisearchbox {
   min-width: var(--opti-max-width);
 }

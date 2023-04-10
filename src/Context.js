@@ -35,6 +35,8 @@ class Context {
       return;
     }
     debug(`${Context.engineName} — "${Context.parseSearchParam()}"`);
+    if(Context.engineName === Google && new URL(window.location.href).searchParams.get('tbm'))
+      return;
 
     // Update color if the theme has somehow changed
     let prevBg = null;

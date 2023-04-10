@@ -86,11 +86,11 @@
 - ✅ div not the same margin in bing
 - ✅ panel shifted regarding the other panel (unless the panel is a movie in Google)
 - ✅ the message is duplicated when continue chat if this is a question and the real bing chat ask it too
+- ✅ column going to the bottom if created by me in google
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
-- column going to the bottom if created by me in google
 - 3 modes of bingchat
 - allow firefox user to use bing chat
 - bug formatting
