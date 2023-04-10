@@ -1,4 +1,5 @@
 /versions/*
-node_modules
+node_modules/
 manifest.json
-_metadata
+_metadata/
+build/
