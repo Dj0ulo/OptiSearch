@@ -29,6 +29,13 @@ class BingChatSession extends ChatSession {
   }
 
   async fetchSession() {
+    const sessionURL = await this.parseSessionFromURL();
+    if (sessionURL) {
+      this.isContinueSession = true;
+      this.session = sessionURL;
+      return this.session;
+    }
+
     const session = await bgFetch(`https://www.bing.com/turing/conversation/create`, {
       credentials: "include",
     });
@@ -40,14 +47,28 @@ class BingChatSession extends ChatSession {
     return this.session;
   }
 
+  async parseSessionFromURL() {
+    if (!window.location.hostname.endsWith('.bing.com'))
+      return;
+    const continuesession = new URL(window.location.href).searchParams.get('continuesession');
+    if (!continuesession)
+      return;
+    const session = await bgWorker({ action: 'session-storage', type: 'get', key: continuesession });
+    if (!session || session.inputText !== Context.parseSearchParam())
+      return;
+    return session;
+  }
+
   async send(prompt) {
     super.send(prompt);
-    if (ChatSession.debug)
+    if (ChatSession.debug) {
       return;
+    }
 
-    const link = $('.ai-name > a', this.panel);
-    link.href = `https://www.bing.com/search?form=MY0291&OCID=MY0291&q=${Context.parseSearchParam()}&showconv=1&continuesession=${this.uuid}`;
-    bgWorker({ action: 'session-storage', type: 'set', key: this.uuid, value: this.session });
+    bgWorker({
+      action: 'session-storage', type: 'set', key: this.uuid,
+      value: { ...this.session, inputText: prompt }
+    });
 
     this.socketID = await BingChatSession.createSocket();
     const { packet } = await this.socketReceive();
@@ -59,12 +80,25 @@ class BingChatSession extends ChatSession {
     return this.next();
   }
 
+  createPanel(directchat = true) {
+    super.createPanel(directchat);
+
+    const svgChat = `<svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 0C16.0228 0 20.5 4.47715 20.5 10C20.5 15.5228 16.0228 20 10.5 20C8.8817 20 7.31782 19.6146 5.91286 18.888L2.08704 19.9553C1.42212 20.141 0.73258 19.7525 0.54691 19.0876C0.48546 18.8676 0.48549 18.6349 0.54695 18.4151L1.61461 14.5922C0.88637 13.186 0.5 11.6203 0.5 10C0.5 4.47715 4.97715 0 10.5 0ZM10.5 1.5C5.80558 1.5 2 5.30558 2 10C2 11.4696 2.37277 12.8834 3.07303 14.1375L3.22368 14.4072L2.11096 18.3914L6.09755 17.2792L6.36709 17.4295C7.62006 18.1281 9.0322 18.5 10.5 18.5C15.1944 18.5 19 14.6944 19 10C19 5.30558 15.1944 1.5 10.5 1.5ZM7.25 11H11.7483C12.1625 11 12.4983 11.3358 12.4983 11.75C12.4983 12.1297 12.2161 12.4435 11.85 12.4932L11.7483 12.5H7.25C6.83579 12.5 6.5 12.1642 6.5 11.75C6.5 11.3703 6.78215 11.0565 7.14823 11.0068L7.25 11H11.7483H7.25ZM7.25 7.5H13.7545C14.1687 7.5 14.5045 7.83579 14.5045 8.25C14.5045 8.6297 14.2223 8.9435 13.8563 8.9932L13.7545 9H7.25C6.83579 9 6.5 8.6642 6.5 8.25C6.5 7.8703 6.78215 7.55651 7.14823 7.50685L7.25 7.5H13.7545H7.25Z" fill="white"></path></svg>`;
+    const continueChat = el('a', {
+      href: `https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1&continuesession=${this.uuid}`,
+      title: 'Continue your conversation with Bing',
+      className: 'continue-chat-button',
+      innerHTML: `${svgChat} <span>Chat !</span>`,
+      style: 'display: none;'
+    });
+    insertAfter(continueChat, $('.ai-name', this.panel));
+
+    return this.panel;
+  }
+
   async next() {
     /**@type {{packet: string, readyState: number}} */
     const { packet, readyState } = await this.socketReceive();
-
-    if (readyState === WebSocket.CLOSED)
-      return;
 
     /**
      * body.type: 1 = Invocation, 2 = StreamItem, 3 = Completion, 4 = StreamInvocation, 5 = CancelInvocation, 6 = Ping, 7 = Close
@@ -98,6 +132,13 @@ class BingChatSession extends ChatSession {
           if (!msg)
             msg = body.item.messages.find(m => m.messageType === 'InternalSearchResult' && m.author === 'bot');
           break;
+        case 3: case 7:
+          if (this.isContinueSession)
+            return;
+          const continueChat = $('.continue-chat-button', this.panel);
+          continueChat.style.display = '';
+          setTimeout(() => continueChat.setAttribute('visible', 'true'), 100);
+          break;
         default: return;
       }
       const validTypes = ['InternalSearchQuery', 'InternalSearchResult', undefined];
@@ -122,7 +163,7 @@ class BingChatSession extends ChatSession {
         .map(s => s.match(/\[(\d+)]: (http[^ ]+) \"(.*)\"/)) // parse links
         .filter(r => !!r).map(([_, n, href, title]) => ({ n, href, title }));
       const learnMore = msg.adaptiveCards && msg.adaptiveCards[0]?.body[1]?.text;
-      let text = msg.text || msg.spokenText;
+      let text = msg.text || msg.spokenText || msg.hiddenText;
       const sources = {};
       if (learnMore) {
         [...learnMore.matchAll(/\[(\d+)\. [^\]]+\]\(([^ ]+)\) ?/g)].forEach(([_, n, href]) => sources[href] = n);
@@ -153,6 +194,9 @@ class BingChatSession extends ChatSession {
           return;
         }
       }).map(parseResponseBody);
+
+    if (readyState === WebSocket.CLOSED)
+      return;
 
     return this.next();
   }
@@ -213,7 +257,7 @@ class BingChatSession extends ChatSession {
             "responsible_ai_policy_235",
             "enablemm",
             "galileo",
-            "deepleofreq",
+            // "deepleofreq",
             "saharafreq",
             "cpcttl1d",
             "cachewriteext",

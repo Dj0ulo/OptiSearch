@@ -349,7 +349,7 @@ function bgFetch(url, params) {
 function bgWorker(params) {
   return new Promise(resolve => {
     chrome.runtime.sendMessage(params, r => {
-      if (r.error)
+      if (r?.error)
         throw `ServiceWorker Error:\n${r.error}`;
       resolve(r);
     });

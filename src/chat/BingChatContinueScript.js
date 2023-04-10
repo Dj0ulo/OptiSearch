@@ -12,7 +12,7 @@
   chat.conversation.updateId(conv.conversationId, conversationExpiry(), conv.clientId, conv.conversationSignature);
 
   const actionBar = CIB.vm.actionBar;
-  actionBar.inputText = new URL(window.location.href).searchParams.get('q');
+  actionBar.inputText = conv.inputText;
   actionBar.submitInputText();
 
   function waitFor(obj, key) {

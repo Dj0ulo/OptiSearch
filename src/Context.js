@@ -121,10 +121,14 @@ class Context {
     if (typeof Sites !== 'undefined') Context.parseResults && Context.parseResults();
   }
 
+  /** 
+   * Parses the search string from the url,
+   * this should be executable before everything has been loaded
+   * @returns {string} the search string query
+   * */
   static parseSearchParam() {
-    const searchParamName = Context.engine.searchParam || "q";
-    const searchParam = new URL(document.location.href).searchParams.get(searchParamName);
-    return searchParam;
+    const searchParamName = window.location.host === 'www.baidu.com' ? "wd" : "q";
+    return new URL(window.location.href).searchParams.get(searchParamName);
   }
 
   /**

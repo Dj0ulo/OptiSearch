@@ -6,6 +6,8 @@
 - ❌ submit feedback depending on chrome and firefox
 - ❌ "Flutter position stack widget in center" scroll bar in bright theme
 - ❌ remove innerHTML assignment
+- ❌ make it so that the panel you get when continue chatting and back to search is also the same
+
 
 
 ### Done ✅
@@ -81,15 +83,15 @@
 - ✅ button to expand and force right column directly on the panel
 - ✅ continue chat with bing
 - ✅ allow chrome user to use bing chat
+- ✅ div not the same margin in bing
+- ✅ panel shifted regarding the other panel (unless the panel is a movie in Google)
+- ✅ the message is duplicated when continue chat if this is a question and the real bing chat ask it too
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
-- div not the same margin in bing
 - column going to the bottom if created by me in google
 - 3 modes of bingchat
-- the message is duplicated when continue chat if this is a question and the real bing chat ask it too
-- make it so that the panel you get when continue chatting and back to search is also the same
 - allow firefox user to use bing chat
 - bug formatting
 - improve perf by asking bingchat before loading the page

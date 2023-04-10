@@ -92,10 +92,18 @@ function handleActionEventStream(action) {
  * If `index` is specified, but not `toSend` it will return back the first message received
  * in a FIFO queue.
  */
-async function handleActionWebsocket(action) {
+async function handleActionWebsocket(action, tryTimes = 3) {
   const { socketID, url, toSend } = action;
   if (socketID == null) {
-    const ws = new WebSocket(url);
+    let ws = null;
+    try {
+      ws = new WebSocket(url);
+    } catch (error) {
+      if (tryTimes <= 0)
+        return { error: error.toString() };
+      await new Promise(resolve => setTimeout(resolve, 500));
+      return handleActionWebsocket(action, tryTimes - 1);
+    }
     ws.stream = new Stream();
     websockets.push(ws);
     ws.onopen = () => {

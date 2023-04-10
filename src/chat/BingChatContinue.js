@@ -9,11 +9,10 @@
 
   const conv = await new Promise(resolve =>
     chrome.runtime.sendMessage({ action: 'session-storage', type: 'get', key: sessionID }, resolve));
-  if (!conv)
+  if (!conv || conv.hasContinued)
     return;
-
-  // remove it from storage 
-  chrome.runtime.sendMessage({ action: 'session-storage', type: 'set', key: sessionID, value: null });
+  conv.hasContinued = true;
+  chrome.runtime.sendMessage({ action: 'session-storage', type: 'set', key: sessionID, value: conv });
 
   const scriptElement = document.createElement('script');
   scriptElement.setAttribute('type', 'text/javascript');

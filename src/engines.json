@@ -9,7 +9,7 @@
     "active": true,
     "regex": "^www\\.google\\.",
     "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
-    "style": ".optisearchbox {margin-left: -21px;} #rcnt {max-width: max-content;}"
+    "style": ".IVvPP .optisearchbox {margin-left: -21px;} #rcnt {max-width: max-content;}"
   },
   "Bing": {
     "link": "https://www.bing.com",
