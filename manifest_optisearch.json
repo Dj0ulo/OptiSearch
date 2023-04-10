@@ -2,6 +2,7 @@
   "name": "OptiSearch",
   "version": "3.0",
   "manifest_version": 3,
+  "default_locale": "en",
   "description": "Display ChatGPT, StackOverflow, Wikipedia, etc. answers alongside Google Search results !",
   "permissions": [
     "storage"
@@ -21,12 +22,13 @@
     "https://genius.com/",
     "https://answers.unity.com/",
     "https://*.mathworks.com/",
-    "https://*.openai.com/"
+    "https://*.openai.com/",
+    "https://*.bing.com/"
   ],
   "icons": {
-    "128": "icons/icon_128.png",
-    "48": "icons/icon_48.png",
-    "16": "icons/icon_16.png"
+    "128": "icons/optisearch/icon_128.png",
+    "48": "icons/optisearch/icon_48.png",
+    "16": "icons/optisearch/icon_16.png"
   },
   "action": {
     "default_popup": "src/popup/popup.html"
@@ -35,8 +37,7 @@
 		"resources": [
       "src/engines.json",
       "src/styles/*",
-      "src/images/*",
-      "src/chat/BingChatContinueScript.js"
+      "src/images/*"
     ],
     "matches": [
       "*://duckduckgo.com/*",
@@ -51,15 +52,6 @@
     "service_worker": "src/background.js"
   },
   "content_scripts": [
-    {
-      "matches": [
-        "*://www.bing.com/search?*"
-      ],
-      "run_at": "document_end",
-      "js": [
-        "src/chat/BingChatContinue.js"
-      ]
-    },
     {
       "matches": [
         "*://duckduckgo.com/?*",

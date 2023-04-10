@@ -114,11 +114,11 @@ class Context {
   }
 
   static executeTools() {
-    if (Context.isActive("aichat")) Context.aichat(Context.save['aichat']);
-    if (Context.isActive("bangs")) Context.bangs();
-    if (Context.isActive("calculator")) Context.calculator();
-    if (Context.isActive("plot") || Context.isActive("calculator")) Context.plotOrCompute();
-    if (typeof Sites !== 'undefined') Context.parseResults();
+    if (Context.isActive("aichat")) Context.aichat && Context.aichat(Context.save['aichat']);
+    if (Context.isActive("bangs")) Context.bangs && Context.bangs();
+    if (Context.isActive("calculator")) Context.calculator && Context.calculator();
+    if (Context.isActive("plot") || Context.isActive("calculator")) Context.plotOrCompute && Context.plotOrCompute();
+    if (typeof Sites !== 'undefined') Context.parseResults && Context.parseResults();
   }
 
   static parseSearchParam() {

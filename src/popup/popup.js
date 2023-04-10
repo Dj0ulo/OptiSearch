@@ -19,6 +19,7 @@
     'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae'
     : 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng';
 
+  $('#title-container img').src = '../../'+manifest.icons[128];
   $('.title > a').href = webstore;
   $('#feedback').href = webstore + '/reviews';
 

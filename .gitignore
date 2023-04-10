@@ -1,3 +1,4 @@
 /versions/*
 node_modules
 manifest.json
+_metadata

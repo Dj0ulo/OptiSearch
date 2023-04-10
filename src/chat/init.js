@@ -1,5 +1,7 @@
 (async () => {
-  const chatSessions = [new BingChatSession(), new ChatGPTSession()];
+  const chatSessions = [new BingChatSession()];
+  if(typeof ChatGPTSession !== 'undefined')
+    chatSessions.push(new ChatGPTSession());
   const save = await loadSettings();
   const directchat = save['directchat'];
   chatSessions.forEach(chatSession => chatSession.createPanel(directchat));

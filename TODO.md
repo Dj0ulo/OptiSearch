@@ -80,12 +80,17 @@
 - ✅ languages (english, spanish, french, german, chinese, russian, arabic)
 - ✅ button to expand and force right column directly on the panel
 - ✅ continue chat with bing
+- ✅ allow chrome user to use bing chat
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
+- div not the same margin in bing
+- column going to the bottom if created by me in google
 - 3 modes of bingchat
-- allow chrome user to use bing chat
+- the message is duplicated when continue chat if this is a question and the real bing chat ask it too
+- make it so that the panel you get when continue chatting and back to search is also the same
+- allow firefox user to use bing chat
 - bug formatting
 - improve perf by asking bingchat before loading the page
 - put bingchat in this repo and make build scripts
