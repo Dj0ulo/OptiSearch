@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "1.5",
+  "version": "1.5.1",
   "manifest_version": 3,
   "description": "__MSG_appDesc__",
   "default_locale": "en",
@@ -16,7 +16,7 @@
       {
         "id": "1",
         "enabled": true,
-        "path": "rules.json"
+        "path": "src/rule_resources/rules.json"
       }
     ]
   },

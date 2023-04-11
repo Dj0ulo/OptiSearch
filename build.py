@@ -18,14 +18,27 @@ for cs in content_scripts:
 
 resources = []
 for res in data['web_accessible_resources']:
-    resources += res['resources']
-popup_html = data['action']['default_popup']
+    if type(res) == dict:
+        resources += res['resources']
+    else:
+        resources += [res]
+
+popup_html = ''
+if 'action' in data:
+    popup_html = data['action']['default_popup']
+elif 'browser_action' in data:
+    popup_html = data['browser_action']['default_popup']
 icons = data['icons'].values()
 
 files = []
-files += [data['background']['service_worker']]
+if 'background' in data:
+    if 'service_worker' in data['background']:
+        files += [data['background']['service_worker']]
+    elif 'scripts' in data['background']:
+        files += data['background']['scripts']
 files += [script for script in scripts]
-files += [r['path'] for r in data['declarative_net_request']['rule_resources']]
+if 'declarative_net_request' in data:
+    files += [r['path'] for r in data['declarative_net_request']['rule_resources']]
 files += [ic for ic in data['icons'].values()]
 # loop in resources and add them to files, if one is directory, add all files in it
 for resource in resources:

@@ -15,11 +15,17 @@
   const manifest = chrome.runtime.getManifest();
   $('#name').textContent = manifest.name;
   $('#version').textContent = manifest.version;
-  const webstore = manifest.name === 'OptiSearch' ?
-    'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae'
-    : 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng';
+  let webstore = '';
+  if (onChrome())
+    webstore = manifest.name === 'OptiSearch' ?
+      'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae'
+      : 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng';
+  else
+    webstore = manifest.name === 'OptiSearch' ?
+      'https://addons.mozilla.org/fr/firefox/addon/optisearch'
+      : 'https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google';
 
-  $('#title-container img').src = '../../'+manifest.icons[128];
+  $('#title-container img').src = (onChrome() ? '../../' : '') + manifest.icons[128];
   $('.title > a').href = webstore;
   $('#feedback').href = webstore + '/reviews';
 

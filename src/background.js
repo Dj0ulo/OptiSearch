@@ -7,6 +7,7 @@ chrome.runtime.onMessage.addListener((action, _, sendResponse) => {
 
 const eventStreams = [];
 const websockets = [];
+const sessionStorage = {};
 
 async function handleAction(action) {
   const { action: actionType } = action;
@@ -58,12 +59,11 @@ function handleActionImageBlob({ url }) {
   return fetch(url).then(r => r.blob());
 }
 
-async function handleSessionStorage({ type, key, value }) {
-  console.log(type, key, value);
+function handleSessionStorage({ type, key, value }) {
   if (type == 'set')
-    return new Promise(resolve => chrome.storage.session.set({ [key]: value }, () => resolve({ status: 'Success' })));
+    sessionStorage[key] = value;
   if (type == 'get')
-    return new Promise(resolve => chrome.storage.session.get([key], ({ [key]: value }) => resolve(value)));
+    return sessionStorage[key];
 }
 
 /** Fetch image blob from source */
@@ -145,7 +145,7 @@ class Stream {
   }
 
   write(data) {
-    console.debug('WebSocket receives: ', data);
+    // console.debug('WebSocket receives: ', data);
     this.buffer.push(data);
     if (this.readPromise !== null) {
       this.resolveReadPromise(this.buffer.shift());

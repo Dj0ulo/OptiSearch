@@ -43,7 +43,18 @@ if __name__ == "__main__":
     if "content_scripts" in manifest_v3:
         manifest_v2["content_scripts"] = manifest_v3["content_scripts"]
     if "permissions" in manifest_v3:
-        manifest_v2["permissions"] = manifest_v3["permissions"]
+        manifest_v2["permissions"] = []
+        for permission in manifest_v3["permissions"]:
+            if permission.startswith("declarativeNetRequest") and 'webRequest' not in manifest_v2["permissions"]:
+                manifest_v2["permissions"].append("webRequest")
+                manifest_v2["permissions"].append("webRequestBlocking")
+            else:
+                manifest_v2["permissions"].append(permission)
+
+    if "declarative_net_request" in manifest_v3:
+        for rules in manifest_v3["declarative_net_request"]["rule_resources"]:
+            manifest_v2["background"]["scripts"].append(rules["path"][:-2])
+
     # Add host permissions to the version 2 manifest, if they are present in the version 3 manifest
     if "host_permissions" in manifest_v3:
         manifest_v2["permissions"] += manifest_v3["host_permissions"]
