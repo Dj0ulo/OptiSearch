@@ -72,8 +72,11 @@ class BingChatSession extends ChatSession {
 
     this.socketID = await BingChatSession.createSocket();
     const { packet } = await this.socketReceive();
-    if (packet !== '{}\x1e')
-      throw `Error with Bing Chat: first packet received is ${packet}`;
+    if (packet !== '{}\x1e'){
+      this.onmessage(ChatSession.infoHTML('⚠️&nbsp;Sorry, an error occured. Please try again.'));
+      err(`Error with Bing Chat: first packet received is ${packet}`);
+      return;
+    }
 
     await this.socketSend({ "type": 6 });
     await this.socketSend(this.config(prompt));

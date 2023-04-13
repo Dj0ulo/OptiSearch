@@ -9,7 +9,7 @@
     "active": true,
     "regex": "^www\\.google\\.",
     "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
-    "style": ".IVvPP .optisearchbox {margin-left: -21px;} #rcnt {max-width: max-content;}"
+    "style": ".optisearch-column:has(.zLsiYe) .optisearchbox {margin-left: -21px;} #rcnt {max-width: max-content;}"
   },
   "Bing": {
     "link": "https://www.bing.com",
@@ -35,7 +35,7 @@
     "active": true,
     "regex": "\\.ecosia\\.org$",
     "widthStyle": ".web[data-test-id=layout-content] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
-    "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;} .optisearchbox .optichat .title { bottom: 0; }"
+    "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;} .optisearchbox .optichat .title, .continue-chat-button > span { bottom: 0; }"
   },
   "Yahoo": {
     "link": "https://www.yahoo.com",

@@ -87,10 +87,6 @@ class Context {
       return true;
     });
       
-
-    if($$(Context.engine.resultRow).length === 0 && Context.engineName !== DuckDuckGo)
-    // Probably not on a result page adapted to the display of a panel
-      return;
     Context.executeTools();
   }
 
@@ -145,10 +141,13 @@ class Context {
     const header = $('.optiheader', panel);
     if (header){
       const expandArrow = el('div', { className: 'expand-arrow headerhover', textContent:'\u21e5' }, header);
+      const setTitleExpand = () => expandArrow.title = Context.save['wideColumn'] ? 'Minimize the panel' : 'Expand the panel';
+      setTitleExpand();
       expandArrow.addEventListener('click', () => {
         Context.save['wideColumn'] = !Context.save['wideColumn'];
         saveSettings(Context.save);
         Context.wideColumn(Context.save['wideColumn']);
+        setTitleExpand();
       })
     }
 

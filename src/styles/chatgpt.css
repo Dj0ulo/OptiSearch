@@ -1,7 +1,3 @@
-body:has(.optipanel.optichat:not(.bingchat)) .optisearchbox:has(> .optipanel.bingchat) {
-  display: none;
-}
-
 .optisearchbox .optichat .optiheader{
   margin-top: 10px;
   margin-bottom: 0px;
