@@ -172,6 +172,6 @@ async function fetchEngines(local = false) {
     throw response;
   const json = await response.json();
   chrome.storage.local.set({ [SAVE_QUERIES_ENGINE]: json });
-  console.log(`Engines properties fetched ${local ? 'locally' : 'from the gist'}: `, json);
+  console.log(`Engines properties fetched ${local ? 'locally' : `from ${GIST}`}: `, json);
   return json;
 }

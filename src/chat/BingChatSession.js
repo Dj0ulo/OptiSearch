@@ -72,14 +72,14 @@ class BingChatSession extends ChatSession {
 
     this.socketID = await BingChatSession.createSocket();
     const { packet } = await this.socketReceive();
-    if (packet !== '{}\x1e'){
+    if (packet !== '{}\x1e') {
       this.onmessage(ChatSession.infoHTML('⚠️&nbsp;Sorry, an error occured. Please try again.'));
       err(`Error with Bing Chat: first packet received is ${packet}`);
       return;
     }
 
     await this.socketSend({ "type": 6 });
-    await this.socketSend(this.config(prompt));
+    await this.socketSend(await this.config(prompt));
     return this.next();
   }
 
@@ -231,94 +231,55 @@ class BingChatSession extends ChatSession {
     });
   }
 
-  config(prompt) {
+  async config(prompt) {
     if (!this.session)
       throw "Session has to be fetched first";
     const { conversationSignature, clientId, conversationId } = this.session;
+    const { optionsSets, sliceIds } = Context.engines.Bing || (await loadEngines()).Bing;
 
     const timestamp = () => {
-      const r = (n) => n < 10 ? "0" + n : n;
-      let t = (new Date).getTimezoneOffset(), u = Math.floor(Math.abs(t / 60)), f = Math.abs(t % 60), i;
-      t < 0 ? i = "+" + r(u) + ":" + r(f) : t > 0 ? i = "-" + r(u) + ":" + r(f) : t == 0 && (i = "Z");
-      const n = new Date
-        , e = n.getDate()
-        , o = n.getMonth() + 1
-        , s = n.getFullYear()
-        , h = n.getHours()
-        , c = n.getMinutes()
-        , l = n.getSeconds();
-      return r(s) + "-" + r(o) + "-" + r(e) + "T" + r(h) + ":" + r(c) + ":" + r(l) + i
+      const pad0 = (n) => n < 10 ? "0" + n : n;
+      let t = (new Date).getTimezoneOffset(), hOff = Math.floor(Math.abs(t / 60)), mOff = Math.abs(t % 60);
+      let end = '';
+      if (t < 0)
+        end = "+" + pad0(hOff) + ":" + pad0(mOff);
+      else if (t > 0)
+        end = "-" + pad0(hOff) + ":" + pad0(mOff);
+      else if (t == 0)
+        end = "Z";
+      const now = new Date;
+      const d = now.getDate(), mo = now.getMonth() + 1, y = now.getFullYear(),
+        h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+      return `${pad0(y)}-${pad0(mo)}-${pad0(d)}T${pad0(h)}:${pad0(m)}:${pad0(s)}${end}`;
     }
     return {
-      "arguments": [
-        {
-          "source": "cib",
-          "optionsSets": [
-            "nlu_direct_response_filter",
-            "deepleo",
-            "disable_emoji_spoken_text",
-            "responsible_ai_policy_235",
-            "enablemm",
-            "galileo",
-            // "deepleofreq",
-            "saharafreq",
-            "cpcttl1d",
-            "cachewriteext",
-            "e2ecachewrite",
-            "dv3sugg"
-          ],
-          "allowedMessageTypes": [
-            "Chat",
-            "InternalSearchQuery",
-            "InternalSearchResult",
-            // "Disengaged",
-            // "InternalLoaderMessage",
-            // "RenderCardRequest",
-            // "AdsQuery",
-            // "SemanticSerp",
-            // "GenerateContentQuery",
-            // "SearchQuery"
-          ],
-          "sliceIds": [
-            "anidtest",
-            "321bic62ups0",
-            "styleqnatg",
-            "creatorv2c",
-            "sydpayajax",
-            "sydperfinput",
-            "toneexpcf",
-            "321toppfp3pp3",
-            "323freps0",
-            "303hubcancls0",
-            "321jobsgndv0",
-            "cache0321s0",
-            "ssoverlap100",
-            "ssploff",
-            "sssreduceoff",
-            "sswebtop3",
-            "saharasscf",
-            "316cache_sss0",
-            "316e2ecache"
-          ],
-          "verbosity": "verbose",
-          "isStartOfSession": true,
-          "message": {
-            "timestamp": timestamp(),
-            "author": "user",
-            "inputMethod": "Keyboard",
-            "text": prompt,
-            "messageType": "Chat"
-          },
-          conversationSignature,
-          "participant": {
-            "id": clientId,
-          },
-          conversationId
-        }
-      ],
-      "invocationId": "0",
-      "target": "chat",
-      "type": 4
+      arguments: [{
+        source: "cib",
+        optionsSets,
+        allowedMessageTypes: [
+          "Chat",
+          "InternalSearchQuery",
+          "InternalSearchResult",
+        ],
+        sliceIds,
+        verbosity: "verbose",
+        isStartOfSession: true,
+        message: {
+          timestamp: timestamp(),
+          author: "user",
+          inputMethod: "Keyboard",
+          text: prompt,
+          messageType: "Chat"
+        },
+        conversationSignature,
+        participant: {
+          id: clientId,
+        },
+        conversationId
+      }],
+      invocationId: "0",
+      target: "chat",
+      type: 4,
     }
   }
 }

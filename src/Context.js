@@ -3,7 +3,9 @@ class Context {
   static RIGHT_COLUMN_CLASS = 'optisearch-column';
   static WIDE_COLUMN_CLASS = 'optisearch-column-wide';
 
-  static save = {}
+  static engines = {};
+  static save = {};
+  
   /** @type {HTMLElement | null} */
   static rightColumnElement = null;
   static set rightColumn(value) {

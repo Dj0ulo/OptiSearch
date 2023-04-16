@@ -20,7 +20,9 @@
     "active": true,
     "regex": "\\.bing\\.com$",
     "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
-    "style": ".optisearchbox {margin-right: -20px;  margin-left: -20px;}"
+    "style": ".optisearchbox {margin-right: -20px;  margin-left: -20px;}",
+    "sliceIds":["contp2tf","ccadesk","nopreloadsstf","rmvmorefrq-c","winshortmsgtf","controlwp","wintone2cf","0404srchicon","0408hpmsglink","414sugg","chatgptsugg","407pgparsers0","0329resps0","185cf","udscahrfoncf","udstrblm9","414jbfv202s0","404e2ewrts0","403hltgnds0","403tvlansgnd"],
+    "optionsSets":["nlu_direct_response_filter","deepleo","enable_debug_commands","disable_emoji_spoken_text","responsible_ai_policy_235","enablemm","clgalileo","gencontentv3","cachewriteext","e2ecachewrite","nodlcpcwrite","nointernalsugg","travelansgnd"]
   },
   "Ecosia": {
     "link": "https://www.ecosia.org",
