@@ -55,6 +55,7 @@
       ],
       "run_at": "document_end",
       "js": [
+        "src/utils.js",
         "src/chat/BingChatContinue.js"
       ]
     },

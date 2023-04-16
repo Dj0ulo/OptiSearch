@@ -399,3 +399,16 @@ function awaitElement(selector) {
     observer.observe(document.body, { childList: true, subtree: true });
   });
 }
+
+/**
+ * Observe a node for mutations
+ * @param {MutationCallback} callback 
+ * @param {Node} target 
+ * @param {MutationObserverInit | undefined} options 
+ * @returns {MutationObserver}
+ */
+function setObserver(callback, target, options) {
+  const observer = new MutationObserver(callback);
+  observer.observe(target, options);
+  return observer;
+}

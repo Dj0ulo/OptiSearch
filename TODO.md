@@ -87,6 +87,7 @@
 - ✅ panel shifted regarding the other panel (unless the panel is a movie in Google)
 - ✅ the message is duplicated when continue chat if this is a question and the real bing chat ask it too
 - ✅ column going to the bottom if created by me in google
+- ✅ add copy button in bingchat
 
 ## TO-DO 
 #### In progress
