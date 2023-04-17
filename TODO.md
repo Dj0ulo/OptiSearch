@@ -91,13 +91,14 @@
 - ✅ allow firefox user to use bing chat
 - ✅ put bingchat in this repo and make build scripts
 - ✅ fetch bingchat config from gist
+- ✅ remove bingchat in optisearch
+- ✅ ad for optisearch in bing chat extension and vice-versa
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
 - 3 modes of bingchat
 - improve perf by asking bingchat before loading the page
-- remove bingchat in optisearch
 - bing chat languages
 
 #### Later

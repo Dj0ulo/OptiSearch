@@ -101,7 +101,7 @@ body > ul {
 }
 
 #version {
-  font-size: smaller;
+  font-size: 11px;
 }
 
 .menu {
@@ -129,6 +129,12 @@ body > ul {
 
 .menu_title > span > span {
   vertical-align: top;
+}
+
+.ad {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
 }
 
 hr {

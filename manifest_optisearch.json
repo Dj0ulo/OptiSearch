@@ -1,6 +1,6 @@
 {
   "name": "OptiSearch",
-  "version": "3.0",
+  "version": "3.1",
   "manifest_version": 3,
   "default_locale": "en",
   "description": "Display ChatGPT, StackOverflow, Wikipedia, etc. answers alongside Google Search results !",
@@ -77,7 +77,6 @@
         "src/settings.js",
 
         "src/chat/ChatSession.js",
-        "src/chat/BingChatSession.js",
         "src/chat/ChatGPTSession.js",
 
         "src/Context.js",

@@ -1,5 +1,7 @@
 const isOptiSearch = chrome.runtime.getManifest().name === 'OptiSearch';
-if (!isOptiSearch) {
+if (isOptiSearch) {
+  delete Chat['bingchat'];
+} else {
   delete Chat['chatgpt'];
 }
 
@@ -17,7 +19,7 @@ const Settings = {
     aichat: {
       name: "AI Assistant",
       options: { ...Chat, [false]: { name: 'Disabled' } },
-      default: 'bingchat',
+      default: Object.keys(Chat)[0],
     },
     directchat: {
       name: "Ask AI chat directly",

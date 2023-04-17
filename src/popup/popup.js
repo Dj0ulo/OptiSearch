@@ -105,6 +105,10 @@
         return;
       }
       if (spec.options) {
+        if (!Object.values(spec.options).map(o => o.name).includes(save[o])) {
+          save[o] = spec.default;
+          saveSettings(save);
+        }
         const select = el("select", {
           value: save[o],
           onchange: ({ target }) => {
@@ -137,9 +141,26 @@
           }
         }
       }, checkDiv)
+    });
 
-    })
+    if (isOptiSearch && category === 'AI Assitant') {
+      el('a', {
+        className: 'ad',
+        innerHTML: 'Get answers from the new <strong>Bing Chat AI</strong> too !',
+        href: 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng'
+      }, sublist);
+    }
+
   });
+
+  if (!isOptiSearch) {
+    el('a', {
+      className: 'ad',
+      innerHTML: 'I want answers from <strong>ChatGPT</strong> and <strong>StackOverflow</strong> too !',
+      href: 'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae'
+    }, optionsContainer);
+  }
+
 
   if (onChrome()) hrefPopUp();
 })();

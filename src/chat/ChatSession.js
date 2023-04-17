@@ -169,7 +169,7 @@ class ChatSession {
       $('.switchchat', panel).onclick = async () => {
         Context.save['aichat'] = this.name === 'bingchat' ? 'chatgpt' : 'bingchat'
         saveSettings(Context.save);
-        Context.aichat(Context.save['aichat']);
+        Context.aichat(Context.save['aichat'], true);
       }
     }
     panel.append(body);
