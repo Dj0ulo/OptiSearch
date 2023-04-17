@@ -3,36 +3,25 @@ import path from 'path';
 import archiver from 'archiver';
 
 function errorUsage() {
-  console.log('Usage: node build.mjs [-m bingchat|optisearch] [--v2] [-cp <build dir>] [-z <output zip file>] [--clean]');
+  console.log('Usage: node build.mjs [bingchat|optisearch] [--v2] [-cp <build dir>] [-z <output zip file>] [--clean]');
   process.exit(1);
 }
 
-(async function main () {
-  if (!process.argv.includes('-m') && !process.argv.includes('-cp') && !process.argv.includes('-z')) {
-    errorUsage();
-  }
+(async function main() {
+  let pathManifestV3 = '';
+  const name = process.argv.includes('bingchat') ? 'BingChat' : 'OptiSearch';
+
+  if (name === 'BingChat')
+    pathManifestV3 = 'manifest_bingchat.json';
+  else
+    pathManifestV3 = 'manifest_optisearch.json';
   
-  let name = '';
-  if (process.argv.includes('-m')) {
-    let pathManifestV3 = '';
-    const nextArgv = process.argv[process.argv.indexOf('-m') + 1];
-    if (!nextArgv || nextArgv.startsWith('-'))
-      errorUsage();
-    if (nextArgv.toLowerCase() === 'bingchat') {
-      pathManifestV3 = 'manifest_bingchat.json';
-    } else if (nextArgv.toLowerCase() === 'optisearch') {
-      pathManifestV3 = 'manifest_optisearch.json';
-    } else {
-      errorUsage();
-    }
-    name = nextArgv;
-    const v = process.argv.includes('--v2') ? 2 : 3;
-    buildManifest(pathManifestV3, v);
-    console.log(`${name} manifest.json version ${v} built`);
-  }
+  const v = process.argv.includes('--v2') ? 2 : 3;
+  buildManifest(pathManifestV3, v);
+  console.log(`${name} manifest v${v} created`);
 
   const mf = readJsonFile('manifest.json');
-  
+
   let buildDir = 'build';
   if (process.argv.includes('-cp')) {
     const nextArgv = process.argv[process.argv.indexOf('-cp') + 1];
@@ -40,12 +29,12 @@ function errorUsage() {
       buildDir = nextArgv;
     }
   }
-  
+
   if (process.argv.includes('-cp') || process.argv.includes('-z')) {
     copyToBuildDir(buildDir);
-    console.log(`Source copied to "${buildDir}"`);
+    console.log(`Source copied to "${buildDir}" directory`);
   }
-  
+
   if (process.argv.includes('-z')) {
     const nextArgv = process.argv[process.argv.indexOf('-z') + 1];
     let out = `versions/${name}_${mf.version}${mf.manifest_version === 2 ? '_firefox' : ''}.zip`;
@@ -53,13 +42,15 @@ function errorUsage() {
       out = nextArgv;
     }
     await zipDir(buildDir, out);
-    console.log(`Archive "${out}" created`);
+    console.log(`Extension zipped into "${out}"`);
   }
-  
+
   if (process.argv.includes('--clean')) {
     fs.rmSync(buildDir, { recursive: true });
-    console.log(`"${buildDir}" folder cleaned`);
+    console.log(`Directory "${buildDir}" cleaned`);
   }
+
+  console.log();
 })();
 
 
@@ -203,7 +194,7 @@ function copyToBuildDir(buildDir = 'build/') {
     buildDir += '/';
   }
   // delete all files in src folder
-  if(fs.existsSync(buildDir))
+  if (fs.existsSync(buildDir))
     fs.rmSync(buildDir, { recursive: true });
   fs.mkdirSync(buildDir, { recursive: true });
 

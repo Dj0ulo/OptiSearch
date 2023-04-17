@@ -5,6 +5,7 @@
     "puppeteer": "^19.4.1"
   },
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha ./tests/test.js"
+    "test": "node ./node_modules/mocha/bin/mocha ./tests/test.js",
+    "build": "node build.mjs optisearch -z & node build.mjs optisearch -z --v2 & node build.mjs bingchat -z & node build.mjs bingchat -z --v2 --clean"
   }
 }
