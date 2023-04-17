@@ -105,7 +105,7 @@
         return;
       }
       if (spec.options) {
-        if (!Object.values(spec.options).map(o => o.name).includes(save[o])) {
+        if (!Object.keys(spec.options).includes(save[o])) {
           save[o] = spec.default;
           saveSettings(save);
         }

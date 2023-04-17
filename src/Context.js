@@ -154,8 +154,13 @@ class Context {
     }
 
     const box = el("div", { className: `optisearchbox bright ${Context.engineName}` });
-    if (prepend)
-      Context.rightColumn.prepend(box);
+    if (prepend) {
+      const bingChatPanel = $('.optichat.bingchat');
+      if(isOptiSearch && bingChatPanel)
+        insertAfter(box, bingChatPanel.parentElement);
+      else
+        Context.rightColumn.prepend(box);
+    }
     else
       Context.rightColumn.append(box);
 
