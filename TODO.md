@@ -88,18 +88,17 @@
 - ✅ the message is duplicated when continue chat if this is a question and the real bing chat ask it too
 - ✅ column going to the bottom if created by me in google
 - ✅ add copy button in bingchat
+- ✅ allow firefox user to use bing chat
+- ✅ put bingchat in this repo and make build scripts
+- ✅ fetch bingchat config from gist
 
 ## TO-DO 
 #### In progress
 #### Urgent for next version
 - 3 modes of bingchat
-- allow firefox user to use bing chat
-- bug formatting
 - improve perf by asking bingchat before loading the page
-- put bingchat in this repo and make build scripts
-- get rid of chat in optisearch
-- option all chats one under the other
-- remove bing chat from optisearch
+- remove bingchat in optisearch
+- bing chat languages
 
 #### Later
 - links bing chat with hover title, icon
