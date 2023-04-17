@@ -15,15 +15,17 @@
   const manifest = chrome.runtime.getManifest();
   $('#name').textContent = manifest.name;
   $('#version').textContent = manifest.version;
-  let webstore = '';
-  if (onChrome())
-    webstore = manifest.name === 'OptiSearch' ?
-      'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae'
-      : 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng';
-  else
-    webstore = manifest.name === 'OptiSearch' ?
-      'https://addons.mozilla.org/fr/firefox/addon/optisearch'
-      : 'https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google';
+  const webstores = {
+    'OptiSearch' : {
+      'chrome' : 'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae',
+      'firefox' : 'https://addons.mozilla.org/fr/firefox/addon/optisearch',
+    },
+    'BingChat' : {
+      'chrome' : 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng',
+      'firefox' : 'https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google',
+    }
+  }
+  const webstore = webstores[manifest.name === 'OptiSearch' ? 'OptiSearch' : 'BingChat'][onChrome() ? 'chrome' : 'firefox'];
 
   $('#title-container img').src = (onChrome() ? '../../' : '') + manifest.icons[128];
   $('.title > a').href = webstore;
@@ -147,7 +149,7 @@
       el('a', {
         className: 'ad',
         innerHTML: 'Get answers from the new <strong>Bing Chat AI</strong> too !',
-        href: 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng'
+        href: webstores['BingChat'][onChrome() ? 'chrome' : 'firefox']
       }, sublist);
     }
 
@@ -157,10 +159,10 @@
     el('a', {
       className: 'ad',
       innerHTML: 'I want answers from <strong>ChatGPT</strong> and <strong>StackOverflow</strong> too !',
-      href: 'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae'
+      href: webstores['OptiSearch'][onChrome() ? 'chrome' : 'firefox']
     }, optionsContainer);
   }
 
-
+  
   if (onChrome()) hrefPopUp();
 })();
