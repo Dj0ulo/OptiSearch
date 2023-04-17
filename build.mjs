@@ -8,7 +8,7 @@ function errorUsage() {
 }
 
 (async function main () {
-  if (!process.argv.includes('-m') && !process.argv.includes('-c') && !process.argv.includes('-z')) {
+  if (!process.argv.includes('-m') && !process.argv.includes('-cp') && !process.argv.includes('-z')) {
     errorUsage();
   }
   
@@ -41,7 +41,7 @@ function errorUsage() {
     }
   }
   
-  if (process.argv.includes('-c') || process.argv.includes('-z')) {
+  if (process.argv.includes('-cp') || process.argv.includes('-z')) {
     copyToBuildDir(buildDir);
     console.log(`Source copied to "${buildDir}"`);
   }
