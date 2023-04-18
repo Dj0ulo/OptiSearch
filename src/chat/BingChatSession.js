@@ -235,7 +235,6 @@ class BingChatSession extends ChatSession {
     if (!this.session)
       throw "Session has to be fetched first";
     const { conversationSignature, clientId, conversationId } = this.session;
-    const { optionsSets, sliceIds } = Context.engines.Bing || (await loadEngines()).Bing;
 
     const timestamp = () => {
       const pad0 = (n) => n < 10 ? "0" + n : n;
@@ -255,13 +254,13 @@ class BingChatSession extends ChatSession {
     return {
       arguments: [{
         source: "cib",
-        optionsSets,
+        sliceIds: ["winmuid1cf", "contp2tf", "ssoverlap50", "sspltop5", "sswebtop1", "nopreloadsstf", "rmvmorefrq-c", "winshortmsgtf", "controlwp", "wintone2cf", "0404srchicon", "0408hpmsglink", "414sugg", "chatgptsugg", "407pgparsers0", "0329resps0", "udscahrfoncf", "udstrblm9", "414jbfv202s0", "404e2ewrts0", "403hltgnds0", "403tvlansgnd"],
+        optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "clgalileo", "gencontentv3", "cachewriteext", "e2ecachewrite", "nodlcpcwrite", "nointernalsugg", "travelansgnd"],
         allowedMessageTypes: [
           "Chat",
           "InternalSearchQuery",
           "InternalSearchResult",
         ],
-        sliceIds,
         verbosity: "verbose",
         isStartOfSession: true,
         message: {
