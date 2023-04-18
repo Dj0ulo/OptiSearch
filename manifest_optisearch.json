@@ -1,8 +1,7 @@
 {
   "name": "OptiSearch",
-  "version": "3.1",
+  "version": "3.2",
   "manifest_version": 3,
-  "default_locale": "en",
   "description": "Display ChatGPT, StackOverflow, Wikipedia, etc. answers alongside Google Search results !",
   "permissions": [
     "storage"
@@ -22,8 +21,7 @@
     "https://genius.com/",
     "https://answers.unity.com/",
     "https://*.mathworks.com/",
-    "https://*.openai.com/",
-    "https://*.bing.com/"
+    "https://*.openai.com/"
   ],
   "icons": {
     "128": "icons/optisearch/icon_128.png",

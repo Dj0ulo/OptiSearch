@@ -22,6 +22,12 @@ function errorUsage() {
 
   const mf = readJsonFile('manifest.json');
 
+  if (fs.existsSync('_locales'))
+    fs.rmSync('_locales', { recursive: true });
+  if (mf.default_locale){
+    makeLocalesDir(`src/locales/${name.toLowerCase()}.json`)
+  }
+
   let buildDir = 'build';
   if (process.argv.includes('-cp')) {
     const nextArgv = process.argv[process.argv.indexOf('-cp') + 1];
@@ -200,7 +206,8 @@ function copyToBuildDir(buildDir = 'build/') {
 
   // copy files to src folder, conserve the folder structure, creates directory based on the path of the file
   fs.copyFileSync('manifest.json', path.join(buildDir, 'manifest.json'));
-  copyDir('_locales', path.join(buildDir, '_locales'));
+  if(fs.existsSync('_locales'))
+    copyDir('_locales', path.join(buildDir, '_locales'));
   fs.mkdirSync(path.join(buildDir, 'src'));
 
   for (let file of files) {
@@ -211,6 +218,26 @@ function copyToBuildDir(buildDir = 'build/') {
     const filename = path.basename(file);
     fs.copyFileSync(file, path.join(directory, filename));
   }
+}
+
+function makeLocalesDir(localesFile) {
+  fs.mkdirSync('_locales');
+  const json = readJsonFile(localesFile);
+  const locales = {};
+  for (let [key, types] of Object.entries(json)) {
+    for (let [lang, value] of Object.entries(types.message)) {
+      locales[lang] ??= {};
+      locales[lang][key] = value;
+    }
+  }
+  Object.entries(locales).forEach(([lang, entries]) => {
+    fs.mkdirSync(`_locales/${lang}`);
+    const jsonToSave = {};
+    for (let [key, value] of Object.entries(entries)) {
+      jsonToSave[key] = { "message": value };
+    }
+    fs.writeFileSync(`_locales/${lang}/messages.json`, JSON.stringify(jsonToSave, null, 4));
+  })
 }
 
 function readJsonFile(path) {
