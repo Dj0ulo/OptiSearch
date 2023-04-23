@@ -40,7 +40,6 @@
   const liEng = document.querySelector("#engines");
 
   const [settings, engines, save] = await Promise.all([getSettings(), loadEngines(), loadSettings()]);
-  console.log(settings);
 
   OrderEngines.forEach((engineName, i) => {
     const e = engines[engineName];
@@ -53,7 +52,7 @@
 
       el("img", {
         src: e.icon,
-        title: Object.keys(engines)[i],
+        title: engineName,
         className: 'icon',
       }, div);
     }
