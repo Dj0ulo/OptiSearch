@@ -128,7 +128,7 @@ class Context {
    * */
   static parseSearchParam() {
     const searchParamName = window.location.host === 'www.baidu.com' ? "wd" : "q";
-    return new URL(window.location.href).searchParams.get(searchParamName);
+    return new URL(window.location.href).searchParams.get(searchParamName) || '';
   }
 
   /**

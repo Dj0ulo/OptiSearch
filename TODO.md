@@ -93,6 +93,7 @@
 - ✅ fetch bingchat config from gist
 - ✅ remove bingchat in optisearch
 - ✅ ad for optisearch in bing chat extension and vice-versa
+- ✅ title of sites in popup do not correspond
 
 ## TO-DO 
 #### In progress
@@ -100,7 +101,7 @@
 - 3 modes of bingchat
 - improve perf by asking bingchat before loading the page
 - bing chat languages
-
+- fix baidu
 #### Later
 - links bing chat with hover title, icon
 - option put on top of the panel that are already there
