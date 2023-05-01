@@ -1,5 +1,3 @@
-const extensionName = chrome.runtime.getManifest().name;
-
 const SVG = {
   send: {"viewBox":"0 0 16 16","children":[{"tagName":"path","d":"M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"}]},
   chat: {"viewBox":"0 0 24 24", "fill": "none", "stroke-width": "2", "children":[{"tagName":"path","d":"M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z"},{"tagName":"path","d":"M8 10.5H16","stroke-linecap":"round"},{"tagName":"path","d":"M8 14H13.5","stroke-linecap":"round"}]},
@@ -13,11 +11,6 @@ const SVG = {
   user: {"children":[{"tagName":"path","d":"M853.333333 938.666667c-25.6 0-42.666667-17.066667-42.666666-42.666667v-85.333333c0-72.533333-55.466667-128-128-128H341.333333c-72.533333 0-128 55.466667-128 128v85.333333c0 25.6-17.066667 42.666667-42.666666 42.666667s-42.666667-17.066667-42.666667-42.666667v-85.333333c0-119.466667 93.866667-213.333333 213.333333-213.333334h341.333334c119.466667 0 213.333333 93.866667 213.333333 213.333334v85.333333c0 25.6-17.066667 42.666667-42.666667 42.666667zM512 512c-119.466667 0-213.333333-93.866667-213.333333-213.333333s93.866667-213.333333 213.333333-213.333334 213.333333 93.866667 213.333333 213.333334-93.866667 213.333333-213.333333 213.333333z m0-341.333333c-72.533333 0-128 55.466667-128 128s55.466667 128 128 128 128-55.466667 128-128-55.466667-128-128-128z"}],"viewBox":"0 0 1024 1024"},
   chevron: {"children":[{"tagName":"path","d":"M384 810.666667c-12.8 0-21.333333-4.266667-29.866667-12.8-17.066667-17.066667-17.066667-42.666667 0-59.733334l226.133334-226.133333-226.133334-226.133333c-17.066667-17.066667-17.066667-42.666667 0-59.733334s42.666667-17.066667 59.733334 0l256 256c17.066667 17.066667 17.066667 42.666667 0 59.733334l-256 256c-8.533333 8.533333-17.066667 12.8-29.866667 12.8z"}],"viewBox":"0 0 1024 1024"},
 };
-
-function log(str) { console.log(`%c[${extensionName}]`, `font-weight: bold;`, str) }
-function err(str) { console.error(`%c[${extensionName}]`, `font-weight: bold;`, str) }
-function warn(str) { console.warn(`%c[${extensionName}]`, `font-weight: bold;`, str) }
-function debug(str) { console.debug(`%c[${extensionName}]`, `font-weight: bold;`, str) }
 
 /**
  * @param {string} query
@@ -211,9 +204,9 @@ function hrefPopUp() {
  */
 function writeHostOnLinks(url, container) {
   const host = url.match("https?://[^/]+")[0];
-  const links = container.querySelectorAll("a, img");
+  const links = container.querySelectorAll("[src], [href]");
   links.forEach(a => {
-    const attr = a.tagName === 'A' ? 'href' : 'src';
+    const attr = a.getAttribute('href') ? 'href' : 'src';
     const ahref = a.getAttribute(attr);
     if (!ahref || ahref.startsWith("http") || ahref.startsWith("//") || ahref.startsWith("data:")) {
       return;

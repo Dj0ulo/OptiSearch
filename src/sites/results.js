@@ -86,23 +86,28 @@
     chrome.runtime.sendMessage(paramsToSend, async (resp) => {
       if (!resp)
         return;
-      const [msg, text] = resp;
+      const [msg, html] = resp;
       const site = Sites[msg.site];
       if (!site)
         return;
 
-      let doc;
-      switch (msg.type) {
-        case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
-        case 'json': doc = JSON.parse(text); break;
-        default: return;
-      }
+      // let doc;
+      // switch (msg.type) {
+      //   case 'html': doc = new DOMParser().parseFromString(text, "text/html"); break;
+      //   case 'json': doc = JSON.parse(text); break;
+      //   default: return;
+      // }
 
-      const siteData = { ...msg, ...(await site.get(msg, doc)) };
-      const content = site.set(siteData); // set body and foot
+      // const siteData = { ...msg, ...(await site.get(msg, doc)) };
+      // const content = site.set(siteData); // set body and foot
 
-      if (content && content.body.innerHTML && siteData.title !== undefined)
-        Context.panels[panelIndex] = panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
+      const content = {
+        ...msg,
+        ...contentFromTemplate(await read(`src/sites/templates/${msg.site}.xsl`), html),
+      };
+      
+      if (content && content.body?.innerHTML && content.title !== undefined)
+        Context.panels[panelIndex] = panelFromSite(content);
       else
         Context.panels[panelIndex] = null;
 

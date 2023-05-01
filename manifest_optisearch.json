@@ -39,7 +39,8 @@
       "src/images/engines/*",
       "icons/optisearch/icon_128.png",
       "icons/bingchat/icon_128.png",
-      "icons/bard/icon_128.png"
+      "icons/bard/icon_128.png",
+      "src/sites/templates/*"
     ],
     "matches": [
       "*://duckduckgo.com/*",
@@ -72,6 +73,7 @@
         "src/libs/drawdown.js",
         "src/libs/ExtPay.js",
 
+        "src/logger.js",
         "src/utils.js",
 
         "src/tools/tools.js",
@@ -83,6 +85,8 @@
         "src/chat/chatgpt_session.js",
 
         "src/context.js",
+        "src/sites/xsl-utils.js",
+        "src/sites/panel.js",
         "src/sites/results.js",
         "src/tools/plot.js",
         "src/tools/init.js",

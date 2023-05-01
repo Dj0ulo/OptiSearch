@@ -82,6 +82,7 @@
         "src/libs/drawdown.js",
         "src/libs/ExtPay.js",
 
+        "src/logger.js",
         "src/utils.js",
         "src/settings.js",
 

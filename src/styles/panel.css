@@ -345,6 +345,11 @@
   white-space: pre-wrap;
 }
 
+.optipanel .optibody {
+  overflow: auto;
+  display: block;
+}
+
 .optipanel a {
   text-decoration: none;
 }

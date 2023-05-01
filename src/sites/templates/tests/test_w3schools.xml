@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite template="../templates/w3schools.xsl">
+    <test src="https://www.w3schools.com/jsref/jsref_obj_regexp.asp">
+        <it should="have a syntax">
+            <variable name="syntaxTitle" select="//h3[normalize-space() = 'Syntax']"/>
+            <assert actual="normalize-space($syntaxTitle)" expected="'Syntax'" />
+            <assert actual="normalize-space($syntaxTitle/following-sibling::*[1])" expected="'/pattern/modifier(s);'" />
+        </it>
+        <it should="have some paragraphs">
+            <assert actual="normalize-space(//optibody//p[1])" expected="'A regular expression is a pattern of characters.'" />
+            <assert actual="normalize-space(//optibody//p[3])" expected="'In JavaScript, a RegExp Object is a pattern with Properties and Methods.'" />
+        </it>
+        <it should="have an example">
+            <variable name="exampleTitle" css-select=".w3-example"/>
+            <assert actual="$exampleTitle"/>
+            <assert actual="normalize-space($exampleTitle//*[1])" expected="'Example'"/>
+            <variable name="code" css-select="$exampleTitle pre"/>
+            <assert actual="normalize-space($code)" expected="'let pattern = /w3schools/i;'" />
+        </it>
+    </test>
+    <test src="https://www.w3schools.com/jsref/jsref_event.asp">
+        <it should="have not have a syntax">
+            <assert actual="not(//h3[normalize-space() = 'Syntax'])" />
+        </it>
+        <it should="have some paragraphs">
+            <assert actual="normalize-space(//optibody//p[1])" expected="'HTML DOM events allow JavaScript to register different event handlers on elements in an HTML document.'" />
+            <assert actual="normalize-space(//optibody//p[2])" expected="'Events are normally used in combination with functions, and the function will not be executed before the event occurs (such as when a user clicks a button).'" />
+            <assert actual="normalize-space(//optibody//p[3])" expected="'Tip: The event model was standardized by the W3C in DOM Level 2.'" />
+        </it>
+        <it should="have not have an example">
+            <variable name="exampleTitle" css-select=".w3-example"/>
+            <assert actual="not($exampleTitle)"/>
+        </it>
+    </test>
+</testsuite>

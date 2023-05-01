@@ -96,7 +96,7 @@ function buildManifest(pathManifestV3, firefox = false) {
   const mfv3 = readJsonFile(pathManifestV3);
   const mfv2 = { manifest_version: 2 };
   const fields = ['name', 'version', 'description', 'default_locale', 'author', 'icons',
-    'background', 'content_scripts'];
+    'background', 'content_scripts', 'options_page'];
 
   fields.forEach(f => {
     if (!(f in mfv3))
@@ -242,7 +242,7 @@ function copyToBuildDir(buildDir) {
 
   // copy files to src folder, conserve the folder structure, creates directory based on the path of the file
   fs.copyFileSync('manifest.json', path.join(buildDir, 'manifest.json'));
-  if(fs.existsSync('_locales'))
+  if (fs.existsSync('_locales'))
     copyDir('_locales', path.join(buildDir, '_locales'));
   fs.mkdirSync(path.join(buildDir, 'src'));
 
