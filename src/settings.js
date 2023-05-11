@@ -1,8 +1,24 @@
 const isOptiSearch = chrome.runtime.getManifest().name === 'OptiSearch';
-if (isOptiSearch) {
-  delete Chat['bingchat'];
-} else {
+const WhichExtension = (() => {
+  const extensionName = chrome.runtime.getManifest().name;
+  if(extensionName.includes('Bing'))
+    return 'bingchat';
+  if(extensionName.includes('Bard'))
+    return 'bard';
+  return 'optisearch';
+})();
+
+if (WhichExtension === 'bingchat') {
   delete Chat['chatgpt'];
+  delete Chat['bard'];
+} 
+else if (WhichExtension === 'bard') {
+  delete Chat['chatgpt'];
+  delete Chat['bingchat'];
+}
+else {
+  delete Chat['bingchat'];
+  delete Chat['bard'];
 }
 
 const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu", Brave = "Brave Search";

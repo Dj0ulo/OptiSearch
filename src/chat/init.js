@@ -2,6 +2,8 @@
   const chatSessions = [];
   if (typeof BingChatSession !== 'undefined')
     chatSessions.push(new BingChatSession());
+  if (typeof BardSession !== 'undefined')
+    chatSessions.push(new BardSession());
   if (typeof ChatGPTSession !== 'undefined')
     chatSessions.push(new ChatGPTSession());
   const save = await loadSettings();

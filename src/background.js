@@ -32,16 +32,19 @@ async function handleActionFetch(action) {
   const response = await fetch(action.url, action.params && JSON.parse(action.params))
     .catch(e => ({ error: e.toString() }));
 
+  if (!response.ok)
+    return { status: response.status, body: await response.text && response.text() };
+
   const contentType = response.headers.get('content-type');
-  if (contentType.startsWith("application/json"))
-    return response.json();
+  if (contentType.startsWith("application/json")) {
+    const text = await response.text();
+    try { return JSON.parse(text); }
+    catch (e) { return text; };
+  }
   if (contentType.startsWith("text/event-stream")) {
     eventStreams.push(response.body.getReader());
     return { eventStream: true, id: eventStreams.length - 1 };
   }
-
-  if (!response.ok)
-    return { status: response.status, body: await response.text() };
   return response.text();
 }
 

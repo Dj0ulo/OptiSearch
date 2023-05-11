@@ -1,0 +1,12 @@
+{
+  "appName": {
+    "message": {
+      "en": "Bard for search engines"
+    }
+  },
+  "appDesc": {
+    "message": {
+      "en": "🗨️ Answers from Google Bard alongside Google results !"
+    }
+  }
+}

@@ -151,7 +151,7 @@ class ChatSession {
   }
 
   panelBlueprint(body, foot) {
-    const panel = el("div", { className: `${Context.PANEL_CLASS} optichat ${isOptiSearch ? 'optisearch' : 'bingchat'}` });
+    const panel = el("div", { className: `${Context.PANEL_CLASS} optichat ${WhichExtension}` });
     panel.dataset.chat = this.name;
 
     panel.innerHTML = `

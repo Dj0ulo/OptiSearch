@@ -9,10 +9,16 @@ function errorUsage() {
 
 (async function main() {
   let pathManifestV3 = '';
-  const name = process.argv.includes('bingchat') ? 'BingChat' : 'OptiSearch';
+  let name = 'OptiSearch';
+  if(process.argv.includes('bingchat'))
+    name = 'BingChat';
+  else if(process.argv.includes('bard'))
+    name = 'Bard';
 
   if (name === 'BingChat')
     pathManifestV3 = 'manifest_bingchat.json';
+  else if (name === 'Bard')
+    pathManifestV3 = 'manifest_bard.json';
   else
     pathManifestV3 = 'manifest_optisearch.json';
   
