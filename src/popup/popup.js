@@ -16,16 +16,20 @@
   $('#name').textContent = manifest.name;
   $('#version').textContent = manifest.version;
   const webstores = {
-    'OptiSearch' : {
+    'optisearch' : {
       'chrome' : 'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae',
       'firefox' : 'https://addons.mozilla.org/fr/firefox/addon/optisearch',
     },
-    'BingChat' : {
+    'bingchat' : {
       'chrome' : 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng',
       'firefox' : 'https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google',
+    },
+    'bard' : {
+      'chrome' : 'https://chrome.google.com/webstore/detail/bard-for-search-engines/pkdmfoabhnkpkcacnmgilaeghiggdbgf',
+      'firefox' : 'https://addons.mozilla.org/fr/firefox/addon/bard-for-search-engines',
     }
   }
-  const webstore = webstores[manifest.name === 'OptiSearch' ? 'OptiSearch' : 'BingChat'][onChrome() ? 'chrome' : 'firefox'];
+  const webstore = webstores[WhichExtension][onChrome() ? 'chrome' : 'firefox'];
 
   $('#title-container img').src = (onChrome() ? '../../' : '') + manifest.icons[128];
   $('.title > a').href = webstore;
@@ -147,8 +151,13 @@
     if (isOptiSearch && category === 'AI Assitant') {
       el('a', {
         className: 'ad',
-        innerHTML: 'Get answers from the new <strong>Bing Chat AI</strong> too !',
-        href: webstores['BingChat'][onChrome() ? 'chrome' : 'firefox']
+        innerHTML: 'Get answers from <strong>Bing Chat</strong>',
+        href: webstores['bingchat'][onChrome() ? 'chrome' : 'firefox']
+      }, sublist);
+      el('a', {
+        className: 'ad',
+        innerHTML: 'Get answers from <strong>Google Bard</strong>',
+        href: webstores['bard'][onChrome() ? 'chrome' : 'firefox']
       }, sublist);
     }
 
@@ -158,7 +167,7 @@
     el('a', {
       className: 'ad',
       innerHTML: 'I want answers from <strong>ChatGPT</strong> and <strong>StackOverflow</strong> too !',
-      href: webstores['OptiSearch'][onChrome() ? 'chrome' : 'firefox']
+      href: webstores['optisearch'][onChrome() ? 'chrome' : 'firefox']
     }, optionsContainer);
   }
 
