@@ -212,7 +212,12 @@ footer {
   box-shadow: 0px 1px 20px 0px black;
 }
 
-.foota {
+.footlinks-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.footlinks-container a {
   margin: 0 8px;
 }
 
