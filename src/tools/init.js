@@ -56,12 +56,17 @@
 
   Context.plotOrCompute = () => {
     const rep = isMathExpr(Context.searchString);
-    if (!rep) return;
-
-    if (rep.vars.length > 0) {
-      Context.isActive("plot") && Context.plot(rep);
+    if (!rep) {
+      return;
     }
-    else if (typeof rep.answer === "number" || typeof rep.answer === "boolean" || rep.answer.entries) {
+    if (rep.vars && rep.vars.length > 0) {
+      Context.isActive("plot") && Context.plot(rep);
+      return;
+    }
+    if (!rep.answer) {
+      return;
+    }
+    if (typeof rep.answer === "number" || typeof rep.answer === "boolean" || rep.answer.entries) {
       Context.isActive("calculator") && Context.compute(rep);
     }
   };
