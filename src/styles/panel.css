@@ -35,6 +35,13 @@
   min-width: var(--opti-max-width);
 }
 
+.optisearchbox.mobile {
+  width: 100%;
+  max-width: unset;
+  margin: 0;
+  border-radius: 0;
+}
+
 .optisearchbox.bright {
   color: #202124;
   background-color: #fff;

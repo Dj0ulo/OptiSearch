@@ -412,3 +412,14 @@ function setObserver(callback, target, options) {
   observer.observe(target, options);
   return observer;
 }
+
+/** 
+ * Parses the search string from the url,
+ * this should be executable before everything has been loaded
+ * @returns {string} the search string query
+ * */
+function parseSearchParam(paramName) {
+  if (!paramName)
+    paramName = (window.location.host === 'www.baidu.com') ? 'w' : 'q';
+  return new URL(window.location.href).searchParams.get(paramName) || '';
+}

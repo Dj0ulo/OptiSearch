@@ -54,7 +54,7 @@ class BingChatSession extends ChatSession {
     if (!continuesession)
       return;
     const session = await bgWorker({ action: 'session-storage', type: 'get', key: continuesession });
-    if (!session || session.inputText !== Context.parseSearchParam())
+    if (!session || session.inputText !== parseSearchParam())
       return;
     return session;
   }

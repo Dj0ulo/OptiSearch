@@ -2,9 +2,12 @@ class Context {
   static PANEL_CLASS = "optipanel";
   static RIGHT_COLUMN_CLASS = 'optisearch-column';
   static WIDE_COLUMN_CLASS = 'optisearch-column-wide';
+  static MOBILE_CLASS = 'mobile';
 
   static engines = {};
   static save = {};
+
+  static boxes = [];
   
   /** @type {HTMLElement | null} */
   static rightColumnElement = null;
@@ -17,10 +20,10 @@ class Context {
     return Context.rightColumnElement;
   }
 
+  static centerColumn = null;
+
   /** Start the content script, should be run only once */
   static async run() {
-    debug("Hello !");
-
     Context.docHead = document.head || document.documentElement;
 
     Context.engines = await loadEngines();
@@ -36,7 +39,7 @@ class Context {
       debug("Not valid engine");
       return;
     }
-    debug(`${Context.engineName} — "${Context.parseSearchParam()}"`);
+    debug(`${Context.engineName} — "${parseSearchParam()}"`);
     if(Context.engineName === Google && new URL(window.location.href).searchParams.get('tbm'))
       return;
 
@@ -49,34 +52,41 @@ class Context {
       prevBg = bg;
       Context.updateColor();
     }, 200);
+  
+    await Context.injectStyle();
 
     Context.execute();
   }
 
   /** Parse document and execute tools, might be run multiple times if the parsing failed once */
   static async execute() {
-    await Context.injectStyle();
+    Context.centerColumn = await awaitElement(Context.engine.centerColumn);
 
-    if (Context.engineName === Baidu && $(Context.engine.centerColumn)) {
-      let oldSearchParam = Context.parseSearchParam();
-
-      const observer = new MutationObserver(_ => {
-        const searchParam = Context.parseSearchParam();
-        if (oldSearchParam !== searchParam) {
-          oldSearchParam = searchParam;
-          observer.disconnect();
-          Context.execute();
-        }
-      });
-      observer.observe($('#wrapper_wrapper'), { childList: true});
+    if (Context.engineName === Baidu && Context.centerColumn) {
+      let oldSearchParam = parseSearchParam();
+      const observer = setObserver(_ => {
+        const searchParam = parseSearchParam();
+        if (oldSearchParam === searchParam)
+          return;
+        oldSearchParam = searchParam;
+        observer.disconnect();
+        Context.execute();
+      }, $('#wrapper_wrapper'), { childList: true });
     }
 
-    Context.searchString = Context.parseSearchParam();
+    Context.searchString = parseSearchParam();
+    Context.parseRightColumn();
 
     Context.save = await loadSettings();
-    if (!Context.parseRightColumn())
-      return;
 
+    if (Context.engineName === Ecosia)
+      Context.forEcosia();
+
+    if (Context.compuleIsOnMobile()) {
+      debug("On Mobile !");
+    } else if(!Context.rightColumn) {
+        return; 
+    }
     // Bigger right column
     if (Context.isActive('wideColumn'))
       Context.wideColumn(true, true);
@@ -121,25 +131,12 @@ class Context {
     if (typeof Sites !== 'undefined') Context.parseResults && Context.parseResults();
   }
 
-  /** 
-   * Parses the search string from the url,
-   * this should be executable before everything has been loaded
-   * @returns {string} the search string query
-   * */
-  static parseSearchParam() {
-    const searchParamName = window.location.host === 'www.baidu.com' ? "wd" : "q";
-    return new URL(window.location.href).searchParams.get(searchParamName) || '';
-  }
-
   /**
    * Append pannel to the side of the result page
    * @param {Element} panel the content of the panel
    * @returns {Element} the box where the panel is 
    */
   static appendPanel(panel, prepend = false) {
-    if (!Context.rightColumn)
-      return null;
-
     const header = $('.optiheader', panel);
     if (header){
       const expandArrow = el('div', { className: 'expand-arrow headerhover', textContent:'\u21e5' }, header);
@@ -154,20 +151,53 @@ class Context {
     }
 
     const box = el("div", { className: `optisearchbox bright ${Context.engineName}` });
-    if (prepend) {
-      const bingChatPanel = $('.optichat.bingchat');
-      if(isOptiSearch && bingChatPanel)
-        insertAfter(box, bingChatPanel.parentElement);
-      else
-        Context.rightColumn.prepend(box);
-    }
-    else
-      Context.rightColumn.append(box);
-
+    Context.boxes.push(box);
+    if (Context.compuleIsOnMobile())
+      box.classList.add(Context.MOBILE_CLASS);
     box.append(panel);
-    Context.updateColor();
 
+    Context.appendBoxes([box], prepend);
+
+    Context.updateColor();
     return box;
+  }
+
+  static appendBoxes(boxes, prepend = false) {
+    const isOnMobile = Context.compuleIsOnMobile();
+    const firstResultRow = $(Context.engine.resultRow);
+    let boxContainer = Context.rightColumn;
+
+    if (isOnMobile)
+      boxContainer = firstResultRow ? firstResultRow.parentElement : Context.centerColumn;
+    if (!boxContainer)
+      return;
+    if (prepend)
+      boxes = boxes.slice().reverse();
+
+    boxes.forEach(box => {
+      if (prepend) {
+        // prepend means that it is a chatbox
+        const order = ['bard', 'bingchat', 'optisearch'];
+        const precedings = order
+          .slice(0, order.indexOf(WhichExtension))
+          .map(e => $$(`.optichat.${e}`))
+          .flat();
+        if (precedings.length) {
+          const lastPrecedingBox = precedings.at(-1).parentElement;
+          insertAfter(box, lastPrecedingBox);
+          return;
+        }
+
+        boxContainer.prepend(box);
+      }
+
+      if (isOnMobile && firstResultRow) {
+        boxContainer.insertBefore(box, firstResultRow);
+        return;
+      }
+
+      boxContainer.append(box);
+    });
   }
 
   /**
@@ -180,11 +210,10 @@ class Context {
     if (Context.rightColumn)
       return Context.rightColumn;
 
-    const centerColumn = $(Context.engine.centerColumn);
-    if (!centerColumn) {
-      debug("No right column");
-      awaitElement(Context.engine.centerColumn).then(() => Context.execute());
-      return false;
+    if (!Context.centerColumn) {
+      warn("No right column detected");
+      Context.rightColumn = null;
+      return Context.rightColumn;
     }
 
     // create a right column with the correct attributes
@@ -206,18 +235,7 @@ class Context {
     });
 
     Context.rightColumn = el('div', attr);
-    insertAfter(Context.rightColumn, centerColumn);
-    if (Context.engineName === Ecosia) {
-      const searchNav = $(Context.engine.searchNav);
-
-      new MutationObserver(_ => {
-        if (!$(Context.engine.searchNav))
-          insertAfter(searchNav, $(Context.engine.searchNavNeighbor));
-        if (!$(Context.engine.rightColumn))
-          insertAfter(Context.rightColumn, $(Context.engine.centerColumn));
-      }).observe($('#__layout'), { childList: true });
-    }
-
+    insertAfter(Context.rightColumn, Context.centerColumn);
     return Context.rightColumn;
   }
 
@@ -254,5 +272,68 @@ class Context {
       Context.rightColumn.classList.add(Context.WIDE_COLUMN_CLASS);
     else
       Context.rightColumn.classList.remove(Context.WIDE_COLUMN_CLASS);
+  }
+
+  /** 
+   * @returns {boolean} Are we on a mobile device
+   */
+  static compuleIsOnMobile() {
+    if (Context.engineName === DuckDuckGo) {
+      const scriptInfo = [...document.querySelectorAll('script')].find(s => s.textContent.includes('isMobile'));
+      if (!scriptInfo)
+        return false;
+      
+      const isMobileMatch = scriptInfo.textContent.match(/"isMobile" *: *(false|true)/);
+      if (isMobileMatch && isMobileMatch[1] === 'true')
+        return true;
+      
+      return false;
+    }
+
+    if (!('onMobile' in Context.engine))
+      return false;
+    else if (typeof(Context.engine.onMobile) === 'number')
+      return window.innerWidth < Context.engine.onMobile;
+    return !!$(Context.engine.onMobile);
+  }
+
+  /**
+   * Special method to deal with Ecosia.
+   * Because in Ecosia, the main column can be reomoved after few seconds and added again.
+   * Also Ecosia is the only engine for which the HTML does not change if it is on mobile 
+   * (only @media CSS instructions make it change).
+   * This also means that we have to deal with eventual resizing of the page
+   */
+  static forEcosia() {
+    if (Context.engineName !== Ecosia)
+      return;
+
+    const searchNav = $(Context.engine.searchNav);
+    setObserver(mutations => {
+      if (!mutations.some(m => m.removedNodes.length))
+        return;
+      if (mutations.map(m => [...m.removedNodes]).flat().find(n => n === Context.centerColumn)) {
+        Context.centerColumn = $(Context.engine.centerColumn);
+        Context.appendBoxes(Context.boxes);
+      }
+      if (!$(Context.engine.searchNav))
+        insertAfter(searchNav, $(Context.engine.searchNavNeighbor));
+      if (!$(Context.engine.rightColumn))
+        insertAfter(Context.rightColumn, Context.centerColumn);
+    }, document.body, { childList: true, subtree: true });
+
+    if (typeof (Context.engine.onMobile) !== 'number')
+      return;
+
+    let wasOnMobile = Context.compuleIsOnMobile();
+    window.addEventListener("resize", () => {
+      const isOnMobile = Context.compuleIsOnMobile();
+      if (isOnMobile === wasOnMobile)
+        return;
+      wasOnMobile = isOnMobile;
+      const allBoxes = $$('.optisearchbox');
+      allBoxes.forEach(p => p.classList[isOnMobile ? 'add' : 'remove'](Context.MOBILE_CLASS));
+      Context.appendBoxes(allBoxes);
+    });
   }
 }

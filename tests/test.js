@@ -119,7 +119,7 @@ describe('OptiPanel', function () {
       }));
 
       const helloPromises = Promise.all(pages.map(p => new Promise(resolve => {
-        p.on('console', () => p.logs.some((l) => l.text === "Hello !" && resolve()));
+        p.on('console', () => p.logs.length && resolve());
       })));
 
       await Promise.all(pages.map(p => {

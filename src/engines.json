@@ -4,25 +4,26 @@
     "icon": "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
     "rightColumn": "#rhs",
     "centerColumn": "#center_col",
-    "resultRow": ".g",
+    "resultRow": "#rso > div:not(.optisearchbox)",
     "searchBox": "input.gLFyf.gsfi, input.gLFyf, textarea.gLFyf",
     "active": true,
     "regex": "^www\\.google\\.",
     "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
-    "style": ".optisearch-column:has(.zLsiYe) .optisearchbox {margin-left: -21px;} #rcnt {max-width: max-content;}"
+    "style": ".optisearch-column:has(.zLsiYe) .optisearchbox {margin-left: -21px;} #rcnt {max-width: max-content;}",
+    "onMobile": "#cnt > #center_col"
   },
   "Bing": {
     "link": "https://www.bing.com",
     "icon": "https://th.bing.com/th?id=ODLS.87518fab-8fc1-4893-a7f1-c7d88283a35a",
     "rightColumn": "#b_context",
+    "centerColumn": "main",
     "resultRow": ".b_algo",
     "searchBox": ".b_searchbox#sb_form_q",
     "active": true,
     "regex": "\\.bing\\.com$",
     "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
     "style": ".optisearchbox {margin-right: -20px;  margin-left: -20px;}",
-    "sliceIds":["contp2tf","ccadesk","nopreloadsstf","rmvmorefrq-c","winshortmsgtf","controlwp","wintone2cf","0404srchicon","0408hpmsglink","414sugg","chatgptsugg","407pgparsers0","0329resps0","185cf","udscahrfoncf","udstrblm9","414jbfv202s0","404e2ewrts0","403hltgnds0","403tvlansgnd"],
-    "optionsSets":["nlu_direct_response_filter","deepleo","enable_debug_commands","disable_emoji_spoken_text","responsible_ai_policy_235","enablemm","clgalileo","gencontentv3","cachewriteext","e2ecachewrite","nodlcpcwrite","nointernalsugg","travelansgnd"]
+    "onMobile": "meta[name='viewport']"
   },
   "Ecosia": {
     "link": "https://www.ecosia.org",
@@ -32,12 +33,13 @@
     "searchNav": "div.main-header__search-navigation",
     "searchNavNeighbor": "div.main-header__navigation",
     "centerColumn": ".mainline",
-    "resultRow": ".result__body",
+    "resultRow": ".mainline__result-wrapper",
     "searchBox": ".search-form__input, #search-form-input",
     "active": true,
     "regex": "\\.ecosia\\.org$",
     "widthStyle": ".web[data-test-id=layout-content] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
-    "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;} .optisearchbox .optichat .title, .continue-chat-button > span { bottom: 0; }"
+    "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;} .optisearchbox .optichat .title, .continue-chat-button > span { bottom: 0; }",
+    "onMobile": 992
   },
   "Yahoo": {
     "link": "https://www.yahoo.com",
@@ -51,25 +53,29 @@
   "DuckDuckGo": {
     "link": "https://duckduckgo.com",
     "icon": "https://duckduckgo.com/favicon.ico",
-    "rightColumn": "div.results--sidebar",
-    "resultRow": ".nrn-react-div",
+    "rightColumn": ".js-react-sidebar",
+    "centerColumn": "[data-area='mainline']",
+    "resultRow": ".react-results--main > li",
     "searchBox": "#search_form_input",
-    "resultsContainer": "#links",
+    "resultsContainer": "[data-area='mainline']",
     "active": true,
     "regex": "duckduckgo\\.com$",
-    "widthStyle": ".results--sidebar {max-width: ${maxW}px !important; } .cw{max-width:unset;}",
-    "style": ".optisearch-column-wide { max-width: var(--opti-max-width) !important; } .cw{max-width:unset;}"
+    "widthStyle": ".js-react-sidebar {max-width: ${maxW}px !important; } .cw{max-width:unset;}",
+    "style": ".optisearch-column-wide { max-width: var(--opti-max-width) !important; } .cw{max-width:unset;}",
+    "onMobile": null
   },
   "Brave Search": {
     "link": "https://search.brave.com",
     "icon": "https://cdn.search.brave.com/serp/v1/static/brand/16c26cd189da3f0f7ba4e55a584ddde6a7853c9cc340ff9f381afc6cb18e9a1e-favicon-32x32.png",
     "rightColumn": "#side-right",
+    "centerColumn": "#results",
     "resultRow": ".snippet.fdb",
     "searchBox": "#searchbox",
     "active": true,
     "regex": "search\\.brave\\.com$",
     "widthStyle": "#side-right {--width: ${maxW}px;}",
-    "style": ".optisearch-column-wide {max-width: var(--opti-max-width); min-width: var(--opti-max-width) !important;}"
+    "style": ".optisearch-column-wide {max-width: var(--opti-max-width); min-width: var(--opti-max-width) !important;}",
+    "onMobile": "meta[name='viewport']"
   },
   "Baidu": {
     "link": "https://www.baidu.com/",
@@ -81,7 +87,6 @@
     "active": true,
     "regex": "www\\.baidu\\.com$",
     "widthStyle": "#container{ width: 1280px; } #content_right{ width: ${maxW}px !important;}",
-    "style": "#container.sam_newgrid .right-ceiling {position: static !important;}",
-    "searchParam": "wd"
+    "style": "#container.sam_newgrid .right-ceiling {position: static !important;}"
   }
 }

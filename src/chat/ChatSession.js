@@ -79,7 +79,7 @@ class ChatSession {
     const display = e => e.style.display = '';
     const hide = e => e.style.display = 'none';
 
-    const sendInput = () => this.send(Context.parseSearchParam());
+    const sendInput = () => this.send(parseSearchParam());
 
     const setCurrentAction = (action) => {
       if (action)
