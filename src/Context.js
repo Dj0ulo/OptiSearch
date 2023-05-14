@@ -8,12 +8,12 @@ class Context {
   static save = {};
 
   static boxes = [];
-  
+
   /** @type {HTMLElement | null} */
   static rightColumnElement = null;
   static set rightColumn(value) {
     Context.rightColumnElement = value;
-    if(value)
+    if (value)
       Context.rightColumnElement.classList.add(Context.RIGHT_COLUMN_CLASS);
   }
   static get rightColumn() {
@@ -40,7 +40,7 @@ class Context {
       return;
     }
     debug(`${Context.engineName} — "${parseSearchParam()}"`);
-    if(Context.engineName === Google && new URL(window.location.href).searchParams.get('tbm'))
+    if (Context.engineName === Google && new URL(window.location.href).searchParams.get('tbm'))
       return;
 
     // Update color if the theme has somehow changed
@@ -52,7 +52,7 @@ class Context {
       prevBg = bg;
       Context.updateColor();
     }, 200);
-  
+
     await Context.injectStyle();
 
     Context.execute();
@@ -84,21 +84,21 @@ class Context {
 
     if (Context.compuleIsOnMobile()) {
       debug("On Mobile !");
-    } else if(!Context.rightColumn) {
-        return; 
+    } else if (!Context.rightColumn) {
+      return;
     }
     // Bigger right column
     if (Context.isActive('wideColumn'))
       Context.wideColumn(true, true);
-    
+
     chrome.runtime.onMessage.addListener((message) => {
-      if('wideColumn' in message){
+      if ('wideColumn' in message) {
         Context.save['wideColumn'] = message.wideColumn;
         Context.wideColumn(message.wideColumn, false);
       }
       return true;
     });
-      
+
     Context.executeTools();
   }
 
@@ -112,14 +112,14 @@ class Context {
       styles = [...styles, ...['w3schools', 'wikipedia', 'genius']];
     const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`).catch(() => '')));
     el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
-    
+
     if (!Context.engine.style)
       return;
 
     // Change style based on the search engine
     el('style', {
       textContent: Context.engine.style,
-      className: `optistyle-${Context.engineName}` 
+      className: `optistyle-${Context.engineName}`
     }, Context.docHead);
   }
 
@@ -138,8 +138,8 @@ class Context {
    */
   static appendPanel(panel, prepend = false) {
     const header = $('.optiheader', panel);
-    if (header){
-      const expandArrow = el('div', { className: 'expand-arrow headerhover', textContent:'\u21e5' }, header);
+    if (header) {
+      const expandArrow = el('div', { className: 'expand-arrow headerhover', textContent: '\u21e5' }, header);
       const setTitleExpand = () => expandArrow.title = Context.save['wideColumn'] ? 'Minimize the panel' : 'Expand the panel';
       setTitleExpand();
       expandArrow.addEventListener('click', () => {
@@ -261,14 +261,14 @@ class Context {
     }
   }
 
-  static wideColumn(wide=true, start=false) {
-    if(!start && !$(`style.${Context.WIDE_COLUMN_CLASS}`)){
+  static wideColumn(wide = true, start = false) {
+    if (!start && !$(`style.${Context.WIDE_COLUMN_CLASS}`)) {
       el('style', {
         className: Context.WIDE_COLUMN_CLASS,
-        textContent:  '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
+        textContent: '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
       }, Context.docHead);
     }
-    if(wide)
+    if (wide)
       Context.rightColumn.classList.add(Context.WIDE_COLUMN_CLASS);
     else
       Context.rightColumn.classList.remove(Context.WIDE_COLUMN_CLASS);
@@ -282,17 +282,17 @@ class Context {
       const scriptInfo = [...document.querySelectorAll('script')].find(s => s.textContent.includes('isMobile'));
       if (!scriptInfo)
         return false;
-      
+
       const isMobileMatch = scriptInfo.textContent.match(/"isMobile" *: *(false|true)/);
       if (isMobileMatch && isMobileMatch[1] === 'true')
         return true;
-      
+
       return false;
     }
 
     if (!('onMobile' in Context.engine))
       return false;
-    else if (typeof(Context.engine.onMobile) === 'number')
+    else if (typeof (Context.engine.onMobile) === 'number')
       return window.innerWidth < Context.engine.onMobile;
     return !!$(Context.engine.onMobile);
   }

@@ -36,7 +36,7 @@ Sites.w3schools.get = (from, doc) => {
     const example = article.querySelector(".w3-example");
 
     if (example) {
-        if(!example.querySelector(".w3-code"))
+        if (!example.querySelector(".w3-code"))
             return;
         const location = from.link.substring(0, from.link.lastIndexOf("/"));
 

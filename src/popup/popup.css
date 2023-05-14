@@ -13,7 +13,7 @@ body {
   font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
   width: 320px;
   font-size: 12px;
-  margin: 0
+  margin: 0;
 }
 
 *::-webkit-scrollbar {
@@ -51,7 +51,7 @@ body {
   position: relative;
 }
 
-#main{
+#main {
   padding: 8px;
 }
 
@@ -198,7 +198,7 @@ input:focus {
 
 /*** FOOTER ***/
 
-.clear{
+.clear {
   height: 70px; /* Height of the footer */
 }
 

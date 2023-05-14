@@ -146,7 +146,7 @@ function plotFun(fun, idDiv, range) {
       pad: 5,
       // autoexpand: false,
     },
-    legend:{
+    legend: {
       orientation: 'h'
     },
     width: 590,
@@ -159,7 +159,7 @@ function plotFun(fun, idDiv, range) {
   };
 
   Plotly.newPlot(idDiv, data, layout);
-  
+
   const plot = document.getElementById(idDiv);
   plot.on('plotly_relayout', (eventData) => {
     if (eventData['xaxis.autorange'] == true)

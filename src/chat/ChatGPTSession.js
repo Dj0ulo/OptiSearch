@@ -52,7 +52,7 @@ class ChatGPTSession extends ChatSession {
 
   async send(prompt) {
     super.send(prompt);
-    if(ChatSession.debug)
+    if (ChatSession.debug)
       return;
 
     const res = await this.backendApi(`conversation`, this.config(prompt));

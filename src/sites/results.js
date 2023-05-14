@@ -20,10 +20,10 @@
           .filter(n => n?.matches(Context.engine.resultRow))
           .forEach(handleResult);
       });
-  
+
       observer.observe(resultsContainer, { childList: true });
     }
-    
+
     debug("No result detected");
   }
 
@@ -36,12 +36,12 @@
       return;
 
     let linksInResultContainer = [];
-    if(Context.engineName === Baidu) {
+    if (Context.engineName === Baidu) {
       linksInResultContainer = [result.getAttribute('mu')];
     } else {
       linksInResultContainer = $$("a", result).map(a => a.href);
     }
-    
+
     let siteLink = linksInResultContainer.find(l => !l?.startsWith(Context.engine.link) && l !== 'javascript:void(0)');
     let intermediateLink = null;
     if (!siteLink && Context.engineName === Bing) {

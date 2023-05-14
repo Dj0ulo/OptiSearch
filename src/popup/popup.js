@@ -16,17 +16,17 @@
   $('#name').textContent = manifest.name;
   $('#version').textContent = manifest.version;
   const webstores = {
-    'optisearch' : {
-      'chrome' : 'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae',
-      'firefox' : 'https://addons.mozilla.org/fr/firefox/addon/optisearch',
+    'optisearch': {
+      'chrome': 'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae',
+      'firefox': 'https://addons.mozilla.org/fr/firefox/addon/optisearch',
     },
-    'bingchat' : {
-      'chrome' : 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng',
-      'firefox' : 'https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google',
+    'bingchat': {
+      'chrome': 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng',
+      'firefox': 'https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google',
     },
-    'bard' : {
-      'chrome' : 'https://chrome.google.com/webstore/detail/bard-for-search-engines/pkdmfoabhnkpkcacnmgilaeghiggdbgf',
-      'firefox' : 'https://addons.mozilla.org/fr/firefox/addon/bard-for-search-engines',
+    'bard': {
+      'chrome': 'https://chrome.google.com/webstore/detail/bard-for-search-engines/pkdmfoabhnkpkcacnmgilaeghiggdbgf',
+      'firefox': 'https://addons.mozilla.org/fr/firefox/addon/bard-for-search-engines',
     }
   }
   const webstore = webstores[WhichExtension][onChrome() ? 'chrome' : 'firefox'];
@@ -171,6 +171,6 @@
     }, optionsContainer);
   }
 
-  
+
   if (onChrome()) hrefPopUp();
 })();

@@ -6,11 +6,11 @@ Sites.mdn.get = (from, doc) => {
     const body = doc.querySelector("body");
 
     const article = body.querySelector("article");
-    if(!article){
+    if (!article) {
         return;
     }
 
-        
+
     const syntaxTitle = article.querySelector("#syntax, #syntaxe");
     const syntax = syntaxTitle && syntaxTitle.nextSibling.querySelector("pre");
 
@@ -20,9 +20,9 @@ Sites.mdn.get = (from, doc) => {
 
     const title = body.querySelector(".title, h1")
     return {
-        title : title?.textContent ?? "",
-        summary : (summary?.outerHTML ?? '') + (underS?.outerHTML ?? ''),
-        syntax : syntax?.outerHTML ?? "",
+        title: title?.textContent ?? "",
+        summary: (summary?.outerHTML ?? '') + (underS?.outerHTML ?? ''),
+        syntax: syntax?.outerHTML ?? "",
     }
 }
 
@@ -31,5 +31,5 @@ Sites.mdn.set = msg => {
     bodyPanel.className = "mdnbody";
     bodyPanel.innerHTML = (msg.summary ? msg.summary : "") + (msg.syntax ? msg.syntax : "");
 
-    return {body: bodyPanel};
+    return { body: bodyPanel };
 }

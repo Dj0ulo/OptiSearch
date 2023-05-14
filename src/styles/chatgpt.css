@@ -1,14 +1,14 @@
-.optisearchbox .optichat .optiheader{
+.optisearchbox .optichat .optiheader {
   margin-top: 10px;
   margin-bottom: 0px;
   display: flex;
 }
 
-.optisearchbox .optichat .title{
+.optisearchbox .optichat .title {
   font-size: 1.3em;
 }
 
-.optisearchbox .chatgpt-button{
+.optisearchbox .chatgpt-button {
   padding: 0.5em;
   font-size: large;
   font-weight: 700;
@@ -21,27 +21,27 @@
 .optisearchbox .chatgpt-button {
   width: 100%;
   padding: 8px 10px;
-  margin: .5em 0;
+  margin: 0.5em 0;
   border-radius: 5px;
   border: 1px solid;
 }
 
-.optisearchbox .optichat .optifoot a.source{
+.optisearchbox .optichat .optifoot a.source {
   position: relative;
   white-space: nowrap;
-  padding: 3px  5px;
+  padding: 3px 5px;
   border-radius: 3px;
   margin: 2px 1px;
   line-height: 1.8em;
 }
-.optisearchbox .optichat a.source.superscript{
+.optisearchbox .optichat a.source.superscript {
   font-size: smaller;
   bottom: 0.5em;
   padding: 1px 4px;
   position: relative;
   border-radius: 3px;
 }
-.optisearchbox .chat-title{
+.optisearchbox .chat-title {
   bottom: 10px;
   position: relative;
   margin: 0px 10px;
@@ -52,11 +52,11 @@
   color: inherit !important;
 }
 
-.optisearchbox .chat-title:hover{
+.optisearchbox .chat-title:hover {
   text-decoration: underline;
 }
 
-.optisearchbox .chat-info{
+.optisearchbox .chat-info {
   margin-top: 1em;
   margin-bottom: 1em;
 }
@@ -75,10 +75,10 @@
   cursor: pointer;
 }
 
-.learnmore > a[invisible="0"]{
+.learnmore > a[invisible="0"] {
   display: none;
 }
-.learnmore > .showmore{
+.learnmore > .showmore {
   cursor: pointer;
 }
 .learnmore.less > a[more] {
@@ -91,7 +91,7 @@
   position: relative;
   color: #fff !important;
   border-radius: 42px;
-  background: linear-gradient(81.62deg,#2870ea 8.72%,#1b4aef 85.01%);
+  background: linear-gradient(81.62deg, #2870ea 8.72%, #1b4aef 85.01%);
   cursor: pointer;
   line-height: 1em;
   white-space: nowrap;
@@ -99,7 +99,7 @@
   transition: opacity 0.3s;
   opacity: 0;
 }
-.continue-chat-button[visible='true'] {
+.continue-chat-button[visible="true"] {
   opacity: 1;
 }
 .continue-chat-button:hover {
@@ -112,38 +112,38 @@
 
 /* COLOR THEMES */
 
-.bright.optisearchbox .chatgpt-button{
+.bright.optisearchbox .chatgpt-button {
   color: #222222;
   border-color: #dcdcdc;
   background: #f7f7f7;
 }
 
-.dark.optisearchbox .chatgpt-button{
+.dark.optisearchbox .chatgpt-button {
   color: #dcdcdc;
   border-color: #222222;
   background-color: #3b3b3b;
 }
 
-.bright.optisearchbox .chatgpt-button:active{
+.bright.optisearchbox .chatgpt-button:active {
   border-color: #bbc0c4;
 }
 
-.dark.optisearchbox .chatgpt-button:active{
+.dark.optisearchbox .chatgpt-button:active {
   border-color: #979797;
 }
 
-.bright.optisearchbox .chatgpt-button:hover{
+.bright.optisearchbox .chatgpt-button:hover {
   color: black;
 }
 
-.dark.optisearchbox .chatgpt-button:hover{
+.dark.optisearchbox .chatgpt-button:hover {
   color: white;
 }
 
-.bright.optisearchbox .optichat a.source{
-  color: #123BB6;
+.bright.optisearchbox .optichat a.source {
+  color: #123bb6;
   background-color: #d1dbfa;
 }
-.dark.optisearchbox .optichat a.source{
+.dark.optisearchbox .optichat a.source {
   background-color: #293740;
 }

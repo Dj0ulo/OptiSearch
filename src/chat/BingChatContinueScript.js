@@ -2,7 +2,7 @@
   const conv = JSON.parse(document.getElementById('BingChatContinueScript').dataset.conv);
   if (!conv)
     return;
-  
+
   const CIB = await waitFor(window, 'CIB');
 
   // if this key appear in actionBar, that means Bing Chat is ready to discuss

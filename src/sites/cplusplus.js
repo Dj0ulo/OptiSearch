@@ -2,7 +2,7 @@ Sites.cplusplus.msgApi = () => ({})
 
 Sites.cplusplus.get = (from, doc) => {
   const body = doc.querySelector("body");
-  
+
   console.log(body);
 
   return {
@@ -14,7 +14,7 @@ Sites.cplusplus.get = (from, doc) => {
 }
 
 Sites.cplusplus.set = msg => ({
-  body: el('div',{
+  body: el('div', {
     innerHTML: `${msg.type} ${msg.lib} ${msg.proto}`
   })
 })

@@ -1,4 +1,4 @@
-:root{
+:root {
   --line-dark: #34363e;
   --expand-time: 0.5s;
   --opti-max-width: 600px;
@@ -62,10 +62,10 @@
   padding: 10px 0px 0px 10px;
   font-size: smaller;
 }
-.optisearchbox.dark .unfold_button{
-  box-shadow: rgb(0,0,0) 0px -15px 20px -3px;
+.optisearchbox.dark .unfold_button {
+  box-shadow: rgb(0, 0, 0) 0px -15px 20px -3px;
 }
-.optisearchbox .unfold_button:active{
+.optisearchbox .unfold_button:active {
   background-color: rgb(177, 177, 177);
 }
 
@@ -96,7 +96,7 @@
 }
 
 .optisearchbox .watermark,
-.optisearchbox .expand-arrow{
+.optisearchbox .expand-arrow {
   position: absolute;
   right: 0;
   margin: 0px 15px;
@@ -116,7 +116,7 @@
   user-select: none;
 }
 .optisearch-column-wide .optisearchbox .expand-arrow {
-  transform: rotate(-180deg); 
+  transform: rotate(-180deg);
 }
 
 .optipanel .optiheader {
@@ -159,8 +159,6 @@
   color: rgb(167, 159, 147) !important;
 }
 
-
-
 .optipanel .optilink img {
   vertical-align: middle;
   margin-right: 5px;
@@ -171,7 +169,7 @@
 
 .optipanel hr {
   height: 1px;
-  margin: .5em;
+  margin: 0.5em;
   border: 0px;
   background-color: rgb(220, 220, 220);
 }
@@ -215,10 +213,11 @@
   max-width: 100%;
 }
 
-.optipanel .optibody li, .optipanel .optibody ol{
+.optipanel .optibody li,
+.optipanel .optibody ol {
   list-style: initial;
-  margin: .4rem;
-  padding: 0 .4rem;
+  margin: 0.4rem;
+  padding: 0 0.4rem;
 }
 
 .optipanel blockquote {
@@ -240,9 +239,8 @@
 }
 
 .optipanel code {
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
-    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace,
-    sans-serif;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace, sans-serif;
   padding: 0.25em 0.25em;
   border-radius: 3px;
   font-size: 100%;
@@ -274,10 +272,10 @@
   text-decoration: none;
 }
 .bright .optipanel a {
-  color: #0077cc
+  color: #0077cc;
 }
 .optisearchbox.dark .optipanel a {
-  color: #8ab4f8
+  color: #8ab4f8;
 }
 .optipanel a:hover {
   text-decoration: underline;
@@ -305,7 +303,7 @@
   background-color: #282828;
 }
 
-.dark.optisearchbox.DuckDuckGo pre, 
+.dark.optisearchbox.DuckDuckGo pre,
 .dark.optisearchbox.DuckDuckGo code {
-  background-color: #222; 
+  background-color: #222;
 }

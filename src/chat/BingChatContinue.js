@@ -15,7 +15,7 @@
       return;
     conv.hasContinued = true;
     chrome.runtime.sendMessage({ action: 'session-storage', type: 'set', key: sessionID, value: conv });
-    
+
     const scriptElement = el('script', {
       id: 'BingChatContinueScript',
       type: 'text/javascript',

@@ -47,7 +47,7 @@ Sites.mathworks.get = (from, doc) => {
   const editions = [...answer.querySelectorAll(QUERIES.editions)];
   editions.forEach(e => {
     const time = e.querySelector(QUERIES.time);
-      time.style.display = "inline-block";
+    time.style.display = "inline-block";
   });
 
   let time = editions[0].querySelector(QUERIES.time);

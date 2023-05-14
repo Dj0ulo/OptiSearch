@@ -36,7 +36,7 @@ Sites.unity.get = (from, doc) => {
     // body
     const bodyAnswer = acceptedAnswer.querySelector(QUERIES.bodyAnswer);
     bodyAnswer.childNodes.forEach(c => {
-        if(c.outerHTML === "<p></p>")
+        if (c.outerHTML === "<p></p>")
             c.remove();
     })
     res.html = bodyAnswer.innerHTML;

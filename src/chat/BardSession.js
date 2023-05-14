@@ -29,7 +29,7 @@ class BardSession extends ChatSession {
       const raw = html.slice(beg, end);
       return JSON.parse(raw.slice(0, raw.lastIndexOf('}') + 1));
     };
-  
+
     const html = await bgFetch('https://bard.google.com/', { credentials: "include" });
     const data = parseData(html);
     if (!('oPEP7c' in data))
@@ -49,7 +49,7 @@ class BardSession extends ChatSession {
     if (ChatSession.debug) {
       return;
     }
-    try{
+    try {
       const raw = await bgFetch(`https://bard.google.com/_/BardChatUi/data/assistant.lamda.BardFrontendService/StreamGenerate?bl=${this.session.bl}&rt=c`, {
         headers: {
           "accept": "*/*",
@@ -65,9 +65,9 @@ class BardSession extends ChatSession {
       let i = raw.indexOf('[[');
       i = raw.indexOf(',', i);
       i = raw.indexOf(',', i + 1);
-      if(raw.slice(i+1, i+5) === 'null')
+      if (raw.slice(i + 1, i + 5) === 'null')
         throw "Output";
-      if(raw.slice(i+1, i+2) !== '"')
+      if (raw.slice(i + 1, i + 2) !== '"')
         throw "Invalid output";
       const unescaped = raw.slice(i + 2, raw.indexOf('\n', i) - 3)
         .replaceAll('\\"', '"')
