@@ -135,6 +135,9 @@ class BingChatSession extends ChatSession {
           if (!msg)
             msg = body.item.messages.find(m => m.messageType === 'InternalSearchResult' && m.author === 'bot');
           break;
+        case 6:
+          this.socketSend({ "type": 6 });
+          return;
         case 3: case 7:
           if (this.isContinueSession)
             return;
@@ -254,8 +257,8 @@ class BingChatSession extends ChatSession {
     return {
       arguments: [{
         source: "cib",
-        sliceIds: ["winmuid1cf", "contp2tf", "ssoverlap50", "sspltop5", "sswebtop1", "nopreloadsstf", "rmvmorefrq-c", "winshortmsgtf", "controlwp", "wintone2cf", "0404srchicon", "0408hpmsglink", "414sugg", "chatgptsugg", "407pgparsers0", "0329resps0", "udscahrfoncf", "udstrblm9", "414jbfv202s0", "404e2ewrts0", "403hltgnds0", "403tvlansgnd"],
-        optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "clgalileo", "gencontentv3", "cachewriteext", "e2ecachewrite", "nodlcpcwrite", "nointernalsugg", "travelansgnd"],
+        sliceIds: ["winmuid1tf", "522docxfmts0", "anssuptkmr2", "smsrpsuppv3", "ssrrcache", "tempcacheread", "temptacache", "osbsdusgrec", "noaddsyreq", "controlwp", "crchatrev", "winshortmsgtf", "ctrlworkpay", "norespwtf", "0521dur2", "dur2", "517opinions0", "424dagslnv1", "427startpm"],
+        optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "clgalileo", "gencontentv3", "osbsdusgrec", "dagslnv1", "enablenewsfc"],
         allowedMessageTypes: [
           "Chat",
           "InternalSearchQuery",
