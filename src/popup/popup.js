@@ -170,6 +170,13 @@
       href: webstores['optisearch'][onChrome() ? 'chrome' : 'firefox']
     }, optionsContainer);
   }
+  if (WhichExtension === 'bingchat') {
+    el('a', {
+      className: 'ad',
+      innerHTML: 'I want answers from <strong>Google Bard</strong> too !',
+      href: webstores['bard'][onChrome() ? 'chrome' : 'firefox']
+    }, optionsContainer);
+  }
 
 
   if (onChrome()) hrefPopUp();
