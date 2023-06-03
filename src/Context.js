@@ -124,7 +124,7 @@ class Context {
   }
 
   static executeTools() {
-    if (Context.isActive("aichat")) Context.aichat && Context.aichat(Context.save['aichat']);
+    if (Context.chatSession && Context.chatSession.panel) Context.appendPanel(Context.chatSession.panel, true);
     if (Context.isActive("bangs")) Context.bangs && Context.bangs();
     if (Context.isActive("calculator")) Context.calculator && Context.calculator();
     if (Context.isActive("plot") || Context.isActive("calculator")) Context.plotOrCompute && Context.plotOrCompute();
@@ -177,9 +177,9 @@ class Context {
     boxes.forEach(box => {
       if (prepend) {
         // prepend means that it is a chatbox
-        const order = ['bard', 'bingchat', 'optisearch'];
+        const order = ['bard', 'bingchat', 'chatgpt'];
         const precedings = order
-          .slice(0, order.indexOf(WhichExtension))
+          .slice(0, order.indexOf(WhichChat))
           .map(e => $$(`.optichat.${e}`))
           .flat();
         if (precedings.length) {

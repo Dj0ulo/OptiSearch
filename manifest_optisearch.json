@@ -70,7 +70,6 @@
         "src/utils.js",
 
         "src/tools/Tools.js",
-        "src/chat/Chat.js",
         "src/sites/Sites.js",
         "src/settings.js",
 

@@ -69,12 +69,6 @@
   width: 100%;
 }
 
-.optisearchbox .switchchat {
-  position: absolute;
-  bottom: 30%;
-  cursor: pointer;
-}
-
 .learnmore > a[invisible="0"] {
   display: none;
 }

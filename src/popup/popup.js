@@ -64,7 +64,7 @@
 
 
   const optionsContainer = document.getElementById("options-container");
-
+  const disabledOptions = [];
   //options
   Object.keys(settings).forEach((category) => {
     optionsContainer.append(titleSection(category));
@@ -72,6 +72,8 @@
     const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
 
     Object.entries(settings[category]).forEach(([o, spec]) => {
+      if (!save[o] && spec.slaves)
+        disabledOptions.push(...spec.slaves);
       const li = el("li", { id: o }, sublist);
 
       const label = el("label", {
@@ -132,7 +134,7 @@
         style: "display: inline-block"
       }, label)
 
-      el('input', {
+      const checkbox = el('input', {
         className: "checkbox",
         type: "checkbox",
         checked: save[o],
@@ -144,8 +146,19 @@
               tabs.forEach(({ id }) => chrome.tabs.sendMessage(id, { wideColumn: save[o] }));
             });
           }
+          if (spec.slaves) {
+            spec.slaves.forEach((slave) => {
+              $$(`#${slave} input`).forEach((checkbox) => {
+                checkbox.disabled = !save[o];
+              });
+            })
+          }
         }
-      }, checkDiv)
+      }, checkDiv);
+
+      if (disabledOptions.includes(o)) {
+        checkbox.disabled = true;
+      }
     });
 
     if (isOptiSearch && category === 'AI Assitant') {

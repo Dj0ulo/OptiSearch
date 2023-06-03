@@ -4,9 +4,7 @@ class ChatSession {
   static #abstractMethodError = "This method should be inherited";
   static #nameError = "The inherited class from ChatSession should be given a name";
   static errors = {};
-  get properties() {
-    return Chat[this.name];
-  }
+  properties = {};
   static get storageKey() {
     throw ChatSession.#abstractMethodError;
   }
@@ -151,7 +149,7 @@ class ChatSession {
   }
 
   panelBlueprint(body, foot) {
-    const panel = el("div", { className: `${Context.PANEL_CLASS} optichat ${WhichExtension}` });
+    const panel = el("div", { className: `${Context.PANEL_CLASS} optichat ${WhichChat}` });
     panel.dataset.chat = this.name;
 
     panel.innerHTML = `
@@ -160,18 +158,10 @@ class ChatSession {
       <div class="ai-name">
         <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
         <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
-        ${Object.entries(Chat).length > 1 ? '<span class="switchchat headerhover">⇌</span>' : ''}
       </div>
     </div>
     <hr>
     `;
-    if (Object.entries(Chat).length > 1) {
-      $('.switchchat', panel).onclick = async () => {
-        Context.save['aichat'] = this.name === 'bingchat' ? 'chatgpt' : 'bingchat'
-        saveSettings(Context.save);
-        Context.aichat(Context.save['aichat'], true);
-      }
-    }
     panel.append(body);
     el('hr', { className: 'optifoot-hr' }, panel);
     panel.append(foot);

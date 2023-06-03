@@ -7,19 +7,7 @@ const WhichExtension = (() => {
     return 'bard';
   return 'optisearch';
 })();
-
-if (WhichExtension === 'bingchat') {
-  delete Chat['chatgpt'];
-  delete Chat['bard'];
-}
-else if (WhichExtension === 'bard') {
-  delete Chat['chatgpt'];
-  delete Chat['bingchat'];
-}
-else {
-  delete Chat['bingchat'];
-  delete Chat['bard'];
-}
+const WhichChat = WhichExtension === 'optisearch' ? 'chatgpt' : WhichExtension;
 
 const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu", Brave = "Brave Search";
 const OrderEngines = [Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave, Yahoo];
@@ -32,13 +20,9 @@ const Settings = {
     },
   },
   'AI Assitant': {
-    aichat: {
-      name: "AI Assistant",
-      options: { ...Chat, [false]: { name: 'Disabled' } },
-      default: Object.keys(Chat)[0],
-    },
     directchat: {
-      name: "Ask AI chat directly",
+      name: 'Ask it directly',
+      title: 'Ask the AI assistant as soon as the result page is loaded',
       default: true,
     },
   },
@@ -53,6 +37,15 @@ if (isOptiSearch) {
     min: 0,
     max: 9,
   };
+  Settings['AI Assitant'] = {
+    chatgpt: {
+      local_icon: "chatgpt.png",
+      name: "ChatGPT",
+      default: true,
+      slaves: ['directchat'],
+    },
+    ...Settings['AI Assitant'],
+  }
 }
 
 const getSettings = () => Settings;

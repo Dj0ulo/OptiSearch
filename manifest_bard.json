@@ -55,8 +55,6 @@
         "src/libs/drawdown.js",
 
         "src/utils.js",
-
-        "src/chat/Chat.js",
         "src/settings.js",
 
         "src/chat/ChatSession.js",

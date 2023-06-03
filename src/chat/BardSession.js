@@ -1,4 +1,11 @@
 class BardSession extends ChatSession {
+  properties = {
+    name: "Bard",
+    link: "https://bard.google.com",
+    icon: "src/images/bard.png",
+    local_icon: "bard.png",
+    href: "https://bard.google.com",
+  }
   static errors = {
     session: {
       code: 'BARD_SESSION',

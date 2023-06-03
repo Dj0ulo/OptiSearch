@@ -1,22 +1,16 @@
 (async () => {
-  const chatSessions = [];
-  if (typeof BingChatSession !== 'undefined')
-    chatSessions.push(new BingChatSession());
-  if (typeof BardSession !== 'undefined')
-    chatSessions.push(new BardSession());
-  if (typeof ChatGPTSession !== 'undefined')
-    chatSessions.push(new ChatGPTSession());
   const save = await loadSettings();
-  const directchat = save['directchat'];
-  chatSessions.forEach(chatSession => chatSession.createPanel(directchat));
-  Context.aichat = (name, switchchat = false) => {
-    if (!switchchat)
-      chatSessions.slice().reverse().forEach(chatSession => Context.appendPanel(chatSession.panel, true));
+  if (WhichExtension === 'optisearch' && !save['chatgpt'])
+    return;
 
-    chatSessions.forEach(({ panel }) => {
-      if (!panel.parentElement)
-        return;
-      panel.parentElement.style.display = (name !== panel.dataset.chat) ? 'none' : '';
-    });
-  };
+  if (typeof BingChatSession !== 'undefined')
+    Context.chatSession = new BingChatSession();
+  else if (typeof BardSession !== 'undefined')
+    Context.chatSession = new BardSession();
+  else if (typeof ChatGPTSession !== 'undefined')
+    Context.chatSession = new ChatGPTSession();
+
+  if(!Context.chatSession)
+    return;
+  Context.chatSession.createPanel(save['directchat']);
 })();
