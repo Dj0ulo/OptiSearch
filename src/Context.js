@@ -189,6 +189,7 @@ class Context {
         }
 
         boxContainer.prepend(box);
+        return;
       }
 
       if (isOnMobile && firstResultRow) {
