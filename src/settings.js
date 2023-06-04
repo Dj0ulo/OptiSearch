@@ -1,4 +1,3 @@
-const isOptiSearch = chrome.runtime.getManifest().name === 'OptiSearch';
 const WhichExtension = (() => {
   const extensionName = chrome.runtime.getManifest().name;
   if (extensionName.includes('Bing'))
@@ -7,7 +6,8 @@ const WhichExtension = (() => {
     return 'bard';
   return 'optisearch';
 })();
-const WhichChat = WhichExtension === 'optisearch' ? 'chatgpt' : WhichExtension;
+const isOptiSearch = WhichExtension === 'optisearch';
+const WhichChat = isOptiSearch ? 'chatgpt' : WhichExtension;
 
 const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu", Brave = "Brave Search";
 const OrderEngines = [Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave, Yahoo];
@@ -45,6 +45,18 @@ if (isOptiSearch) {
       slaves: ['directchat'],
     },
     ...Settings['AI Assitant'],
+  }
+}
+
+if (WhichExtension === 'bingchat') {
+  Settings['AI Assitant']['bingConvStyle'] = {
+    name: "Conversation style",
+    options: {
+      'creative': { name: 'Creative' },
+      'balanced': { name: 'Balanced' },
+      'precise': { name: 'Precise' },
+    },
+    default: 'balanced',
   }
 }
 

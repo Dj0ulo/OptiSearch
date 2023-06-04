@@ -1,16 +1,20 @@
-(async () => {
-  const save = await loadSettings();
-  if (WhichExtension === 'optisearch' && !save['chatgpt'])
-    return;
+(() => {
+  Context.initChat = () => {
+    if (isOptiSearch && !Context.isActive('chatgpt'))
+      return;
 
-  if (typeof BingChatSession !== 'undefined')
-    Context.chatSession = new BingChatSession();
-  else if (typeof BardSession !== 'undefined')
-    Context.chatSession = new BardSession();
-  else if (typeof ChatGPTSession !== 'undefined')
-    Context.chatSession = new ChatGPTSession();
+    Context.chatSession = (() => {
+      if (typeof BingChatSession !== 'undefined')
+        return new BingChatSession();
+      if (typeof BardSession !== 'undefined')
+        return new BardSession();
+      if (typeof ChatGPTSession !== 'undefined')
+        return new ChatGPTSession();
+      return null;
+    })();
 
-  if(!Context.chatSession)
-    return;
-  Context.chatSession.createPanel(save['directchat']);
+    if (!Context.chatSession)
+      return;
+    Context.chatSession.createPanel(Context.isActive('directchat'));
+  };
 })();

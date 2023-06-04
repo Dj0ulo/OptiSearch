@@ -156,7 +156,7 @@ class ChatSession {
     <div class="optiheader">
       ${isOptiSearch ? `<div class="watermark">OptiSearch</div>` : ''}
       <div class="ai-name">
-        <img title="${this.properties.name} Icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
+        <img alt="${this.properties.name} icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
         <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
       </div>
     </div>

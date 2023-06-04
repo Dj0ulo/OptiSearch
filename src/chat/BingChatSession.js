@@ -101,7 +101,19 @@ class BingChatSession extends ChatSession {
       innerHTML: `${svgChat} <span>Chat !</span>`,
       style: 'display: none;'
     });
-    insertAfter(continueChat, $('.ai-name', this.panel));
+    const titleEl = $('.ai-name', this.panel);
+    insertAfter(continueChat, titleEl);
+
+    const hueAngle = {
+      'creative': 63,
+      'precise': -52,
+      'balanced': 0,
+    }[Context.save['bingConvStyle']];
+
+    const iconEl = $('img', titleEl);
+    iconEl.title = `Bing Chat: ${Settings['AI Assitant']['bingConvStyle'].options[Context.save['bingConvStyle']].name} conversation style`;
+    iconEl.style.filter = `hue-rotate(${hueAngle}deg)`;
+    continueChat.style.filter = iconEl.style.filter;
 
     return this.panel;
   }
@@ -261,11 +273,26 @@ class BingChatSession extends ChatSession {
         h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
       return `${pad0(y)}-${pad0(mo)}-${pad0(d)}T${pad0(h)}:${pad0(m)}:${pad0(s)}${end}`;
     }
+
+    const { sliceIds, optionsSets } = {
+      sliceIds: ["winmuid1tf", "522docxfmts0", "anssuptkmr2", "smsrpsuppv3", "ssrrcache", "tempcacheread", "temptacache", "osbsdusgrec", "noaddsyreq", "controlwp", "crchatrev", "winshortmsgtf", "ctrlworkpay", "norespwtf", "0521dur2", "dur2", "517opinions0", "424dagslnv1", "427startpm"],
+      optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "clgalileo", "gencontentv3", "osbsdusgrec", "dagslnv1", "enablenewsfc"],
+    };
+
+    const convStyle = {
+      'creative': "h3imaginative",
+      'precise': "h3precise",
+    }[Context.save['bingConvStyle']];
+
+    if (convStyle) {
+      optionsSets.push(convStyle);
+    }
+
     return {
       arguments: [{
         source: "cib",
-        sliceIds: ["winmuid1tf", "522docxfmts0", "anssuptkmr2", "smsrpsuppv3", "ssrrcache", "tempcacheread", "temptacache", "osbsdusgrec", "noaddsyreq", "controlwp", "crchatrev", "winshortmsgtf", "ctrlworkpay", "norespwtf", "0521dur2", "dur2", "517opinions0", "424dagslnv1", "427startpm"],
-        optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "clgalileo", "gencontentv3", "osbsdusgrec", "dagslnv1", "enablenewsfc"],
+        sliceIds,
+        optionsSets,
         allowedMessageTypes: [
           "Chat",
           "InternalSearchQuery",

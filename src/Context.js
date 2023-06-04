@@ -26,6 +26,7 @@ class Context {
   static async run() {
     Context.docHead = document.head || document.documentElement;
 
+    Context.save = await loadSettings();
     Context.engines = await loadEngines();
     const matches = Object.entries(Context.engines)
       .find(([_, { regex }]) => window.location.hostname.search(new RegExp(regex)) !== -1);
@@ -53,6 +54,7 @@ class Context {
       Context.updateColor();
     }, 200);
 
+    Context.initChat();
     await Context.injectStyle();
 
     Context.execute();
@@ -76,8 +78,6 @@ class Context {
 
     Context.searchString = parseSearchParam();
     Context.parseRightColumn();
-
-    Context.save = await loadSettings();
 
     if (Context.engineName === Ecosia)
       Context.forEcosia();
