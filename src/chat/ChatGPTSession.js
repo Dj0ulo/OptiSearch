@@ -39,6 +39,11 @@ class ChatGPTSession extends ChatSession {
     const session = await bgFetch('https://chat.openai.com/api/auth/session', {
       credentials: "include",
     });
+    if (session.error) {
+      if (session.error === 'RefreshAccessTokenError')
+        throw ChatGPTSession.errors.session;
+      throw session.error;
+    }
     if (session.status === 403)
       throw ChatGPTSession.errors.cloudflare;
     if (!session.accessToken)
