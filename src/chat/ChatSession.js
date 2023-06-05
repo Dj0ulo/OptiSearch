@@ -3,6 +3,7 @@ class ChatSession {
   static #abstractError = "ChatSession is an abstract classes that cannot be instantiated.";
   static #abstractMethodError = "This method should be inherited";
   static #nameError = "The inherited class from ChatSession should be given a name";
+  static undefinedError = "⚠️&nbsp;Sorry, an error occured. Please try again."
   static errors = {};
   properties = {};
   static get storageKey() {
@@ -109,14 +110,19 @@ class ChatSession {
       this.onmessage(ChatSession.infoHTML(`Waiting for <strong>${this.properties.name}</strong>...`));
       try {
         await this.init();
+        await sendInput();
       }
       catch (error) {
         lastError = error;
-        responseContainer.innerHTML = ChatSession.infoHTML(error.text);
-        setCurrentAction('window');
-        return;
+        if (error && error.code && error.text) {
+          responseContainer.innerHTML = ChatSession.infoHTML(error.text);
+          setCurrentAction('window');
+        }
+        else {
+          responseContainer.innerHTML = ChatSession.infoHTML(ChatSession.undefinedError);
+          err(error.error || error);
+        }
       }
-      sendInput();
     }
 
     this.onmessage = (bodyHTML, footHTML) => {

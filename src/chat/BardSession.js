@@ -73,7 +73,7 @@ class BardSession extends ChatSession {
       i = raw.indexOf(',', i);
       i = raw.indexOf(',', i + 1);
       if (raw.slice(i + 1, i + 5) === 'null')
-        throw "Output";
+        throw "Output is null";
       if (raw.slice(i + 1, i + 2) !== '"')
         throw "Invalid output";
       const unescaped = raw.slice(i + 2, raw.indexOf('\n', i) - 3)
@@ -82,7 +82,7 @@ class BardSession extends ChatSession {
       const parsed = JSON.parse(`"${JSON.parse(unescaped)[0][0].replaceAll('"', '\\"')}"`);
       this.onmessage(runMarkdown(parsed));
     } catch (e) {
-      console.error(e);
+      warn(e);
       this.onmessage(ChatSession.infoHTML('⚠️&nbsp;An error occured.&nbsp;⚠️<br/>Please <a href="https://bard.google.com/">make sure you have access to Google Bard</a>.'));
     }
   }
