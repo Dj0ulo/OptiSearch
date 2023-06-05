@@ -30,12 +30,12 @@ async function handleAction(action) {
 /** Handles fetch action */
 async function handleActionFetch(action) {
   const response = await fetch(action.url, action.params && JSON.parse(action.params))
-    .catch(e => ({ error: e.toString() }));
+    .catch(e => ({ errorInBackgroundScript: true, error: e.toString() }));
 
   if (!response.ok)
     return { status: response.status, body: await response.text && response.text() };
 
-  const contentType = response.headers.get('content-type');
+  const contentType = response.headers.get('content-type') ?? '';
   if (contentType.startsWith("application/json")) {
     const text = await response.text();
     try { return JSON.parse(text); }

@@ -334,8 +334,8 @@ function bgFetch(url, params) {
   return new Promise(resolve => {
     chrome.runtime.sendMessage({ action: 'fetch', url, params: JSON.stringify(params) },
       (response) => {
-        if (response && response.error)
-          throw `Error while fetching in the service worker:\n${r.error}`;
+        if (response && response.errorInBackgroundScript)
+          throw `Error while fetching in the service worker:\n${response.error}`;
         resolve(response);
       });
   });
