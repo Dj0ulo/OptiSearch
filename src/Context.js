@@ -139,7 +139,14 @@ class Context {
   static appendPanel(panel, prepend = false) {
     const header = $('.optiheader', panel);
     if (header) {
-      const expandArrow = el('div', { className: 'expand-arrow headerhover', textContent: '\u21e5' }, header);
+      const rightButtonsContainer = el('div', { className: 'right-buttons-container headerhover' }, header);
+
+      const star = el('div', { className: 'rate', title: 'Rate this extension' }, rightButtonsContainer);
+      el('a', { textContent: '\u2605', href: webstore + '/reviews' }, star);
+      const heart = el('div', { className: 'donate', title: 'Donate' }, rightButtonsContainer);
+      el('a', { textContent: '\u2764', href: donationLink }, heart);
+
+      const expandArrow = el('div', { className: 'expand-arrow', textContent: '\u21e5' }, rightButtonsContainer);
       const setTitleExpand = () => expandArrow.title = Context.save['wideColumn'] ? 'Minimize the panel' : 'Expand the panel';
       setTitleExpand();
       expandArrow.addEventListener('click', () => {

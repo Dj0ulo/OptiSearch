@@ -15,21 +15,6 @@
   const manifest = chrome.runtime.getManifest();
   $('#name').textContent = manifest.name;
   $('#version').textContent = manifest.version;
-  const webstores = {
-    'optisearch': {
-      'chrome': 'https://chrome.google.com/webstore/detail/optisearch/bbojmeobdaicehcopocnfhaagefleiae',
-      'firefox': 'https://addons.mozilla.org/fr/firefox/addon/optisearch',
-    },
-    'bingchat': {
-      'chrome': 'https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng',
-      'firefox': 'https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google',
-    },
-    'bard': {
-      'chrome': 'https://chrome.google.com/webstore/detail/bard-for-search-engines/pkdmfoabhnkpkcacnmgilaeghiggdbgf',
-      'firefox': 'https://addons.mozilla.org/fr/firefox/addon/bard-for-search-engines',
-    }
-  }
-  const webstore = webstores[WhichExtension][onChrome() ? 'chrome' : 'firefox'];
 
   $('#title-container img').src = (onChrome() ? '../../' : '') + manifest.icons[128];
   $('.title > a').href = webstore;
@@ -38,7 +23,7 @@
   const donate = document.getElementById("donate");
   donate.onclick = () => chrome.tabs.create({
     active: true,
-    url: "https://www.paypal.com/donate?hosted_button_id=VPF2BYBDBU5AA"
+    url: donationLink
   });
 
   const liEng = document.querySelector("#engines");

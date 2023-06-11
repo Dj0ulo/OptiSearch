@@ -87,16 +87,7 @@
   max-height: 400px;
 }
 
-.optiheader .headerhover {
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.optiheader:hover .headerhover {
-  opacity: 1;
-}
-
-.optisearchbox .watermark,
-.optisearchbox .expand-arrow {
+.optisearchbox .watermark {
   position: absolute;
   right: 0;
   margin: 0px 15px;
@@ -108,20 +99,74 @@
   top: 5px;
 }
 
-.optisearchbox .expand-arrow {
-  font-size: 24px;
-  transition: transform var(--expand-time) ease-in-out, opacity 0.2s;
+.optiheader .headerhover {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.optiheader:hover .headerhover {
+  opacity: 1;
+}
+
+.optisearchbox .optiheader .right-buttons-container {
+  position: absolute;
+  display: block;
+  right: 0;
   top: 24px;
+  min-width: fit-content;
+  margin-right: 15px;
+}
+
+.optisearchbox .optiheader .right-buttons-container > * {
+  margin-left: 5px;
   cursor: pointer;
+  display: inline-block;
   user-select: none;
+  position: relative;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+.optisearchbox .optiheader .right-buttons-container a {
+  text-decoration: none;
+  color: inherit !important;
+}
+.optisearchbox.bright .optiheader .right-buttons-container {
+  color: #bdbdbd;
+}
+.optisearchbox.bright .optiheader .right-buttons-container > *:hover {
+  color: black;
+}
+.optisearchbox.dark .optiheader .right-buttons-container > *:hover {
+  color: white;
+  text-shadow: 0 0 15px white;
+}
+
+.optisearchbox .optiheader .right-buttons-container .donate {
+  font-size: 20px;
+}
+.optisearchbox .optiheader .right-buttons-container .donate:hover {
+  color: #ff4949;
+}
+.optisearchbox .optiheader .right-buttons-container .rate {
+  font-size: 24px;
+}
+.optisearchbox .optiheader .right-buttons-container .rate:hover {
+  color: #ffe03e;
+}
+
+.optisearchbox .optiheader .right-buttons-container .expand-arrow {
+  font-size: 24px;
+  transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
+  cursor: pointer;
+  transform-origin: center;
 }
 .optisearch-column-wide .optisearchbox .expand-arrow {
   transform: rotate(-180deg);
 }
 
-.optipanel .optiheader {
+.optisearchbox .optiheader {
   margin-top: 15px;
   margin-bottom: 15px;
+  display: grid;
+  grid-auto-columns: 75% 1fr;
 }
 
 .optipanel .title {

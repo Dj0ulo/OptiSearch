@@ -1,6 +1,6 @@
 class BingChatSession extends ChatSession {
   properties = {
-    name: "Bing Chat",
+    name: "Bing",
     link: "https://www.bing.com/search",
     icon: "src/images/bingchat.png",
     local_icon: "bingchat.png",
