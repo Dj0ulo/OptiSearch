@@ -6,6 +6,44 @@ class BingChatSession extends ChatSession {
     local_icon: "bingchat.png",
     href: "https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1",
   }
+  async showConversationStyleDialog() {
+  const conversationStyles = [
+    { name: 'Creative', value: 'creative' },
+    { name: 'Precise', value: 'precise' },
+    { name: 'Balanced', value: 'balanced' }
+  ];
+
+  const selectedStyle = await this.showSelectDialog('Choose Conversation Style', conversationStyles);
+
+  if (selectedStyle) {
+    Context.save['bingConvStyle'] = selectedStyle;
+    Context.save();
+    this.refresh();
+  }
+}
+async showSelectDialog(title, options) {
+  return new Promise((resolve) => {
+    const dialogContainer = document.createElement('div');
+    dialogContainer.className = 'select-dialog-container';
+
+    const dialogTitle = document.createElement('h3');
+    dialogTitle.innerText = title;
+    dialogContainer.appendChild(dialogTitle);
+
+    options.forEach((option) => {
+      const optionButton = document.createElement('button');
+      optionButton.innerText = option.name;
+      optionButton.onclick = () => {
+        dialogContainer.remove();
+        resolve(option.value);
+      };
+      dialogContainer.appendChild(optionButton);
+    });
+
+    document.body.appendChild(dialogContainer);
+  });
+}
+
   static errors = {
     session: {
       code: 'BING_CHAT_SESSION',
@@ -28,7 +66,11 @@ class BingChatSession extends ChatSession {
     super('bingchat');
     this.socketID = null;
     this.uuid = generateUUID(); // for conversation continuation
+    if (!Context.save['bingConvStyle']) {
+    Context.save['bingConvStyle'] = 'creative'; // Default conversation style
+    Context.save();
   }
+}
 
   async init() {
     if (ChatSession.debug) return;
@@ -113,7 +155,15 @@ class BingChatSession extends ChatSession {
     const iconEl = $('img', titleEl);
     iconEl.title = `Bing Chat: ${Settings['AI Assitant']['bingConvStyle'].options[Context.save['bingConvStyle']].name} conversation style`;
     iconEl.style.filter = `hue-rotate(${hueAngle}deg)`;
+
     continueChat.style.filter = iconEl.style.filter;
+      const styleButton = el('button', {
+    className: 'conversation-style-button',
+    innerHTML: 'Conversation Style',
+    onclick: () => this.showConversationStyleDialog()
+  });
+
+  insertAfter(styleButton, continueChat);
 
     return this.panel;
   }
