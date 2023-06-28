@@ -146,7 +146,7 @@ class Context {
       const heart = el('div', { className: 'donate', title: 'Donate' }, rightButtonsContainer);
       el('a', { textContent: '\u2764', href: donationLink }, heart);
 
-      const expandArrow = el('div', { className: 'expand-arrow', textContent: '\u21e5' }, rightButtonsContainer);
+      const expandArrow = el('div', { className: 'new-expand-arrow', textContent: '\u21e5' }, rightButtonsContainer);
       const setTitleExpand = () => expandArrow.title = Context.save['wideColumn'] ? 'Minimize the panel' : 'Expand the panel';
       setTitleExpand();
       expandArrow.addEventListener('click', () => {

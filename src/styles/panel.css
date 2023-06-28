@@ -152,13 +152,13 @@
   color: #ffe03e;
 }
 
-.optisearchbox .optiheader .right-buttons-container .expand-arrow {
+.optisearchbox .optiheader .right-buttons-container .new-expand-arrow {
   font-size: 24px;
   transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
   cursor: pointer;
   transform-origin: center;
 }
-.optisearch-column-wide .optisearchbox .expand-arrow {
+.optisearch-column-wide .optisearchbox .new-expand-arrow {
   transform: rotate(-180deg);
 }
 
