@@ -79,11 +79,41 @@ class BardSession extends ChatSession {
       const unescaped = raw.slice(i + 2, raw.indexOf('\n', i) - 3)
         .replaceAll('\\"', '"')
         .replaceAll('\\"', '"');
-      const parsed = JSON.parse(`"${JSON.parse(unescaped)[0][0].replaceAll('"', '\\"')}"`);
-      this.onmessage(runMarkdown(parsed));
+
+        
+      let res = JSON.parse(unescaped);
+      // Hack to parse the correct string in the messy response (which structure may change with the Bard API modifications)
+      res = parseJSONStrings(res)
+        .filter(x => !x.match(/^[a-z]+_[a-f0-9]+$/))
+        .reduce((a, b) => a.length > b.length ? a : b)
+      res = JSON.parse(`"${res.replaceAll('"', '\\"')}"`);
+      res = runMarkdown(res);
+      this.onmessage(res);
     } catch (e) {
       warn(e);
       this.onmessage(ChatSession.infoHTML('⚠️&nbsp;An error occured.&nbsp;⚠️<br/>Please <a href="https://bard.google.com/">make sure you have access to Google Bard</a>.'));
+    }
+
+    /**
+     * Recursively parse all strings inside a JS object
+     * @param {object} jsonObject 
+     * @returns {string[]} Array of all strings contained inside the object
+     */
+    function parseJSONStrings(jsonObject) {
+      var stringsArray = [];
+
+      function parseObject(obj) {
+        for (var key in obj) {
+          if (typeof obj[key] === 'string') {
+            stringsArray.push(obj[key]);
+          } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+            parseObject(obj[key]);
+          }
+        }
+      }
+
+      parseObject(jsonObject);
+      return stringsArray;
     }
   }
 
