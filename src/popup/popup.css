@@ -2,9 +2,10 @@
   --color: rgb(215, 210, 204);
   --bg: #1c1c1c;
   --dark-grey: rgb(51, 51, 51);
-  --grey: rgb(104, 104, 104);
+  --grey: #686868;
   --scroll-bar-color: var(--grey);
   --scroll-bar-bg-color: var(--bg);
+  --footer-height: 85px;
 }
 
 body {
@@ -199,7 +200,7 @@ input:focus {
 /*** FOOTER ***/
 
 .clear {
-  height: 70px; /* Height of the footer */
+  height: var(--footer-height);
 }
 
 footer {
@@ -207,7 +208,7 @@ footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 70px; /* Height of the footer */
+  height: var(--footer-height);
   background-color: var(--bg);
   box-shadow: 0px 1px 20px 0px black;
 }
@@ -223,37 +224,37 @@ footer {
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr;
+  justify-content: center;
 }
 
-/*** DONATE BUTTON ***/
+/*** UPGRADE BUTTON ***/
 
-#donate {
-  grid-column: 2 / 3;
-
+#premium {
   width: 100%;
   height: 1.5rem;
+  margin: 10px 0;
+  padding: 5px 5px;
+}
 
+.upgrade-button {
   border-radius: 3px;
-  margin-bottom: 0.5em;
-  margin-top: 1em;
 
   cursor: pointer;
 
   color: #fff;
-  background-color: rgb(104, 104, 104);
+  background-color: #EB9B05;;
 
   text-align: center;
 
   transition: 0.3s;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
-#donate:hover {
+.upgrade-button:hover {
   opacity: 1;
 }
 
-#donate > span {
+.upgrade-button > span {
   display: inline-block;
   vertical-align: middle;
   line-height: 1.2rem;

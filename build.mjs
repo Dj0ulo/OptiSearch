@@ -4,7 +4,7 @@ import archiver from 'archiver';
 
 const ADDITIONAL_FILES = {
   'OptiSearch': [],
-  'BingChat': ['src/chat/BingChat/*'],
+  'BingChat': ['src/chat/BingChat/*', 'src/background_extpay.js', 'src/background.js'],
   'Bard': [],
 }
 const ADDITIONAL_FILES_V2 = {

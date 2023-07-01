@@ -74,7 +74,6 @@ class ChatGPTSession extends ChatSession {
     }
     this.eventStreamID = res.id;
     await this.next();
-    this.removeConversation();
   }
 
   async next() {
@@ -95,7 +94,8 @@ class ChatGPTSession extends ChatSession {
     try {
       const data = JSON.parse(toParse);
       this.buffer = '';
-      this.session.conversation = data.conversation_id;
+      this.session.conversation_id = data.conversation_id;
+      this.session.parent_message_id = data.message?.id;
       const text = data.message?.content?.parts[0];
       if (text) {
         this.onmessage(runMarkdown(text));
@@ -117,9 +117,9 @@ class ChatGPTSession extends ChatSession {
   }
 
   removeConversation() {
-    if (ChatGPTSession.debug)
+    if (ChatGPTSession.debug || !this.session || !this.session.conversation_id)
       return;
-    return this.backendApi(`conversation/${this.session.conversation}`, {
+    return this.backendApi(`conversation/${this.session.conversation_id}`, {
       is_visible: false
     }, 'PATCH');
   }
@@ -128,11 +128,12 @@ class ChatGPTSession extends ChatSession {
     if (!this.session)
       throw "Session has to be fetched first";
     const id = generateUUID();
-    const pid = generateUUID();
+    const pid = this.session.parent_message_id ? this.session.parent_message_id : generateUUID();
     return {
       action: "next",
       model: this.models[0].slug,
       parent_message_id: pid,
+      ...(this.session.conversation_id && { conversation_id: this.session.conversation_id }),
       messages: [{
         id,
         role: "user",

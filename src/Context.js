@@ -9,6 +9,9 @@ class Context {
 
   static boxes = [];
 
+  /** @type {Promise<Boolean> | null} */
+  static isPremiumUser = null;
+
   /** @type {HTMLElement | null} */
   static rightColumnElement = null;
   static set rightColumn(value) {
@@ -53,6 +56,8 @@ class Context {
       prevBg = bg;
       Context.updateColor();
     }, 200);
+
+    Context.checkPremiumSubscription();
 
     Context.initChat();
     await Context.injectStyle();
@@ -100,6 +105,16 @@ class Context {
     });
 
     Context.executeTools();
+  }
+
+  static async checkPremiumSubscription() {
+    await extpay.getUser()
+      .then(user => Context.isPremiumUser = user.paid)
+      .catch(_ => {
+        err(`Failed to retrieve user subscription state`);
+        Context.isPremiumUser = null;
+      });
+    return Context.isPremiumUser;
   }
 
   static isActive(tool) {

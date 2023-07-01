@@ -329,7 +329,7 @@
 }
 
 .optipanel .optibody {
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .optipanel a {

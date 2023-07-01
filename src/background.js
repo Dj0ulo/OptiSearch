@@ -1,3 +1,8 @@
+if (typeof browser === 'undefined') {
+  importScripts('libs/ExtPay.js');
+  importScripts('background_extpay.js')
+}
+
 fetchEngines();
 
 chrome.runtime.onMessage.addListener((action, _, sendResponse) => {
@@ -33,7 +38,10 @@ async function handleActionFetch(action) {
     .catch(e => ({ errorInBackgroundScript: true, error: e.toString() }));
 
   if (!response.ok)
-    return { status: response.status, body: await response.text && response.text() };
+    return {
+      status: response.status,
+      ...(response.text && { body: response.text() })
+    };
 
   const contentType = response.headers.get('content-type') ?? '';
   if (contentType.startsWith("application/json")) {
@@ -70,8 +78,14 @@ function handleSessionStorage({ type, key, value }) {
 }
 
 /** Fetch image blob from source */
-function handleActionWindow({ url }) {
-  chrome.windows.create({ url, width: 800, height: 800, focused: true });
+function handleActionWindow(action) {
+  chrome.windows.create({ 
+    url: action.url, 
+    type: action.type ?? 'normal',
+    width: action.width ?? 800,
+    height: action.height ?? 800,
+    focused: true 
+  });
   return { status: 'Window created !' };
 }
 

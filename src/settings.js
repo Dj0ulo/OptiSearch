@@ -8,6 +8,7 @@ const WhichExtension = (() => {
 })();
 const isOptiSearch = WhichExtension === 'optisearch';
 const WhichChat = isOptiSearch ? 'chatgpt' : WhichExtension;
+const extpay = ExtPay('optisearch');
 
 const webstores = {
   'optisearch': {
@@ -23,7 +24,7 @@ const webstores = {
     'firefox': 'https://addons.mozilla.org/fr/firefox/addon/bard-for-search-engines',
   }
 }
-const webstore = webstores[WhichExtension][onChrome() ? 'chrome' : 'firefox'];
+const webstore = webstores[WhichExtension][typeof browser === 'undefined' ? 'chrome' : 'firefox'];
 const donationLink = `https://www.paypal.com/donate?hosted_button_id=${WhichExtension === 'bingchat' ? 'BXBP3JELVS4FL' : 'VPF2BYBDBU5AA'}`;
 
 const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu", Brave = "Brave Search";

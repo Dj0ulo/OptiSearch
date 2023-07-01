@@ -66,6 +66,7 @@
         "src/libs/highlight.min.js",
         "src/libs/tex-svg.js",
         "src/libs/drawdown.js",
+        "src/libs/ExtPay.js",
 
         "src/utils.js",
 

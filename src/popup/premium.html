@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src="../libs/ExtPay.js"></script>
+        <script src="../utils.js"></script>
+        <script src="../settings.js"></script>
+        <script defer src="premium.js"></script>
+        
+        <style>
+            :root {
+                --premium-yellow: #FCD53F;
+                --text-color: #ddd;
+            }
+            body {
+                font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
+                font-size: 70%;
+                background: #111;
+                color: var(--text-color);
+                text-align: center;
+                overflow-y: hidden;
+            }
+            .advantages {
+                text-align: left;
+                margin: 0 auto;
+                width: 300px;
+            }
+            h3 {
+                font-size: 1.2rem;
+                font-weight: normal;
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 1.2rem;
+                background-color: var(--premium-yellow);
+                color: #111;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            img {
+                margin: 20px auto;
+                display: block;
+                height: 300px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>⭐ Upgrade to Premium ⭐</h1>
+        <h3>Sign up for a <strong style="color: var(--premium-yellow);">Premium membership</strong><br>to chat directly in the result page</h3>
+        <img src="../images/bing_conversation_example.png">
+        <button class="upgrade-button">Purchase Premium</button>
+        <div style="margin-top: 10px;">
+            <h3>More features are coming&nbsp;:</h3>
+            <ul class="advantages">
+                <li>Save your conversation in Bing Chat history</li>
+                <li>Speed up the answer by disabling Bing internal search</li>
+                <li>Switch conversation style in the result page</li>
+            </ul>
+        </div>
+    </body>
+</html>

@@ -20,11 +20,29 @@
   $('.title > a').href = webstore;
   $('#feedback').href = webstore + '/reviews';
 
-  const donate = document.getElementById("donate");
-  donate.onclick = () => chrome.tabs.create({
-    active: true,
-    url: donationLink
-  });
+  const upgradeButton = document.getElementById("premium");
+  const upgradeButtonSpan = upgradeButton.querySelector('span');
+
+  extpay.getUser().then(user => {
+    upgradeButton.classList.add('upgrade-button');
+    if (user.paidAt) {
+      upgradeButtonSpan.textContent = 'Manage subscription';
+      upgradeButton.addEventListener('click', extpay.openPaymentPage);
+    } else {
+      upgradeButtonSpan.textContent = 'Upgrade to Premium';
+      upgradeButton.addEventListener('click', () => {
+        bgWorker({
+          action: 'window',
+          url: chrome.runtime.getURL('src/popup/premium.html'),
+          type: 'popup',
+          width: 480,
+          height: 700,
+        });
+      });
+    }
+  }).catch(err => {
+    upgradeButtonSpan.textContent = 'Failed to load subscription status';
+  })
 
   const liEng = document.querySelector("#engines");
 

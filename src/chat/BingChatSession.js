@@ -55,6 +55,7 @@ class BingChatSession extends ChatSession {
     if (session.result?.value === 'Forbidden')
       throw BingChatSession.errors.forbidden;
     this.session = session;
+    this.session.isStartOfSession = true;
     return this.session;
   }
 
@@ -84,7 +85,7 @@ class BingChatSession extends ChatSession {
     this.socketID = await BingChatSession.createSocket();
     const { packet } = await this.socketReceive();
     if (packet !== '{}\x1e') {
-      this.onmessage(ChatSession.infoHTML('⚠️&nbsp;Sorry, an error occured. Please try again.'));
+      this.onErrorMessage();
       err(`Error with Bing Chat: first packet received is ${packet}`);
       return;
     }
@@ -144,10 +145,11 @@ class BingChatSession extends ChatSession {
       'balanced': 0,
     }[Context.save['bingConvStyle']];
 
-    const iconEl = $('img', titleEl);
+    const iconEl = $('img', $('.ai-name', this.panel));
     iconEl.title = `Bing Chat: ${Settings['AI Assitant']['bingConvStyle'].options[Context.save['bingConvStyle']].name} conversation style`;
     iconEl.style.filter = `hue-rotate(${hueAngle}deg)`;
-    continueChat.style.filter = iconEl.style.filter;
+
+    $('.continue-chat-button', this.panel).style.filter = iconEl.style.filter;
 
     return this.panel;
   }
@@ -159,6 +161,7 @@ class BingChatSession extends ChatSession {
     }
     /**@type {{packet: string, readyState: number}} */
     const { packet, readyState } = res;
+    this.session.isStartOfSession = false;
 
     /**
      * body.type: 1 = Invocation, 2 = StreamItem, 3 = Completion, 4 = StreamInvocation, 5 = CancelInvocation, 6 = Ping, 7 = Close
@@ -171,7 +174,7 @@ class BingChatSession extends ChatSession {
         case 1: msg = body.arguments[0]?.messages && body.arguments[0]?.messages[0]; break;
         case 2:
           if (!body.item) {
-            this.onmessage(ChatSession.infoHTML('⚠️&nbsp;Sorry, an error occured. Please try again.'));
+            this.onErrorMessage();
             return;
           }
           if (body.item.result) {
@@ -186,12 +189,14 @@ class BingChatSession extends ChatSession {
                 throw BingChatSession.errors.forbidden;
               if (body.item.result.value === 'CaptchaChallenge')
                 throw BingChatSession.errors.captcha;
-              this.onmessage(ChatSession.infoHTML(body.item.result.message));
-              return;
+            }
+            if (body.item.result?.message) {
+              msg = body.item.result.message;
+              break;
             }
           }
           if (!body.item.messages) {
-            this.onmessage(ChatSession.infoHTML('⚠️&nbsp;Sorry, an error occured. Please try again.'));
+            this.onErrorMessage();
             return;
           }
           msg = body.item.messages.find(m => !m.messageType && m.author === 'bot');
@@ -202,11 +207,7 @@ class BingChatSession extends ChatSession {
           this.socketSend({ "type": 6 });
           return;
         case 3: case 7:
-          if (this.isContinueSession)
-            return;
-          const continueChat = $('.continue-chat-button', this.panel);
-          continueChat.style.display = '';
-          setTimeout(() => continueChat.setAttribute('visible', 'true'), 100);
+          this.allowSend();
           break;
         default: return;
       }
@@ -231,7 +232,7 @@ class BingChatSession extends ChatSession {
       const refs = refText?.split('\n')
         .map(s => s.match(/\[(\d+)]: (http[^ ]+) \"(.*)\"/)) // parse links
         .filter(r => !!r).map(([_, n, href, title]) => ({ n, href, title }));
-      const learnMore = msg.adaptiveCards && msg.adaptiveCards[0]?.body[1]?.text;
+      const learnMore = msg.adaptiveCards && msg.adaptiveCards[0]?.body.find(x => x.text && x.text.startsWith("Learn more:"))?.text;
       let text = msg.text || msg.spokenText;
       if (!text) return;
       const sources = {};
@@ -269,6 +270,32 @@ class BingChatSession extends ChatSession {
       return;
 
     return this.next();
+  }
+
+  removeConversation() {
+    if (ChatSession.debug || !this.session)
+      return;
+    const { conversationSignature, clientId, conversationId } = this.session;
+
+    return bgFetch('https://sydney.bing.com/sydney/DeleteSingleConversation', {
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        conversationId,
+        conversationSignature,
+        "participant": {
+          "id": clientId
+        },
+        "source": "cib",
+        "optionsSets": [
+          "autosave"
+        ]
+      }),
+      method: "POST",
+      mode: "cors",
+      credentials: "include",
+    });
   }
 
   static async createSocket() {
@@ -315,7 +342,7 @@ class BingChatSession extends ChatSession {
   async config(prompt) {
     if (!this.session)
       throw "Session has to be fetched first";
-    const { conversationSignature, clientId, conversationId } = this.session;
+    const { conversationSignature, clientId, conversationId, isStartOfSession } = this.session;
 
     const timestamp = () => {
       const pad0 = (n) => n < 10 ? "0" + n : n;
@@ -362,7 +389,7 @@ class BingChatSession extends ChatSession {
           "InternalSearchResult",
         ],
         verbosity: "verbose",
-        isStartOfSession: true,
+        isStartOfSession,
         message: {
           timestamp: timestamp(),
           author: "user",

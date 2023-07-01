@@ -418,3 +418,13 @@ function parseSearchParam(paramName) {
     paramName = (window.location.host === 'www.baidu.com') ? 'w' : 'q';
   return new URL(window.location.href).searchParams.get(paramName) || '';
 }
+
+/** @param {Element} e */
+function displayElement(e) {
+  e.style.display = '';
+}
+
+/** @param {Element} e */
+function hideElement(e) {
+  e.style.display = 'none';
+}
