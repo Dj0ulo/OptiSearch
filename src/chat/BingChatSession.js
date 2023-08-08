@@ -142,6 +142,10 @@ class BingChatSession extends ChatSession {
               return;
             }
             if (body.item.result.error) {
+              if (body.item.result.error === 'UnauthorizedRequest')
+                throw BingChatSession.errors.session;
+              if (body.item.result.error === 'Forbidden')
+                throw BingChatSession.errors.forbidden;
               this.onmessage(ChatSession.infoHTML(body.item.result.message));
               return;
             }
@@ -275,8 +279,8 @@ class BingChatSession extends ChatSession {
     }
 
     const { sliceIds, optionsSets } = {
-      sliceIds: ["winmuid1tf", "522docxfmts0", "anssuptkmr2", "smsrpsuppv3", "ssrrcache", "tempcacheread", "temptacache", "osbsdusgrec", "noaddsyreq", "controlwp", "crchatrev", "winshortmsgtf", "ctrlworkpay", "norespwtf", "0521dur2", "dur2", "517opinions0", "424dagslnv1", "427startpm"],
-      optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "clgalileo", "gencontentv3", "osbsdusgrec", "dagslnv1", "enablenewsfc"],
+      sliceIds: ["edi", "abv2", "srdicton", "ctrlconvcss", "anssupfo", "tempcacheread", "temptacache", "contp2cf", "0731ziv2s0", "802fluxv1pc_a", "731bof108s0", "803iyolojbs0", "277wrkvid", "277teditgnds0", "0626snptrcs0", "207hlthgrd"],
+      optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "clgalileo", "gencontentv3", "wrkoutvid", "hlthcndans"]
     };
 
     const convStyle = {
