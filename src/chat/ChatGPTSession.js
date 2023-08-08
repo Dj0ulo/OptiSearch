@@ -78,10 +78,14 @@ class ChatGPTSession extends ChatSession {
   }
 
   async next() {
-    /**@type {{done: boolean, packet: string}} */
-    const { done, packet } = await this.receivePacket();
+    const receivedPacket = await this.receivePacket();
+    if (!receivedPacket)
+      return;
 
-    if (done || packet.startsWith("data: [DONE]"))
+    /**@type {{done: boolean, packet: string}} */
+    const { done, packet } = receivedPacket;
+
+    if (done || !packet || packet.startsWith("data: [DONE]"))
       return;
 
     this.buffer ??= '';
