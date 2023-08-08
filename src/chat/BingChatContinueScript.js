@@ -5,14 +5,12 @@
 
   const CIB = await waitFor(window, 'CIB');
 
-  // if this key appear in actionBar, that means Bing Chat is ready to discuss
-  await waitFor(CIB.vm.actionBar, '$debounce$handleInputTextChanged');
-
   const chat = CIB.manager.chat;
   chat.conversation.updateId(conv.conversationId, conversationExpiry(), conv.clientId, conv.conversationSignature);
 
   const actionBar = CIB.vm.actionBar;
   actionBar.inputText = conv.inputText;
+  actionBar.textInput.value = conv.inputText;
   actionBar.submitInputText();
 
   function waitFor(obj, key) {
