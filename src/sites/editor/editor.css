@@ -33,19 +33,55 @@ input{
 
 .optisearchbox{
   background-color: hsl(225.0, 5.882%, 15.33%);
-  /* width: 400px; */
+  width: 400px;
 }
 
-.error{
+.optisearch-error{
   color: white;
   margin: 10px;
 }
-.optisearchbox:has(.error){
+.optisearchbox:has(.optisearch-error){
   background-color: #ce3131;
 }
-.error pre{
+.optisearch-error pre{
   background-color: #333;
   overflow: auto;
   padding: 1em;
   border-radius: .5em;
+}
+
+a {
+  color: aqua;
+}
+span.expected {
+  color: greenyellow;
+}
+span.actual {
+  color: red;
+}
+
+.test-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  margin-top: 30px;
+}
+
+/* Add styles for the table and rows */
+.test-results {
+  display: block;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 15px;
+}
+
+.test-results td{
+  padding: 5px 10px;
+}
+
+.test-results .comparison{
+  max-width: 400px;
+}
+
+.test-results tr {
+  border-bottom: 1px solid #3f3f3f;
 }

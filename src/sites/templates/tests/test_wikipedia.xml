@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite template="../templates/wikipedia.xsl">
+    <test src="https://fr.wikipedia.org/wiki/ACK">
+        <it should="have one paragraph">
+            <assert actual="normalize-space(//p[1])" expected="'ACK peut faire référence à :'" />
+            <assert actual="substring(normalize-space(//p[1]), 1, 8)" expected="'ACK peut'" />
+            <assert actual="normalize-space(//p[2])" expected="''" />
+        </it>
+        <it should="have a list">
+            <variable name="syntaxTitle" select="//h3[normalize-space() = 'Syntax']"/>
+            <assert actual="//ul/li[7]" />
+            <assert actual="//ul/li[8]" expected="''" />
+        </it>
+    </test>
+    <test src="https://fr.wikipedia.org/wiki/Freddie_Mercury">
+        <it should="have one paragraph">
+            <assert actual="substring(normalize-space(//p[1]), 1, 8)" expected="'Freddie '" />
+            <assert actual="normalize-space(//p[2])" expected="''" />
+        </it>
+        <it should="have an image">
+            <assert actual="//img"/>
+        </it>
+    </test>
+    <test src="https://fr.wikipedia.org/wiki/Hello_(chanson_d%27Adele)">
+        <it should="have one paragraph">
+            <assert actual="substring(normalize-space(//p[1]), 1, 8)" expected="'Hello es'" />
+            <assert actual="normalize-space(//p[2])" expected="''" />
+        </it>
+        <it should="not have an image">
+            <assert actual="//img" expected="''"/>
+        </it>
+    </test>
+</testsuite>

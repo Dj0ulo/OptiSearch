@@ -39,7 +39,7 @@ Tests URLs:
         <xsl:variable name="article" css-select="#mw-content-text .mw-parser-output"/>
         <xsl:variable name="infobox" css-select="$article [class^=infobox]"/>
 
-        <xsl:variable name="img" css-select="$infobox .images > .image, $article .thumbinner .image" />
+        <xsl:variable name="img" css-select="$infobox .images > .image, $infobox .images img, $article .thumbinner .image" />
         <!-- On Firefox, the image should be fetched and transformed in base64 -->
 
         <xsl:variable name="children" css-select-all="$article > p"/>

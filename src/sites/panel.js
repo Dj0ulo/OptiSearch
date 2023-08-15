@@ -1,3 +1,9 @@
+/**
+ * 
+ * @param {string} xsl 
+ * @param {string} html 
+ * @returns 
+ */
 function contentFromTemplate(xsl, html) {
   const template = xsl;
   const doc = parseHTML(html);

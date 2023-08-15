@@ -208,6 +208,10 @@ function writeHostOnLinks(url, container) {
   links.forEach(a => {
     const attr = a.getAttribute('href') ? 'href' : 'src';
     const ahref = a.getAttribute(attr);
+    if (window.location.href.startsWith('chrome-extension://') && ahref.startsWith("//")) {
+      a[attr] = 'https:' + ahref;
+      return;
+    }
     if (!ahref || ahref.startsWith("http") || ahref.startsWith("//") || ahref.startsWith("data:")) {
       return;
     }

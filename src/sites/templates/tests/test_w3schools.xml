@@ -8,7 +8,7 @@
         </it>
         <it should="have some paragraphs">
             <assert actual="normalize-space(//optibody//p[1])" expected="'A regular expression is a pattern of characters.'" />
-            <assert actual="normalize-space(//optibody//p[3])" expected="'In JavaScript, a RegExp Object is a pattern with Properties and Methods.'" />
+            <assert actual="normalize-space(//optibody//p[3])" expected="'The RegExp Object is a regular expression with added Properties and Methods.'" />
         </it>
         <it should="have an example">
             <variable name="exampleTitle" css-select=".w3-example"/>
@@ -19,7 +19,7 @@
         </it>
     </test>
     <test src="https://www.w3schools.com/jsref/jsref_event.asp">
-        <it should="have not have a syntax">
+        <it should="not have a syntax">
             <assert actual="not(//h3[normalize-space() = 'Syntax'])" />
         </it>
         <it should="have some paragraphs">
@@ -27,9 +27,10 @@
             <assert actual="normalize-space(//optibody//p[2])" expected="'Events are normally used in combination with functions, and the function will not be executed before the event occurs (such as when a user clicks a button).'" />
             <assert actual="normalize-space(//optibody//p[3])" expected="'Tip: The event model was standardized by the W3C in DOM Level 2.'" />
         </it>
-        <it should="have not have an example">
+        <it should="not have an example">
             <variable name="exampleTitle" css-select=".w3-example"/>
             <assert actual="not($exampleTitle)"/>
         </it>
     </test>
+    <test src="https://www.w3schools.com/jsref/met_win_setinterval.asp"/>
 </testsuite>
