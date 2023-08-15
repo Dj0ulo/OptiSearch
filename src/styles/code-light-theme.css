@@ -1,0 +1,126 @@
+/*!
+  Theme: StackOverflow Light
+  Description: Light theme as used on stackoverflow.com
+  Author: stackoverflow.com
+  Maintainer: @Hirse
+  Website: https://github.com/StackExchange/Stacks
+  License: MIT
+  Updated: 2021-05-15
+
+  Updated for @stackoverflow/stacks v0.64.0
+  Code Blocks: /blob/v0.64.0/lib/css/components/_stacks-code-blocks.less
+  Colors: /blob/v0.64.0/lib/css/exports/_stacks-constants-colors.less
+*/
+
+.optisearchbox.bright .hljs {
+  /* var(--highlight-color) */
+  color: #2f3337;
+  /* var(--highlight-bg) */
+  /* background: #f6f6f6; */
+}
+
+.optisearchbox.bright .hljs-subst {
+  /* var(--highlight-color) */
+  color: #2f3337;
+}
+
+.optisearchbox.bright .hljs-comment {
+  /* var(--highlight-comment) */
+  color: #656e77;
+}
+
+.optisearchbox.bright .hljs-keyword,
+.optisearchbox.bright .hljs-selector-tag,
+.optisearchbox.bright .hljs-meta .optisearchbox.bright .hljs-keyword,
+.optisearchbox.bright .hljs-doctag,
+.optisearchbox.bright .hljs-section {
+  /* var(--highlight-keyword) */
+  color: #015692;
+}
+
+.optisearchbox.bright .hljs-attr {
+  /* var(--highlight-attribute); */
+  color: #015692;
+}
+
+.optisearchbox.bright .hljs-attribute {
+  /* var(--highlight-symbol) */
+  color: #803378;
+}
+
+.optisearchbox.bright .hljs-name,
+.optisearchbox.bright .hljs-type,
+.optisearchbox.bright .hljs-number,
+.optisearchbox.bright .hljs-selector-id,
+.optisearchbox.bright .hljs-quote,
+.optisearchbox.bright .hljs-template-tag {
+  /* var(--highlight-namespace) */
+  color: #b75501;
+}
+
+.optisearchbox.bright .hljs-selector-class {
+  /* var(--highlight-keyword) */
+  color: #015692;
+}
+
+.optisearchbox.bright .hljs-string,
+.optisearchbox.bright .hljs-regexp,
+.optisearchbox.bright .hljs-symbol,
+.optisearchbox.bright .hljs-variable,
+.optisearchbox.bright .hljs-template-variable,
+.optisearchbox.bright .hljs-link,
+.optisearchbox.bright .hljs-selector-attr {
+  /* var(--highlight-variable) */
+  color: #54790d;
+}
+
+.optisearchbox.bright .hljs-meta,
+.optisearchbox.bright .hljs-selector-pseudo {
+  /* var(--highlight-keyword) */
+  color: #015692;
+}
+
+.optisearchbox.bright .hljs-built_in,
+.optisearchbox.bright .hljs-title,
+.optisearchbox.bright .hljs-literal {
+  /* var(--highlight-literal) */
+  color: #b75501;
+}
+
+.optisearchbox.bright .hljs-bullet,
+.optisearchbox.bright .hljs-code {
+  /* var(--highlight-punctuation) */
+  color: #535a60;
+}
+
+.optisearchbox.bright .hljs-meta .optisearchbox.bright .hljs-string {
+  /* var(--highlight-variable) */
+  color: #54790d;
+}
+
+.optisearchbox.bright .hljs-deletion {
+  /* var(--highlight-deletion) */
+  color: #c02d2e;
+}
+
+.optisearchbox.bright .hljs-addition {
+  /* var(--highlight-addition) */
+  color: #2f6f44;
+}
+
+.optisearchbox.bright .hljs-emphasis {
+  font-style: italic;
+}
+
+.optisearchbox.bright .hljs-strong {
+  font-weight: bold;
+}
+
+.optisearchbox.bright .hljs-formula,
+.optisearchbox.bright .hljs-operator,
+.optisearchbox.bright .hljs-params,
+.optisearchbox.bright .hljs-property,
+.optisearchbox.bright .hljs-punctuation,
+.optisearchbox.bright .hljs-tag {
+  /* purposely ignored */
+}

@@ -63,7 +63,7 @@
       "js": [
         "src/libs/plotly-2.8.3.min.js",
         "src/libs/math.min.js",
-        "src/libs/run_prettify.js",
+        "src/libs/highlight.min.js",
         "src/libs/tex-svg.js",
         "src/libs/drawdown.js",
 

@@ -291,11 +291,11 @@
   font-size: 100%;
 }
 
-.optipanel pre.prettyprint code {
+.optipanel pre code {
   display: block;
 }
 
-.optipanel pre.prettyprint {
+.optipanel pre {
   border: 0px;
   margin-bottom: 1em;
   padding: 12px 8px;
@@ -337,6 +337,16 @@
   margin-top: 15px;
   line-height: 23px;
   font-size: small;
+}
+
+.optisearchbox.bright pre,
+.optisearchbox.bright code  {
+  background: #f7f7f7;
+}
+
+.optisearchbox.dark pre,
+.optisearchbox.dark code  {
+  background: #222;
 }
 
 /*recherche associes position fixed google*/

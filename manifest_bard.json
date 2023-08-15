@@ -21,8 +21,8 @@
       "src/engines.json",
       "src/styles/chatgpt.css",
       "src/styles/panel.css",
-      "src/styles/sunburst.css",
-      "src/styles/tomorrow.css",
+      "src/styles/code-light-theme.css",
+      "src/styles/code-dark-theme.css",
       "src/images/bard.png"
     ],
     "matches": [
@@ -50,7 +50,7 @@
       "run_at": "document_end",
       "js": [
         "src/libs/math.min.js",
-        "src/libs/run_prettify.js",
+        "src/libs/highlight.min.js",
         "src/libs/tex-svg.js",
         "src/libs/drawdown.js",
 

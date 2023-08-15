@@ -66,18 +66,13 @@ function toTeX(element, convertWhole = true) {
 /**
  * Prettyfy code
  * @param {Element} element 
- * @param {boolean} runPrettify if false, only put "prettyprint" class on <code> and <pre>. If true, run prettyPrint 
  */
-function prettifyCode(element, runPrettify = false) {
-  $$("code, pre", element).forEach(c => c.classList.add("prettyprint"));
-
+function prettifyCode(element) {
   $$("pre", element).forEach((pre) => {
-    const surround = el("div", { className: "pre-surround", innerHTML: pre.outerHTML, style: "position: relative" });
-    surround.append(createCopyButton(pre.innerText.trim()));
-
-    pre.parentNode.replaceChild(surround, pre);
+    pre.append(createCopyButton(pre.innerText.trim()));
+    pre.style.position = 'relative';
+    $$("code", pre).forEach(c => hljs.highlightElement(c));
   });
-  runPrettify && PR.prettyPrint();
 }
 
 /**

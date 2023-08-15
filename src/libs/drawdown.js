@@ -81,7 +81,7 @@
 
     // multiline code
     replace(rx_code, (all, p1) => {
-        stash[--si] = element('pre', p1.trim());
+        stash[--si] = element('pre', element('code', p1.trim()));
         return si + '\uf8ff';
     });
 

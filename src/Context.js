@@ -107,7 +107,7 @@ class Context {
   }
 
   static async injectStyle() {
-    let styles = ['chatgpt', 'panel', 'tomorrow', 'sunburst'];
+    let styles = ['chatgpt', 'panel', 'code-light-theme', 'code-dark-theme'];
     if (isOptiSearch)
       styles = [...styles, ...['w3schools', 'wikipedia', 'genius']];
     const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`).catch(() => '')));
@@ -258,8 +258,7 @@ class Context {
 
     if (dark) {
       style.textContent = `.optisearchbox.dark {background-color: ${colorLuminance(bg, 0.02)}}
-      .optisearchbox.dark .optipanel .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}
-      .optisearchbox.dark .prettyprint, .optisearchbox.dark .pre-surround .prettyprint {background-color: ${colorLuminance(bg, -0.02)}}`;
+      .optisearchbox.dark .optipanel .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}`;
     }
     for (let p of allPanels) {
       if (dark)

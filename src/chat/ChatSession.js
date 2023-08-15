@@ -127,7 +127,7 @@ class ChatSession {
 
     this.onmessage = (bodyHTML, footHTML) => {
       responseContainer.innerHTML = bodyHTML;
-      prettifyCode(responseContainer, true);
+      prettifyCode(responseContainer);
 
       const hr = $('.optifoot-hr', panel);
       if (footHTML) {

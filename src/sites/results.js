@@ -172,7 +172,6 @@
 
       Context.currentPanelIndex++;
     }
-    PR.prettyPrint();
   }
 
 })();
