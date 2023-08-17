@@ -2,8 +2,7 @@
 <testsuite template="../templates/wikipedia.xsl">
     <test src="https://fr.wikipedia.org/wiki/ACK">
         <it should="have one paragraph">
-            <assert actual="normalize-space(//p[1])" expected="'ACK peut faire référence à :'" />
-            <assert actual="substring(normalize-space(//p[1]), 1, 8)" expected="'ACK peut'" />
+            <assert actual="normalize-space(//p[1])" expected="'ACK peut faire référence à\u00a0:'" />
             <assert actual="normalize-space(//p[2])" expected="''" />
         </it>
         <it should="have a list">

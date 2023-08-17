@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite template="../templates/stackexchange.xsl">
+    <test src="https://stackoverflow.com/questions/70425385/image-in-chrome-extension-pop-up-not-loading">
+        <it should="have no answer (could change in the future)">
+            <variable name="noanswer" css-select=".noanswer" />
+            <assert actual="$noanswer" />
+            <assert actual="normalize-space($noanswer)" expected="'No answer on this question... If you know the answer, submit it!'" />
+        </it>
+        <it should="a link">
+            <assert actual="//a/@href" expected="'#post-form'"/>
+        </it>
+    </test>
+    <test src="https://stackoverflow.com/questions/74712275/capture-network-traffic-using-fiddler-in-window-subsystem-for-android-wsa/76724299#76724299">
+        <it should="have 5 pre">
+            <assert actual="count(//pre)" expected="5" />
+        </it>
+        <it should="have an image">
+            <assert actual="//img"/>
+        </it>
+        <it should="be answered by Dj0ulo">
+            <assert actual="normalize-space(//optifoot)" expected="'Dj0ulo – answered Jul 19 at 18:32'" />
+            <assert actual="//optifoot/a" expected="'Dj0ulo'" />
+        </it>
+    </test>
+</testsuite>

@@ -17,15 +17,22 @@
   start();
 
   async function start() {
-    const r = await get(localStorage[id]);
-    const testResults = await Promise.all(await executeTests(r));
+    const testsContainer = $('#tests-container');
+    testsContainer.innerHTML = '';
+    const r = await get(localStorage[id]).catch((e) => errorBox(e, testsContainer) && null);
+    if (!r)
+      return;
+    const testResults = await executeTests(r).catch((e) => errorBox(e, testsContainer) && null);
+    if (!testResults)
+      return;
 
     console.log(testResults);
 
-    const testsContainer = $('#tests-container');
-    testsContainer.innerHTML = '';
-    testResults.forEach(res => {
-      const row = el('div', { className: 'test-row' }, testsContainer)
+    testResults.forEach(async promise => {
+      const row = el('div', { className: 'test-row' }, testsContainer);
+      const res = await promise.catch((e) => errorBox(e, testsContainer) && null);
+      if (!res)
+        return;
       el('div', { className: 'left' }, row).appendChild(res.box);
       if (res.error) {
         return;
@@ -47,7 +54,7 @@
       const src = test.getAttribute('src');
       const html = await get(src);
 
-      const box = optisearchbox(templateFile, src, html);
+      const box = boxEl(optisearchPanel(templateFile, src, html));
       if ($('.optisearch-error', box)) {
         return {
           src,
@@ -80,20 +87,6 @@
             <xsl:variable name="expected" select="./@expected"/>
             <xsl:variable name="actual" select="./@actual"/>
             <assert>
-              <${nmsp}:attribute name="passed">
-                <${nmsp}:choose>
-                  <${nmsp}:when>
-                    <xsl:attribute name="test">
-                      <xsl:if test="$expected"><xsl:value-of select='$expected'/> = </xsl:if><xsl:value-of select='$actual'/>
-                    </xsl:attribute>   
-                    <${nmsp}:text>true</${nmsp}:text>
-                  </${nmsp}:when>
-                  <${nmsp}:otherwise>
-                    <${nmsp}:text>false</${nmsp}:text>
-                  </${nmsp}:otherwise>
-                </${nmsp}:choose>
-              </${nmsp}:attribute>
-
               <xsl:if test="$expected">
                 <expected>
                   <${nmsp}:value-of>
@@ -138,11 +131,16 @@
           'asserts': [],
         });
         it.querySelectorAll('assert').forEach((assert) => {
-          testRes.at(-1).asserts.push({
-            'passed': assert.getAttribute('passed') === 'true',
-            'expected': assert.querySelector('expected')?.textContent,
-            'actual': assert.querySelector('actual')?.textContent,
-          });
+          const actual = assert.querySelector('actual');
+          const expected = assert.querySelector('expected');
+          const actualText = actual?.textContent;
+          const expectedText = expected?.textContent.replace(/\\u([0-9a-fA-F]{4})/, (_, x) => String.fromCharCode(Number(`0x${x}`)));
+          let passed = true;
+
+          if ((!actual && expected) || (expected && actualText !== expectedText)) {
+            passed = false;
+          }
+          testRes.at(-1).asserts.push({ passed, actual: actualText, expected: expectedText });
         });
         testRes.at(-1).passed = !testRes.at(-1).asserts.some(a => !a.passed);
       });

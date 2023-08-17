@@ -68,7 +68,6 @@ span.actual {
 
 /* Add styles for the table and rows */
 .test-results {
-  display: block;
   border-collapse: collapse;
   width: 100%;
   font-size: 15px;

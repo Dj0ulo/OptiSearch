@@ -8,26 +8,37 @@ async function adoptStyleSheet(stylesheets = ['panel', 'code-light-theme', 'code
   });
 }
 
-function optisearchbox(template, url, doc) {
-  const box = el('div', { className: 'optisearchbox dark' });
+function optisearchPanel(template, url, doc) {
   try {
     const content = contentFromTemplate(template, doc);
     content.link = url;
     const panel = panelFromSite(content);
 
-    box.append(panel);
     prettifyCode(panel.querySelector('.optibody'));
+    return panel;
   } catch (error) {
-    box.append(formatError(error));
+    return formatError(error);
   }
+}
+
+function errorBox(errorMsg, parent) {
+  const box = boxEl(formatError(errorMsg));
+  parent.appendChild(box);
   return box;
 }
 
-function formatError(error) {
+function formatError(errorMsg) {
+  console.error(errorMsg);
   const errorEl = el('div');
-  errorEl.innerHTML = ('' + error).replace(/\n/g, '<br>');
+  errorEl.innerHTML = ('' + errorMsg).replace(/\n/g, '<br>');
   errorEl.className = 'optisearch-error';
   return errorEl;
+}
+
+function boxEl(element) {
+  const box = el('div', { className: 'optisearchbox dark' });
+  box.append(element);
+  return box;
 }
 
 async function get(url) {
@@ -48,7 +59,7 @@ async function get(url) {
         cache[url].expire = Date.now() + 3_600_000;
         localStorage['cache'] = JSON.stringify(cache);
         return r;
-      }, console.error);
+      });
   }
   return await fetch(url)
     .then(async r => {
