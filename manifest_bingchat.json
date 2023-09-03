@@ -6,7 +6,8 @@
   "default_locale": "en",
   "permissions": [
     "storage",
-    "declarativeNetRequestWithHostAccess"
+    "declarativeNetRequestWithHostAccess",
+    "offscreen"
   ],
   "host_permissions": [
     "https://*.bing.com/"
@@ -57,6 +58,16 @@
       "js": [
         "src/utils.js",
         "src/chat/BingChatContinue.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.bing.com/sa/simg/favicon-trans-bg-blue-mg.ico?bing-chat-gpt-4-in-google"
+      ],
+      "all_frames": true,
+      "run_at": "document_start",
+      "js": [
+        "src/chat/BingChat/bing-socket.js"
       ]
     },
     {

@@ -119,8 +119,12 @@ class BingChatSession extends ChatSession {
   }
 
   async next() {
+    const res = await this.socketReceive();
+    if (!res) {
+      return;
+    }
     /**@type {{packet: string, readyState: number}} */
-    const { packet, readyState } = await this.socketReceive();
+    const { packet, readyState } = res;
 
     /**
      * body.type: 1 = Invocation, 2 = StreamItem, 3 = Completion, 4 = StreamInvocation, 5 = CancelInvocation, 6 = Ping, 7 = Close
@@ -192,7 +196,8 @@ class BingChatSession extends ChatSession {
         .map(s => s.match(/\[(\d+)]: (http[^ ]+) \"(.*)\"/)) // parse links
         .filter(r => !!r).map(([_, n, href, title]) => ({ n, href, title }));
       const learnMore = msg.adaptiveCards && msg.adaptiveCards[0]?.body[1]?.text;
-      let text = msg.text || msg.spokenText || msg.hiddenText;
+      let text = msg.text || msg.spokenText;
+      if (!text) return;
       const sources = {};
       if (learnMore) {
         [...learnMore.matchAll(/\[(\d+)\. [^\]]+\]\(([^ ]+)\) ?/g)].forEach(([_, n, href]) => sources[href] = n);
@@ -232,7 +237,7 @@ class BingChatSession extends ChatSession {
 
   static async createSocket() {
     return (await bgWorker({
-      action: "websocket",
+      action: "bing-socket",
       url: `wss://sydney.bing.com/sydney/ChatHub`,
       toSend: JSON.stringify({ "protocol": "json", "version": 1 }) + '\x1e',
     })).socketID;
@@ -242,7 +247,7 @@ class BingChatSession extends ChatSession {
     if (this.socketID == null)
       throw "Need socket ID to send";
     return bgWorker({
-      action: "websocket",
+      action: "bing-socket",
       socketID: this.socketID,
       toSend: JSON.stringify(body) + '\x1e',
     });
@@ -252,7 +257,7 @@ class BingChatSession extends ChatSession {
     if (this.socketID == null)
       throw "Need socket ID to receive";
     return bgWorker({
-      action: "websocket",
+      action: "bing-socket",
       socketID: this.socketID,
     });
   }
@@ -279,8 +284,8 @@ class BingChatSession extends ChatSession {
     }
 
     const { sliceIds, optionsSets } = {
-      sliceIds: ["edi", "abv2", "srdicton", "ctrlconvcss", "anssupfo", "tempcacheread", "temptacache", "contp2cf", "0731ziv2s0", "802fluxv1pc_a", "731bof108s0", "803iyolojbs0", "277wrkvid", "277teditgnds0", "0626snptrcs0", "207hlthgrd"],
-      optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "clgalileo", "gencontentv3", "wrkoutvid", "hlthcndans"]
+      sliceIds: ["gbacf","emovoicecf","norbingchrome","sydconfigoptt","825memdarks0","0529streamw","streamw","178gentech","824fluxhi52s0","0825agicert","821iypapyrust","821fluxv13"],
+      optionsSets: ["nlu_direct_response_filter","deepleo","disable_emoji_spoken_text","responsible_ai_policy_235","enablemm","clgalileo","gencontentv3","cpcandi","cpcatral6","cpcatro50","cpcfmql","cpcgnddi","cpcmattr2","cpcmcit2","e2ecacheread","nocitpass","streamw","rctechalwlst","agicert","iypapyrus","rewards"]
     };
 
     const convStyle = {

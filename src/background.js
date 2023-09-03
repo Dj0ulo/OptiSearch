@@ -1,12 +1,12 @@
 fetchEngines();
 
 chrome.runtime.onMessage.addListener((action, _, sendResponse) => {
+  if (action.target === 'offscreen') return;
   handleAction(action).then(sendResponse);
   return true;
 });
 
 const eventStreams = [];
-const websockets = [];
 const sessionStorage = {};
 
 async function handleAction(action) {
@@ -18,9 +18,9 @@ async function handleAction(action) {
     'fetch-result': handleActionFetchResult,
     'image-blob': handleActionImageBlob,
     'session-storage': handleSessionStorage,
+    'bing-socket': handleBingSocket,
     'window': handleActionWindow,
     'event-stream': handleActionEventStream,
-    'websocket': handleActionWebsocket,
   };
   if (actionType in handlers)
     return handlers[actionType](action);
@@ -88,73 +88,44 @@ function handleActionEventStream(action) {
   }));
 }
 
-/**
- * Creates a websocket from `url` and add it to the array `websockets`. 
- * If `index` is specified, it will get the corresponding websocket from the array.
- * If `toSend` is specified, it will send it.
- * If `index` is specified, but not `toSend` it will return back the first message received
- * in a FIFO queue.
- */
-async function handleActionWebsocket(action, tryTimes = 3) {
-  const { socketID, url, toSend } = action;
-  if (socketID == null) {
-    let ws = null;
-    try {
-      ws = new WebSocket(url);
-    } catch (error) {
-      if (tryTimes <= 0)
-        return { error: error.toString() };
-      await new Promise(resolve => setTimeout(resolve, 500));
-      return handleActionWebsocket(action, tryTimes - 1);
-    }
-    ws.stream = new Stream();
-    websockets.push(ws);
-    ws.onopen = () => {
-      if (toSend)
-        ws.send(toSend);
-    }
-    ws.onmessage = ({ data }) => {
-      ws.stream.write(data);
-    }
-    ws.onclose = ({ wasClean }) => {
-      ws.stream.write(`{wasClean:${wasClean}}`);
-    };
-    return { socketID: websockets.length - 1 };
-  }
-  const ws = websockets[socketID];
-  if (!ws) {
-    return { error: `Error: websocket ${socketID} not available` };
-  }
-  if (toSend) {
-    ws.send(toSend);
-    return { status: 'Success' };
-  }
-  return ws.stream.read().then((packet) => ({ readyState: ws.readyState, packet }));
+async function handleBingSocket(action) {
+  await setupOffscreenDocument('src/chat/BingChat/offscreen.html');
+  return await new Promise(resolve => chrome.runtime.sendMessage({
+    ...action,
+    target: 'offscreen',
+  }, resolve));
 }
-class Stream {
-  constructor() {
-    this.buffer = [];
-    this.readPromise = null;
+
+let creating; // A global promise to avoid concurrency issues
+async function setupOffscreenDocument(path) {
+  const offscreenUrl = chrome.runtime.getURL(path);
+
+  if (await hasOffscreenDocument(offscreenUrl)) {
+    return;
   }
 
-  async read() {
-    if (this.buffer.length > 0)
-      return this.buffer.shift();
+  if (creating) {
+    await creating;
+  } else {
+    creating = chrome.offscreen.createDocument({
+      url: path,
+      reasons: ['IFRAME_SCRIPTING'],
+      justification: 'Open WebSocket inside bing.com context',
+    });
+    await creating;
+    creating = null;
+  }
+}
 
-    if (this.readPromise === null) {
-      this.readPromise = new Promise(resolve => this.resolveReadPromise = resolve);
+async function hasOffscreenDocument(offscreenUrl) {
+  const matchedClients = await clients.matchAll();
+
+  for (const client of matchedClients) {
+    if (client.url === offscreenUrl) {
+      return true;
     }
-    return this.readPromise;
   }
-
-  write(data) {
-    // console.debug('WebSocket receives: ', data);
-    this.buffer.push(data);
-    if (this.readPromise !== null) {
-      this.resolveReadPromise(this.buffer.shift());
-      this.readPromise = null;
-    }
-  }
+  return false;
 }
 
 /**
