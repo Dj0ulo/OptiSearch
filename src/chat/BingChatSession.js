@@ -19,6 +19,12 @@ class BingChatSession extends ChatSession {
       text: "Unfortunately you don't have access to Bing Chat yet, please register to the waitlist",
       button: "Register to the waitlist",
     },
+    captcha: {
+      code: 'BING_CHAT_CAPTCHA',
+      url: 'https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1',
+      text: "Please solve the captcha on Bing by starting a conversation and refresh the page:",
+      button: "Solve the captcha",
+    },
   }
   static get storageKey() {
     return "SAVE_BINGCHAT";
@@ -148,6 +154,8 @@ class BingChatSession extends ChatSession {
                 throw BingChatSession.errors.session;
               if (body.item.result.error === 'Forbidden')
                 throw BingChatSession.errors.forbidden;
+              if (body.item.result.value === 'CaptchaChallenge')
+                throw BingChatSession.errors.captcha;
               this.onmessage(ChatSession.infoHTML(body.item.result.message));
               return;
             }
