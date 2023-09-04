@@ -2,18 +2,34 @@ import fs from 'fs';
 import path from 'path';
 import archiver from 'archiver';
 
+const ADDITIONAL_FILES = {
+  'OptiSearch': [],
+  'BingChat': ['src/chat/BingChat/*'],
+  'Bard': [],
+}
+const OFFSCREEN_DOC = {
+  'OptiSearch': null,
+  'BingChat': 'src/chat/BingChat/offscreen.html',
+  'Bard': null,
+}
+let name = 'OptiSearch';
+
 function errorUsage() {
-  console.log('Usage: node build.mjs [bingchat|optisearch] [--v2] [-cp <build dir>] [-z <output zip file>] [--clean]');
+  console.log('Usage: node build.mjs [optisearch|bingchat|bard] [--v2] [-cp <build dir>] [-z <output zip file>] [--clean]');
   process.exit(1);
 }
 
 (async function main() {
   let pathManifestV3 = '';
-  let name = 'OptiSearch';
   if(process.argv.includes('bingchat'))
     name = 'BingChat';
   else if(process.argv.includes('bard'))
     name = 'Bard';
+  else if(process.argv.includes('optisearch'))
+    name = 'OptiSearch';
+  else {
+    errorUsage();
+  }
 
   if (name === 'BingChat')
     pathManifestV3 = 'manifest_bingchat.json';
@@ -92,7 +108,10 @@ function buildManifest(pathManifestV3, version = 3) {
   if ('action' in mfv3) {
     mfv2['browser_action'] = mfv3['action'];
   }
-  if ('background' in mfv3) {
+  if(OFFSCREEN_DOC[name]) {
+    mfv2['background'] = { page: OFFSCREEN_DOC[name] };
+  }
+  else if ('background' in mfv3) {
     mfv2['background'] = { scripts: [mfv3['background']['service_worker']] };
   }
 
@@ -103,7 +122,7 @@ function buildManifest(pathManifestV3, version = 3) {
       if (p.startsWith('declarativeNetRequest')) {
         !permissions.includes('webRequest') && permissions.push('webRequest');
         !permissions.includes('webRequestBlocking') && permissions.push('webRequestBlocking');
-      } else {
+      } else if (p !== 'offscreen') {
         permissions.push(p);
       }
     });
@@ -112,14 +131,6 @@ function buildManifest(pathManifestV3, version = 3) {
   if ('host_permissions' in mfv3) {
     mfv2['permissions'] ??= [];
     mfv2['permissions'] = [...mfv2['permissions'], ...mfv3['host_permissions']];
-  }
-
-  if ('declarative_net_request' in mfv3) {
-    mfv2['background'] ??= { scripts: [] };
-    mfv3['declarative_net_request']['rule_resources'].forEach(rules => {
-      // switch to the .js rule instead of the .json
-      mfv2['background']['scripts'].push(rules['path'].slice(0, -2));
-    });
   }
 
   if ('web_accessible_resources' in mfv3) {
@@ -156,6 +167,11 @@ function copyToBuildDir(buildDir = 'build/') {
     }
   }
 
+  // add additional files as resources to enable directory
+  for (let file of ADDITIONAL_FILES[name]) {
+    resources.push(file);
+  }
+
   let popupHtml = '';
   if ('action' in mf) {
     popupHtml = mf['action']['default_popup'];
@@ -167,8 +183,12 @@ function copyToBuildDir(buildDir = 'build/') {
   if ('background' in mf) {
     if ('service_worker' in mf['background']) {
       files.push(mf['background']['service_worker']);
-    } else if ('scripts' in mf['background']) {
+    }
+    if ('scripts' in mf['background']) {
       files = files.concat(mf['background']['scripts']);
+    }
+    if ('page' in mf['background']) {
+      files.push(mf['background']['page']);
     }
   }
 

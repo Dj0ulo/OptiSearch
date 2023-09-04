@@ -18,7 +18,7 @@ async function handleAction(action) {
     'fetch-result': handleActionFetchResult,
     'image-blob': handleActionImageBlob,
     'session-storage': handleSessionStorage,
-    'bing-socket': handleBingSocket,
+    'setup-bing-offscreen': handleSetupOffscreen,
     'window': handleActionWindow,
     'event-stream': handleActionEventStream,
   };
@@ -88,20 +88,26 @@ function handleActionEventStream(action) {
   }));
 }
 
-async function handleBingSocket(action) {
-  await setupOffscreenDocument('src/chat/BingChat/offscreen.html');
-  return await new Promise(resolve => chrome.runtime.sendMessage({
-    ...action,
-    target: 'offscreen',
-  }, resolve));
+/**
+ * Check if there is an offscreen document active and create one if not.
+ * This method should be executed only on the BingChat extension and with manifest v3.
+ */
+async function handleSetupOffscreen() {
+  const already = await setupOffscreenDocument('src/chat/BingChat/offscreen.html');
+  return { 'status': already ? 'Offscreen already running' : 'Offscreen setup' };
 }
 
 let creating; // A global promise to avoid concurrency issues
+
+/**
+ * Check if there is an offscreen document active and create one if not.
+ * This method should be executed only on the BingChat extension and with manifest v3.
+ */
 async function setupOffscreenDocument(path) {
   const offscreenUrl = chrome.runtime.getURL(path);
 
   if (await hasOffscreenDocument(offscreenUrl)) {
-    return;
+    return true;
   }
 
   if (creating) {
@@ -115,8 +121,13 @@ async function setupOffscreenDocument(path) {
     await creating;
     creating = null;
   }
+  return false;
 }
 
+/**
+ * Check if there is an offscreen document active.
+ * This method should be executed only on the BingChat extension and with manifest v3.
+ */
 async function hasOffscreenDocument(offscreenUrl) {
   const matchedClients = await clients.matchAll();
 

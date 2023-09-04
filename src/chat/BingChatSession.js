@@ -43,9 +43,7 @@ class BingChatSession extends ChatSession {
       return this.session;
     }
 
-    const session = await bgFetch(`https://www.bing.com/turing/conversation/create`, {
-      credentials: "include",
-    });
+    const session = await BingChatSession.offscreenAction({ action: "session" });
     if (session.result?.value === 'UnauthorizedRequest')
       throw BingChatSession.errors.session;
     if (session.result?.value === 'Forbidden')
@@ -236,18 +234,22 @@ class BingChatSession extends ChatSession {
   }
 
   static async createSocket() {
-    return (await bgWorker({
-      action: "bing-socket",
+    const res = await BingChatSession.offscreenAction({
+      action: "socket",
       url: `wss://sydney.bing.com/sydney/ChatHub`,
       toSend: JSON.stringify({ "protocol": "json", "version": 1 }) + '\x1e',
-    })).socketID;
+    });
+    if (!('socketID' in res)) {
+      throw "Socket ID not returned";
+    }
+    return res.socketID;
   }
 
   socketSend(body) {
     if (this.socketID == null)
       throw "Need socket ID to send";
-    return bgWorker({
-      action: "bing-socket",
+    return BingChatSession.offscreenAction({
+      action: "socket",
       socketID: this.socketID,
       toSend: JSON.stringify(body) + '\x1e',
     });
@@ -256,9 +258,19 @@ class BingChatSession extends ChatSession {
   socketReceive() {
     if (this.socketID == null)
       throw "Need socket ID to receive";
-    return bgWorker({
-      action: "bing-socket",
+    return BingChatSession.offscreenAction({
+      action: "socket",
       socketID: this.socketID,
+    });
+  }
+
+  static async offscreenAction(params) {
+    if (onChrome()) {
+      await bgWorker({ action: "setup-bing-offscreen" });
+    }
+    return await bgWorker({
+      ...params,
+      target: 'offscreen',
     });
   }
 

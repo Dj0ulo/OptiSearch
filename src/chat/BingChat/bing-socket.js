@@ -2,8 +2,16 @@ const websockets = [];
 
 window.addEventListener('message', async (event) => {
   if (event.origin !== new URL(chrome.runtime.getURL("")).origin) return;
+  const message = event.data.message;
   const messageId = event.data.messageId;
-  const response = await handleActionWebsocket(event.data.message);
+  let response = null;
+  if (message.action === 'session') {
+    response = await fetch(`https://www.bing.com/turing/conversation/create`, {
+      credentials: "include",
+    }).then(r => r.json());
+  } else {
+    response = await handleActionWebsocket(message);
+  }
   window.parent.postMessage({ message: response, messageId }, '*');
 });
 
