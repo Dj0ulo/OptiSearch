@@ -96,7 +96,10 @@ class ChatGPTSession extends ChatSession {
       const data = JSON.parse(toParse);
       this.buffer = '';
       this.session.conversation = data.conversation_id;
-      this.onmessage(runMarkdown(data.message?.content?.parts[0]));
+      const text = data.message?.content?.parts[0];
+      if (text) {
+        this.onmessage(runMarkdown(text));
+      }
     }
     catch (e) {
       if (!e instanceof SyntaxError)
