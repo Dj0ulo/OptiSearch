@@ -113,10 +113,18 @@ async function setupOffscreenDocument(path) {
   if (creating) {
     await creating;
   } else {
-    creating = chrome.offscreen.createDocument({
+    const createOffscreenDocument = () => chrome.offscreen.createDocument({
       url: path,
       reasons: ['IFRAME_SCRIPTING'],
       justification: 'Open WebSocket inside bing.com context',
+    });
+    creating = createOffscreenDocument().catch(async error => {
+      if (error.message.startsWith('Only a single offscreen document may be created.')) {
+        await chrome.offscreen.closeDocument();
+        creating = null;
+        return createOffscreenDocument();
+      }
+      throw error;
     });
     await creating;
     creating = null;
