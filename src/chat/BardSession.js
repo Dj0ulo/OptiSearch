@@ -83,9 +83,15 @@ class BardSession extends ChatSession {
         
       let res = JSON.parse(unescaped);
       // Hack to parse the correct string in the messy response (which structure may change with the Bard API modifications)
-      res = parseJSONStrings(res)
-        .filter(x => !x.match(/^[a-z]+_[a-f0-9]+$/))
-        .reduce((a, b) => a.length > b.length ? a : b)
+      const strings = parseJSONStrings(res);
+      const rc_index = strings.findIndex(s => s.match(/^rc_[a-f0-9]+$/));
+      if (rc_index !== -1 && rc_index + 1 < strings.length) {
+        res = strings[rc_index + 1];
+      } else {
+        res = strings
+          .filter(x => !x.match(/^[a-z]+_[a-f0-9]+$/))
+          .reduce((a, b) => a.length > b.length ? a : b);
+      }
       res = JSON.parse(`"${res.replaceAll('"', '\\"')}"`);
       res = runMarkdown(res);
       this.onmessage(res);
