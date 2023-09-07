@@ -9,7 +9,7 @@ const ADDITIONAL_FILES = {
 }
 const OFFSCREEN_DOC = {
   'OptiSearch': null,
-  'BingChat': 'src/chat/BingChat/offscreen.html',
+  'BingChat': 'src/chat/BingChat/firefox_background.html',
   'Bard': null,
 }
 let name = 'OptiSearch';

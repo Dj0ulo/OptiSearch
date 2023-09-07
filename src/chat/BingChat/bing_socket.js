@@ -1,19 +1,26 @@
-const websockets = [];
+window.parent.postMessage({
+  message: 'ready',
+  sender: 'socket-script',
+}, '*');
 
 window.addEventListener('message', async (event) => {
-  if (event.origin !== new URL(chrome.runtime.getURL("")).origin) return;
-  const message = event.data.message;
-  const messageId = event.data.messageId;
-  let response = null;
+  if (new URL(event.origin).protocol !== 'chrome-extension:') return;
+  window.parent.postMessage({
+    message: await handleMessage(event.data.message),
+    messageId: event.data.messageId,
+  }, '*');
+});
+
+async function handleMessage(message) {
   if (message.action === 'session') {
-    response = await fetch(`https://www.bing.com/turing/conversation/create`, {
+    return fetch(`https://www.bing.com/turing/conversation/create`, {
       credentials: "include",
     }).then(r => r.json());
-  } else {
-    response = await handleActionWebsocket(message);
   }
-  window.parent.postMessage({ message: response, messageId }, '*');
-});
+  return handleActionWebsocket(message);
+}
+
+const websockets = [];
 
 /**
  * Creates a websocket from `url` and add it to the array `websockets`. 

@@ -35,7 +35,8 @@
       "src/styles/code-light-theme.css",
       "src/styles/code-dark-theme.css",
       "src/images/bingchat.png",
-      "src/chat/BingChatContinueScript.js"
+      "src/chat/BingChatContinueScript.js",
+      "src/chat/BingChat/bing_socket.js"
     ],
     "matches": [
       "*://duckduckgo.com/*",
@@ -67,7 +68,7 @@
       "all_frames": true,
       "run_at": "document_start",
       "js": [
-        "src/chat/BingChat/bing-socket.js"
+        "src/chat/BingChat/bing_iframe_content_script.js"
       ]
     },
     {
