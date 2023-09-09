@@ -9,7 +9,7 @@
     "active": true,
     "regex": "^www\\.google\\.",
     "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
-    "style": ".optisearch-column:has(.zLsiYe) .optisearchbox {margin-left: -21px;} #rcnt {max-width: max-content;}",
+    "style": ".optisearch-column:has(.zLsiYe) .optisearchbox {margin-left: -21px;}",
     "onMobile": "#cnt > #center_col"
   },
   "Bing": {
