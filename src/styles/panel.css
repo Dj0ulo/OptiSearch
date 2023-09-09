@@ -107,6 +107,25 @@
   opacity: 1;
 }
 
+.optisearchbox .optiheader .left-buttons-container {
+  position: relative;
+  display: block;
+  top: 6px;
+  min-width: fit-content;
+  margin-left: 5px;
+}
+.optisearchbox .optiheader .left-buttons-container > * {
+  margin-left: 5px;
+  cursor: pointer;
+  display: inline-block;
+  user-select: none;
+}
+
+.optisearchbox .optiheader .left-buttons-container img {
+  width: 20px;
+  height: 20px;
+}
+
 .optisearchbox .optiheader .right-buttons-container {
   position: absolute;
   display: block;

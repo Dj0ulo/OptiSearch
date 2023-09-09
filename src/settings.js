@@ -75,6 +75,11 @@ if (WhichExtension === 'bingchat') {
     },
     default: 'balanced',
   }
+  Settings['AI Assitant']['bingInternalSearch'] = {
+    name: "Bing internal search",
+    title: 'Allow Bing to make internal search before giving you an answer. Takes more time to answer.',
+    default: true,
+  }
 }
 
 const getSettings = () => Settings;

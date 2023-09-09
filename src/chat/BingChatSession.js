@@ -108,6 +108,36 @@ class BingChatSession extends ChatSession {
     const titleEl = $('.ai-name', this.panel);
     insertAfter(continueChat, titleEl);
 
+    const leftButtonsContainer = el('div', { className: 'left-buttons-container' });
+    insertAfter(leftButtonsContainer, titleEl)
+
+    const allowInternalSearchButton = el('div', {
+      className: 'bing-internal-search-button headerhover',
+      title: 'Bing Internal Search',
+    }, leftButtonsContainer);
+
+    el('img', { 
+      src: chrome.runtime.getURL('src/images/bing_search_allowed.png'),
+      className: 'bing-internal-search-allowed',
+    }, allowInternalSearchButton);
+    el('img', { 
+      src: chrome.runtime.getURL('src/images/bing_search_forbidden.png'),
+      className: 'bing-internal-search-forbidden',
+    }, allowInternalSearchButton);
+
+    allowInternalSearchButton.toggleClass = () => {
+      allowInternalSearchButton.classList.toggle('allowed', Context.save['bingInternalSearch']);
+      allowInternalSearchButton.classList.toggle('forbidden', !Context.save['bingInternalSearch']);
+    };
+    allowInternalSearchButton.toggleClass();
+    allowInternalSearchButton.onclick = () => {
+      Context.save['bingInternalSearch'] = !Context.isActive('bingInternalSearch');
+      saveSettings(Context.save);
+      allowInternalSearchButton.toggleClass();
+    };
+
+
+
     const hueAngle = {
       'creative': 63,
       'precise': -52,
@@ -315,6 +345,10 @@ class BingChatSession extends ChatSession {
 
     if (convStyle) {
       optionsSets.push(convStyle);
+    }
+
+    if (!Context.isActive('bingInternalSearch')) {
+      prompt = '#nosearch ' + prompt;
     }
 
     return {

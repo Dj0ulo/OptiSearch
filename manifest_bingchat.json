@@ -35,6 +35,8 @@
       "src/styles/code-light-theme.css",
       "src/styles/code-dark-theme.css",
       "src/images/bingchat.png",
+      "src/images/bing_search_allowed.png",
+      "src/images/bing_search_forbidden.png",
       "src/chat/BingChatContinueScript.js",
       "src/chat/BingChat/bing_socket.js"
     ],

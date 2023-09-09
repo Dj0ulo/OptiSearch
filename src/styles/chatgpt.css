@@ -103,6 +103,16 @@
   bottom: 4px;
 }
 
+.bing-internal-search-button.allowed > img.bing-internal-search-allowed,
+.bing-internal-search-button.forbidden > img.bing-internal-search-forbidden {
+  display: block;
+}
+
+.bing-internal-search-button.forbidden > img.bing-internal-search-allowed,
+.bing-internal-search-button.allowed > img.bing-internal-search-forbidden {
+  display: none;
+}
+
 /* COLOR THEMES */
 
 .bright.optisearchbox .chatgpt-button {
