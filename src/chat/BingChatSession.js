@@ -204,8 +204,6 @@ class BingChatSession extends ChatSession {
             return;
           }
           msg = body.item.messages.find(m => !m.messageType && m.author === 'bot');
-          if (!msg)
-            msg = body.item.messages.find(m => m.messageType === 'InternalSearchResult' && m.author === 'bot');
           break;
         case 6:
           this.socketSend({ "type": 6 });
@@ -215,21 +213,12 @@ class BingChatSession extends ChatSession {
           break;
         default: return;
       }
-      const validTypes = ['InternalSearchQuery', 'InternalSearchResult', undefined];
+      const validTypes = ['InternalSearchQuery', undefined];
       if (!(msg && validTypes.some(t => t === msg.messageType)))
         return;
 
       if (msg.messageType === 'InternalSearchQuery') {
         this.onmessage(ChatSession.infoHTML(`🔍 ${msg.text.replace(/`([^`]*)`/, '<strong>$1</strong>')}`));
-        return;
-      }
-      if (msg.messageType === 'InternalSearchResult') {
-        const results = msg.groundingInfo?.web_search_results;
-        if (!results) return;
-        const resultsHTML = '<ul>' + results.map(r => `<li>${r.snippets.map(s => `<p>${s}
-        <a href="${r.url}" title="${r.title}" class="source superscript">${r.index}</a></p>`).join('\n')}</li>`).join('\n')
-          + '</ul>';
-        this.onmessage(resultsHTML);
         return;
       }
       const refText = msg.adaptiveCards && msg.adaptiveCards[0]?.body[0]?.text;
@@ -394,7 +383,6 @@ class BingChatSession extends ChatSession {
         allowedMessageTypes: [
           "Chat",
           "InternalSearchQuery",
-          "InternalSearchResult",
         ],
         verbosity: "verbose",
         isStartOfSession,
