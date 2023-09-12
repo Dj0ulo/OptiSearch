@@ -7,12 +7,18 @@ const ADDITIONAL_FILES = {
   'BingChat': ['src/chat/BingChat/*'],
   'Bard': [],
 }
+const ADDITIONAL_FILES_V2 = {
+  'OptiSearch': [],
+  'BingChat': ['src/rule_resources/rules.js'],
+  'Bard': [],
+}
 const OFFSCREEN_DOC = {
   'OptiSearch': null,
   'BingChat': 'src/chat/BingChat/firefox_background.html',
   'Bard': null,
 }
 let name = 'OptiSearch';
+let manifestVersion = 3;
 
 function errorUsage() {
   console.log('Usage: node build.mjs [optisearch|bingchat|bard] [--v2] [-cp <build dir>] [-z <output zip file>] [--clean]');
@@ -38,9 +44,9 @@ function errorUsage() {
   else
     pathManifestV3 = 'manifest_optisearch.json';
   
-  const v = process.argv.includes('--v2') ? 2 : 3;
-  buildManifest(pathManifestV3, v);
-  console.log(`${name} manifest v${v} created`);
+  manifestVersion = process.argv.includes('--v2') ? 2 : 3;
+  buildManifest(pathManifestV3, manifestVersion);
+  console.log(`${name} manifest v${manifestVersion} created`);
 
   const mf = readJsonFile('manifest.json');
 
@@ -170,6 +176,11 @@ function copyToBuildDir(buildDir = 'build/') {
   // add additional files as resources to enable directory
   for (let file of ADDITIONAL_FILES[name]) {
     resources.push(file);
+  }
+  if (manifestVersion === 2) {
+    for (let file of ADDITIONAL_FILES_V2[name]) {
+      resources.push(file);
+    }
   }
 
   let popupHtml = '';

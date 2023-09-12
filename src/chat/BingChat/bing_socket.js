@@ -4,7 +4,6 @@ window.parent.postMessage({
 }, '*');
 
 window.addEventListener('message', async (event) => {
-  if (new URL(event.origin).protocol !== 'chrome-extension:') return;
   window.parent.postMessage({
     message: await handleMessage(event.data.message),
     messageId: event.data.messageId,
