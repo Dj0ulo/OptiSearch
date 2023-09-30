@@ -110,7 +110,7 @@ class BingChatSession extends ChatSession {
     insertAfter(continueChat, titleEl);
 
     const leftButtonsContainer = el('div', { className: 'left-buttons-container' });
-    insertAfter(leftButtonsContainer, titleEl)
+    // insertAfter(leftButtonsContainer, titleEl)
 
     const allowInternalSearchButton = el('div', {
       className: 'bing-internal-search-button headerhover',

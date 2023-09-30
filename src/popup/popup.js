@@ -75,6 +75,7 @@
     const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
 
     Object.entries(settings[category]).forEach(([o, spec]) => {
+      if ('active' in spec && spec['active'] === false) return;
       if (!save[o] && spec.slaves)
         disabledOptions.push(...spec.slaves);
       const li = el("li", { id: o }, sublist);
