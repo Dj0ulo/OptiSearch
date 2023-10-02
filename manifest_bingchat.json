@@ -10,8 +10,7 @@
     "offscreen"
   ],
   "host_permissions": [
-    "https://*.bing.com/",
-    "https://extensionpay.com/*"
+    "https://*.bing.com/"
   ],
   "declarative_net_request": {
     "rule_resources": [

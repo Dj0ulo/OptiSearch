@@ -17,6 +17,11 @@ const OFFSCREEN_DOC = {
   'BingChat': 'src/chat/BingChat/firefox_background.html',
   'Bard': null,
 }
+const PERMISSION_V2 = {
+  'OptiSearch': ["https://extensionpay.com/*"],
+  'BingChat': ["https://extensionpay.com/*"],
+  'Bard': ["https://extensionpay.com/*"],
+}
 let name = 'OptiSearch';
 let manifestVersion = 3;
 
@@ -137,6 +142,9 @@ function buildManifest(pathManifestV3, version = 3) {
   if ('host_permissions' in mfv3) {
     mfv2['permissions'] ??= [];
     mfv2['permissions'] = [...mfv2['permissions'], ...mfv3['host_permissions']];
+  }
+  if (PERMISSION_V2[name]) {
+    mfv2['permissions'] = [...mfv2['permissions'], ...PERMISSION_V2[name]];
   }
 
   if ('web_accessible_resources' in mfv3) {
