@@ -12,9 +12,17 @@ window.addEventListener('message', async (event) => {
 
 async function handleMessage(message) {
   if (message.action === 'session') {
-    return fetch(`https://www.bing.com/turing/conversation/create`, {
+    const r = await fetch(`https://www.bing.com/turing/conversation/create`, {
       credentials: "include",
-    }).then(r => r.json());
+    });
+    const result = await r.json();
+    if (r.headers.has('X-Sydney-Conversationsignature')) {
+      result['conversationSignature'] = r.headers.get('X-Sydney-Conversationsignature');
+    }
+    if (r.headers.has('X-Sydney-Encryptedconversationsignature')) {
+      result['sec_access_token'] = r.headers.get('X-Sydney-Encryptedconversationsignature');
+    }
+    return result;
   }
   return handleActionWebsocket(message);
 }

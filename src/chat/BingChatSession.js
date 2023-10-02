@@ -82,7 +82,7 @@ class BingChatSession extends ChatSession {
       value: { ...this.session, inputText: prompt }
     });
 
-    this.socketID = await BingChatSession.createSocket();
+    this.socketID = await this.createSocket();
     const { packet } = await this.socketReceive();
     if (packet !== '{}\x1e') {
       this.onErrorMessage();
@@ -179,7 +179,11 @@ class BingChatSession extends ChatSession {
           }
           if (body.item.result) {
             if (body.item.result.value === 'Throttled') {
-              this.onmessage(ChatSession.infoHTML("⚠️&nbsp;Sorry, you've reached the limit of messages you can send to Bing within 24 hours. Check back soon!"));
+              this.onErrorMessage("⚠️&nbsp;Sorry, you've reached the limit of messages you can send to Bing within 24 hours. Check back soon!");
+              return;
+            }
+            if (body.item.result.value === 'UnauthorizedRequest') {
+              this.onErrorMessage(body.item.result?.message);
               return;
             }
             if (body.item.result.error) {
@@ -298,10 +302,14 @@ class BingChatSession extends ChatSession {
     });
   }
 
-  static async createSocket() {
+  async createSocket() {
+    let url = 'wss://sydney.bing.com/sydney/ChatHub';
+    if ('sec_access_token' in this.session) {
+      url += `?sec_access_token=${encodeURIComponent(this.session['sec_access_token'])}`;
+    }
     const res = await BingChatSession.offscreenAction({
       action: "socket",
-      url: `wss://sydney.bing.com/sydney/ChatHub`,
+      url,
       toSend: JSON.stringify({ "protocol": "json", "version": 1 }) + '\x1e',
     });
     if (!('socketID' in res)) {
