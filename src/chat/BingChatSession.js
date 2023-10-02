@@ -358,8 +358,8 @@ class BingChatSession extends ChatSession {
     }
 
     const { sliceIds, optionsSets } = {
-      sliceIds: ["gbacf","emovoicecf","norbingchrome","sydconfigoptt","825memdarks0","0529streamw","streamw","178gentech","824fluxhi52s0","0825agicert","821iypapyrust","821fluxv13"],
-      optionsSets: ["nlu_direct_response_filter","deepleo","disable_emoji_spoken_text","responsible_ai_policy_235","enablemm","clgalileo","gencontentv3","cpcandi","cpcatral6","cpcatro50","cpcfmql","cpcgnddi","cpcmattr2","cpcmcit2","e2ecacheread","nocitpass","streamw","rctechalwlst","agicert","iypapyrus","rewards"]
+      sliceIds: ["tnaenableux", "adssqovr", "tnaenable", "0731ziv2s0", "lessttscf", "creatordevcf", "inosanewsmob", "wrapnoins", "gbacf", "wrapuxslimc", "prehome", "sydtransl", "918raianno", "713logprobss0", "926bof108t525", "806log2sph", "927uprofasys0", "919vidsnips0", "917fluxv14"],
+      optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "dv3sugg", "autosave", "iyxapbing", "iycapbing", "galileo", "saharagenconv5", "bof108t525", "log2sph", "eredirecturl"]
     };
 
     const convStyle = {
