@@ -359,16 +359,17 @@ class BingChatSession extends ChatSession {
 
     const { sliceIds, optionsSets } = {
       sliceIds: ["tnaenableux", "adssqovr", "tnaenable", "0731ziv2s0", "lessttscf", "creatordevcf", "inosanewsmob", "wrapnoins", "gbacf", "wrapuxslimc", "prehome", "sydtransl", "918raianno", "713logprobss0", "926bof108t525", "806log2sph", "927uprofasys0", "919vidsnips0", "917fluxv14"],
-      optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "dv3sugg", "autosave", "iyxapbing", "iycapbing", "galileo", "saharagenconv5", "bof108t525", "log2sph", "eredirecturl"]
+      optionsSets: ["nlu_direct_response_filter", "deepleo", "disable_emoji_spoken_text", "responsible_ai_policy_235", "enablemm", "dv3sugg", "autosave", "iyxapbing", "iycapbing", "saharagenconv5", "bof108t525", "log2sph", "eredirecturl"]
     };
 
     const convStyle = {
-      'creative': "h3imaginative",
-      'precise': "h3precise",
+      'creative': ["h3imaginative", "clgalileo", "gencontentv3"],
+      'balanced': ["galileo"],
+      'precise': ["h3precise", "clgalileo", "gencontentv3"],
     }[Context.save['bingConvStyle']];
 
     if (convStyle) {
-      optionsSets.push(convStyle);
+      optionsSets.push(...convStyle);
     }
 
     if (!Context.isActive('bingInternalSearch')) {
