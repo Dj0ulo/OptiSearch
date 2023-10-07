@@ -107,6 +107,26 @@ class Context {
     Context.executeTools();
   }
 
+  /** 
+   * Opens premium popup if the user doesn't have premium features.
+   * Useful to use like this at the beginning of an onclick handler from a premium feature:
+   * `if (await Context.handleNotPremium()) return;`
+   * 
+   * @returns {Promise<boolean>} true if the user DOESN'T have premium features
+   */
+  static async handleNotPremium() {
+    if(Context.isPremiumUser === false && await Context.checkPremiumSubscription() === false) {
+      premiumPresentationPopup();
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Ask extpay API if the user is a premium user
+   * @returns {Promise<true | false | null>} True if the user is a premium user, false otherwise and null if
+   * there is an error.
+   */
   static async checkPremiumSubscription() {
     await extpay.getUser()
       .then(user => Context.isPremiumUser = user.paid)

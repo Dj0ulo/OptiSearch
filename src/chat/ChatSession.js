@@ -189,17 +189,8 @@ class ChatSession {
     });
     continueChat.setAttribute('visible', true);
     const switchConversationMode = async () => {
-      if (Context.isPremiumUser === false && await Context.checkPremiumSubscription() === false) {
-        Context.isPremiumUser
-        bgWorker({
-          action: 'window',
-          url: chrome.runtime.getURL('src/popup/premium.html'),
-          type: 'popup',
-          width: 480,
-          height: 700,
-        });
-        return;
-      }
+      if (await Context.handleNotPremium()) return;
+
       if (this.mode === ChatSession.MODE_DISCUSSION) {
         return;
       }

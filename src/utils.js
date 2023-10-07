@@ -428,3 +428,13 @@ function displayElement(e) {
 function hideElement(e) {
   e.style.display = 'none';
 }
+
+function premiumPresentationPopup() {
+  bgWorker({
+    action: 'window',
+    url: chrome.runtime.getURL('src/popup/premium.html'),
+    type: 'popup',
+    width: 480,
+    height: 700,
+  });
+}
