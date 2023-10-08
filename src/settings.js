@@ -70,7 +70,7 @@ if (WhichExtension === 'bingchat') {
   Settings['AI Assitant']['bingConvStyle'] = {
     name: "Conversation style",
     options: {
-      'creative': { name: 'Creative' },
+      'creative': { name: 'Creative (GPT-4)' },
       'balanced': { name: 'Balanced' },
       'precise': { name: 'Precise' },
     },

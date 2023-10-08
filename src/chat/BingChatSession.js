@@ -103,8 +103,7 @@ class BingChatSession extends ChatSession {
   createPanel(directchat = true) {
     super.createPanel(directchat);
 
-    const leftButtonsContainer = el('div', { className: 'left-buttons-container' });
-    // insertAfter(leftButtonsContainer, titleEl)
+    const leftButtonsContainer = el('div'); //$('.left-buttons-container', this.panel)
 
     const allowInternalSearchButton = el('div', {
       className: 'bing-internal-search-button headerhover',
@@ -137,14 +136,13 @@ class BingChatSession extends ChatSession {
       Context.save['bingConvStyle'] = mode;
       saveSettings(Context.save);
       const displayName = Settings['AI Assitant']['bingConvStyle'].options[mode].name;
-      this.bingIconElement.title = `${displayName} conversation style`;
+      this.bingIconElement.title = displayName;
       $('.optiheader', this.panel).dataset['bingConvStyle'] = mode;
     }
     this.bingIconElement.addEventListener('click', async () => {
       if (this.bingIconElement.classList.contains('disabled')) {
         return;
       }
-      if (await Context.handleNotPremium()) return;
 
       const modes = ['balanced', 'precise', 'creative'];
       const current = Context.save['bingConvStyle'] || modes[0];
@@ -211,7 +209,7 @@ class BingChatSession extends ChatSession {
           return;
         case 3: case 7:
           this.allowSend();
-          break;
+          return 'close';
         default: return;
       }
       const validTypes = ['InternalSearchQuery', undefined];
@@ -248,7 +246,7 @@ class BingChatSession extends ChatSession {
           <a class="showmore source" title="Show more" invisible=${invisible}>+${invisible} more</a></div>`;
       this.onmessage(bodyHTML, footHTML);
     }
-    packet.split('\x1e')
+    const doClose = packet.split('\x1e')
       .slice(0, -1)
       .map(json => json.replaceAll('\n', '\\n'))
       .map(json => {
@@ -258,9 +256,11 @@ class BingChatSession extends ChatSession {
           console.warn(e, json);
           return;
         }
-      }).map(parseResponseBody);
+      })
+      .map(parseResponseBody)
+      .find(x => x === 'close');
 
-    if (readyState === WebSocket.CLOSED)
+    if (doClose || readyState === WebSocket.CLOSED)
       return;
 
     return this.next();

@@ -110,7 +110,6 @@
 .optisearchbox .optiheader .left-buttons-container {
   position: relative;
   display: block;
-  top: 6px;
   min-width: fit-content;
   margin-left: 5px;
 }
