@@ -209,6 +209,11 @@
   height: 1rem;
 }
 
+.optisearchbox .bard .optibody img {
+  display: block;
+  border-radius: 5px;
+}
+
 
 /* COLOR THEMES */
 

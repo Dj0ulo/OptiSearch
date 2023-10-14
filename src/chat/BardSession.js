@@ -61,7 +61,7 @@ class BardSession extends ChatSession {
       return;
     }
     try {
-      const raw = await this.api('assistant.lamda.BardFrontendService/StreamGenerate', {}, [
+      const askBard = () => this.api('assistant.lamda.BardFrontendService/StreamGenerate', {}, [
         null,
         JSON.stringify([
           [prompt],
@@ -69,27 +69,34 @@ class BardSession extends ChatSession {
           (this.session.conversation ?? ["", "", ""])
         ]),
       ]);
-      let i = raw.indexOf('[[');
-      i = raw.indexOf(',', i);
-      i = raw.indexOf(',', i + 1);
-      if (raw.slice(i + 1, i + 5) === 'null')
-        throw "Output is null";
-      if (raw.slice(i + 1, i + 2) !== '"')
-        throw "Invalid output";
-      const unescaped = raw.slice(i + 2, raw.indexOf('\n', i) - 3)
-        .replaceAll('\\"', '"')
-        .replaceAll('\\"', '"');
 
+      const cleanResponse = (response) => {
+        let i = response.indexOf('[[');
+        i = response.indexOf(',', i);
+        i = response.indexOf(',', i + 1);
+        if (response.slice(i + 1, i + 5) === 'null')
+          throw "Output is null";
+        if (response.slice(i + 1, i + 2) !== '"')
+          throw "Invalid output";
+        return JSON.parse(
+          response.slice(i + 2, response.indexOf('\n', i) - 3)
+            .replace(/\\(\\)?/g, (_, backslash) => backslash ?? '')
+        );
+      };
 
-      const resJSON = JSON.parse(unescaped);
-      this.session.conversation = resJSON[1]
-      const responses = resJSON[4]
-      const firstResponse = responses[0]
+      const result = cleanResponse(await askBard());
+      this.session.conversation = result[1];
+
+      const responses = result[4];
+      const firstResponse = responses[0];
       this.session.conversation.push(firstResponse[0]);
-      let res = firstResponse[1][0];
-      res = JSON.parse(`"${res.replaceAll('"', '\\"')}"`);
-      res = runMarkdown(res);
-      this.onmessage(res);
+      let images = firstResponse[4];
+      let text = runMarkdown(firstResponse[1][0]);
+      images.forEach(img => {
+        const [substr, source, url, title] = [img[2], img[1][0][0], img[3][0][0], img[7][2]].map(escapeHtml);
+        text = text.replace(substr, `<a href="${source}" style="display: inline-block;"><img src="${url}" alt="${title}" title="${title}"/></a>`);
+      });
+      this.onmessage(text);
     } catch (e) {
       warn(e);
       this.onmessage(ChatSession.infoHTML('⚠️&nbsp;An error occured.&nbsp;⚠️<br/>Please <a href="https://bard.google.com/">make sure you have access to Google Bard</a>.'));
