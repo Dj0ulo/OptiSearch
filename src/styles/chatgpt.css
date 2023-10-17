@@ -77,12 +77,12 @@
   filter: hue-rotate(-52deg) !important;
 }
 
-.optisearchbox .ai-name > img:not(.disabled) {
+.optisearchbox > .bingchat .ai-name > img:not(.disabled) {
   cursor: pointer;
   transition: filter 0.3s;
 }
 
-.optisearchbox .ai-name > img:active:not(.disabled) {
+.optisearchbox > .bingchat .ai-name > img:active:not(.disabled) {
   transform: scale(0.8);
 }
 
@@ -96,7 +96,7 @@
   }
 }
 
-.optisearchbox .optiheader:hover .ai-name > img:not(.disabled) {
+.optisearchbox > .bingchat .optiheader:hover .ai-name > img:not(.disabled) {
   animation: bounce 0.5s cubic-bezier(0.08, 0.82, 0.17, 1); /* Apply the 'bounce' animation */
 }
 

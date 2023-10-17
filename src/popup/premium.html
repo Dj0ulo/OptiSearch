@@ -15,7 +15,7 @@
             }
             body {
                 font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
-                font-size: 70%;
+                font-size: 15px;
                 background: #111;
                 color: var(--text-color);
                 text-align: center;
@@ -38,24 +38,52 @@
                 border-radius: 5px;
                 cursor: pointer;
             }
-            img {
+
+            #feature-img {
                 margin: 20px auto;
                 display: block;
                 height: 300px;
+            }
+
+            img {
+                height: inherit;
+            }
+
+            .only {
+                display: none;
+            }
+
+            body.bingchat .only.bingchat,
+            body.bard .only.bard,
+            body.optisearch .only.optisearch {
+                display: initial;
+            }
+
+            .yellow {
+                color: var(--premium-yellow);
+                font-weight: bold;
             }
         </style>
     </head>
     <body>
         <h1>⭐ Upgrade to Premium ⭐</h1>
-        <h3>Sign up for a <strong style="color: var(--premium-yellow);">Premium membership</strong><br>to chat directly in the result page</h3>
-        <img src="../images/bing_conversation_example.png">
+        <h3>Sign up for a <span class="yellow">Premium membership</span><br>to chat directly in the result page</h3>
+        <div id="feature-img">
+            <img class="only bingchat" src="../images/bing_conversation_example.png">
+            <img class="only bard" src="../images/bard_conversation_example.png">
+        </div>
         <button class="upgrade-button">Purchase Premium</button>
-        <div style="margin-top: 10px;">
+        <div class="only bingchat" style="margin-top: 10px;">
             <h3>More features are coming&nbsp;:</h3>
             <ul class="advantages">
                 <li>Save your conversation in Bing Chat history</li>
                 <li>Speed up the answer by disabling Bing internal search</li>
             </ul>
+        </div>
+        <div class="only bard" style="margin-top: 10px;">
+            <h3>This subscription also includes <span class="yellow">Premium membership</span> for&nbsp;:</h3>
+            <div><a data-link="bingchat">Bing Chat (GPT-4) in Google</a></div>
+            <div><a data-link="optisearch">OptiSearch (coming soon)</a></div>
         </div>
     </body>
 </html>

@@ -85,6 +85,7 @@ class BardSession extends ChatSession {
       };
 
       const result = cleanResponse(await askBard());
+      this.allowSend();
       this.session.conversation = result[1];
 
       const responses = result[4];
