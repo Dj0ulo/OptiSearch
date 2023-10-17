@@ -60,32 +60,46 @@ class BardSession extends ChatSession {
     if (ChatSession.debug) {
       return;
     }
-    try {
-      const askBard = () => this.api('assistant.lamda.BardFrontendService/StreamGenerate', {}, [
+    const askBard = () => this.api('assistant.lamda.BardFrontendService/StreamGenerate', {}, [
+      null,
+      JSON.stringify([
+        [prompt],
         null,
-        JSON.stringify([
-          [prompt],
-          null,
-          (this.session.conversation ?? ["", "", ""])
-        ]),
-      ]);
+        (this.session.conversation ?? ["", "", ""])
+      ]),
+    ]);
 
-      const cleanResponse = (response) => {
-        let i = response.indexOf('[[');
-        i = response.indexOf(',', i);
-        i = response.indexOf(',', i + 1);
-        if (response.slice(i + 1, i + 5) === 'null')
-          throw "Output is null";
-        if (response.slice(i + 1, i + 2) !== '"')
-          throw "Invalid output";
-        return JSON.parse(
-          response.slice(i + 2, response.indexOf('\n', i) - 3)
-            .replace(/\\(\\)?/g, (_, backslash) => backslash ?? '')
-        );
-      };
-
-      const result = cleanResponse(await askBard());
-      this.allowSend();
+    const cleanResponse = (response) => {
+      let i = response.indexOf('[[');
+      i = response.indexOf(',', i);
+      i = response.indexOf(',', i + 1);
+      if (response.slice(i + 1, i + 5) === 'null')
+        throw "Output is null";
+      if (response.slice(i + 1, i + 2) !== '"')
+        throw "Invalid output";
+      return JSON.parse(
+        response.slice(i + 2, response.indexOf('\n', i) - 3)
+          .replace(/\\(\\)?/g, (_, backslash) => backslash ?? '')
+      );
+    };
+  
+    let result = null;
+    try {
+      result = cleanResponse(await askBard());
+    } catch (e) {
+      if (e == "Output is null") {
+        this.onErrorMessage(`Please make sure you have access to <a href="https://bard.google.com/">Google Bard</a>`);
+        return;
+      } else {
+        warn(e);
+      }
+    }
+    if (!result) {
+      this.onErrorMessage();
+      return;
+    }
+    this.allowSend();
+    try {
       this.session.conversation = result[1];
 
       const responses = result[4];
@@ -100,7 +114,7 @@ class BardSession extends ChatSession {
       this.onmessage(text);
     } catch (e) {
       warn(e);
-      this.onmessage(ChatSession.infoHTML(`⚠️&nbsp;An error occured.&nbsp;⚠️<br/>${e}`));
+      this.onErrorMessage(`⚠️&nbsp;An error occured while parsing the response&nbsp:<br/>${e}`);
     }
   }
 
