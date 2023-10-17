@@ -1,4 +1,4 @@
-# OptiSearch ｜ Bing Chat (GPT-4) in Google ｜ Bard for search engines
+# OptiSearch ｜ Bing Chat (GPT-4) in Google ｜ Bard next to Google results
 
 ![License](https://img.shields.io/github/license/dj0ulo/optisearch)
 
@@ -22,7 +22,7 @@ Displays the answer from Bing Chat AI alongside search engine results.
 
 [Install from Mozilla Add-on Store](https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google/)
 
-### <img alt="Bard for search engines" src="./icons/bard/icon_128.png" width="24" height="24"> Bard for search engines
+### <img alt="Bard next to Google results" src="./icons/bard/icon_128.png" width="24" height="24"> Bard next to Google results
 ![License](https://img.shields.io/chrome-web-store/users/pkdmfoabhnkpkcacnmgilaeghiggdbgf?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/bard-for-search-engines?label=Firefox%20Users)
 
 Displays the answer from Google Bard alongside search engine results.

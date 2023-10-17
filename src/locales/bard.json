@@ -1,12 +1,12 @@
 {
   "appName": {
     "message": {
-      "en": "Bard for search engines"
+      "en": "Bard next to Google results"
     }
   },
   "appDesc": {
     "message": {
-      "en": "🗨️ Answers from Google Bard alongside Google results !"
+      "en": "🗨️ Answers from Google Bard alongside Google results!"
     }
   }
 }
