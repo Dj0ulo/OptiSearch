@@ -92,14 +92,14 @@ class BardSession extends ChatSession {
       this.session.conversation.push(firstResponse[0]);
       let images = firstResponse[4];
       let text = runMarkdown(firstResponse[1][0]);
-      images.forEach(img => {
+      images?.forEach(img => {
         const [substr, source, url, title] = [img[2], img[1][0][0], img[3][0][0], img[7][2]].map(escapeHtml);
         text = text.replace(substr, `<a href="${source}" style="display: inline-block;"><img src="${url}" alt="${title}" title="${title}"/></a>`);
       });
       this.onmessage(text);
     } catch (e) {
       warn(e);
-      this.onmessage(ChatSession.infoHTML('⚠️&nbsp;An error occured.&nbsp;⚠️<br/>Please <a href="https://bard.google.com/">make sure you have access to Google Bard</a>.'));
+      this.onmessage(ChatSession.infoHTML(`⚠️&nbsp;An error occured.&nbsp;⚠️<br/>${e}`));
     }
   }
 
