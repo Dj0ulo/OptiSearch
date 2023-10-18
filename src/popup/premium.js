@@ -9,4 +9,6 @@
     extpay.openPaymentPage();
     setInterval(window.close, 1000);
   });
+
+  hrefPopUp();
 })();

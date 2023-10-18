@@ -181,9 +181,14 @@ function underSummary(summary) {
 }
 
 function hrefPopUp() {
-  document.querySelectorAll("a").forEach(ln => {
-    if (ln.href.startsWith("http"))
-      ln.onclick = () => chrome.tabs.create({ active: true, url: ln.href })
+  $$("a").forEach(a => {
+    const url = a.href;
+    if (url.startsWith("http")) {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        chrome.tabs.create({ active: true, url });
+      });
+    }
   })
 }
 

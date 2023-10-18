@@ -84,8 +84,10 @@ class ChatGPTSession extends ChatSession {
     /**@type {{done: boolean, packet: string}} */
     const { done, packet } = receivedPacket;
 
-    if (done || !packet || packet.startsWith("data: [DONE]"))
+    if (done || !packet || packet.startsWith("data: [DONE]")) {
+      this.allowSend();
       return;
+    }
 
     this.buffer ??= '';
     this.buffer += packet;
