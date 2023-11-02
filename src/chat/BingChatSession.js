@@ -220,7 +220,7 @@ class BingChatSession extends ChatSession {
         this.onmessage(ChatSession.infoHTML(`🔍 ${msg.text.replace(/`([^`]*)`/, '<strong>$1</strong>')}`));
         return;
       }
-      const refText = msg.adaptiveCards && msg.adaptiveCards[0]?.body[0]?.text;
+      const refText = msg.adaptiveCards && msg.adaptiveCards[0]?.body.find(x => x.text && x.text.startsWith("[1]: http"))?.text;
       const refs = refText?.split('\n')
         .map(s => s.match(/\[(\d+)]: (http[^ ]+) \"(.*)\"/)) // parse links
         .filter(r => !!r).map(([_, n, href, title]) => ({ n, href, title }));
