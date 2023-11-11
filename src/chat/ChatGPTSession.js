@@ -77,41 +77,66 @@ class ChatGPTSession extends ChatSession {
   }
 
   async next() {
-    const receivedPacket = await this.receivePacket();
-    if (!receivedPacket)
-      return;
+    const fetchPackets = async () => {
+      const streamData = await this.readStream();
+      if (!streamData) return [];
+      if (streamData.done) return ["DONE"];
+      if (!streamData.data) return [];
+      return streamData.data
+        .split('\n\n')
+        .map((p, i) => {
+          if (!p) return null;
+          let packet = p;
+          if (i === 0 && !p.startsWith('data: ')) {
+            packet = this.halfPacket + packet;
+            this.halfPacket = "";
+          }
+          packet = packet.substring(6);
+          if (packet === "[DONE]") return "DONE";
+          try { 
+            return JSON.parse(packet);
+          }
+          catch (e) { 
+            if (!e instanceof SyntaxError) throw e 
+            this.halfPacket = p;
+          }
+          return null;
+        })
+        .filter(p => !!p);
+    };
 
-    /**@type {{done: boolean, packet: string}} */
-    const { done, packet } = receivedPacket;
+    const handlePacket = (data) => {
+      if (data === "DONE") {
+        this.allowSend();
+        return true;
+      }
 
-    if (done || !packet || packet.startsWith("data: [DONE]")) {
-      this.allowSend();
-      return;
-    }
-
-    this.buffer ??= '';
-    this.buffer += packet;
-    const startJSON = this.buffer.lastIndexOf(`data: {"message": {"id": `) + 6;
-    const toParse = this.buffer.substring(startJSON);
-    try {
-      const data = JSON.parse(toParse);
-      this.buffer = '';
       this.session.conversation_id = data.conversation_id;
-      this.session.parent_message_id = data.message?.id;
-      const text = data.message?.content?.parts[0];
+      if (data.error) {
+        this.onErrorMessage(data.error);
+        return true;
+      }
+      if (!data.message) {
+        return false;
+      }
+
+      this.session.parent_message_id = data.message.id;
+      const text = data.message.content?.parts[0];
       if (text) {
         this.onmessage(runMarkdown(text));
       }
+      return false;
     }
-    catch (e) {
-      if (!e instanceof SyntaxError)
-        throw e;
-      // Unable to parse JSON because the whole packet has not been received yet
+
+    const packets = await fetchPackets();
+
+    for (const packet of packets) {
+      if (handlePacket(packet)) return;
     }
     return this.next();
   }
 
-  receivePacket() {
+  readStream() {
     return bgWorker({
       action: 'event-stream',
       id: this.eventStreamID,
@@ -133,17 +158,17 @@ class ChatGPTSession extends ChatSession {
     const pid = this.session.parent_message_id ? this.session.parent_message_id : generateUUID();
     return {
       action: "next",
-      model: this.models[0].slug,
-      parent_message_id: pid,
       ...(this.session.conversation_id && { conversation_id: this.session.conversation_id }),
       messages: [{
         id,
-        role: "user",
+        author: { role: "user" },
         content: {
           content_type: "text",
           parts: [prompt],
         }
-      }]
+      }],
+      parent_message_id: pid,
+      model: this.models[0].slug,
     }
   }
 

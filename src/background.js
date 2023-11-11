@@ -98,7 +98,7 @@ function handleActionEventStream(action) {
 
   return eventStreams[id].read().then(({ done, value }) => ({
     done,
-    packet: value && [...value.values()].map(c => String.fromCharCode(c)).join(''),
+    data: value && [...value.values()].map(c => String.fromCharCode(c)).join(''),
   }));
 }
 
