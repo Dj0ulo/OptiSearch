@@ -67,9 +67,9 @@
   "Brave Search": {
     "link": "https://search.brave.com",
     "icon": "https://cdn.search.brave.com/serp/v1/static/brand/16c26cd189da3f0f7ba4e55a584ddde6a7853c9cc340ff9f381afc6cb18e9a1e-favicon-32x32.png",
-    "rightColumn": "#side-right",
+    "rightColumn": ".sidebar",
     "centerColumn": "#results",
-    "resultRow": ".snippet.fdb",
+    "resultRow": ".snippet.fdb, .snippet.svelte-1ckzfks",
     "searchBox": "#searchbox",
     "active": true,
     "regex": "search\\.brave\\.com$",
