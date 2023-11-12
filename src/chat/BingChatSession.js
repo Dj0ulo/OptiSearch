@@ -21,8 +21,8 @@ class BingChatSession extends ChatSession {
     },
     captcha: {
       code: 'BING_CHAT_CAPTCHA',
-      url: 'https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1',
-      text: "Please solve the captcha on Bing by starting a conversation and refresh the page:",
+      url: 'https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+Chat+(GPT-4)+in+Google&showconv=1',
+      text: "Start a conversation in Bing to solve the CAPTCHA and refresh this page:",
       button: "Solve the captcha",
     },
   }
