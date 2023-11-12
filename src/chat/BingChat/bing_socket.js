@@ -23,6 +23,25 @@ async function handleMessage(message) {
       result['sec_access_token'] = r.headers.get('X-Sydney-Encryptedconversationsignature');
     }
     return result;
+  } else if (message.action === 'delete') {
+    return (await fetch('https://sydney.bing.com/sydney/DeleteSingleConversation', {
+      headers: {
+        "content-type": "application/json",
+        "authorization": `Bearer ${message.conversationSignature}`,
+      },
+      body: JSON.stringify({
+        "conversationId": message.conversationId,
+        "participant": {
+          "id": message.clientId
+        },
+        "source": "cib",
+        "optionsSets": [
+          "autosave"
+        ]
+      }),
+      method: "POST",
+      mode: "cors",
+    })).json();
   }
   return handleActionWebsocket(message);
 }

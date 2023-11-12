@@ -26,13 +26,18 @@
                 margin: 0 auto;
                 width: 300px;
             }
-            h3 {
+            h2 {
                 font-size: 1.2rem;
+                font-weight: normal;
+            }
+            h3 {
+                font-size: 1rem;
                 font-weight: normal;
             }
             button {
                 padding: 10px 20px;
                 font-size: 1.2rem;
+                font-weight: bold;
                 background-color: var(--premium-yellow);
                 color: #111;
                 border-radius: 5px;
@@ -59,6 +64,12 @@
                 display: initial;
             }
 
+            body.bingchat .not.bingchat,
+            body.bard .not.bard,
+            body.optisearch .not.optisearch {
+                display: none;
+            }
+
             .yellow {
                 color: var(--premium-yellow);
                 font-weight: bold;
@@ -71,25 +82,23 @@
     </head>
     <body>
         <h1>⭐ Upgrade to Premium ⭐</h1>
-        <h3>Sign up for a <span class="yellow">Premium membership</span><br>to chat directly in the result page</h3>
+        <h2>Sign up for a <span class="yellow">Premium membership</span> to:</h2>
+        <h3>
+            - <strong>Save your conversation</strong> for later<br>
+            - <strong>Chat directly</strong> in the result page
+        </h3>
         <div id="feature-img">
             <img class="only bingchat" src="../images/bing_conversation_example.png">
             <img class="only bard" src="../images/bard_conversation_example.png">
             <img class="only optisearch" src="../images/chatgpt_conversation_example.png">
         </div>
+
         <button class="upgrade-button">Purchase Premium</button>
-        <div class="only bingchat" style="margin-top: 10px;">
-            <h3>More features are coming&nbsp;:</h3>
-            <ul class="advantages">
-                <li>Save your conversation in Bing Chat history</li>
-                <li>Speed up the answer by disabling Bing internal search</li>
-            </ul>
-        </div>
-        <div class="only bard optisearch" style="margin-top: 10px;">
+        <div style="margin-top: 10px;">
             <h3>This subscription also includes <span class="yellow">Premium membership</span> for&nbsp;:</h3>
-            <div><a data-link="bingchat">Bing Chat (GPT-4) in Google</a></div>
-            <div><a class="only bard" data-link="optisearch">OptiSearch (for ChatGPT)</a></div>
-            <div><a class="only optisearch" data-link="bard">Bard next to Google results</a></div>
+            <div><a class="not bard" data-link="bard">Bard next to Google results</a></div>
+            <div><a class="not bingchat" data-link="bingchat">Bing Chat (GPT-4) in Google</a></div>
+            <div><a class="not optisearch" data-link="optisearch">OptiSearch (for ChatGPT)</a></div>
         </div>
     </body>
 </html>

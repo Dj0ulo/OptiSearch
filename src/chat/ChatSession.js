@@ -4,7 +4,13 @@ class ChatSession {
   static #abstractMethodError = "This method should be inherited";
   static #nameError = "The inherited class from ChatSession should be given a name";
   static undefinedError = "⚠️ Oups, an error occured. Please try again. ⚠️";
-  static sendButtonSVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" class="h-4 w-4 m-1 md:m-0" stroke-width="2"><path d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z" fill="currentColor"></path></svg>';
+  static #svgs = {
+    send: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" class="h-4 w-4 m-1 md:m-0" stroke-width="2"><path d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z" fill="currentColor"></path></svg>',
+    chat: '<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z"/><path d="M8 10.5H16" stroke-linecap="round"/><path d="M8 14H13.5" stroke-linecap="round"/></svg>',
+    emptyBookmark: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="21" height="21" viewBox="0 0 24 24"><path d="M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z M 6 4 L 18 4 L 18 19.162109 L 12 16.933594 L 6 19.162109 L 6 4 z"></path></svg>',
+    filledBookmark: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="21" height="21" viewBox="0 0 24 24"><path d="M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z"></path></svg>',
+  }
+  
   static errors = {};
 
   static MODE_TEXT = 0;
@@ -26,6 +32,7 @@ class ChatSession {
   lastError = null;
   mode = ChatSession.MODE_TEXT;
   sendingAllowed = true;
+  deleteConversationAfter = true;
 
   discussion = {
     el: el('div', { className: 'discussion-container' }),
@@ -61,7 +68,9 @@ class ChatSession {
       throw ChatSession.#nameError;
     this.name = name;
     window.addEventListener('beforeunload', () => {
-      this.removeConversation();
+      if (this.deleteConversationAfter) {
+        this.removeConversation();
+      }
     });
   }
 
@@ -177,20 +186,40 @@ class ChatSession {
       type: 'button',
       className: 'send-button',
       title: 'Send message',
-      innerHTML: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" class="h-4 w-4 m-1 md:m-0" stroke-width="2"><path d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z" fill="currentColor"></path></svg>`,
+      innerHTML: ChatSession.#svgs.send,
     }, infoContainer);
     sendButton.addEventListener('click', sendTextArea);
 
     const leftButtonsContainer = el('div', { className: 'left-buttons-container' });
     insertAfter(leftButtonsContainer, $('.ai-name', this.panel));
 
-    const svgChat = `<svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 0C16.0228 0 20.5 4.47715 20.5 10C20.5 15.5228 16.0228 20 10.5 20C8.8817 20 7.31782 19.6146 5.91286 18.888L2.08704 19.9553C1.42212 20.141 0.73258 19.7525 0.54691 19.0876C0.48546 18.8676 0.48549 18.6349 0.54695 18.4151L1.61461 14.5922C0.88637 13.186 0.5 11.6203 0.5 10C0.5 4.47715 4.97715 0 10.5 0ZM10.5 1.5C5.80558 1.5 2 5.30558 2 10C2 11.4696 2.37277 12.8834 3.07303 14.1375L3.22368 14.4072L2.11096 18.3914L6.09755 17.2792L6.36709 17.4295C7.62006 18.1281 9.0322 18.5 10.5 18.5C15.1944 18.5 19 14.6944 19 10C19 5.30558 15.1944 1.5 10.5 1.5ZM7.25 11H11.7483C12.1625 11 12.4983 11.3358 12.4983 11.75C12.4983 12.1297 12.2161 12.4435 11.85 12.4932L11.7483 12.5H7.25C6.83579 12.5 6.5 12.1642 6.5 11.75C6.5 11.3703 6.78215 11.0565 7.14823 11.0068L7.25 11H11.7483H7.25ZM7.25 7.5H13.7545C14.1687 7.5 14.5045 7.83579 14.5045 8.25C14.5045 8.6297 14.2223 8.9435 13.8563 8.9932L13.7545 9H7.25C6.83579 9 6.5 8.6642 6.5 8.25C6.5 7.8703 6.78215 7.55651 7.14823 7.50685L7.25 7.5H13.7545H7.25Z" fill="white"></path></svg>`;
+    const bookmark = el('div', {
+      title: `Save conversation in ${this.properties.name}`,
+      className: 'save-conversation-button',
+    }, leftButtonsContainer);
+
+    const setDeleteConversationAfter = async (value) => {
+      if (value) {
+        this.deleteConversationAfter = true;
+        bookmark.innerHTML = ChatSession.#svgs.emptyBookmark;
+      } else {
+        if (await Context.handleNotPremium()) return;
+        this.deleteConversationAfter = false;
+        bookmark.innerHTML = ChatSession.#svgs.filledBookmark;
+      }
+    };
+    setDeleteConversationAfter(true);
+
+    bookmark.addEventListener('click', () => {
+      setDeleteConversationAfter(!this.deleteConversationAfter);
+    });
+
     const continueChat = el('div', {
       title: 'Continue the conversation',
       className: 'continue-chat-button',
-      innerHTML: `${svgChat} <span>Chat</span>`,
+      innerHTML: ChatSession.#svgs.chat,
     }, leftButtonsContainer);
-    continueChat.setAttribute('visible', true);
+
     const switchConversationMode = async () => {
       if (await Context.handleNotPremium()) return;
 

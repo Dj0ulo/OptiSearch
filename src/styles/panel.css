@@ -112,6 +112,7 @@
   display: block;
   min-width: fit-content;
   margin-left: 5px;
+  top: 5px;
 }
 .optisearchbox .optiheader .left-buttons-container > * {
   margin-left: 5px;

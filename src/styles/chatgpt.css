@@ -68,12 +68,10 @@
   white-space: nowrap;
 }
 
-.optisearchbox .optiheader[data-bing-conv-style="creative"] .ai-name > img,
-.optisearchbox .optiheader[data-bing-conv-style="creative"] .continue-chat-button {
+.optisearchbox .optiheader[data-bing-conv-style="creative"] .ai-name > img {
   filter: hue-rotate(63deg) !important;
 }
-.optisearchbox .optiheader[data-bing-conv-style="precise"] .ai-name > img,
-.optisearchbox .optiheader[data-bing-conv-style="precise"] .continue-chat-button {
+.optisearchbox .optiheader[data-bing-conv-style="precise"] .ai-name > img {
   filter: hue-rotate(-52deg) !important;
 }
 
@@ -108,31 +106,6 @@
 }
 .learnmore.less > a[more] {
   display: none;
-}
-
-.continue-chat-button {
-  padding: 5px 10px;
-  position: relative;
-  color: #fff !important;
-  border-radius: 42px;
-  background: linear-gradient(81.62deg, #2870ea 8.72%, #1b4aef 85.01%);
-  cursor: pointer;
-  line-height: 1em;
-  white-space: nowrap;
-  height: fit-content;
-  transition: opacity 0.3s;
-  opacity: 0;
-  margin-left: 20px;
-}
-.continue-chat-button[visible="true"] {
-  opacity: 1;
-}
-.continue-chat-button:hover {
-  text-decoration: none !important;
-}
-.continue-chat-button > span {
-  position: relative;
-  bottom: 4px;
 }
 
 .bing-internal-search-button.allowed > img.bing-internal-search-allowed,
@@ -284,4 +257,11 @@
 
 .bright.optisearchbox .message-container pre.prettyprint{
   background-color: #eeeeee;
+}
+
+.save-conversation-button {
+  fill: #bdbdbd;
+}
+.continue-chat-button {
+  stroke: #bdbdbd;
 }

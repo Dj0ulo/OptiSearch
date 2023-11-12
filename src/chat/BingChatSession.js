@@ -270,25 +270,11 @@ class BingChatSession extends ChatSession {
     if (ChatSession.debug || !this.session)
       return;
     const { conversationSignature, clientId, conversationId } = this.session;
-
-    return bgFetch('https://sydney.bing.com/sydney/DeleteSingleConversation', {
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        conversationId,
-        conversationSignature,
-        "participant": {
-          "id": clientId
-        },
-        "source": "cib",
-        "optionsSets": [
-          "autosave"
-        ]
-      }),
-      method: "POST",
-      mode: "cors",
-      credentials: "include",
+    return BingChatSession.offscreenAction({
+      action: "delete",
+      conversationSignature,
+      clientId,
+      conversationId,
     });
   }
 
