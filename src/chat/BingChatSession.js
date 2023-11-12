@@ -103,7 +103,8 @@ class BingChatSession extends ChatSession {
   createPanel(directchat = true) {
     super.createPanel(directchat);
 
-    const leftButtonsContainer = el('div'); //$('.left-buttons-container', this.panel)
+    /*TODO implement #nosearch when it is available in bing
+    const leftButtonsContainer = $('.left-buttons-container', this.panel)
 
     const allowInternalSearchButton = el('div', {
       className: 'bing-internal-search-button headerhover',
@@ -129,7 +130,7 @@ class BingChatSession extends ChatSession {
       saveSettings(Context.save);
       allowInternalSearchButton.toggleClass();
     };
-
+    */
 
     this.bingIconElement = $('img', $('.ai-name', this.panel));
     const setConversationStyle = (mode = 'balanced') => {

@@ -190,7 +190,7 @@ class ChatSession {
     }, infoContainer);
     sendButton.addEventListener('click', sendTextArea);
 
-    const leftButtonsContainer = el('div', { className: 'left-buttons-container' });
+    const leftButtonsContainer = el('div', { className: 'left-buttons-container-2' });
     insertAfter(leftButtonsContainer, $('.ai-name', this.panel));
 
     const bookmark = el('div', {
@@ -216,7 +216,7 @@ class ChatSession {
 
     const continueChat = el('div', {
       title: 'Continue the conversation',
-      className: 'continue-chat-button',
+      className: 'continue-conversation-button',
       innerHTML: ChatSession.#svgs.chat,
     }, leftButtonsContainer);
 

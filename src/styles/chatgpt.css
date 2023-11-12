@@ -259,9 +259,9 @@
   background-color: #eeeeee;
 }
 
-.save-conversation-button {
+.left-buttons-container-2 .save-conversation-button {
   fill: #bdbdbd;
 }
-.continue-chat-button {
+.left-buttons-container-2 .continue-conversation-button {
   stroke: #bdbdbd;
 }

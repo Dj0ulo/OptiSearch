@@ -107,21 +107,21 @@
   opacity: 1;
 }
 
-.optisearchbox .optiheader .left-buttons-container {
+.optisearchbox .optiheader .left-buttons-container-2 {
   position: relative;
   display: block;
   min-width: fit-content;
   margin-left: 5px;
   top: 5px;
 }
-.optisearchbox .optiheader .left-buttons-container > * {
+.optisearchbox .optiheader .left-buttons-container-2 > * {
   margin-left: 5px;
   cursor: pointer;
   display: inline-block;
   user-select: none;
 }
 
-.optisearchbox .optiheader .left-buttons-container img {
+.optisearchbox .optiheader .left-buttons-container-2 img {
   width: 20px;
   height: 20px;
 }
