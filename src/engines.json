@@ -14,7 +14,7 @@
   },
   "Bing": {
     "link": "https://www.bing.com",
-    "icon": "https://th.bing.com/th?id=ODLS.87518fab-8fc1-4893-a7f1-c7d88283a35a",
+    "icon": "https://www.bing.com/favicon.ico",
     "rightColumn": "#b_context",
     "centerColumn": "main",
     "resultRow": ".b_algo",
