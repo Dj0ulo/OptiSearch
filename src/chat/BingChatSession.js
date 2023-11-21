@@ -224,7 +224,7 @@ class BingChatSession extends ChatSession {
       const refText = msg.adaptiveCards && msg.adaptiveCards[0]?.body.find(x => x.text && x.text.startsWith("[1]: http"))?.text;
       const refs = refText?.split('\n')
         .map(s => s.match(/\[(\d+)]: (http[^ ]+) \"(.*)\"/)) // parse links
-        .filter(r => !!r).map(([_, n, href, title]) => ({ n, href, title }));
+        .filter(r => !!r).map(([_, n, href, title]) => ({ n, href, title })) ?? [];
       const learnMore = msg.adaptiveCards && msg.adaptiveCards[0]?.body.find(x => x.text && x.text.startsWith("Learn more:"))?.text;
       let text = msg.text || msg.spokenText;
       if (!text) return;
@@ -236,8 +236,8 @@ class BingChatSession extends ChatSession {
 
       const bodyHTML = runMarkdown(text).replace(/\uF8FD(\d+)\uF8FE/g, (_, nRef) => {
         const ref = refs.find(r => r.n == nRef);
-        const nSource = sources[ref.href];
-        return ref ? `<a href="${ref.href}" title="${ref.title}" class="source superscript">${nSource}</a>` : '';
+        if (!ref) return '';
+        return `<a href="${ref.href}" title="${ref.title}" class="source superscript">${sources[ref.href]}</a>`;
       });
       const maxVisible = 2;
       const invisible = Math.max(0, Object.keys(sources).length - maxVisible);
