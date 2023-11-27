@@ -234,11 +234,17 @@ class BingChatSession extends ChatSession {
         text = text.replace(/\[\^(\d+)\^\]/g, '\uF8FD$1\uF8Fe');
       }
 
-      const bodyHTML = runMarkdown(text).replace(/\uF8FD(\d+)\uF8FE/g, (_, nRef) => {
-        const ref = refs.find(r => r.n == nRef);
-        if (!ref) return '';
-        return `<a href="${ref.href}" title="${ref.title}" class="source superscript">${sources[ref.href]}</a>`;
-      });
+      const bodyHTML = runMarkdown(text)
+        .replace(/\uF8FD(\d+)\uF8FE/g, (_, nRef) => {
+          const ref = refs.find(r => r.n == nRef);
+          if (!ref) return '';
+          return `<a href="${ref.href}" title="${ref.title}" class="source superscript">${sources[ref.href]}</a>`;
+        })
+        .replace(/href="(?:\^|<sup>)(\d+)(?:\^|<\/sup>)"/g, (_, nRef) => {
+          const ref = refs.find(r => r.n == nRef);
+          if (!ref) return '';
+          return `href="${ref.href}"`;
+        });
       const maxVisible = 2;
       const invisible = Math.max(0, Object.keys(sources).length - maxVisible);
       const footHTML = Object.keys(sources).length === 0 ? '' : `<div class="learnmore less" 
