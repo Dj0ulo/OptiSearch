@@ -38,7 +38,7 @@
       "src/images/bing_search_allowed.png",
       "src/images/bing_search_forbidden.png",
       "src/images/bing_conversation_example.png",
-      "src/chat/BingChat/bing_socket.js"
+      "src/chat/bingchat/bing_socket.js"
     ],
     "matches": [
       "*://duckduckgo.com/*",
@@ -60,7 +60,7 @@
       "all_frames": true,
       "run_at": "document_start",
       "js": [
-        "src/chat/BingChat/bing_iframe_content_script.js"
+        "src/chat/bingchat/bing_iframe_content_script.js"
       ]
     },
     {
@@ -83,10 +83,10 @@
         "src/utils.js",
         "src/settings.js",
 
-        "src/chat/ChatSession.js",
-        "src/chat/BingChatSession.js",
+        "src/chat/chat_session.js",
+        "src/chat/bing_chat_session.js",
 
-        "src/Context.js",
+        "src/context.js",
         "src/chat/init.js",
 
         "src/run.js"

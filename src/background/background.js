@@ -102,7 +102,7 @@ function handleActionEventStream(action) {
  * This method should be executed only on the BingChat extension and with manifest v3.
  */
 async function handleSetupOffscreen() {
-  const already = await setupOffscreenDocument('src/chat/BingChat/offscreen.html');
+  const already = await setupOffscreenDocument('src/chat/bingchat/offscreen.html');
   return { 'status': already ? 'Offscreen already running' : 'Offscreen setup' };
 }
 

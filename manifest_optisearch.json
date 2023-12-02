@@ -70,14 +70,14 @@
 
         "src/utils.js",
 
-        "src/tools/Tools.js",
-        "src/sites/Sites.js",
+        "src/tools/tools.js",
+        "src/sites/sites.js",
         "src/settings.js",
 
-        "src/chat/ChatSession.js",
-        "src/chat/ChatGPTSession.js",
+        "src/chat/chat_session.js",
+        "src/chat/chatgpt_session.js",
 
-        "src/Context.js",
+        "src/context.js",
         "src/sites/results.js",
         "src/tools/plot.js",
         "src/tools/init.js",

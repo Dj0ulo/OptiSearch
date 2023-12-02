@@ -59,10 +59,10 @@
         "src/utils.js",
         "src/settings.js",
 
-        "src/chat/ChatSession.js",
-        "src/chat/BardSession.js",
+        "src/chat/chat_session.js",
+        "src/chat/bard_session.js",
 
-        "src/Context.js",
+        "src/context.js",
         "src/chat/init.js",
 
         "src/run.js"

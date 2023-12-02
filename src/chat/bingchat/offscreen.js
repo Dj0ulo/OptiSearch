@@ -31,7 +31,7 @@ function onSocketScriptReady({data}) {
 function injectScriptToIframe() {
   document.querySelector('iframe').contentWindow.postMessage({
     scriptElementId: 'bing-socket-script',
-    scriptToInject: chrome.runtime.getURL('src/chat/BingChat/bing_socket.js'),
+    scriptToInject: chrome.runtime.getURL('src/chat/bingchat/bing_socket.js'),
   }, '*');
 };
 
