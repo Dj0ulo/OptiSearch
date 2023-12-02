@@ -181,6 +181,10 @@
   width: 1rem;
   height: 1rem;
 }
+.optisearchbox .chat-container .send-button[disabled] {
+  fill-opacity: 0.4;
+  cursor: not-allowed;
+}
 
 .optisearchbox .bard .optibody img {
   display: block;

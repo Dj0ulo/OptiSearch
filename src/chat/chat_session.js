@@ -159,35 +159,46 @@ class ChatSession {
     const textArea = el('textarea', {}, inputContainer);
     const infoContainer = el('div', { className: 'info-container' }, inputContainer);
     const maxCharContainer = el('div', { className: 'max-char-container', textContent: '0/1000' }, infoContainer);
-    const MAX_CHAR = 2000;
-    const updateMaxChar = () => {
-      maxCharContainer.textContent = `${textArea.value.length}/${MAX_CHAR}`;
-    }
-    updateMaxChar();
-    const sendTextArea = () => {
-      if (!this.sendingAllowed) return;
-      this.#setupAndSend(textArea.value);
-      textArea.value = '';
-      updateMaxChar();
-    }
-    textArea.addEventListener('input', () => {
-      if (textArea.value.length > MAX_CHAR) {
-        textArea.value = textArea.value.slice(0, MAX_CHAR);
-      }
-      updateMaxChar();
-    });
-    textArea.addEventListener('keypress', (event) => {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        sendTextArea();
-      }
-    });
     const sendButton = el('div', {
       type: 'button',
       className: 'send-button',
       title: 'Send message',
       innerHTML: ChatSession.#svgs.send,
     }, infoContainer);
+
+    const MAX_CHAR = 2000;
+    const updateCharCount = () => {
+      maxCharContainer.textContent = `${textArea.value.length}/${MAX_CHAR}`;
+    }
+    const onTextAreaChange = () => {
+      if (!textArea.value) {
+        sendButton.setAttribute('disabled', '');
+      } else {
+        sendButton.removeAttribute('disabled');
+      }
+      if (textArea.value.length > MAX_CHAR) {
+        textArea.value = textArea.value.slice(0, MAX_CHAR);
+      }
+      updateCharCount();
+    }
+    const setTextAreaValue = (value) => {
+      textArea.value = value;
+      onTextAreaChange();
+    }
+    const sendTextArea = () => {
+      if (!this.sendingAllowed || !textArea.value) return;
+      this.#setupAndSend(textArea.value);
+      setTextAreaValue('');
+    }
+
+    updateCharCount();
+    textArea.addEventListener('input', onTextAreaChange);
+    textArea.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendTextArea();
+      }
+    });
     sendButton.addEventListener('click', sendTextArea);
 
     const leftButtonsContainer = el('div', { className: 'left-buttons-container-2' });
@@ -228,7 +239,7 @@ class ChatSession {
       }
       if (this.discussion.length === 0) {
         this.#setCurrentAction(null);
-        textArea.value = parseSearchParam();
+        setTextAreaValue(parseSearchParam());
       }
       this.mode = ChatSession.MODE_DISCUSSION;
       this.responseContainer.innerHTML = '';
