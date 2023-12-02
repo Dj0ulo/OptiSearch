@@ -2,7 +2,7 @@
 
 ![License](https://img.shields.io/github/license/dj0ulo/optisearch)
 
-This repository contains the code of **OptiSearch** and **Bing Chat (GPT-4) in Google** browser extensions. They share the same codebase core. 
+This repository contains the code of **OptiSearch**, **Bing Chat (GPT-4) in Google** and **Bard next to Google results** browser extensions. They share the same codebase core. 
 
 ### <img alt="OptiSearch icon" src="./icons/optisearch/icon_128.png" width="24" height="24"> OptiSearch
 ![License](https://img.shields.io/chrome-web-store/users/bbojmeobdaicehcopocnfhaagefleiae?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/optisearch?label=Firefox%20Users)
@@ -40,23 +40,28 @@ Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave Search
     ```sh
     npm i
     ```
-1. You can load both extension in your favorite browser directly from the root of the repo, you just need to build the manifest first, use the flag `--v2` to build a manifest in v2 (necessary to load the extension in Firefox).
-  Usage:
+1. You can load both extension in your favorite browser directly from the root of the repo, you just need to build the manifest first, use the flag `-f` to build the manifest for Firefox.
+    
+    E.g. to build the firefox manifest for **Bing Chat (GPT-4) in Google**:
     ```
-    npm build.mjs [optisearch|bingchat|bard] [--v2]
-    ```
-    E.g. to build the manifest v2 for **Bing Chat (GPT-4) in Google**:
-    ```
-    npm build.mjs bingchat --v2
+    npm build.mjs bingchat -f
     ```
 
-1. You can copy the source for a given extension with the flag `-cp` followed by the name of the desired directory (default: `build`).
+1. You can copy the source for a given extension with the flag `-b` followed by the name of the desired directory (default: `build/<extension_codename>`).
 
-    E.g. to copy **OptiSearch** sources in *DIR*
+    E.g. to copy **OptiSearch** sources for Chrome in *DIR*
     ```
-    node build.mjs optisearch -cp DIR
+    node build.mjs optisearch -b DIR
     ```
-1. You can create a zip from the source using the flag `-z` followed by the output file name. Uses `--clean` to delete the `build` directory after the operation.
+    E.g. to copy **Bard next to Google results** sources for Firefox in `build/bard`
+    ```
+    node build.mjs bard -bf
+    ```
+    or
+    ```
+    node build.mjs bard -b -f
+    ```
+1. You can create a zip from the source using the flag `-z` followed by the output filename. This will also copy the sources in the default build directory (unless you specified another one with `-b`). Use `-t` (for "tidy") to delete the build directory after the operation.
 
 1. Finally, to build and zip all extensions for Chrome and Firefox and put them in the `versions` directory: 
     ```
