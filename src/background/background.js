@@ -1,8 +1,3 @@
-if (typeof browser === 'undefined') {
-  importScripts('libs/ExtPay.js');
-  importScripts('background_extpay.js')
-}
-
 fetchEngines();
 
 chrome.runtime.onMessage.addListener((action, _, sendResponse) => {

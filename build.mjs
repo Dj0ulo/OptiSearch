@@ -2,89 +2,76 @@ import fs from 'fs';
 import path from 'path';
 import archiver from 'archiver';
 
+const names = ['optisearch', 'bingchat', 'bard'];
+
+const usage = 
+`Usage: node build.mjs [name] [-f] [-b <build_dir>] [-z <output_zip>] [-t]
+
+name: [ ${names.join(' | ')} ]
+-f: build for Firefox
+-b: copy the files to <build_dir>
+-z: create the output zip file to <output_zip>
+-t: tidy up build dir`;
+
 const ADDITIONAL_FILES = {
-  'OptiSearch': ['src/background_extpay.js'],
-  'BingChat': ['src/chat/BingChat/*', 'src/background_extpay.js', 'src/background.js'],
-  'Bard': ['src/background_extpay.js'],
+  'optisearch': [],
+  'bingchat': ['src/chat/BingChat/*'],
+  'bard': [],
 }
 const ADDITIONAL_FILES_V2 = {
-  'OptiSearch': [],
-  'BingChat': ['src/rule_resources/rules.js'],
-  'Bard': [],
+  'optisearch': [],
+  'bingchat': ['src/rule_resources/rules.js'],
+  'bard': [],
 }
 const OFFSCREEN_DOC = {
-  'OptiSearch': null,
-  'BingChat': 'src/chat/BingChat/firefox_background.html',
-  'Bard': null,
+  'optisearch': null,
+  'bingchat': 'src/chat/BingChat/firefox_background.html',
+  'bard': null,
 }
 const PERMISSION_V2 = {
-  'OptiSearch': ["https://extensionpay.com/*"],
-  'BingChat': ["https://extensionpay.com/*"],
-  'Bard': ["https://extensionpay.com/*"],
+  'optisearch': ["https://extensionpay.com/*"],
+  'bingchat': ["https://extensionpay.com/*"],
+  'bard': ["https://extensionpay.com/*"],
 }
-let name = 'OptiSearch';
-let manifestVersion = 3;
 
-function errorUsage() {
-  console.log('Usage: node build.mjs [optisearch|bingchat|bard] [--v2] [-cp <build dir>] [-z <output zip file>] [--clean]');
-  process.exit(1);
-}
+
+let name = '';
 
 (async function main() {
-  let pathManifestV3 = '';
-  if(process.argv.includes('bingchat'))
-    name = 'BingChat';
-  else if(process.argv.includes('bard'))
-    name = 'Bard';
-  else if(process.argv.includes('optisearch'))
-    name = 'OptiSearch';
-  else {
+  name = names.find(n => parseArg(n));
+  if (!name) {
     errorUsage();
   }
-
-  if (name === 'BingChat')
-    pathManifestV3 = 'manifest_bingchat.json';
-  else if (name === 'Bard')
-    pathManifestV3 = 'manifest_bard.json';
-  else
-    pathManifestV3 = 'manifest_optisearch.json';
   
-  manifestVersion = process.argv.includes('--v2') ? 2 : 3;
-  buildManifest(pathManifestV3, manifestVersion);
-  console.log(`${name} manifest v${manifestVersion} created`);
+  const firefox = parseArg('-f');
+  buildManifest(`manifest_${name}.json`, firefox);
+  console.log(`${name} manifest for ${firefox ? 'Firefox' : 'Chrome'} created`);
 
   const mf = readJsonFile('manifest.json');
 
-  if (fs.existsSync('_locales'))
+  if (fs.existsSync('_locales')) {
     fs.rmSync('_locales', { recursive: true });
+  }
   if (mf.default_locale){
-    makeLocalesDir(`src/locales/${name.toLowerCase()}.json`)
+    makeLocalesDir(`src/locales/${name}.json`)
   }
 
-  let buildDir = 'build';
-  if (process.argv.includes('-cp')) {
-    const nextArgv = process.argv[process.argv.indexOf('-cp') + 1];
-    if (nextArgv && !nextArgv.startsWith('-')) {
-      buildDir = nextArgv;
-    }
-  }
+  const isCopyToBuildDir = parseArg('-b');
+  const buildDir = typeof isCopyToBuildDir === 'string' ? isCopyToBuildDir : `build/${name}`;
+  const makeZip = parseArg('-z');
 
-  if (process.argv.includes('-cp') || process.argv.includes('-z')) {
+  if (isCopyToBuildDir || makeZip) {
     copyToBuildDir(buildDir);
     console.log(`Source copied to "${buildDir}" directory`);
   }
 
-  if (process.argv.includes('-z')) {
-    const nextArgv = process.argv[process.argv.indexOf('-z') + 1];
-    let out = `versions/${name}_${mf.version}${mf.manifest_version === 2 ? '_firefox' : ''}.zip`;
-    if (nextArgv && !nextArgv.startsWith('-')) {
-      out = nextArgv;
-    }
+  if (makeZip) {
+    const out = makeZip || `versions/${name}_${mf.version}${firefox ? '_firefox' : ''}.zip`;
     await zipDir(buildDir, out);
     console.log(`Extension zipped into "${out}"`);
   }
 
-  if (process.argv.includes('--clean')) {
+  if (parseArg('-t')) {
     fs.rmSync(buildDir, { recursive: true });
     console.log(`Directory "${buildDir}" cleaned`);
   }
@@ -97,10 +84,10 @@ function errorUsage() {
  * Builds the manifest.json file from a manifest file in version 3.
  * This function does not exhaustively copy all possible fields.
  * @param {string} pathManifestV3 Path to the manifest file in version 3.
- * @param {2|3} version 2 or 3.
+ * @param {boolean} firefox build for Firefox
  */
-function buildManifest(pathManifestV3, version = 3) {
-  if (version === 3) {
+function buildManifest(pathManifestV3, firefox = false) {
+  if (!firefox) {
     fs.copyFileSync(pathManifestV3, 'manifest.json');
     return;
   }
@@ -121,9 +108,9 @@ function buildManifest(pathManifestV3, version = 3) {
   }
   if(OFFSCREEN_DOC[name]) {
     mfv2['background'] = { page: OFFSCREEN_DOC[name] };
-  }
-  else if ('background' in mfv3) {
-    mfv2['background'] = { scripts: [mfv3['background']['service_worker']] };
+  } else if ('background' in mfv3) {
+    const scripts = parseBackgroundScripts(mfv3['background']['service_worker'])
+    mfv2['background'] = { scripts };
   }
 
   if ('permissions' in mfv3) {
@@ -162,7 +149,7 @@ function buildManifest(pathManifestV3, version = 3) {
  * Parse files from manifest.json and copy them to the build folder.
  * @param {string} buildDir 
  */
-function copyToBuildDir(buildDir = 'build/') {
+function copyToBuildDir(buildDir) {
   const mf = readJsonFile('manifest.json');
 
   // get content script js and web-accessible resources
@@ -185,7 +172,7 @@ function copyToBuildDir(buildDir = 'build/') {
   for (let file of ADDITIONAL_FILES[name]) {
     resources.push(file);
   }
-  if (manifestVersion === 2) {
+  if (mf.manifest_version === 2) {
     for (let file of ADDITIONAL_FILES_V2[name]) {
       resources.push(file);
     }
@@ -202,12 +189,14 @@ function copyToBuildDir(buildDir = 'build/') {
   if ('background' in mf) {
     if ('service_worker' in mf['background']) {
       files.push(mf['background']['service_worker']);
+      files.push(...parseBackgroundScripts(mf['background']['service_worker']));
     }
     if ('scripts' in mf['background']) {
       files = files.concat(mf['background']['scripts']);
     }
     if ('page' in mf['background']) {
       files.push(mf['background']['page']);
+      files.push(...parseBackgroundScripts(mf['background']['page']));
     }
   }
 
@@ -285,6 +274,18 @@ function makeLocalesDir(localesFile) {
   })
 }
 
+/**
+ * Parse all imports from a background loader
+ */
+function parseBackgroundScripts(backgroundLoaderPath) {
+  const backgroundLoader = fs.readFileSync(backgroundLoaderPath, 'utf8');
+  const dirBackgroundLoader = path.dirname(backgroundLoaderPath);
+  const regexImportFiles = /(?!import|src).*?["'`](.*?)["'`]/g;
+  return (backgroundLoader.match(regexImportFiles) ?? [])
+    .map(f => `${dirBackgroundLoader}/${f.replace(regexImportFiles, '$1')}`)
+    .filter(f => fs.existsSync(f))
+}
+
 function readJsonFile(path) {
   return JSON.parse(fs.readFileSync(path, 'utf8'));
 }
@@ -320,4 +321,23 @@ async function zipDir(dir, out) {
   archive.pipe(output);
   archive.directory(dir, false);
   await archive.finalize();
+}
+
+function parseArg(argName) {
+  const index = process.argv.indexOf(argName);
+  if (index === -1) {
+    if (argName.length === 2 && argName[0] === '-') {
+      return !!process.argv.find(arg => arg[0] === '-' && arg.includes(argName[1]));
+    }
+    return false;
+  }
+  if (process.argv[index][0] === '-' && index < process.argv.length - 1 && process.argv[index + 1][0] !== '-') {
+    return process.argv[index + 1];
+  }
+  return true;
+}
+
+function errorUsage() {
+  console.log(usage);
+  process.exit(1);
 }

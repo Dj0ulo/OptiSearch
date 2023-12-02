@@ -36,7 +36,7 @@
     ]
   }],
   "background": {
-    "service_worker": "src/background.js"
+    "service_worker": "src/background/background_loader.js"
   },
   "content_scripts": [
     {
