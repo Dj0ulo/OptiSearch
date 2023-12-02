@@ -280,6 +280,7 @@ class ChatSession {
     }
 
     this.onErrorMessage = (error) => {
+      this.session = null;
       if (!error)
         error = ChatSession.undefinedError;
       warn(error);
@@ -312,6 +313,7 @@ class ChatSession {
     }
     catch (error) {
       this.lastError = error;
+      this.session = null;
       if (error && error.code && error.text) {
         this.#setCurrentAction('window');
         this.onmessage(ChatSession.infoHTML(error.text));

@@ -19,12 +19,6 @@ class BingChatSession extends ChatSession {
       text: "Unfortunately you don't have access to Bing Chat yet, please register to the waitlist",
       button: "Register to the waitlist",
     },
-    captcha: {
-      code: 'BING_CHAT_CAPTCHA',
-      url: 'https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+Chat+(GPT-4)+in+Google&showconv=1',
-      text: "Start a conversation in Bing to solve the CAPTCHA and refresh this page:",
-      button: "Solve the captcha",
-    },
   }
   static get storageKey() {
     return "SAVE_BINGCHAT";
@@ -187,16 +181,14 @@ class BingChatSession extends ChatSession {
               return;
             }
             if (body.item.result.error) {
-              if (body.item.result.error === 'UnauthorizedRequest')
+              if (body.item.result.error === 'UnauthorizedRequest' || body.item.result.value === 'CaptchaChallenge')
                 throw BingChatSession.errors.session;
               if (body.item.result.error === 'Forbidden')
                 throw BingChatSession.errors.forbidden;
-              if (body.item.result.value === 'CaptchaChallenge')
-                throw BingChatSession.errors.captcha;
             }
-            if (body.item.result?.message) {
-              msg = body.item.result.message;
-              break;
+            if (body.item.result.value !== 'Success' && body.item.result.message) {
+              this.onmessage(ChatSession.infoHTML(body.item.result.message));
+              return;
             }
           }
           if (!body.item.messages) {
