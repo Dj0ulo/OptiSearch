@@ -66,7 +66,7 @@ let name = '';
   }
 
   if (makeZip) {
-    const out = makeZip || `versions/${name}_${mf.version}${firefox ? '_firefox' : ''}.zip`;
+    const out = typeof makeZip === 'string' ? makeZip : `versions/${name}_${mf.version}${firefox ? '_firefox' : ''}.zip`;
     await zipDir(buildDir, out);
     console.log(`Extension zipped into "${out}"`);
   }
