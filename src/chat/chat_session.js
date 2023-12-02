@@ -9,6 +9,7 @@ class ChatSession {
     chat: '<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z"/><path d="M8 10.5H16" stroke-linecap="round"/><path d="M8 14H13.5" stroke-linecap="round"/></svg>',
     emptyBookmark: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="21" height="21" viewBox="0 0 24 24"><path d="M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z M 6 4 L 18 4 L 18 19.162109 L 12 16.933594 L 6 19.162109 L 6 4 z"></path></svg>',
     filledBookmark: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="21" height="21" viewBox="0 0 24 24"><path d="M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z"></path></svg>',
+    restart: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="21" height="21" viewBox="0 0 24 24"><path d="M 7.59375 3 L 9.0625 5 L 13 5 C 16.324219 5 19 7.675781 19 11 L 19 15 L 16 15 L 20 20.46875 L 24 15 L 21 15 L 21 11 C 21 6.59375 17.40625 3 13 3 Z M 4 3.53125 L 0 9 L 3 9 L 3 13 C 3 17.40625 6.59375 21 11 21 L 16.40625 21 L 14.9375 19 L 11 19 C 7.675781 19 5 16.324219 5 13 L 5 9 L 8 9 Z"></path></svg>',
   }
   
   static errors = {};
@@ -56,6 +57,11 @@ class ChatSession {
         this.el.scrollTop = this.el.scrollHeight;
       }
     },
+    clear() {
+      this.el.innerHTML = '';
+      this.messageContainers = [];
+      this.isScrolledToBottom = true;
+    }
   }
 
 
@@ -204,6 +210,20 @@ class ChatSession {
     const leftButtonsContainer = el('div', { className: 'left-buttons-container-2' });
     insertAfter(leftButtonsContainer, $('.ai-name', this.panel));
 
+    const restartButton = el('div', {
+      title: `Restart conversation`,
+      className: 'restart-conversation-button',
+      innerHTML: ChatSession.#svgs.restart,
+    }, leftButtonsContainer);
+
+    restartButton.addEventListener('click', async () => {
+      if (!this.sendingAllowed) return;
+      if (await Context.handleNotPremium()) return;
+      this.session = null;
+      this.discussion.clear();
+      this.#setupAndSend();
+    });
+
     const bookmark = el('div', {
       title: `Save conversation in ${this.properties.name}`,
       className: 'save-conversation-button',
@@ -282,12 +302,14 @@ class ChatSession {
       textArea.disabled = false;
       textArea.placeholder = 'Ask me anything...';
       displayElement(sendButton);
+      restartButton.removeAttribute('disabled');
     }
     this.disableSend = () => {
       this.sendingAllowed = false;
       textArea.disabled = true;
       textArea.placeholder = `${this.properties.name} is answering...`;
       hideElement(sendButton);
+      restartButton.setAttribute('disabled', '');
     }
 
     this.onErrorMessage = (error) => {

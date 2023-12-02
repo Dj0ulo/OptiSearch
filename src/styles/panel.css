@@ -120,6 +120,10 @@
   display: inline-block;
   user-select: none;
 }
+.optisearchbox .optiheader .left-buttons-container-2 [disabled] {
+  fill-opacity: 0.4;
+  cursor: not-allowed;
+}
 
 .optisearchbox .optiheader .left-buttons-container-2 img {
   width: 20px;
