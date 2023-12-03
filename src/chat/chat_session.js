@@ -197,10 +197,10 @@ class ChatSession {
     
     const buildInfoContainer = () => {
       const infoContainer = el('div', { className: 'info-container' });
-      infoContainer.append(...[
+      infoContainer.append(
         buildCharacterCounter(),
         buildSendButton(),
-      ]);
+      );
       return infoContainer;
     }
 
@@ -253,10 +253,10 @@ class ChatSession {
       this.listen('onMessage', updateInputContainerVisibility);
       this.listen('conversationModeSwitched', updateInputContainerVisibility);
 
-      inputContainer.append(...[
+      inputContainer.append(
         buildTextArea(),
         buildInfoContainer(),
-      ]);
+      );
       return inputContainer;
     }
 
@@ -264,10 +264,10 @@ class ChatSession {
       const chatContainer = el('div', { className: 'chat-container' });
       hideElement(chatContainer);
       this.listen('conversationModeSwitched', () => displayElement(chatContainer));
-      chatContainer.append(...[
+      chatContainer.append(
         this.discussion.el,
         buildInputContainer(),
-      ]);
+      );
       return chatContainer;
     }
 
@@ -349,11 +349,11 @@ class ChatSession {
 
     const buildLeftButtonsContainer = () => {
       const leftButtonsContainer = el('div', { className: 'left-buttons-container-2' });
-      leftButtonsContainer.append(...[
+      leftButtonsContainer.append(
         buildRestartButton(),
         buildBookmarkButton(),
         buildChatButton(),
-      ]);
+      );
       return leftButtonsContainer;
     }
 
@@ -364,10 +364,10 @@ class ChatSession {
 
     this.panel = buildPanelSkeleton();
     this.actionButton = buildActionButton();
-    $('.optibody', this.panel).append(...[
+    $('.optibody', this.panel).append(
       buildResponseContainer(),
       this.actionButton,
-    ]);
+    );
     insertAfter(buildLeftButtonsContainer(), $('.ai-name', this.panel));
 
     if (directchat) {
