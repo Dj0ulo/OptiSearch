@@ -58,7 +58,7 @@
       }, liEng);
 
       el("img", {
-        src: e.icon,
+        src: `../images/engines/${engineName}.png`,
         title: engineName,
         className: 'icon',
       }, div);

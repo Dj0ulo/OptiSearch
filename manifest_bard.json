@@ -24,7 +24,8 @@
       "src/styles/code-light-theme.css",
       "src/styles/code-dark-theme.css",
       "src/images/bard.png",
-      "src/images/bard_conversation_example.png"
+      "src/images/bard_conversation_example.png",
+      "src/images/engines/*"
     ],
     "matches": [
       "*://duckduckgo.com/*",

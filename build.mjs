@@ -215,13 +215,14 @@ function copyToBuildDir(buildDir) {
     if (resource.slice(-1) === '*' && fs.lstatSync(resource.slice(0, -1)).isDirectory()) {
       const dir = resource.slice(0, -1);
       for (let file of fs.readdirSync(dir)) {
-        files.push(path.join(dir, file));
+        if (fs.lstatSync(path.join(dir, file)).isFile()) {
+          files.push(path.join(dir, file));
+        }
       }
     } else {
       files.push(resource);
     }
   }
-
   // get parent dir of popupHtml
   const popupParentDir = path.dirname(popupHtml);
 

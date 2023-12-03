@@ -38,6 +38,7 @@
       "src/images/bing_search_allowed.png",
       "src/images/bing_search_forbidden.png",
       "src/images/bing_conversation_example.png",
+      "src/images/engines/*",
       "src/chat/bingchat/bing_socket.js"
     ],
     "matches": [

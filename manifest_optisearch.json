@@ -35,7 +35,8 @@
 		"resources": [
       "src/engines.json",
       "src/styles/*",
-      "src/images/*"
+      "src/images/*",
+      "src/images/engines/*"
     ],
     "matches": [
       "*://duckduckgo.com/*",
