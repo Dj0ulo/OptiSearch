@@ -69,9 +69,9 @@ function toTeX(element, convertWhole = true) {
  */
 function prettifyCode(element) {
   $$("pre", element).forEach((pre) => {
-    const surround = el("div", { innerHTML: pre.outerHTML, style: "position: relative" });
-    surround.append(createCopyButton(pre.innerText.trim()));
+    const surround = el("div", { style: "position: relative" });
     pre.parentNode.replaceChild(surround, pre);
+    surround.append(pre, createCopyButton(pre.innerText.trim()));
     $$("code", pre).forEach(c => hljs.highlightElement(c));
   });
 }
