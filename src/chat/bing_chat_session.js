@@ -187,7 +187,7 @@ class BingChatSession extends ChatSession {
                 throw BingChatSession.errors.forbidden;
             }
             if (body.item.result.value !== 'Success' && body.item.result.message) {
-              this.onmessage(ChatSession.infoHTML(body.item.result.message));
+              this.onMessage(ChatSession.infoHTML(body.item.result.message));
               return;
             }
           }
@@ -210,7 +210,7 @@ class BingChatSession extends ChatSession {
         return;
 
       if (msg.messageType === 'InternalSearchQuery') {
-        this.onmessage(ChatSession.infoHTML(`🔍 ${msg.text.replace(/`([^`]*)`/, '<strong>$1</strong>')}`));
+        this.onMessage(ChatSession.infoHTML(`🔍 ${msg.text.replace(/`([^`]*)`/, '<strong>$1</strong>')}`));
         return;
       }
       const refText = msg.adaptiveCards && msg.adaptiveCards[0]?.body.find(x => x.text && x.text.startsWith("[1]: http"))?.text;
@@ -243,7 +243,13 @@ class BingChatSession extends ChatSession {
           >Learn more&nbsp: ${Object.entries(sources).map(([href, n], i) =>
         `<a class="source" href="${href}" ${i >= maxVisible ? 'more' : ''}>${n}. ${new URL(href).host}</a>`).join('\n')}
           <a class="showmore source" title="Show more" invisible=${invisible}>+${invisible} more</a></div>`;
-      this.onmessage(bodyHTML, footHTML);
+          
+      this.onMessage(bodyHTML, footHTML);
+
+      $('.showmore', this.panel)?.addEventListener('click', ({ currentTarget }) => {
+        currentTarget.parentElement.classList.remove('less');
+        currentTarget.remove();
+      });
     }
     const doClose = packet.split('\x1e')
       .slice(0, -1)

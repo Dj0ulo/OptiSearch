@@ -59,6 +59,7 @@
         "src/utils.js",
         "src/settings.js",
 
+        "src/chat/message.js",
         "src/chat/chat_session.js",
         "src/chat/bard_session.js",
 

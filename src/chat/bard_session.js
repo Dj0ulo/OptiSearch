@@ -111,7 +111,7 @@ class BardSession extends ChatSession {
         const [substr, source, url, title] = [img[2], img[1][0][0], img[3][0][0], img[7][2]].map(escapeHtml);
         text = text.replace(substr, `<a href="${source}" style="display: inline-block;"><img src="${url}" alt="${title}" title="${title}"/></a>`);
       });
-      this.onmessage(text);
+      this.onMessage(text);
     } catch (e) {
       warn(e);
       this.onErrorMessage(`⚠️&nbsp;An error occured while parsing the response&nbsp:<br/>${e}`);

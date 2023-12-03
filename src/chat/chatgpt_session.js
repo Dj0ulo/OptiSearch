@@ -69,7 +69,7 @@ class ChatGPTSession extends ChatSession {
 
     const res = await this.backendApi(`conversation`, this.config(prompt));
     if (!res.eventStream) {
-      res.detail && this.onmessage(runMarkdown(res.detail));
+      res.detail && this.onMessage(runMarkdown(res.detail));
       throw res;
     }
     this.eventStreamID = res.id;
@@ -123,7 +123,7 @@ class ChatGPTSession extends ChatSession {
       this.session.parent_message_id = data.message.id;
       const text = data.message.content?.parts[0];
       if (text) {
-        this.onmessage(runMarkdown(text));
+        this.onMessage(runMarkdown(text));
       }
       return false;
     }

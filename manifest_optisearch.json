@@ -74,6 +74,7 @@
         "src/sites/sites.js",
         "src/settings.js",
 
+        "src/chat/message.js",
         "src/chat/chat_session.js",
         "src/chat/chatgpt_session.js",
 
