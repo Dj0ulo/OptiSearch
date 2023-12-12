@@ -42,6 +42,8 @@ function boxEl(element) {
 }
 
 async function get(url) {
+  if (!url)
+    return '';
   url = url.trim();
   
   if (url.startsWith('http')) {

@@ -22,4 +22,8 @@
             <assert actual="//optifoot/a" expected="'Dj0ulo'" />
         </it>
     </test>
+    <test src="https://stackoverflow.com/questions/44782476/split-a-numpy-array-both-horizontally-and-vertically">
+    </test>
+    <test src="https://stackoverflow.com/questions/72349410/multiplication-table-in-javascript-space-between-numbers">
+    </test>
 </testsuite>
