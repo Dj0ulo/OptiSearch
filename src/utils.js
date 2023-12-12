@@ -72,7 +72,11 @@ function prettifyCode(element) {
     const surround = el("div", { style: "position: relative" });
     pre.parentNode.replaceChild(surround, pre);
     surround.append(pre, createCopyButton(pre.innerText.trim()));
-    $$("code", pre).forEach(c => hljs.highlightElement(c));
+    $$("code", pre).forEach(c => {
+      // Escape inside
+      c.textContent = c.textContent;
+      hljs.highlightElement(c);
+    });
   });
 }
 
