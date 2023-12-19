@@ -401,6 +401,19 @@ class ChatSession {
     this.dispatch('disableSend');
   }
 
+  handleActionError(error) {
+    this.lastError = error;
+    this.session = null;
+    if (error && error.code && error.text) {
+      this.setCurrentAction(error.action ?? 'window');
+      this.onMessage(ChatSession.infoHTML(error.text));
+    }
+    else {
+      err(error.error || error);
+      this.onMessage(ChatSession.infoHTML(ChatSession.#undefinedError));
+    }
+  }
+
   async setupAndSend(prompt) {
     if (!this.sendingAllowed) return;
     
@@ -417,16 +430,7 @@ class ChatSession {
       await this.send(prompt);
     }
     catch (error) {
-      this.lastError = error;
-      this.session = null;
-      if (error && error.code && error.text) {
-        this.setCurrentAction('window');
-        this.onMessage(ChatSession.infoHTML(error.text));
-      }
-      else {
-        err(error.error || error);
-        this.onMessage(ChatSession.infoHTML(ChatSession.#undefinedError));
-      }
+      this.handleActionError(error);
     }
   }
 
