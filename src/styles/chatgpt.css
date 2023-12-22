@@ -191,6 +191,13 @@
   border-radius: 5px;
 }
 
+.optisearchbox select {
+  border: 1px solid;
+  padding: 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 
 /* COLOR THEMES */
 
@@ -268,4 +275,11 @@
 }
 .left-buttons-container-2 .continue-conversation-button {
   stroke: #bdbdbd;
+}
+
+.bright.optisearchbox select {
+  border-color: #ccc;
+}
+.dark.optisearchbox select {
+  border-color: #333;
 }

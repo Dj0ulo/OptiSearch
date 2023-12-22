@@ -296,9 +296,7 @@ class ChatSession {
       restartButton.addEventListener('click', async () => {
         if (restartButton.getAttribute('disabled') !== null) return;
         if (await Context.handleNotPremium()) return;
-        this.session = null;
-        this.discussion.clear();
-        this.setupAndSend();
+        this.restartConversation();
       });
       restartButton.setAttribute('disabled', '');
       this.listen('allowSend', () => this.session && restartButton.removeAttribute('disabled'));
@@ -401,6 +399,15 @@ class ChatSession {
     this.dispatch('disableSend');
   }
 
+  restartConversation() {
+    if (this.session && this.deleteConversationAfter) {
+      this.removeConversation();
+    }
+    this.session = null;
+    this.discussion.clear();
+    this.setupAndSend();
+  }
+
   handleActionError(error) {
     this.lastError = error;
     this.session = null;
@@ -425,9 +432,12 @@ class ChatSession {
     this.discussion.appendMessage(new MessageContainer(Author.Bot, ''));
     this.onMessage(ChatSession.infoHTML(`Waiting for <strong>${this.properties.name}</strong>...`));
     try {
-      if (!this.canSend())
+      if (!this.canSend()) {
         await this.init();
-      await this.send(prompt);
+      }
+      if (this.canSend()) {
+        await this.send(prompt);
+      }
     }
     catch (error) {
       this.handleActionError(error);
@@ -446,7 +456,7 @@ class ChatSession {
         break;
       case 'refresh':
         btn.textContent = 'Refresh';
-        btn.onclick = () => this.setupAndSend();
+        btn.onclick = () => this.restartConversation();
         break;
       case 'window':
         btn.textContent = this.lastError.button;
