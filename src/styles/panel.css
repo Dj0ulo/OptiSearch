@@ -151,6 +151,9 @@
   text-decoration: none;
   color: inherit !important;
 }
+.optiheader .right-buttons-container a:hover {
+  text-decoration: none;
+}
 .bright .optiheader .right-buttons-container {
   color: #bdbdbd;
 }
