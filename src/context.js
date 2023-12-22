@@ -1,4 +1,9 @@
 class Context {
+  static EXTENSION_SELECTOR_PREFIX = WhichExtension;
+  static BOX_CLASS = `${Context.EXTENSION_SELECTOR_PREFIX}-box`;
+  static BOX_SELECTOR = `.${Context.BOX_CLASS}`;
+  static STYLE_ELEMENT_ID = `${Context.EXTENSION_SELECTOR_PREFIX}-style`;
+  static DARK_BG_STYLE_ELEMENT_ID = `${Context.EXTENSION_SELECTOR_PREFIX}-dark-background-style`;
   static PANEL_CLASS = "optipanel";
   static RIGHT_COLUMN_CLASS = 'optisearch-column';
   static WIDE_COLUMN_CLASS = 'optisearch-column-wide';
@@ -146,16 +151,37 @@ class Context {
     if (isOptiSearch)
       styles = [...styles, ...['w3schools', 'wikipedia', 'genius']];
     const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`).catch(() => '')));
-    el('style', { className: 'optistyle', textContent: cssContents.join('\n') }, Context.docHead);
+    const allCss = this.addCssParentSelector(cssContents.join('\n'));
+    el('style', { id: Context.STYLE_ELEMENT_ID, textContent: allCss }, Context.docHead);
 
     if (!Context.engine.style)
       return;
 
     // Change style based on the search engine
     el('style', {
-      textContent: Context.engine.style,
-      className: `optistyle-${Context.engineName}`
+      textContent: Context.engine.style.trim().replaceAll('.optisearchbox', Context.BOX_SELECTOR),
+      id: `${Context.STYLE_ELEMENT_ID}-${Context.engineName}`
     }, Context.docHead);
+  }
+
+  static addCssParentSelector(cssContent) {
+    const cssRuleRegex = /(?!\s)([^{}%\/\\]+)({[^{}]*})/g; //avoid spaces, comments, @media, @keyframes
+    return cssContent.replace(cssRuleRegex, (_, selector, body) => 
+      `${selector.split(",").map(s => {
+        const sTrim = s.trim();
+        if (sTrim[0] === ':') return sTrim;
+        if (sTrim.includes('.optisearchbox')) {
+          return sTrim.replace('.optisearchbox', Context.BOX_SELECTOR);
+        }
+        if (sTrim.includes('.dark')) {
+          return sTrim.replace('.dark', `${Context.BOX_SELECTOR}.dark`);
+        }
+        if (sTrim.includes('.bright')) {
+          return sTrim.replace('.bright', `${Context.BOX_SELECTOR}.bright`);
+        }
+        return `${Context.BOX_SELECTOR} ${sTrim}`;
+      }).join(", ")} ${body}\n`
+    );
   }
 
   static executeTools() {
@@ -192,7 +218,7 @@ class Context {
       })
     }
 
-    const box = el("div", { className: `optisearchbox bright ${Context.engineName}` });
+    const box = el("div", { className: `${Context.BOX_CLASS} bright ${Context.engineName}` });
     Context.boxes.push(box);
     if (Context.compuleIsOnMobile())
       box.classList.add(Context.MOBILE_CLASS);
@@ -285,15 +311,17 @@ class Context {
   static updateColor() {
     const bg = getBackgroundColor();
     const dark = isDarkMode();
-    const allPanels = $$(".optisearchbox");
+    const allPanels = $$(Context.BOX_SELECTOR);
 
-    let style = $('#optisearch-bg');
-    if (!style)
-      style = el('style', { id: 'optisearch-bg' }, Context.docHead);
+    let style = $(`#${Context.DARK_BG_STYLE_ELEMENT_ID}`);
+    if (!style) {
+      style = el('style', { id: Context.DARK_BG_STYLE_ELEMENT_ID }, Context.docHead);
+    }
 
     if (dark) {
-      style.textContent = `.optisearchbox.dark {background-color: ${colorLuminance(bg, 0.02)}}
-      .optisearchbox.dark .optipanel .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}`;
+      style.textContent = `
+      ${Context.BOX_SELECTOR}.dark {background-color: ${colorLuminance(bg, 0.02)}}
+      ${Context.BOX_SELECTOR}.dark .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}`;
     }
     for (let p of allPanels) {
       if (dark)
@@ -373,7 +401,7 @@ class Context {
       if (isOnMobile === wasOnMobile)
         return;
       wasOnMobile = isOnMobile;
-      const allBoxes = $$('.optisearchbox');
+      const allBoxes = $$(Context.BOX_SELECTOR);
       allBoxes.forEach(p => p.classList[isOnMobile ? 'add' : 'remove'](Context.MOBILE_CLASS));
       Context.appendBoxes(allBoxes);
     });

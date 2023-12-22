@@ -12,115 +12,117 @@
   Colors: /blob/v0.64.0/lib/css/exports/_stacks-constants-colors.less
 */
 
-.optisearchbox.bright .hljs {
+.bright .hljs {
   /* var(--highlight-color) */
   color: #2f3337;
   /* var(--highlight-bg) */
   /* background: #f6f6f6; */
 }
 
-.optisearchbox.bright .hljs-subst {
+.bright .hljs-subst {
   /* var(--highlight-color) */
   color: #2f3337;
 }
 
-.optisearchbox.bright .hljs-comment {
+.bright .hljs-comment {
   /* var(--highlight-comment) */
   color: #656e77;
 }
 
-.optisearchbox.bright .hljs-keyword,
-.optisearchbox.bright .hljs-selector-tag,
-.optisearchbox.bright .hljs-meta .optisearchbox.bright .hljs-keyword,
-.optisearchbox.bright .hljs-doctag,
-.optisearchbox.bright .hljs-section {
+.bright .hljs-keyword,
+.bright .hljs-selector-tag,
+.bright .hljs-meta,
+.bright .hljs-keyword,
+.bright .hljs-doctag,
+.bright .hljs-section {
   /* var(--highlight-keyword) */
   color: #015692;
 }
 
-.optisearchbox.bright .hljs-attr {
+.bright .hljs-attr {
   /* var(--highlight-attribute); */
   color: #015692;
 }
 
-.optisearchbox.bright .hljs-attribute {
+.bright .hljs-attribute {
   /* var(--highlight-symbol) */
   color: #803378;
 }
 
-.optisearchbox.bright .hljs-name,
-.optisearchbox.bright .hljs-type,
-.optisearchbox.bright .hljs-number,
-.optisearchbox.bright .hljs-selector-id,
-.optisearchbox.bright .hljs-quote,
-.optisearchbox.bright .hljs-template-tag {
+.bright .hljs-name,
+.bright .hljs-type,
+.bright .hljs-number,
+.bright .hljs-selector-id,
+.bright .hljs-quote,
+.bright .hljs-template-tag {
   /* var(--highlight-namespace) */
   color: #b75501;
 }
 
-.optisearchbox.bright .hljs-selector-class {
+.bright .hljs-selector-class {
   /* var(--highlight-keyword) */
   color: #015692;
 }
 
-.optisearchbox.bright .hljs-string,
-.optisearchbox.bright .hljs-regexp,
-.optisearchbox.bright .hljs-symbol,
-.optisearchbox.bright .hljs-variable,
-.optisearchbox.bright .hljs-template-variable,
-.optisearchbox.bright .hljs-link,
-.optisearchbox.bright .hljs-selector-attr {
+.bright .hljs-string,
+.bright .hljs-regexp,
+.bright .hljs-symbol,
+.bright .hljs-variable,
+.bright .hljs-template-variable,
+.bright .hljs-link,
+.bright .hljs-selector-attr {
   /* var(--highlight-variable) */
   color: #54790d;
 }
 
-.optisearchbox.bright .hljs-meta,
-.optisearchbox.bright .hljs-selector-pseudo {
+.bright .hljs-meta,
+.bright .hljs-selector-pseudo {
   /* var(--highlight-keyword) */
   color: #015692;
 }
 
-.optisearchbox.bright .hljs-built_in,
-.optisearchbox.bright .hljs-title,
-.optisearchbox.bright .hljs-literal {
+.bright .hljs-built_in,
+.bright .hljs-title,
+.bright .hljs-literal {
   /* var(--highlight-literal) */
   color: #b75501;
 }
 
-.optisearchbox.bright .hljs-bullet,
-.optisearchbox.bright .hljs-code {
+.bright .hljs-bullet,
+.bright .hljs-code {
   /* var(--highlight-punctuation) */
   color: #535a60;
 }
 
-.optisearchbox.bright .hljs-meta .optisearchbox.bright .hljs-string {
+.bright .hljs-meta,
+.bright .hljs-string {
   /* var(--highlight-variable) */
   color: #54790d;
 }
 
-.optisearchbox.bright .hljs-deletion {
+.bright .hljs-deletion {
   /* var(--highlight-deletion) */
   color: #c02d2e;
 }
 
-.optisearchbox.bright .hljs-addition {
+.bright .hljs-addition {
   /* var(--highlight-addition) */
   color: #2f6f44;
 }
 
-.optisearchbox.bright .hljs-emphasis {
+.bright .hljs-emphasis {
   font-style: italic;
 }
 
-.optisearchbox.bright .hljs-strong {
+.bright .hljs-strong {
   font-weight: bold;
 }
 
-.optisearchbox.bright .hljs-formula,
-.optisearchbox.bright .hljs-operator,
-.optisearchbox.bright .hljs-params,
-.optisearchbox.bright .hljs-property,
-.optisearchbox.bright .hljs-punctuation,
-.optisearchbox.bright .hljs-tag {
-  /* purposely ignored */
-}
+/* purposely ignored
+.bright .hljs-formula,
+.bright .hljs-operator,
+.bright .hljs-params,
+.bright .hljs-property,
+.bright .hljs-punctuation,
+.bright .hljs-tag {}
+*/
