@@ -10,18 +10,28 @@ class BardSession extends ChatSession {
     session: {
       code: 'BARD_SESSION',
       url: 'https://accounts.google.com/',
-      text: "Please login to Google, then refresh :",
+      text: "Please login to Google, then refresh&nbsp;:",
       button: "Login to Google",
     },
     captcha: {
       code: 'BARD_CAPTCHA',
       url: 'https://bard.google.com/',
-      text: "Too many requests. Please solve the captcha and refresh :",
+      text: "Too many requests. Please solve the captcha and refresh&nbsp;:",
       button: "Solve Google Bard captcha",
     },
   }
+  static accountConfigKeys = {
+    index: 'QrtxK',
+    hasNotBard: 'u21JSd',
+    email: 'oPEP7c',
+    at: 'SNlM0e',
+    bl: 'cfb2h',
+  }
   static get storageKey() {
     return "SAVE_BARD";
+  }
+  get urlPrefix() {
+    return `https://bard.google.com/u/${Context.save['googleAccount']}`;
   }
 
   constructor() {
@@ -34,25 +44,69 @@ class BardSession extends ChatSession {
   }
 
   async fetchSession() {
+    const { at, bl, hasNotBard } = await BardSession.fetchAccountData(Context.save['googleAccount']);
+    if (hasNotBard) {
+      this.errorNoBardAccess();
+      return null;
+    }
+    this.session = { at, bl };
+    return this.session;
+  }
+
+  static async fetchAvailableAccounts(offset = 0) {
+    const testCount = 8;
+    const accounts = await Promise.all([...Array(testCount).keys()].map(async i => {
+      try {
+        const { index, name, email, hasNotBard, img32 } = await BardSession.fetchAccountData(offset + i);
+        if (i + offset != index) {
+          return null;
+        }
+        return {
+          index: parseInt(index),
+          name,
+          email,
+          hasBard: !hasNotBard,
+          img32
+        };
+      } catch (error) {
+        if (error === BardSession.errors.captcha || error === BardSession.errors.session) {
+          return null;
+        }
+        throw error;
+      }
+    }));
+    if (accounts.at(-1) !== null) {
+      return [
+        ...accounts.filter(a => !!a),
+        ...(await BardSession.fetchAvailableAccounts(offset + testCount))
+      ];
+    }
+    return accounts.filter(a => !!a);
+  }
+
+  static async fetchAccountData(user_id=0) {
     const parseData = (html) => {
       let str = 'window.WIZ_global_data = ';
       let beg = html.indexOf(str) + str.length;
       let end = html.indexOf('</script>', beg);
       const raw = html.slice(beg, end);
-      return JSON.parse(raw.slice(0, raw.lastIndexOf('}') + 1));
+      const data = JSON.parse(raw.slice(0, raw.lastIndexOf('}') + 1));
+      if (!(BardSession.accountConfigKeys.email in data)) {
+        throw BardSession.errors.session;
+      }
+      const res = {
+        name: parseStr(html, /<div class="gb_zb">(.*?)<\/div>/),
+        img32: parseStr(html, /(https:\/\/lh3\.googleusercontent\.com\/[^\s'"]*?s32[^\s'"]*)/),
+        img64: parseStr(html, /(https:\/\/lh3\.googleusercontent\.com\/[^\s'"]*?s64[^\s'"]*)/),
+      };
+      Object.entries(BardSession.accountConfigKeys).forEach(([k, v]) => res[k] = data[v]);
+      return res;
     };
-
-    const html = await bgFetch('https://bard.google.com/', { credentials: "include" });
-    if (html.status && html.status == 429)
+    const r = await bgFetch(`https://bard.google.com/u/${user_id}/`, { credentials: "include" });
+    if (r.status && r.status == 429) {
       throw BardSession.errors.captcha;
-    const data = parseData(html);
-    if (!('oPEP7c' in data))
-      throw BardSession.errors.session;
-    this.session = {
-      'at': Object.values(data).find(v => typeof v === 'string' && v.match(/[^:]+:\d+/)),
-      'bl': Object.values(data).find(v => typeof v === 'string' && v.startsWith('boq_assistant'))
-    };
-    return this.session;
+    }
+    return parseData(r);
   }
 
   async send(prompt) {
@@ -69,40 +123,26 @@ class BardSession extends ChatSession {
       ]),
     ]);
 
-    const cleanResponse = (response) => {
-      let i = response.indexOf('[[');
-      i = response.indexOf(',', i);
-      i = response.indexOf(',', i + 1);
-      if (response.slice(i + 1, i + 5) === 'null')
+    const cleanResponse = (raw) => {
+      let i = 0;
+      try {
+        i = raw.indexOf('[[');
+        i = raw.indexOf(',', i);
+        i = raw.indexOf(',', i + 1);
+      } catch (e) {
         throw "Output is null";
-      if (response.slice(i + 1, i + 2) !== '"')
+      }
+      if (raw.slice(i + 1, i + 5) === 'null')
+        throw "Output is null";
+      if (raw.slice(i + 1, i + 2) !== '"')
         throw "Invalid output";
       return JSON.parse(
-        response.slice(i + 2, response.indexOf('\n', i) - 3)
+        raw.slice(i + 2, raw.indexOf('\n', i) - 3)
           .replace(/\\(\\)?/g, (_, backslash) => backslash ?? '')
       );
     };
-  
-    let result = null;
-    try {
-      result = cleanResponse(await askBard());
-    } catch (e) {
-      if (e == "Output is null") {
-        this.onErrorMessage(`Please make sure you have access to <a href="https://bard.google.com/">Google Bard</a>`);
-        return;
-      } else {
-        warn(e);
-      }
-    }
-    if (!result) {
-      this.onErrorMessage();
-      return;
-    }
-    this.allowSend();
-    try {
-      this.session.conversation = result[1];
 
-      const responses = result[4];
+    const parseMessage = (responses) => {
       const firstResponse = responses[0];
       this.session.conversation.push(firstResponse[0]);
       let images = firstResponse[4];
@@ -111,11 +151,59 @@ class BardSession extends ChatSession {
         const [substr, source, url, title] = [img[2], img[1][0][0], img[3][0][0], img[7][2]].map(escapeHtml);
         text = text.replace(substr, `<a href="${source}" style="display: inline-block;"><img src="${url}" alt="${title}" title="${title}"/></a>`);
       });
-      this.onMessage(text);
+      return text;
+    }
+  
+    let res = null;
+    try {
+      res = cleanResponse(await askBard());
     } catch (e) {
-      warn(e);
+      if (e == "Output is null") {
+        this.errorNoBardAccess();
+        return;
+      } else {
+        warn(e);
+      }
+    }
+
+    if (!res) {
+      this.onErrorMessage();
+      return;
+    }
+    this.allowSend();
+
+    try {
+      this.session.conversation = res[1];
+      this.onMessage(parseMessage(res[4]));
+    } catch (e) {
       this.onErrorMessage(`⚠️&nbsp;An error occured while parsing the response&nbsp:<br/>${e}`);
     }
+  }
+
+  async errorNoBardAccess() {
+    const accounts = await BardSession.fetchAvailableAccounts();
+    this.handleActionError({
+      code: 'BARD_ACCOUNT',
+      text: `
+      This Google account has not access to Bard yet, please <a href="${this.urlPrefix}">activate it</a>
+      or choose another Google account for Bard&nbsp;:
+      <br>
+      <select id="google-account">
+      ${accounts.map((a, i) => `
+        <option value="${i}" ${a.index == Context.save['googleAccount'] ? 'selected' : ''}>
+          ${a.hasBard ? '✅' : '❌'} ${a.email}
+        </option>
+      `).join('')}
+      </select>
+      `,
+      action: "refresh",
+    });
+    const input = $$("#google-account");
+    input.value = Context.save['googleAccount'];
+    input.addEventListener("change", () => {
+      Context.save['googleAccount'] = parseInt(input.value);
+      saveSettings(Context.save);
+    });
   }
 
   removeConversation() {
@@ -133,7 +221,7 @@ class BardSession extends ChatSession {
       rt: "c",
       ...params,
     }
-    return bgFetch(`https://bard.google.com/_/BardChatUi/data/${method}?${this.encodeURIParams(params)}`, {
+    return bgFetch(`${this.urlPrefix}/_/BardChatUi/data/${method}?${this.encodeURIParams(params)}`, {
       headers: {
         "accept": "*/*",
         "cache-control": "no-cache",

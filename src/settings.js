@@ -46,42 +46,51 @@ const Settings = {
   },
 };
 
-if (isOptiSearch) {
-  Settings['Sites'] = Sites;
-  Settings['Tools'] = Tools;
-  Settings['Options']['maxResults'] = {
-    name: "Max. site results panels",
-    default: 3,
-    min: 0,
-    max: 9,
-  };
-  Settings['AI Assitant'] = {
-    chatgpt: {
-      local_icon: "chatgpt.png",
-      name: "ChatGPT",
+switch(WhichExtension) {
+  case 'optisearch':
+    Settings['Sites'] = Sites;
+    Settings['Tools'] = Tools;
+    Settings['Options']['maxResults'] = {
+      name: "Max. site results panels",
+      default: 3,
+      min: 0,
+      max: 9,
+    };
+    Settings['AI Assitant'] = {
+      chatgpt: {
+        local_icon: "chatgpt.png",
+        name: "ChatGPT",
+        default: true,
+        slaves: ['directchat'],
+      },
+      ...Settings['AI Assitant'],
+    }
+    break;
+  case 'bingchat':
+    Settings['AI Assitant']['bingConvStyle'] = {
+      name: "Conversation style",
+      options: {
+        'creative': { name: 'Creative (GPT-4)' },
+        'balanced': { name: 'Balanced' },
+        'precise': { name: 'Precise' },
+      },
+      default: 'balanced',
+    }
+    Settings['AI Assitant']['bingInternalSearch'] = {
+      name: "Bing internal search",
+      title: 'Allow Bing to make internal search before giving you an answer. Takes more time to answer.',
       default: true,
-      slaves: ['directchat'],
-    },
-    ...Settings['AI Assitant'],
-  }
-}
-
-if (WhichExtension === 'bingchat') {
-  Settings['AI Assitant']['bingConvStyle'] = {
-    name: "Conversation style",
-    options: {
-      'creative': { name: 'Creative (GPT-4)' },
-      'balanced': { name: 'Balanced' },
-      'precise': { name: 'Precise' },
-    },
-    default: 'balanced',
-  }
-  Settings['AI Assitant']['bingInternalSearch'] = {
-    name: "Bing internal search",
-    title: 'Allow Bing to make internal search before giving you an answer. Takes more time to answer.',
-    default: true,
-    active: false,
-  }
+      active: false,
+    }
+    break;
+  case 'bard':
+    Settings['AI Assitant']['googleAccount'] = {
+      name: "Google account ID",
+      title: 'Google account number to use with Bard',
+      default: 0,
+      min: 0,
+    };
+    break;
 }
 
 const getSettings = () => Settings;

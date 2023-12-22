@@ -448,3 +448,10 @@ function premiumPresentationPopup() {
     height: 700,
   });
 }
+
+function parseStr(str, regex) {
+  const match = str.match(regex);
+  if (!match)
+    return '';
+  return match[1];
+}
