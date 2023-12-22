@@ -198,7 +198,7 @@ class BardSession extends ChatSession {
       `,
       action: "refresh",
     });
-    const input = $$("#google-account");
+    const input = $("#google-account");
     input.value = Context.save['googleAccount'];
     input.addEventListener("change", () => {
       Context.save['googleAccount'] = parseInt(input.value);
