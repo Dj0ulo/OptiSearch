@@ -4,7 +4,7 @@ class BardSession extends ChatSession {
     link: "https://bard.google.com",
     icon: "src/images/bard.png",
     local_icon: "bard.png",
-    href: "https://bard.google.com",
+    href: this.urlPrefix,
   }
   static errors = {
     session: {
@@ -12,12 +12,6 @@ class BardSession extends ChatSession {
       url: 'https://accounts.google.com/',
       text: "Please login to Google, then refresh&nbsp;:",
       button: "Login to Google",
-    },
-    captcha: {
-      code: 'BARD_CAPTCHA',
-      url: 'https://bard.google.com/',
-      text: "Too many requests. Please solve the captcha and refresh&nbsp;:",
-      button: "Solve Google Bard captcha",
     },
   }
   static accountConfigKeys = {
@@ -69,7 +63,7 @@ class BardSession extends ChatSession {
           img32
         };
       } catch (error) {
-        if (error === BardSession.errors.captcha || error === BardSession.errors.session) {
+        if (error.code === 'BARD_CAPTCHA' || error.code === 'BARD_SESSION') {
           return null;
         }
         throw error;
@@ -102,9 +96,15 @@ class BardSession extends ChatSession {
       Object.entries(BardSession.accountConfigKeys).forEach(([k, v]) => res[k] = data[v]);
       return res;
     };
-    const r = await bgFetch(`https://bard.google.com/u/${user_id}/`, { credentials: "include" });
+    const url = `https://bard.google.com/u/${user_id}/`;
+    const r = await bgFetch(url, { credentials: "include" });
     if (r.status && r.status == 429) {
-      throw BardSession.errors.captcha;
+      throw {
+        code: 'BARD_CAPTCHA',
+        url,
+        text: "Too many requests. Please solve the captcha and refresh&nbsp;:",
+        button: "Solve Google Bard captcha",
+      };
     }
     return parseData(r);
   }
