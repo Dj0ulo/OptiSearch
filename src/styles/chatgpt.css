@@ -118,6 +118,14 @@ a.chat-title {
   display: none;
 }
 /*---------------Discussion------------------*/
+.response-container .input-container,
+.response-container .box-message-container.user{
+  display: none;
+}
+.response-container .message-container {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}
 .chat-container *::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -126,36 +134,36 @@ a.chat-title {
   background-color: #686868;
   border-radius: 20px;
 }
-.discussion-container {
+.chat-container .discussion-container {
   max-height: 400px;
   padding: 0 5px;
   overflow-y: auto;
   overflow-x: clip;
 }
-.box-message-container {
+.chat-container .box-message-container {
   display: flex;
   margin: 0.5em 0;
 }
-.box-message-container.user{
+.chat-container .box-message-container.user{
   justify-content: flex-end;
 }
-.message-container {
+.chat-container .message-container {
   border-radius: 8px 8px 8px 0;
   padding: 0.4em 0.5em;
   max-width: -webkit-fill-available;
 }
-.user > .message-container {
+.chat-container .user > .message-container {
   border-radius: 8px 8px 0 8px;
 }
-.message-container p,
-.message-container ul,
-.message-container ol {
+.chat-container .message-container p,
+.chat-container .message-container ul,
+.chat-container .message-container ol {
   margin-block-start: 0em !important;
 }
-.message-container .chat-info {
+.chat-container .message-container .chat-info {
   margin: 0;
 }
-.message-container pre.prettyprint{
+.chat-container .message-container pre.prettyprint{
   max-height: unset;
 }
 .chat-container .input-container {
@@ -235,19 +243,19 @@ select {
   background-color: #293740;
 }
 
-.bright .message-container {
+.bright .chat-container .message-container {
   color: #222222;
   background: #f7f7f7;
 }
-.dark .message-container {
+.dark .chat-container .message-container {
   color: #dcdcdc;
   background-color: #3b3b3b;
 }
-.bright .user > .message-container{
+.bright .chat-container .user > .message-container{
   color: white;
   background-color: #0051ff;
 }
-.dark .user > .message-container {
+.dark .chat-container .user > .message-container {
   background-color: #0068eb;
 }
 

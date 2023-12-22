@@ -191,7 +191,7 @@ class ChatSession {
       });
       this.listen('allowSend', () => displayElement(sendButton));
       this.listen('disableSend', () => hideElement(sendButton));
-      sendButton.addEventListener('click', () => this.dispatch('sendTextArea'));
+      sendButton.addEventListener('click', () => this.sendTextArea());
       return sendButton;
     }
     
@@ -210,11 +210,12 @@ class ChatSession {
         textArea.value = value;
         this.dispatch('textAreaChange', textArea.value);
       };
-      this.listen('sendTextArea', () => {
+      this.sendTextArea = async () => {
         if (!this.sendingAllowed || !textArea.value) return;
+        if (await Context.handleNotPremium()) return;
         this.setupAndSend(textArea.value);
         setTextAreaValue('');
-      });
+      };
       this.listen('allowSend', () => {
         textArea.disabled = false;
         textArea.placeholder = 'Ask me anything...';
@@ -234,7 +235,7 @@ class ChatSession {
       textArea.addEventListener('keypress', (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
-          this.dispatch('sendTextArea');
+          this.sendTextArea();
         }
       });
       return textArea;
@@ -261,29 +262,13 @@ class ChatSession {
     }
 
     const buildChatContainer = () => {
-      const chatContainer = el('div', { className: 'chat-container' });
-      hideElement(chatContainer);
-      this.listen('conversationModeSwitched', () => displayElement(chatContainer));
+      const chatContainer = el('div', { className: 'response-container' });
+      this.listen('conversationModeSwitched', () => chatContainer.className = 'chat-container');
       chatContainer.append(
         this.discussion.el,
         buildInputContainer(),
       );
       return chatContainer;
-    }
-
-    const buildResponseContainer = () => {
-      const responseContainer = el("div");
-      const chatContainer = buildChatContainer();
-      this.listen('conversationModeSwitched', () => {
-        responseContainer.innerHTML = '';
-        responseContainer.append(chatContainer);
-      });
-      this.listen('onMessage', (bodyHTML) => {
-        if (this.mode !== ChatSession.Mode.Text) return;
-        responseContainer.innerHTML = bodyHTML;
-        prettifyCode(responseContainer);
-      });
-      return responseContainer;
     }
     
     /** Left buttons **/
@@ -363,7 +348,7 @@ class ChatSession {
     this.panel = buildPanelSkeleton();
     this.actionButton = buildActionButton();
     $('.optibody', this.panel).append(
-      buildResponseContainer(),
+      buildChatContainer(),
       this.actionButton,
     );
     insertAfter(buildLeftButtonsContainer(), $('.ai-name', this.panel));
