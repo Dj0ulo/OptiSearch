@@ -116,25 +116,25 @@
   z-index: 2;
 }
 
-.optiheader .left-buttons-container-2 {
+.optiheader .left-buttons-container {
   position: relative;
   display: block;
   min-width: fit-content;
   margin-left: 5px;
   top: 5px;
 }
-.optiheader .left-buttons-container-2 > * {
+.optiheader .left-buttons-container > * {
   margin-left: 5px;
   cursor: pointer;
   display: inline-block;
   user-select: none;
 }
-.optiheader .left-buttons-container-2 [disabled] {
+.optiheader .left-buttons-container [disabled] {
   fill-opacity: 0.4;
   cursor: not-allowed;
 }
 
-.optiheader .left-buttons-container-2 img {
+.optiheader .left-buttons-container img {
   width: 20px;
   height: 20px;
 }

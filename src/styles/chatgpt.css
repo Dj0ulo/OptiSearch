@@ -277,10 +277,10 @@ select {
   background-color: #eeeeee;
 }
 
-.left-buttons-container-2 {
+.left-buttons-container {
   fill: #bdbdbd;
 }
-.left-buttons-container-2 .continue-conversation-button {
+.left-buttons-container .continue-conversation-button {
   stroke: #bdbdbd;
 }
 

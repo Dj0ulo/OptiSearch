@@ -310,7 +310,7 @@ class ChatSession {
     }
 
     const buildLeftButtonsContainer = () => {
-      const leftButtonsContainer = el('div', { className: 'left-buttons-container-2' });
+      const leftButtonsContainer = el('div', { className: 'left-buttons-container' });
       leftButtonsContainer.append(
         buildBookmarkButton(),
         buildChatButton(),
