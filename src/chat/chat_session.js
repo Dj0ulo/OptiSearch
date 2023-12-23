@@ -4,11 +4,14 @@ class ChatSession {
   static #abstractMethodError = "This method should be inherited";
   static #nameError = "The inherited class from ChatSession should be given a name";
   static #undefinedError = "⚠️ Oups, an error occured. Please try again. ⚠️";
-  static #svgs = {
+  static Svg = {
     send: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" class="h-4 w-4 m-1 md:m-0" stroke-width="2"><path d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z" fill="currentColor"></path></svg>',
     chat: '<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z"/><path d="M8 10.5H16" stroke-linecap="round"/><path d="M8 14H13.5" stroke-linecap="round"/></svg>',
+    // The following icons come from https://www.veryicon.com/icons/miscellaneous/feather-v423
     emptyBookmark: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="21" height="21" viewBox="0 0 24 24"><path d="M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z M 6 4 L 18 4 L 18 19.162109 L 12 16.933594 L 6 19.162109 L 6 4 z"></path></svg>',
     filledBookmark: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="21" height="21" viewBox="0 0 24 24"><path d="M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z"></path></svg>',
+    emptySet: '<svg class="svg-icon"  width="21" height="21" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 981.333333C251.733333 981.333333 42.666667 772.266667 42.666667 512S251.733333 42.666667 512 42.666667s469.333333 209.066667 469.333333 469.333333-209.066667 469.333333-469.333333 469.333333z m0-853.333333c-213.333333 0-384 170.666667-384 384s170.666667 384 384 384 384-170.666667 384-384-170.666667-384-384-384z"  /><path d="M814.933333 857.6c-12.8 0-21.333333-4.266667-29.866666-12.8L179.2 238.933333c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l601.6 601.6c17.066667 17.066667 17.066667 42.666667 0 59.733333-4.266667 12.8-17.066667 17.066667-25.6 17.066667z"  /></svg>',
+    magnifyingGlass: '<svg class="svg-icon" width="21" height="21" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M469.333333 853.333333c-213.333333 0-384-170.666667-384-384s170.666667-384 384-384 384 170.666667 384 384-170.666667 384-384 384z m0-682.666666c-166.4 0-298.666667 132.266667-298.666666 298.666666s132.266667 298.666667 298.666666 298.666667 298.666667-132.266667 298.666667-298.666667-132.266667-298.666667-298.666667-298.666666z"  /><path d="M896 938.666667c-12.8 0-21.333333-4.266667-29.866667-12.8L682.666667 742.4c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l183.466667 183.466666c17.066667 17.066667 17.066667 42.666667 0 59.733334-8.533333 8.533333-17.066667 12.8-29.866667 12.8z"  /></svg>',
   }
   
   static errors = {};
@@ -178,7 +181,7 @@ class ChatSession {
         type: 'button',
         className: 'send-button',
         title: 'Send message',
-        innerHTML: ChatSession.#svgs.send,
+        innerHTML: ChatSession.Svg.send,
       });
       this.listen('textAreaChange', (value) => {
         if (!value) {
@@ -278,7 +281,7 @@ class ChatSession {
       this.setDeleteConversationAfter = async (value) => {
         if (await Context.handleNotPremium()) return;
         this.deleteConversationAfter = value;
-        bookmark.innerHTML = value ? ChatSession.#svgs.emptyBookmark : ChatSession.#svgs.filledBookmark;
+        bookmark.innerHTML = value ? ChatSession.Svg.emptyBookmark : ChatSession.Svg.filledBookmark;
       };
       this.setDeleteConversationAfter(true);
       bookmark.addEventListener('click', () => {
@@ -291,7 +294,7 @@ class ChatSession {
       const continueChat = el('div', {
         title: 'Continue the conversation',
         className: 'continue-conversation-button',
-        innerHTML: ChatSession.#svgs.chat,
+        innerHTML: ChatSession.Svg.chat,
       });
       continueChat.addEventListener('click', async () => {
         if (await Context.handleNotPremium()) return;
@@ -320,9 +323,9 @@ class ChatSession {
     }
 
     const buildPauseButton = () => {
-      const playPauseButton = el('div', { className: 'play-pause', textContent: '\u21e5' });
+      const playPauseButton = el('div', { className: 'play-pause' });
       const setPlayPauseText = () => {
-        playPauseButton.textContent = Context.get('directchat') ? '\u23f8' : '\u23f5';
+        playPauseButton.textContent = Context.get('directchat') ? '\u23f8' : '▶';
         playPauseButton.title = Context.get('directchat') ? 'Pause the auto-generation' : 'Auto generate at search';
         if (this.currentAction === 'send' && Context.get('directchat')) {
           this.setupAndSend();

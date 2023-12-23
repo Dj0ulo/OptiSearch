@@ -24,6 +24,16 @@ class BingChatSession extends ChatSession {
     return "SAVE_BINGCHAT";
   }
 
+  async isSearchDisabled() {
+    if (Context.get('bingInternalSearch')) return false;
+    const notPremium = await Context.checkIfUserStillNotPremium();
+    if (notPremium) {
+      Context.set('bingInternalSearch', true);
+      return false;
+    }
+    return true;
+  }
+
   /** @type {HTMLImageElement | null} */
   bingIconElement = null;
 
@@ -97,34 +107,26 @@ class BingChatSession extends ChatSession {
   createPanel(directchat = true) {
     super.createPanel(directchat);
 
-    /*TODO implement #nosearch when it is available in bing
-    const leftButtonsContainer = $('.left-buttons-container', this.panel)
-
-    const allowInternalSearchButton = el('div', {
-      className: 'bing-internal-search-button headerhover',
-      title: 'Bing Internal Search',
-    }, leftButtonsContainer);
-
-    el('img', { 
-      src: chrome.runtime.getURL('src/images/bing_search_allowed.png'),
-      className: 'bing-internal-search-allowed',
-    }, allowInternalSearchButton);
-    el('img', { 
-      src: chrome.runtime.getURL('src/images/bing_search_forbidden.png'),
-      className: 'bing-internal-search-forbidden',
-    }, allowInternalSearchButton);
-
-    allowInternalSearchButton.toggleClass = () => {
-      allowInternalSearchButton.classList.toggle('allowed', Context.save['bingInternalSearch']);
-      allowInternalSearchButton.classList.toggle('forbidden', !Context.save['bingInternalSearch']);
+    const buildBookmarkButton = () => {
+      const glass = el('div', {
+        className: 'bing-search-button',
+      });
+      const updateInternalSearchButton = async () => {
+        const disabled = await this.isSearchDisabled();
+        glass.innerHTML = disabled ? ChatSession.Svg.emptySet : ChatSession.Svg.magnifyingGlass;
+        glass.title = disabled ? 'Bing internal search disabled' : 'Bing internal search enabled';
+      };
+      updateInternalSearchButton();
+      glass.addEventListener('click', async () => {
+        if (await Context.handleNotPremium()) return;
+        Context.set('bingInternalSearch', !Context.get('bingInternalSearch'));
+        updateInternalSearchButton();
+      });
+      Context.addSettingListener('bingInternalSearch', updateInternalSearchButton);
+      return glass;
     };
-    allowInternalSearchButton.toggleClass();
-    allowInternalSearchButton.onclick = () => {
-      Context.save['bingInternalSearch'] = !Context.isActive('bingInternalSearch');
-      saveSettings(Context.save);
-      allowInternalSearchButton.toggleClass();
-    };
-    */
+    const leftButtonsContainer = $('.left-buttons-container', this.panel);
+    leftButtonsContainer.append(buildBookmarkButton());    
 
     this.bingIconElement = $('img', $('.ai-name', this.panel));
     const setConversationStyle = (mode = 'balanced') => {
@@ -363,8 +365,8 @@ class BingChatSession extends ChatSession {
       optionsSets.push(...convStyle);
     }
 
-    if (!Context.isActive('bingInternalSearch')) {
-      prompt = '#nosearch ' + prompt;
+    if (await this.isSearchDisabled()) {
+      optionsSets.push("nosearchall");
     }
 
     return {

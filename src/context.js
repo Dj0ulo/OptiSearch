@@ -116,6 +116,10 @@ class Context {
     Context.executeTools();
   }
 
+  static async checkIfUserStillNotPremium() {
+    return Context.isPremiumUser === false && await Context.checkPremiumSubscription() === false;
+  }
+
   /** 
    * Opens premium popup if the user doesn't have premium features.
    * Useful to use like this at the beginning of an onclick handler from a premium feature:
@@ -124,7 +128,7 @@ class Context {
    * @returns {Promise<boolean>} true if the user DOESN'T have premium features
    */
   static async handleNotPremium() {
-    if(Context.isPremiumUser === false && await Context.checkPremiumSubscription() === false) {
+    if(await Context.checkIfUserStillNotPremium()) {
       premiumPresentationPopup();
       return true;
     }
