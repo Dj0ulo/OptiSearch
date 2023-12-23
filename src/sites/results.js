@@ -113,8 +113,6 @@
   function panelFromSite({ site, title, link, icon, header, body, foot }) {
     const panel = el("div", { className: `${Context.PANEL_CLASS}` });
     const headPanel = el("div", { className: "optiheader" }, panel);
-    //watermark
-    el("div", { className: "watermark", textContent: "OptiSearch" }, headPanel);
 
     const a = el("a", { href: link, className: "result-link" }, headPanel);
 

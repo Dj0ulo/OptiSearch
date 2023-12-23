@@ -198,14 +198,21 @@ class Context {
    * @returns {Element} the box where the panel is 
    */
   static appendPanel(panel, prepend = false) {
+    const buildTopButtons = () => {
+      const topButtonsContainer = el('div', { className: 'top-buttons-container headerhover' });
+      const star = el('div', { className: 'thumb', title: 'Rate this extension' }, topButtonsContainer);
+      el('a', { textContent: '👍', href: webstore + '/reviews' }, star);
+      const crown = el('div', { className: 'star', title: 'Premium subscription', textContent: '⭐' }, topButtonsContainer);
+      crown.addEventListener('click', premiumPresentationPopup);
+      const heart = el('div', { className: 'heart', title: 'Donate' }, topButtonsContainer);
+      el('a', { textContent: '❤️', href: donationLink }, heart);
+      return topButtonsContainer;
+    }
     const header = $('.optiheader', panel);
     if (header) {
+      header.prepend(el('div', { className: 'watermark', textContent: 'OptiSearch' }, header));
+      header.prepend(buildTopButtons());
       const rightButtonsContainer = el('div', { className: 'right-buttons-container headerhover' }, header);
-
-      const star = el('div', { className: 'rate', title: 'Rate this extension' }, rightButtonsContainer);
-      el('a', { textContent: '\u2605', href: webstore + '/reviews' }, star);
-      const heart = el('div', { className: 'donate', title: 'Donate' }, rightButtonsContainer);
-      el('a', { textContent: '\u2764', href: donationLink }, heart);
 
       const expandArrow = el('div', { className: 'new-expand-arrow', textContent: '\u21e5' }, rightButtonsContainer);
       const setTitleExpand = () => expandArrow.title = Context.save['wideColumn'] ? 'Minimize the panel' : 'Expand the panel';

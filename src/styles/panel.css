@@ -87,24 +87,33 @@
   max-height: 400px;
 }
 
-.watermark {
-  position: absolute;
-  right: 0;
-  margin: 0px 15px;
-  color: #999999;
-}
-
-.optipanel .watermark {
-  font-size: 10px;
-  top: 5px;
-}
-
 .optiheader .headerhover {
   opacity: 0;
   transition: opacity 0.2s;
 }
 .optiheader:hover .headerhover {
   opacity: 1;
+}
+.optiheader .watermark {
+  opacity: 1;
+  transition: opacity 0.2s;
+  z-index: 1;
+}
+.optiheader:hover .watermark {
+  opacity: 0;
+}
+
+.optiheader .watermark, 
+.optiheader .top-buttons-container {
+  position: absolute;
+  right: 0;
+  margin: 0px 15px;
+  color: #999999;
+  font-size: 10px;
+  top: 5px;
+}
+.optiheader .top-buttons-container {
+  z-index: 2;
 }
 
 .optiheader .left-buttons-container-2 {
@@ -139,6 +148,7 @@
   margin-right: 15px;
 }
 
+.optiheader .top-buttons-container > *,
 .optiheader .right-buttons-container > * {
   margin-left: 5px;
   cursor: pointer;
@@ -146,12 +156,16 @@
   user-select: none;
   position: relative;
   transition: color 0.3s, text-shadow 0.3s;
+  color: transparent;  
+  text-shadow: 0 0 0 #bdbdbd;
 }
+.optiheader .top-buttons-container a,
 .optiheader .right-buttons-container a {
   text-decoration: none;
   color: inherit !important;
 }
-.optiheader .right-buttons-container a:hover {
+.optiheader .top-buttons-container a:hover,
+.optiheader.right-buttons-container a:hover {
   text-decoration: none;
 }
 .bright .optiheader .right-buttons-container {
@@ -165,17 +179,14 @@
   text-shadow: 0 0 15px white;
 }
 
-.optiheader .right-buttons-container .donate {
-  font-size: 20px;
+.optiheader .thumb:hover {
+  text-shadow: 0 0 0 #31a1fd;
 }
-.optiheader .right-buttons-container .donate:hover {
-  color: #ff4949;
+.optiheader .star:hover {
+  text-shadow: 0 0 0 #ffe03e;
 }
-.optiheader .right-buttons-container .rate {
-  font-size: 24px;
-}
-.optiheader .right-buttons-container .rate:hover {
-  color: #ffe03e;
+.optiheader .heart:hover {
+  text-shadow: 0 0 0 #ff4949;
 }
 
 .optiheader .right-buttons-container .new-expand-arrow {

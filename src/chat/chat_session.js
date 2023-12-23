@@ -127,7 +127,6 @@ class ChatSession {
   
       panel.innerHTML = `
       <div class="optiheader">
-        <div class="watermark">OptiSearch</div>
         <div class="ai-name">
           <img alt="${this.properties.name} icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
           <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
