@@ -12,6 +12,7 @@ class Context {
   static engines = {};
   static engine = {};
   static save = {};
+  static settingsListeners = {};
 
   static boxes = [];
 
@@ -99,13 +100,15 @@ class Context {
       return;
     }
     // Bigger right column
-    if (Context.isActive('wideColumn'))
+    if (Context.get('wideColumn')) {
       Context.wideColumn(true, true);
+    }
+    Context.addSettingListener('wideColumn', value => Context.wideColumn(value, false));
 
     chrome.runtime.onMessage.addListener((message) => {
-      if ('wideColumn' in message) {
-        Context.save['wideColumn'] = message.wideColumn;
-        Context.wideColumn(message.wideColumn, false);
+      if (message.type === 'updateSetting') {
+        Context.save[message.key] = message.value;
+        Context.settingsListeners[message.key]?.forEach(callback => callback(message.value));
       }
       return true;
     });
@@ -154,6 +157,11 @@ class Context {
   static set(saveKey, value) {
     Context.save[saveKey] = value;
     saveSettings(Context.save);
+  }
+
+  static addSettingListener(key, callback) {
+    Context.settingsListeners[key] ||= [];
+    Context.settingsListeners[key].push(callback);
   }
 
   static async injectStyle() {

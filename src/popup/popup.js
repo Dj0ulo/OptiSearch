@@ -145,9 +145,9 @@
         onchange: ({ target }) => {
           save[o] = target.checked;
           saveSettings(save);
-          if (o === 'wideColumn') {
+          if (o === 'wideColumn' || o === 'directchat') {
             chrome.tabs.query({}, (tabs) => {
-              tabs.forEach(({ id }) => chrome.tabs.sendMessage(id, { wideColumn: save[o] }));
+              tabs.forEach(({ id }) => chrome.tabs.sendMessage(id, { type: 'updateSetting', key: o, value: save[o] }));
             });
           }
           if (spec.slaves) {

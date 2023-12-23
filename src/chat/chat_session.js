@@ -39,6 +39,7 @@ class ChatSession {
   session = null;
   /** @type {HTMLElement | null} */
   panel = null;
+  currentAction = null;
   actionButton = null;
   lastError = null;
   mode = ChatSession.Mode.Text;
@@ -318,6 +319,24 @@ class ChatSession {
       return leftButtonsContainer;
     }
 
+    const buildPauseButton = () => {
+      const playPauseButton = el('div', { className: 'play-pause', textContent: '\u21e5' });
+      const setPlayPauseText = () => {
+        playPauseButton.textContent = Context.get('directchat') ? '\u23f8' : '\u23f5';
+        playPauseButton.title = Context.get('directchat') ? 'Pause the auto-generation' : 'Auto generate at search';
+        if (this.currentAction === 'send' && Context.get('directchat')) {
+          this.setupAndSend();
+        }
+      };
+      setPlayPauseText();
+      playPauseButton.addEventListener('click', () => {
+        Context.set('directchat', !Context.get('directchat'));
+        setPlayPauseText();
+      });
+      Context.addSettingListener('directchat', setPlayPauseText);
+      return playPauseButton;
+    }
+
     const buildActionButton = () => {
       return el('button', { type: 'button', className: 'chatgpt-button' });
     }
@@ -329,6 +348,7 @@ class ChatSession {
       buildChatContainer(),
       this.actionButton,
     );
+    $('.right-buttons-container', this.panel).append(buildPauseButton());
     insertAfter(buildLeftButtonsContainer(), $('.ai-name', this.panel));
 
     if (directchat) {
@@ -413,6 +433,7 @@ class ChatSession {
   setCurrentAction(action) {
     this.allowSend();
     const btn = this.actionButton;
+    this.currentAction = action;
     if (action)
       displayElement(btn);
     switch (action) {
@@ -432,6 +453,7 @@ class ChatSession {
         }
         break;
       default:
+        this.currentAction = null;
         btn.onclick = null;
         btn.textContent = '';
         hideElement(btn);

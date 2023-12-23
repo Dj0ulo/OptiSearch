@@ -186,8 +186,11 @@
   text-shadow: 0 0 0 #ff4949;
 }
 
-.optiheader .right-buttons-container .expand-arrow {
-  top: 2px;
+.optiheader .play-pause {
+  font-size: 1.2em;
+}
+.optiheader .expand-arrow {
+  top: 4px;
   font-size: 1.6em;
   transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
   cursor: pointer;
