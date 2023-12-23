@@ -274,14 +274,14 @@ class ChatSession {
         title: `Save conversation in ${this.properties.name}`,
         className: 'save-conversation-button',
       });
-      const setDeleteConversationAfter = async (value) => {
+      this.setDeleteConversationAfter = async (value) => {
         if (await Context.handleNotPremium()) return;
         this.deleteConversationAfter = value;
         bookmark.innerHTML = value ? ChatSession.#svgs.emptyBookmark : ChatSession.#svgs.filledBookmark;
       };
-      setDeleteConversationAfter(true);
+      this.setDeleteConversationAfter(true);
       bookmark.addEventListener('click', () => {
-        setDeleteConversationAfter(!this.deleteConversationAfter);
+        this.setDeleteConversationAfter(!this.deleteConversationAfter);
       });
       return bookmark;
     }
@@ -298,7 +298,7 @@ class ChatSession {
           return;
         }
         this.mode = ChatSession.Mode.Discussion;
-
+        this.setDeleteConversationAfter(false);
         hideElement(continueChat);
         if (this.discussion.length === 0) {
           this.setCurrentAction(null);
@@ -369,6 +369,9 @@ class ChatSession {
     this.session = null;
     this.discussion.clear();
     this.setupAndSend();
+    if (this.mode === ChatSession.Mode.Discussion) {
+      this.dispatch('conversationModeSwitched', this.mode);
+    }
   }
 
   handleActionError(error) {

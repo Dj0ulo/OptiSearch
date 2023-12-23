@@ -211,8 +211,8 @@ class BardSession extends ChatSession {
         action: 'refresh',
       });
     } else {
-      this.onMessage(htmlMessage);
       this.setCurrentAction('refresh');
+      this.onMessage(htmlMessage);
     }
     const input = $("#google-account");
     input.value = Context.get('googleAccount');
