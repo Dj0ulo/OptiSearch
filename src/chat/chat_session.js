@@ -125,18 +125,17 @@ class ChatSession {
       const panel = el("div", { className: `${Context.PANEL_CLASS} optichat ${WhichChat}` });
       panel.dataset.chat = this.name;
   
-      panel.innerHTML = `
-      <div class="optiheader">
+      const header = el("div", { className: 'optiheader' }, panel);
+      header.innerHTML = `
         <div class="ai-name">
           <img alt="${this.properties.name} icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
           <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
         </div>
-      </div>
-      <hr>
       `;
-  
-      const body = el("div", { className: 'optibody' });
-      panel.append(body);
+      el('div', { className: 'right-buttons-container' }, header);
+      
+      hline(panel);
+      el("div", { className: 'optibody' }, panel);
   
       const footHr = el('hr', { className: 'optifoot-hr' }, panel);
       hideElement(footHr);

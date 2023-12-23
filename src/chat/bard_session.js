@@ -40,7 +40,7 @@ class BardSession extends ChatSession {
   async fetchSession() {
     const { at, bl, hasNotBard } = await BardSession.fetchAccountData(Context.get('googleAccount'));
     if (hasNotBard) {
-      this.errorNoBardAccess();
+      this.chooseGoogleAccount();
       return null;
     }
     this.session = { at, bl };
@@ -97,14 +97,21 @@ class BardSession extends ChatSession {
       return res;
     };
     const url = `https://bard.google.com/u/${user_id}/`;
-    const r = await bgFetch(url, { credentials: "include" });
-    if (r.status && r.status == 429) {
-      throw {
-        code: 'BARD_CAPTCHA',
-        url,
-        text: "Too many requests. Please solve the captcha and refresh&nbsp;:",
-        button: "Solve Google Bard captcha",
-      };
+    const r = await bgFetch(url, { credentials: "include", redirect:"manual" });
+    if (r.status !== undefined && r.status !== 200) {
+      switch (r.status) {
+        case 0: // redirected, which means that the user is not logged in at this account index
+          throw BardSession.errors.session;
+        case 429:
+          throw {
+            code: 'BARD_CAPTCHA',
+            url,
+            text: "Too many requests. Please solve the captcha and refresh&nbsp;:",
+            button: "Solve Google Bard captcha",
+          };
+        default:
+          throw BardSession.errors.session;
+      }
     }
     return parseData(r);
   }
@@ -159,7 +166,7 @@ class BardSession extends ChatSession {
       res = cleanResponse(await askBard());
     } catch (e) {
       if (e == "Output is null") {
-        this.errorNoBardAccess();
+        this.chooseGoogleAccount();
         return;
       } else {
         warn(e);
@@ -180,13 +187,14 @@ class BardSession extends ChatSession {
     }
   }
 
-  async errorNoBardAccess() {
+  async chooseGoogleAccount(isError = true) {
     const accounts = await BardSession.fetchAvailableAccounts();
-    this.handleActionError({
-      code: 'BARD_ACCOUNT',
-      text: `
-      This Google account has not access to Bard yet, please <a href="${this.urlPrefix}">activate it</a>
-      or choose another Google account for Bard&nbsp;:
+    const htmlMessage = `
+      ${isError 
+        ? `This Google account has not access to Bard yet, please <a href="${this.urlPrefix}">activate it</a> 
+          or choose another Google account for Bard&nbsp;:`
+        : `Choose a Google account for Bard&nbsp;:`
+      }
       <br>
       <select id="google-account">
       ${accounts.map((a, i) => `
@@ -195,9 +203,17 @@ class BardSession extends ChatSession {
         </option>
       `).join('')}
       </select>
-      `,
-      action: "refresh",
-    });
+    `;
+    if (isError) {
+      this.handleActionError({
+        code: 'BARD_ACCOUNT',
+        text: htmlMessage,
+        action: 'refresh',
+      });
+    } else {
+      this.onMessage(htmlMessage);
+      this.setCurrentAction('refresh');
+    }
     const input = $("#google-account");
     input.value = Context.get('googleAccount');
     input.addEventListener("change", () => Context.set('googleAccount', parseInt(input.value)));
@@ -239,5 +255,16 @@ class BardSession extends ChatSession {
     return Object.entries(params)
       .map(([k, v]) => `${k}=${encodeURIComponent(typeof v === 'object' ? JSON.stringify(v) : v)}`)
       .join('&');
+  }
+
+  createPanel(directchat = true) {
+    super.createPanel(directchat);
+
+    const rightButtonsContainer = $('.right-buttons-container', this.panel);
+    const accountButton = el('div', { className: 'bust', textContent: '👤', title: 'Switch Google account' }, rightButtonsContainer);
+    accountButton.addEventListener('click', () => {
+      this.discussion.clear();
+      this.chooseGoogleAccount(false);
+    });
   }
 }

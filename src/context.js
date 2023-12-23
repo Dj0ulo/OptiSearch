@@ -10,6 +10,7 @@ class Context {
   static MOBILE_CLASS = 'mobile';
 
   static engines = {};
+  static engine = {};
   static save = {};
 
   static boxes = [];
@@ -217,20 +218,29 @@ class Context {
       el('a', { textContent: '❤️', href: donationLink }, heart);
       return topButtonsContainer;
     }
-    const header = $('.optiheader', panel);
-    if (header) {
-      header.prepend(el('div', { className: 'watermark', textContent: 'OptiSearch' }, header));
-      header.prepend(buildTopButtons());
-      const rightButtonsContainer = el('div', { className: 'right-buttons-container headerhover' }, header);
 
-      const expandArrow = el('div', { className: 'new-expand-arrow', textContent: '\u21e5' }, rightButtonsContainer);
+    const buildExpandArrow = () => {
+      const expandArrow = el('div', { className: 'expand-arrow', textContent: '\u21e5' });
       const setTitleExpand = () => expandArrow.title = Context.get('wideColumn') ? 'Minimize the panel' : 'Expand the panel';
       setTitleExpand();
       expandArrow.addEventListener('click', () => {
         Context.set('wideColumn', !Context.get('wideColumn'));
         Context.wideColumn(Context.get('wideColumn'));
         setTitleExpand();
-      })
+      });
+      return expandArrow;
+    }
+    const header = $('.optiheader', panel);
+    if (header) {
+      header.prepend(el('div', { className: 'watermark', textContent: 'OptiSearch' }, header));
+      header.prepend(buildTopButtons());
+
+      let rightButtonsContainer = $('.right-buttons-container', header);
+      if (!rightButtonsContainer) {
+        rightButtonsContainer = el('div', { className: 'right-buttons-container' }, header);
+      }
+      rightButtonsContainer.classList.add('headerhover');
+      rightButtonsContainer.append(buildExpandArrow());
     }
 
     const box = el("div", { className: `${Context.BOX_CLASS} bright ${Context.engineName}` });

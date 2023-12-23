@@ -52,7 +52,9 @@ class Discussion {
     }
     setLastMessageHTML(html) {
       this.isScrolledToBottom = Math.abs(this.el.scrollTop + this.el.offsetHeight - this.el.scrollHeight) <= 1;
-      if (this.messageContainers.length >= 0) {
+      if (this.messageContainers.length === 0) {
+        this.appendMessage(new MessageContainer(Author.Bot, html));
+      } else {
         this.messageContainers.at(-1).html = html;
       }
       if (this.isScrolledToBottom) {

@@ -110,7 +110,7 @@
   margin: 0px 15px;
   color: #999999;
   font-size: 10px;
-  top: 5px;
+  top: 4px;
 }
 .optiheader .top-buttons-container {
   z-index: 2;
@@ -146,6 +146,7 @@
   top: 24px;
   min-width: fit-content;
   margin-right: 15px;
+  font-size: 17px;
 }
 
 .optiheader .top-buttons-container > *,
@@ -168,15 +169,11 @@
 .optiheader.right-buttons-container a:hover {
   text-decoration: none;
 }
-.bright .optiheader .right-buttons-container {
-  color: #bdbdbd;
-}
 .bright .optiheader .right-buttons-container > *:hover {
-  color: black;
+  text-shadow: 0 0 0px black;
 }
 .dark .optiheader .right-buttons-container > *:hover {
-  color: white;
-  text-shadow: 0 0 15px white;
+  text-shadow: 0 0 0px white;
 }
 
 .optiheader .thumb:hover {
@@ -189,13 +186,14 @@
   text-shadow: 0 0 0 #ff4949;
 }
 
-.optiheader .right-buttons-container .new-expand-arrow {
-  font-size: 24px;
+.optiheader .right-buttons-container .expand-arrow {
+  top: 2px;
+  font-size: 1.6em;
   transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
   cursor: pointer;
   transform-origin: center;
 }
-.optisearch-column-wide .optisearchbox .new-expand-arrow {
+.optisearch-column-wide .optisearchbox .expand-arrow {
   transform: rotate(-180deg);
 }
 

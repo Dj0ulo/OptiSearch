@@ -199,6 +199,7 @@ a.chat-title {
 
 select {
   border: 1px solid;
+  margin-top: 5px;
   padding: 6px;
   border-radius: 5px;
   cursor: pointer;

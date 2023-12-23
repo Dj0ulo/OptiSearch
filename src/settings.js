@@ -89,6 +89,7 @@ switch(WhichExtension) {
       title: 'Google account number to use with Bard',
       default: 0,
       min: 0,
+      active: false,
     };
     break;
 }
