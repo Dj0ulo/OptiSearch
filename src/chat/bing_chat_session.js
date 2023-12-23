@@ -128,8 +128,7 @@ class BingChatSession extends ChatSession {
 
     this.bingIconElement = $('img', $('.ai-name', this.panel));
     const setConversationStyle = (mode = 'balanced') => {
-      Context.save['bingConvStyle'] = mode;
-      saveSettings(Context.save);
+      Context.set('bingConvStyle', mode);
       const displayName = Settings['AI Assitant']['bingConvStyle'].options[mode].name;
       this.bingIconElement.title = displayName;
       $('.optiheader', this.panel).dataset['bingConvStyle'] = mode;
@@ -140,10 +139,10 @@ class BingChatSession extends ChatSession {
       }
 
       const modes = ['balanced', 'precise', 'creative'];
-      const current = Context.save['bingConvStyle'] || modes[0];
+      const current = Context.get('bingConvStyle') || modes[0];
       setConversationStyle(modes.at((modes.indexOf(current) + 1) % modes.length));
     });
-    setConversationStyle(Context.save['bingConvStyle']);
+    setConversationStyle(Context.get('bingConvStyle'));
 
     return this.panel;
   }
@@ -358,7 +357,7 @@ class BingChatSession extends ChatSession {
       'creative': ["h3imaginative", "clgalileo", "gencontentv3"],
       'balanced': ["galileo"],
       'precise': ["h3precise", "clgalileo", "gencontentv3"],
-    }[Context.save['bingConvStyle']];
+    }[Context.get('bingConvStyle')];
 
     if (convStyle) {
       optionsSets.push(...convStyle);

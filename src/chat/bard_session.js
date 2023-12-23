@@ -25,7 +25,7 @@ class BardSession extends ChatSession {
     return "SAVE_BARD";
   }
   get urlPrefix() {
-    return `https://bard.google.com/u/${Context.save['googleAccount']}`;
+    return `https://bard.google.com/u/${Context.get('googleAccount')}`;
   }
 
   constructor() {
@@ -38,7 +38,7 @@ class BardSession extends ChatSession {
   }
 
   async fetchSession() {
-    const { at, bl, hasNotBard } = await BardSession.fetchAccountData(Context.save['googleAccount']);
+    const { at, bl, hasNotBard } = await BardSession.fetchAccountData(Context.get('googleAccount'));
     if (hasNotBard) {
       this.errorNoBardAccess();
       return null;
@@ -190,7 +190,7 @@ class BardSession extends ChatSession {
       <br>
       <select id="google-account">
       ${accounts.map((a, i) => `
-        <option value="${i}" ${a.index == Context.save['googleAccount'] ? 'selected' : ''}>
+        <option value="${i}" ${a.index == Context.get('googleAccount') ? 'selected' : ''}>
           ${a.hasBard ? '✅' : '❌'} ${a.email}
         </option>
       `).join('')}
@@ -199,11 +199,8 @@ class BardSession extends ChatSession {
       action: "refresh",
     });
     const input = $("#google-account");
-    input.value = Context.save['googleAccount'];
-    input.addEventListener("change", () => {
-      Context.save['googleAccount'] = parseInt(input.value);
-      saveSettings(Context.save);
-    });
+    input.value = Context.get('googleAccount');
+    input.addEventListener("change", () => Context.set('googleAccount', parseInt(input.value)));
   }
 
   removeConversation() {

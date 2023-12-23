@@ -143,7 +143,16 @@ class Context {
   }
 
   static isActive(tool) {
-    return Context.save[tool];
+    return !!Context.get(tool);
+  }
+
+  static get(saveKey) {
+    return Context.save[saveKey];
+  }
+  
+  static set(saveKey, value) {
+    Context.save[saveKey] = value;
+    saveSettings(Context.save);
   }
 
   static async injectStyle() {
@@ -215,12 +224,11 @@ class Context {
       const rightButtonsContainer = el('div', { className: 'right-buttons-container headerhover' }, header);
 
       const expandArrow = el('div', { className: 'new-expand-arrow', textContent: '\u21e5' }, rightButtonsContainer);
-      const setTitleExpand = () => expandArrow.title = Context.save['wideColumn'] ? 'Minimize the panel' : 'Expand the panel';
+      const setTitleExpand = () => expandArrow.title = Context.get('wideColumn') ? 'Minimize the panel' : 'Expand the panel';
       setTitleExpand();
       expandArrow.addEventListener('click', () => {
-        Context.save['wideColumn'] = !Context.save['wideColumn'];
-        saveSettings(Context.save);
-        Context.wideColumn(Context.save['wideColumn']);
+        Context.set('wideColumn', !Context.get('wideColumn'));
+        Context.wideColumn(Context.get('wideColumn'));
         setTitleExpand();
       })
     }
