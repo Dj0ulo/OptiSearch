@@ -70,11 +70,15 @@
   const disabledOptions = [];
   //options
   Object.keys(settings).forEach((category) => {
-    optionsContainer.append(titleSection(category));
+    const optionsInCategory = Object.entries(settings[category])
+      .filter(([_, spec]) => !('active' in spec) || spec['active'] === true);
+    if (optionsInCategory.length === 0) return;
 
+    optionsContainer.append(titleSection(category));
+    
     const sublist = el("ul", { className: "sublist", style: "display: block" }, optionsContainer);
 
-    Object.entries(settings[category]).forEach(([o, spec]) => {
+    optionsInCategory.forEach(([o, spec]) => {
       if ('active' in spec && spec['active'] === false) return;
       if (!save[o] && spec.slaves)
         disabledOptions.push(...spec.slaves);
