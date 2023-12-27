@@ -12,6 +12,10 @@
             :root {
                 --premium-yellow: #FCD53F;
                 --text-color: #ddd;
+                --bg: #1c1c1c;
+                --grey: #686868;
+                --scroll-bar-color: var(--grey);
+                --scroll-bar-bg-color: var(--bg);
             }
             body {
                 font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
@@ -77,6 +81,21 @@
             
             a {
                 color: #8ab4f8;
+            }
+
+            *::-webkit-scrollbar {
+                width: 12px;
+                height: 12px;
+            }
+
+            *::-webkit-scrollbar-track {
+                background: var(--scroll-bar-bg-color);
+            }
+
+            *::-webkit-scrollbar-thumb {
+                background-color: var(--scroll-bar-color);
+                border-radius: 20px;
+                border: 3px solid var(--scroll-bar-bg-color);
             }
         </style>
     </head>
