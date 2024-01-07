@@ -39,6 +39,11 @@ const Settings = {
     },
   },
   'AI Assitant': {
+    premium: {
+      name: 'Is the user premium',
+      default: null,
+      active: false,
+    },
     directchat: {
       name: 'Ask it directly',
       title: 'Ask the AI assistant as soon as the result page is loaded',

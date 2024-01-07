@@ -281,7 +281,7 @@ class ChatSession {
         className: 'save-conversation-button',
       });
       this.setDeleteConversationAfter = async (value) => {
-        if (await Context.handleNotPremium()) return;
+        if (!value && await Context.handleNotPremium()) return;
         this.deleteConversationAfter = value;
         setSvg(bookmark, ChatSession.Svg[value ? 'emptyBookmark' : 'filledBookmark']);
       };
@@ -334,10 +334,7 @@ class ChatSession {
         }
       };
       setPlayPauseText();
-      playPauseButton.addEventListener('click', () => {
-        Context.set('directchat', !Context.get('directchat'));
-        setPlayPauseText();
-      });
+      playPauseButton.addEventListener('click', () => Context.set('directchat', !Context.get('directchat')));
       Context.addSettingListener('directchat', setPlayPauseText);
       return playPauseButton;
     }

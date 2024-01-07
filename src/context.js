@@ -19,9 +19,6 @@ class Context {
 
   static boxes = [];
 
-  /** @type {Promise<Boolean> | null} */
-  static isPremiumUser = null;
-
   /** @type {HTMLElement | null} */
   static rightColumnElement = null;
   static set rightColumn(value) {
@@ -108,19 +105,19 @@ class Context {
     }
     Context.addSettingListener('wideColumn', value => Context.wideColumn(value, false));
 
-    chrome.runtime.onMessage.addListener((message) => {
+    chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
       if (message.type === 'updateSetting') {
         Context.save[message.key] = message.value;
-        Context.settingsListeners[message.key]?.forEach(callback => callback(message.value));
+        Context.dispatchUpdateSetting(message.key, message.value);
       }
-      return true;
+      sendResponse(true);
     });
 
     Context.executeTools();
   }
 
   static async checkIfUserStillNotPremium() {
-    return Context.isPremiumUser === false && await Context.checkPremiumSubscription() === false;
+    return Context.get('premium') === false && await Context.checkPremiumSubscription() === false;
   }
 
   /** 
@@ -145,12 +142,12 @@ class Context {
    */
   static async checkPremiumSubscription() {
     await extpay.getUser()
-      .then(user => Context.isPremiumUser = user.paid)
+      .then(user => Context.set('premium', user.paid))
       .catch(_ => {
         err(`Failed to retrieve user subscription state`);
-        Context.isPremiumUser = null;
+        Context.set('premium', null);
       });
-    return Context.isPremiumUser;
+    return Context.get('premium');
   }
 
   static isActive(tool) {
@@ -164,11 +161,16 @@ class Context {
   static set(saveKey, value) {
     Context.save[saveKey] = value;
     saveSettings(Context.save);
+    Context.dispatchUpdateSetting(saveKey, value);
   }
 
   static addSettingListener(key, callback) {
     Context.settingsListeners[key] ||= [];
     Context.settingsListeners[key].push(callback);
+  }
+
+  static dispatchUpdateSetting(key, value) {
+    Context.settingsListeners[key]?.forEach(callback => callback(value));
   }
 
   static async injectStyle() {
@@ -239,11 +241,8 @@ class Context {
       setSvg(expandArrow, Context.Svg.chevron);
       const setTitleExpand = () => expandArrow.title = Context.get('wideColumn') ? 'Minimize the panel' : 'Expand the panel';
       setTitleExpand();
-      expandArrow.addEventListener('click', () => {
-        Context.set('wideColumn', !Context.get('wideColumn'));
-        Context.wideColumn(Context.get('wideColumn'));
-        setTitleExpand();
-      });
+      expandArrow.addEventListener('click', () => Context.set('wideColumn', !Context.get('wideColumn')));
+      Context.addSettingListener('wideColumn', setTitleExpand);
       return expandArrow;
     }
     const header = $('.optiheader', panel);

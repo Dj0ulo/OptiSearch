@@ -24,14 +24,14 @@ class BingChatSession extends ChatSession {
     return "SAVE_BINGCHAT";
   }
 
-  async isSearchDisabled() {
-    if (Context.get('bingInternalSearch')) return false;
+  async internalSearchActivated() {
+    if (Context.get('bingInternalSearch')) return true;
     const notPremium = await Context.checkIfUserStillNotPremium();
     if (notPremium) {
       Context.set('bingInternalSearch', true);
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   /** @type {HTMLImageElement | null} */
@@ -107,31 +107,30 @@ class BingChatSession extends ChatSession {
   createPanel(directchat = true) {
     super.createPanel(directchat);
 
-    const buildBookmarkButton = () => {
+    const buildInternalSearchButton = () => {
       const glass = el('div', {
         className: 'bing-search-button',
       });
       const updateInternalSearchButton = async () => {
-        const disabled = await this.isSearchDisabled();
+        const activated = await this.internalSearchActivated();
         glass.textContent = '';
-        setSvg(glass, ChatSession.Svg[disabled ? 'emptySet' : 'magnifyingGlass'])
-        glass.title = disabled ? 'Bing internal search disabled' : 'Bing internal search enabled';
+        setSvg(glass, ChatSession.Svg[activated ? 'magnifyingGlass' : 'emptySet'])
+        glass.title = activated ? 'Bing internal search enabled' : 'Bing internal search disabled';
       };
       updateInternalSearchButton();
       glass.addEventListener('click', async () => {
         if (await Context.handleNotPremium()) return;
         Context.set('bingInternalSearch', !Context.get('bingInternalSearch'));
-        updateInternalSearchButton();
       });
       Context.addSettingListener('bingInternalSearch', updateInternalSearchButton);
+      Context.addSettingListener('premium', updateInternalSearchButton);
       return glass;
     };
     const leftButtonsContainer = $('.left-buttons-container', this.panel);
-    leftButtonsContainer.append(buildBookmarkButton());    
+    leftButtonsContainer.append(buildInternalSearchButton());    
 
     this.bingIconElement = $('img', $('.ai-name', this.panel));
-    const setConversationStyle = (mode = 'balanced') => {
-      Context.set('bingConvStyle', mode);
+    const updateIconButton = (mode = 'balanced') => {
       const displayName = Settings['AI Assitant']['bingConvStyle'].options[mode].name;
       this.bingIconElement.title = displayName;
       $('.optiheader', this.panel).dataset['bingConvStyle'] = mode;
@@ -143,9 +142,10 @@ class BingChatSession extends ChatSession {
 
       const modes = ['balanced', 'precise', 'creative'];
       const current = Context.get('bingConvStyle') || modes[0];
-      setConversationStyle(modes.at((modes.indexOf(current) + 1) % modes.length));
+      Context.set('bingConvStyle', modes.at((modes.indexOf(current) + 1) % modes.length));
     });
-    setConversationStyle(Context.get('bingConvStyle'));
+    updateIconButton(Context.get('bingConvStyle'));
+    Context.addSettingListener('bingConvStyle', updateIconButton);
 
     return this.panel;
   }
@@ -366,7 +366,7 @@ class BingChatSession extends ChatSession {
       optionsSets.push(...convStyle);
     }
 
-    if (await this.isSearchDisabled()) {
+    if (!(await this.internalSearchActivated())) {
       optionsSets.push("nosearchall");
     }
 

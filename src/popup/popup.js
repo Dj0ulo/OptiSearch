@@ -112,24 +112,17 @@
           value: save[o],
           min: spec.min,
           max: spec.max,
-          onchange: ({ target }) => {
-            save[o] = target.value
-            saveSettings(save);
-          },
+          onchange: ({ target }) => set(o, target.value),
         }, label)
         return;
       }
       if (spec.options) {
         if (!Object.keys(spec.options).includes(save[o])) {
-          save[o] = spec.default;
-          saveSettings(save);
+          set(o, spec.default);
         }
         const select = el("select", {
           value: save[o],
-          onchange: ({ target }) => {
-            save[o] = target.value
-            saveSettings(save);
-          },
+          onchange: ({ target }) => set(o, target.value),
         }, label);
         Object.entries(spec.options).forEach(([key, props]) => {
           el('option', { value: key, text: props.name, selected: save[o] === key }, select);
@@ -147,13 +140,7 @@
         type: "checkbox",
         checked: save[o],
         onchange: ({ target }) => {
-          save[o] = target.checked;
-          saveSettings(save);
-          if (o === 'wideColumn' || o === 'directchat' || o === 'bingInternalSearch') {
-            chrome.tabs.query({}, (tabs) => {
-              tabs.forEach(({ id }) => chrome.tabs.sendMessage(id, { type: 'updateSetting', key: o, value: save[o] }));
-            });
-          }
+          set(o, target.checked);
           if (spec.slaves) {
             spec.slaves.forEach((slave) => {
               $$(`#${slave} input`).forEach((checkbox) => {
@@ -199,6 +186,17 @@
     }, optionsContainer);
   }
 
+  function set(key, value) {
+    save[key] = value;
+    saveSettings(save);
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach(({ id }) => {
+        chrome.tabs.sendMessage(id, { type: 'updateSetting', key, value },
+          () => chrome.runtime.lastError // reading lastError prevents from logging an error for the tabs w/o content script
+        );
+      });
+    });
+  }
 
   if (onChrome()) hrefPopUp();
 })();
