@@ -164,8 +164,8 @@
 
 .bright .optiheader .left-buttons-container > *:hover,
 .bright .optiheader .right-buttons-container > *:hover {
-  fill: black;
-  stroke: black;
+  fill: #616161;
+  stroke: #616161;
 }
 .dark .optiheader .left-buttons-container > *:hover,
 .dark .optiheader .right-buttons-container > *:hover {
