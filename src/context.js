@@ -94,7 +94,7 @@ class Context {
     if (Context.engineName === Ecosia)
       Context.forEcosia();
 
-    if (Context.compuleIsOnMobile()) {
+    if (Context.computeIsOnMobile()) {
       debug("On Mobile !");
     } else if (!Context.rightColumn) {
       return;
@@ -257,7 +257,7 @@ class Context {
 
     const box = el("div", { className: `${Context.BOX_CLASS} bright ${Context.engineName}` });
     Context.boxes.push(box);
-    if (Context.compuleIsOnMobile())
+    if (Context.computeIsOnMobile())
       box.classList.add(Context.MOBILE_CLASS);
     box.append(panel);
 
@@ -268,7 +268,7 @@ class Context {
   }
 
   static appendBoxes(boxes, prepend = false) {
-    const isOnMobile = Context.compuleIsOnMobile();
+    const isOnMobile = Context.computeIsOnMobile();
     const firstResultRow = $(Context.engine.resultRow);
     let boxContainer = Context.rightColumn;
 
@@ -384,7 +384,7 @@ class Context {
   /** 
    * @returns {boolean} Are we on a mobile device
    */
-  static compuleIsOnMobile() {
+  static computeIsOnMobile() {
     if (Context.engineName === DuckDuckGo) {
       const scriptInfo = [...document.querySelectorAll('script')].find(s => s.textContent.includes('isMobile'));
       if (!scriptInfo)
@@ -432,9 +432,9 @@ class Context {
     if (typeof (Context.engine.onMobile) !== 'number')
       return;
 
-    let wasOnMobile = Context.compuleIsOnMobile();
+    let wasOnMobile = Context.computeIsOnMobile();
     window.addEventListener("resize", () => {
-      const isOnMobile = Context.compuleIsOnMobile();
+      const isOnMobile = Context.computeIsOnMobile();
       if (isOnMobile === wasOnMobile)
         return;
       wasOnMobile = isOnMobile;
