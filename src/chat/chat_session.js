@@ -5,13 +5,15 @@ class ChatSession {
   static #nameError = "The inherited class from ChatSession should be given a name";
   static #undefinedError = "⚠️ Oups, an error occured. Please try again. ⚠️";
   static Svg = {
-    send: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" class="h-4 w-4 m-1 md:m-0" stroke-width="2"><path d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z" fill="currentColor"></path></svg>',
-    chat: '<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z"/><path d="M8 10.5H16" stroke-linecap="round"/><path d="M8 14H13.5" stroke-linecap="round"/></svg>',
+    send: {"viewBox":"0 0 16 16","children":[{"tagName":"path","d":"M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z","fill":"currentColor"}]},
+    chat: {"viewBox":"0 0 24 24", "fill": "none", "stroke-width": "2", "children":[{"tagName":"path","d":"M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z"},{"tagName":"path","d":"M8 10.5H16","stroke-linecap":"round"},{"tagName":"path","d":"M8 14H13.5","stroke-linecap":"round"}]},
     // The following icons come from https://www.veryicon.com/icons/miscellaneous/feather-v423
-    emptyBookmark: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="21" height="21" viewBox="0 0 24 24"><path d="M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z M 6 4 L 18 4 L 18 19.162109 L 12 16.933594 L 6 19.162109 L 6 4 z"></path></svg>',
-    filledBookmark: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="21" height="21" viewBox="0 0 24 24"><path d="M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z"></path></svg>',
-    emptySet: '<svg class="svg-icon"  width="21" height="21" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 981.333333C251.733333 981.333333 42.666667 772.266667 42.666667 512S251.733333 42.666667 512 42.666667s469.333333 209.066667 469.333333 469.333333-209.066667 469.333333-469.333333 469.333333z m0-853.333333c-213.333333 0-384 170.666667-384 384s170.666667 384 384 384 384-170.666667 384-384-170.666667-384-384-384z"  /><path d="M814.933333 857.6c-12.8 0-21.333333-4.266667-29.866666-12.8L179.2 238.933333c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l601.6 601.6c17.066667 17.066667 17.066667 42.666667 0 59.733333-4.266667 12.8-17.066667 17.066667-25.6 17.066667z"  /></svg>',
-    magnifyingGlass: '<svg class="svg-icon" width="21" height="21" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M469.333333 853.333333c-213.333333 0-384-170.666667-384-384s170.666667-384 384-384 384 170.666667 384 384-170.666667 384-384 384z m0-682.666666c-166.4 0-298.666667 132.266667-298.666666 298.666666s132.266667 298.666667 298.666666 298.666667 298.666667-132.266667 298.666667-298.666667-132.266667-298.666667-298.666667-298.666666z"  /><path d="M896 938.666667c-12.8 0-21.333333-4.266667-29.866667-12.8L682.666667 742.4c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l183.466667 183.466666c17.066667 17.066667 17.066667 42.666667 0 59.733334-8.533333 8.533333-17.066667 12.8-29.866667 12.8z"  /></svg>',
+    emptyBookmark: {"viewBox":"0 0 24 24","children":[{"tagName":"path","d":"M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z M 6 4 L 18 4 L 18 19.162109 L 12 16.933594 L 6 19.162109 L 6 4 z"}]},
+    filledBookmark: {"viewBox":"0 0 24 24","children":[{"tagName":"path","d":"M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z"}]},
+    emptySet: {"viewBox":"0 0 1024 1024","children":[{"tagName":"path","d":"M512 981.333333C251.733333 981.333333 42.666667 772.266667 42.666667 512S251.733333 42.666667 512 42.666667s469.333333 209.066667 469.333333 469.333333-209.066667 469.333333-469.333333 469.333333z m0-853.333333c-213.333333 0-384 170.666667-384 384s170.666667 384 384 384 384-170.666667 384-384-170.666667-384-384-384z"},{"tagName":"path","d":"M814.933333 857.6c-12.8 0-21.333333-4.266667-29.866666-12.8L179.2 238.933333c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l601.6 601.6c17.066667 17.066667 17.066667 42.666667 0 59.733333-4.266667 12.8-17.066667 17.066667-25.6 17.066667z"}]},
+    magnifyingGlass: {"viewBox":"0 0 1024 1024","children":[{"tagName":"path","d":"M469.333333 853.333333c-213.333333 0-384-170.666667-384-384s170.666667-384 384-384 384 170.666667 384 384-170.666667 384-384 384z m0-682.666666c-166.4 0-298.666667 132.266667-298.666666 298.666666s132.266667 298.666667 298.666666 298.666667 298.666667-132.266667 298.666667-298.666667-132.266667-298.666667-298.666667-298.666666z"},{"tagName":"path","d":"M896 938.666667c-12.8 0-21.333333-4.266667-29.866667-12.8L682.666667 742.4c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l183.466667 183.466666c17.066667 17.066667 17.066667 42.666667 0 59.733334-8.533333 8.533333-17.066667 12.8-29.866667 12.8z"}]},
+    play: {"children":[{"tagName":"path","d":"M213.333333 938.666667c-8.533333 0-12.8 0-21.333333-4.266667-12.8-8.533333-21.333333-21.333333-21.333333-38.4V128c0-17.066667 8.533333-29.866667 21.333333-38.4 12.8-8.533333 29.866667-8.533333 42.666667 0l597.333333 384c12.8 8.533333 21.333333 21.333333 21.333333 34.133333s-8.533333 29.866667-21.333333 34.133334l-597.333333 384c-4.266667 8.533333-12.8 12.8-21.333334 12.8zM256 204.8v610.133333L733.866667 512 256 204.8z"}],"viewBox":"0 0 1024 1024"},
+    pause: {"children":[{"tagName":"path","d":"M512 981.333333C251.733333 981.333333 42.666667 772.266667 42.666667 512S251.733333 42.666667 512 42.666667s469.333333 209.066667 469.333333 469.333333-209.066667 469.333333-469.333333 469.333333z m0-853.333333c-213.333333 0-384 170.666667-384 384s170.666667 384 384 384 384-170.666667 384-384-170.666667-384-384-384z"},{"tagName":"path","d":"M426.666667 682.666667c-25.6 0-42.666667-17.066667-42.666667-42.666667V384c0-25.6 17.066667-42.666667 42.666667-42.666667s42.666667 17.066667 42.666666 42.666667v256c0 25.6-17.066667 42.666667-42.666666 42.666667zM597.333333 682.666667c-25.6 0-42.666667-17.066667-42.666666-42.666667V384c0-25.6 17.066667-42.666667 42.666666-42.666667s42.666667 17.066667 42.666667 42.666667v256c0 25.6-17.066667 42.666667-42.666667 42.666667z"}],"viewBox":"0 0 1024 1024"},
   }
   
   static errors = {};
@@ -181,8 +183,8 @@ class ChatSession {
         type: 'button',
         className: 'send-button',
         title: 'Send message',
-        innerHTML: ChatSession.Svg.send,
       });
+      setSvg(sendButton, ChatSession.Svg.send);
       this.listen('textAreaChange', (value) => {
         if (!value) {
           sendButton.setAttribute('disabled', '');
@@ -281,7 +283,7 @@ class ChatSession {
       this.setDeleteConversationAfter = async (value) => {
         if (await Context.handleNotPremium()) return;
         this.deleteConversationAfter = value;
-        bookmark.innerHTML = value ? ChatSession.Svg.emptyBookmark : ChatSession.Svg.filledBookmark;
+        setSvg(bookmark, ChatSession.Svg[value ? 'emptyBookmark' : 'filledBookmark']);
       };
       this.setDeleteConversationAfter(true);
       bookmark.addEventListener('click', () => {
@@ -294,8 +296,8 @@ class ChatSession {
       const continueChat = el('div', {
         title: 'Continue the conversation',
         className: 'continue-conversation-button',
-        innerHTML: ChatSession.Svg.chat,
       });
+      setSvg(continueChat, ChatSession.Svg.chat);
       continueChat.addEventListener('click', async () => {
         if (await Context.handleNotPremium()) return;
         if (this.mode === ChatSession.Mode.Discussion) {
@@ -325,8 +327,8 @@ class ChatSession {
     const buildPauseButton = () => {
       const playPauseButton = el('div', { className: 'play-pause' });
       const setPlayPauseText = () => {
-        playPauseButton.textContent = Context.get('directchat') ? '\u23f8' : '▶';
-        playPauseButton.title = Context.get('directchat') ? 'Pause the auto-generation' : 'Auto generate at search';
+        setSvg(playPauseButton, ChatSession.Svg[Context.get('directchat') ? 'play' : 'pause'])
+        playPauseButton.title = Context.get('directchat') ? `${this.properties.name} answers automatically` : `You decide when ${this.properties.name} should answer`;
         if (this.currentAction === 'send' && Context.get('directchat')) {
           this.setupAndSend();
         }

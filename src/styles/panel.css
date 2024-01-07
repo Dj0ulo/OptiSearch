@@ -115,42 +115,7 @@
 .optiheader .top-buttons-container {
   z-index: 2;
 }
-
-.optiheader .left-buttons-container {
-  position: relative;
-  display: block;
-  min-width: fit-content;
-  margin-left: 5px;
-  top: 5px;
-}
-.optiheader .left-buttons-container > * {
-  margin-left: 5px;
-  cursor: pointer;
-  display: inline-block;
-  user-select: none;
-}
-.optiheader .left-buttons-container [disabled] {
-  fill-opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.optiheader .left-buttons-container img {
-  width: 20px;
-  height: 20px;
-}
-
-.optiheader .right-buttons-container {
-  position: absolute;
-  display: block;
-  right: 0;
-  top: 24px;
-  min-width: fit-content;
-  margin-right: 15px;
-  font-size: 17px;
-}
-
-.optiheader .top-buttons-container > *,
-.optiheader .right-buttons-container > * {
+.optiheader .top-buttons-container > * {
   margin-left: 5px;
   cursor: pointer;
   display: inline-block;
@@ -160,22 +125,13 @@
   color: transparent;  
   text-shadow: 0 0 0 #bdbdbd;
 }
-.optiheader .top-buttons-container a,
-.optiheader .right-buttons-container a {
+.optiheader .top-buttons-container a {
   text-decoration: none;
   color: inherit !important;
 }
-.optiheader .top-buttons-container a:hover,
-.optiheader.right-buttons-container a:hover {
+.optiheader .top-buttons-container a:hover {
   text-decoration: none;
 }
-.bright .optiheader .right-buttons-container > *:hover {
-  text-shadow: 0 0 0px black;
-}
-.dark .optiheader .right-buttons-container > *:hover {
-  text-shadow: 0 0 0px white;
-}
-
 .optiheader .thumb:hover {
   text-shadow: 0 0 0 #31a1fd;
 }
@@ -186,14 +142,56 @@
   text-shadow: 0 0 0 #ff4949;
 }
 
-.optiheader .play-pause {
-  font-size: 1.2em;
+.optiheader .left-buttons-container,
+.optiheader .right-buttons-container {
+  display: block;
+  min-width: fit-content;
 }
-.optiheader .expand-arrow {
-  top: 4px;
-  font-size: 1.6em;
-  transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
+
+.optiheader .left-buttons-container > *,
+.optiheader .right-buttons-container > * {
+  margin-left: 5px;
   cursor: pointer;
+  display: inline-block;
+  user-select: none;
+  width: 21px;
+  height: 21px;
+  fill: #bdbdbd;
+  stroke: #bdbdbd;
+  stroke-width: 0;
+  transition: fill 0.3s, stroke 0.3s;
+}
+
+.bright .optiheader .left-buttons-container > *:hover,
+.bright .optiheader .right-buttons-container > *:hover {
+  fill: black;
+  stroke: black;
+}
+.dark .optiheader .left-buttons-container > *:hover,
+.dark .optiheader .right-buttons-container > *:hover {
+  fill: white;
+  stroke: white;
+}
+
+.optiheader .left-buttons-container [disabled] {
+  fill-opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.optiheader .left-buttons-container {
+  position: relative;
+  margin-left: 5px;
+  top: 5px;
+}
+.optiheader .right-buttons-container {
+  position: absolute;
+  right: 0;
+  top: 28px;
+  margin-right: 10px;
+}
+
+.optiheader .expand-arrow {
+  transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
   transform-origin: center;
 }
 .optisearch-column-wide .optisearchbox .expand-arrow {
@@ -252,7 +250,7 @@
 
 .optipanel hr {
   height: 1px;
-  margin: 0.5em;
+  margin: 0px;
   border: 0px;
   background-color: rgb(220, 220, 220);
 }

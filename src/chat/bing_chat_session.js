@@ -113,7 +113,8 @@ class BingChatSession extends ChatSession {
       });
       const updateInternalSearchButton = async () => {
         const disabled = await this.isSearchDisabled();
-        glass.innerHTML = disabled ? ChatSession.Svg.emptySet : ChatSession.Svg.magnifyingGlass;
+        glass.textContent = '';
+        setSvg(glass, ChatSession.Svg[disabled ? 'emptySet' : 'magnifyingGlass'])
         glass.title = disabled ? 'Bing internal search disabled' : 'Bing internal search enabled';
       };
       updateInternalSearchButton();

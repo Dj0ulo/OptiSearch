@@ -86,41 +86,39 @@ function prettifyCode(element) {
  * @returns {Element}
  */
 function createCopyButton(text) {
-  const ICON_COPY =
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
-    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-    class="feather feather-copy">
-    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-  </svg>`;
-  const copyButton = el("div", { className: "opticopy", innerHTML: ICON_COPY });
-  copyButton.querySelector("svg").onclick = clickSVG;
-  function clickSVG() {
-    copyButton.innerHTML = "";
-    copyTextToClipboard(text).then((r) => {
-      copyButton.innerHTML = r ? "Copied !" : "Error";
-      setTimeout(() => {
-        copyButton.innerHTML = ICON_COPY;
-        copyButton.querySelector("svg").onclick = clickSVG;
-      }, 2000);
-    });
-  }
+  const copyButton = el("div", { className: "opticopy" });
+  const copyIcon = toSvgNode({
+    children: [
+      { tagName: "rect", x: "9", y: "9", width: "13", height: "13", rx: "2", ry: "2" },
+      { tagName: "path", d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" },
+    ],
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    "stroke-width": "2",
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round",
+  });
+  copyButton.appendChild(copyIcon);
+  copyIcon.addEventListener('click', async () => {
+    copyButton.textContent = '';
+    const r = await copyTextToClipboard(text);
+    copyButton.textContent = r ? "Copied !" : "Error";
+    setTimeout(() => {
+      copyButton.textContent = '';
+      copyButton.appendChild(copyIcon);
+    }, 2000);
+  });
   return copyButton;
 }
 
 /**
  * Copy text in keyboard
  * @param {string} text Some text to be copied
- * @returns {boolean} success
  */
-function copyTextToClipboard(text) {
-  if (!navigator.clipboard) {
-    return;
-  }
-  return navigator.clipboard.writeText(text).then(
-    () => true,
-    () => false
-  );
+async function copyTextToClipboard(text) {
+  if (!navigator.clipboard) return false;
+  return navigator.clipboard.writeText(text).then(() => true, () => false);
 }
 
 /**
@@ -454,4 +452,21 @@ function parseStr(str, regex) {
   if (!match)
     return '';
   return match[1];
+}
+
+function toSvgNode(svgObj) {
+  const namespace = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(namespace, 'svg');
+  Object.entries(svgObj).forEach(e => e[0] !== 'children' && svg.setAttribute(e[0], e[1]));
+  svgObj.children.forEach(attrs => {
+    const path = document.createElementNS(namespace, attrs.tagName);
+    Object.entries(attrs).forEach(e => e[0] !== 'tagName' && path.setAttribute(e[0], e[1]));
+    svg.appendChild(path);
+  }, svg);
+  return svg;
+}
+
+function setSvg(element, svgObj) {
+  element.textContent = '';
+  element.appendChild(toSvgNode(svgObj))
 }

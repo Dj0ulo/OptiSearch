@@ -1,6 +1,6 @@
 .optichat .optiheader {
   margin-top: 10px;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
   display: flex;
 }
 
@@ -275,13 +275,6 @@ select {
 
 .bright .message-container pre.prettyprint{
   background-color: #eeeeee;
-}
-
-.left-buttons-container {
-  fill: #bdbdbd;
-}
-.left-buttons-container .continue-conversation-button {
-  stroke: #bdbdbd;
 }
 
 .bright select {
