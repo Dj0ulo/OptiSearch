@@ -256,6 +256,10 @@ a.chat-title {
   background-color: #0068eb;
 }
 
+.bright .chat-container pre,
+.bright .chat-container code {
+  background-color: white;
+}
 
 .bright .chat-container .input-container {
   /* background-color: #f7f7f7; */
