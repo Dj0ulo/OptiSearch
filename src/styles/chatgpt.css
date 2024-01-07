@@ -9,22 +9,24 @@
 }
 
 .chatgpt-button {
-  padding: 0.5em;
-  font-size: large;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
   display: block;
-  transition: 0.3s;
-}
-
-.chatgpt-button {
   width: 100%;
   padding: 8px 10px;
   margin: 0.5em 0;
   border-radius: 5px;
   border: 1px solid;
+  font-size: large;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.3s;
 }
+
+.chatgpt-button[name=google-account] {
+  font-size: medium;
+  text-align: left;
+}
+
 
 .optichat .optifoot a.source {
   position: relative;
@@ -197,13 +199,7 @@ a.chat-title {
   border-radius: 5px;
 }
 
-select {
-  border: 1px solid;
-  margin-top: 5px;
-  padding: 6px;
-  border-radius: 5px;
-  cursor: pointer;
-}
+
 
 
 /* COLOR THEMES */

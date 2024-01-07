@@ -196,7 +196,7 @@ class BardSession extends ChatSession {
         : `Choose a Google account for Bard&nbsp;:`
       }
       <br>
-      <select id="google-account">
+      <select name="google-account" class="chatgpt-button">
       ${accounts.map((a, i) => `
         <option value="${i}" ${a.index == Context.get('googleAccount') ? 'selected' : ''}>
           ${a.hasBard ? '✅' : '❌'} ${a.email}
@@ -214,7 +214,7 @@ class BardSession extends ChatSession {
       this.setCurrentAction('refresh');
       this.onMessage(htmlMessage);
     }
-    const input = $("#google-account");
+    const input = $("[name=google-account]", this.panel);
     input.value = Context.get('googleAccount');
     input.addEventListener("change", () => Context.set('googleAccount', parseInt(input.value)));
   }
@@ -261,7 +261,8 @@ class BardSession extends ChatSession {
     super.createPanel(directchat);
 
     const rightButtonsContainer = $('.right-buttons-container', this.panel);
-    const accountButton = el('div', { className: 'bust', textContent: '👤', title: 'Switch Google account' }, rightButtonsContainer);
+    const accountButton = el('div', { className: 'bust', title: 'Switch Google account' }, rightButtonsContainer);
+    setSvg(accountButton, ChatSession.Svg.user);
     accountButton.addEventListener('click', () => {
       this.discussion.clear();
       this.chooseGoogleAccount(false);
