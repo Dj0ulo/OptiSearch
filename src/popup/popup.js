@@ -30,15 +30,7 @@
       upgradeButton.addEventListener('click', extpay.openPaymentPage);
     } else {
       upgradeButtonSpan.textContent = 'Upgrade to Premium';
-      upgradeButton.addEventListener('click', () => {
-        bgWorker({
-          action: 'window',
-          url: chrome.runtime.getURL('src/popup/premium.html'),
-          type: 'popup',
-          width: 480,
-          height: 700,
-        });
-      });
+      upgradeButton.addEventListener('click', premiumPresentationPopup);
     }
   }).catch(err => {
     upgradeButtonSpan.textContent = 'Failed to load subscription status';

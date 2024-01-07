@@ -19,6 +19,8 @@ class Context {
 
   static boxes = [];
 
+  static extpayUser = null;
+
   /** @type {HTMLElement | null} */
   static rightColumnElement = null;
   static set rightColumn(value) {
@@ -142,7 +144,10 @@ class Context {
    */
   static async checkPremiumSubscription() {
     await extpay.getUser()
-      .then(user => Context.set('premium', user.paid))
+      .then(user => {
+        Context.extpayUser = user;
+        Context.set('premium', user.paid);
+      })
       .catch(_ => {
         err(`Failed to retrieve user subscription state`);
         Context.set('premium', null);
@@ -230,7 +235,10 @@ class Context {
       const star = el('div', { className: 'thumb', title: 'Rate this extension' }, topButtonsContainer);
       el('a', { textContent: '👍', href: webstore + '/reviews' }, star);
       const crown = el('div', { className: 'star', title: 'Premium subscription', textContent: '⭐' }, topButtonsContainer);
-      crown.addEventListener('click', premiumPresentationPopup);
+      crown.onclick = premiumPresentationPopup;
+      Context.addSettingListener('premium', () => {
+        crown.onclick = Context.extpayUser.paidAt ? extpay.openPaymentPage : premiumPresentationPopup;
+      });
       const heart = el('div', { className: 'heart', title: 'Donate' }, topButtonsContainer);
       el('a', { textContent: '❤️', href: donationLink }, heart);
       return topButtonsContainer;
