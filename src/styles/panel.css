@@ -151,29 +151,29 @@
 .optiheader .left-buttons-container > *,
 .optiheader .right-buttons-container > * {
   margin-left: 5px;
-  cursor: pointer;
   display: inline-block;
-  user-select: none;
   width: 21px;
   height: 21px;
+}
+
+.svg-container {
   fill: #bdbdbd;
   stroke: #bdbdbd;
   stroke-width: 0;
   transition: fill 0.3s, stroke 0.3s;
+  cursor: pointer;
 }
 
-.bright .optiheader .left-buttons-container > *:hover,
-.bright .optiheader .right-buttons-container > *:hover {
+.bright .svg-container:hover:not([disabled]) {
   fill: #616161;
   stroke: #616161;
 }
-.dark .optiheader .left-buttons-container > *:hover,
-.dark .optiheader .right-buttons-container > *:hover {
+.dark .svg-container:hover:not([disabled]) {
   fill: white;
   stroke: white;
 }
 
-.optiheader .left-buttons-container [disabled] {
+.svg-container[disabled] {
   fill-opacity: 0.4;
   cursor: not-allowed;
 }

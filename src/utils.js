@@ -1,7 +1,7 @@
 const extensionName = chrome.runtime.getManifest().name;
 
 const SVG = {
-  send: {"viewBox":"0 0 16 16","children":[{"tagName":"path","d":"M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z","fill":"currentColor"}]},
+  send: {"viewBox":"0 0 16 16","children":[{"tagName":"path","d":"M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"}]},
   chat: {"viewBox":"0 0 24 24", "fill": "none", "stroke-width": "2", "children":[{"tagName":"path","d":"M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z"},{"tagName":"path","d":"M8 10.5H16","stroke-linecap":"round"},{"tagName":"path","d":"M8 14H13.5","stroke-linecap":"round"}]},
   // The following icons come from https://www.veryicon.com/icons/miscellaneous/feather-v423
   emptyBookmark: {"viewBox":"0 0 24 24","children":[{"tagName":"path","d":"M 6 2 C 4.8444444 2 4 2.9666667 4 4 L 4 22.039062 L 12 19.066406 L 20 22.039062 L 20 20.599609 L 20 4 C 20 3.4777778 19.808671 2.9453899 19.431641 2.5683594 C 19.05461 2.1913289 18.522222 2 18 2 L 6 2 z M 6 4 L 18 4 L 18 19.162109 L 12 16.933594 L 6 19.162109 L 6 4 z"}]},
@@ -477,5 +477,6 @@ function toSvgNode(svgObj) {
 
 function setSvg(element, svgObj) {
   element.textContent = '';
+  element.classList.add('svg-container');
   element.appendChild(toSvgNode(svgObj))
 }
