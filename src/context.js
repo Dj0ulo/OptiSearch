@@ -91,7 +91,7 @@ class Context {
     }
 
     Context.searchString = parseSearchParam();
-    Context.parseRightColumn();
+    Context.setupRightColumn();
 
     if (Context.engineName === Ecosia)
       Context.forEcosia();
@@ -101,11 +101,6 @@ class Context {
     } else if (!Context.rightColumn) {
       return;
     }
-    // Bigger right column
-    if (Context.get('wideColumn')) {
-      Context.wideColumn(true, true);
-    }
-    Context.addSettingListener('wideColumn', value => Context.wideColumn(value, false));
 
     chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
       if (message.type === 'updateSetting') {
@@ -318,42 +313,63 @@ class Context {
   }
 
   /**
-   * Get and/or add right column to the results page if there isn't one
-   * @returns {Node} Context.rightColumn
+   * Parse or add right column to the results page.
+   * Handle widening mechanism.
    */
-  static parseRightColumn() {
-    const selectorRightCol = Context.engine.rightColumn;
-    Context.rightColumn = $(selectorRightCol);
-    if (Context.rightColumn)
-      return Context.rightColumn;
-
-    if (!Context.centerColumn) {
-      warn("No right column detected");
-      Context.rightColumn = null;
-      return Context.rightColumn;
+  static setupRightColumn() {
+    const rightColumnSelector = Context.engine.rightColumn;
+    const selectorToDiv = (selector) => {
+      const div = el('div');
+      const selectorParts = [
+        ...selector.split(',')[0].matchAll(/[\.#\[][^\.#,\[]+/g)
+      ].map(a => a[0]);
+      selectorParts.forEach(token => {
+        switch (token[0]) {
+          case '.': div.classList.add(token.slice(1)); break;
+          case '#': div.id = token.slice(1); break;
+          case '[': 
+            const match = token.trim().slice(1, -1).match(/([^\]=]+)(?:=['"]?([^\]'"]+))?/);
+            if (match) {
+              match[2] ? div.setAttribute(match[1], match[2]) : div.toggleAttribute(match[1], true);
+            }
+        }
+      });
+      return div;
     }
 
-    // create a right column with the correct attributes
-    const [sr] = selectorRightCol.split(',');
-    const arr = [...sr.matchAll(/[\.#\[][^\.#,\[]+/g)]
-    const attr = { className: 'optisearch-created' };
-    arr.map(a => a[0]).forEach(token => {
-      switch (token[0]) {
-        case '.':
-          attr.className ??= '';
-          attr.className += (attr.className && ' ') + token.slice(1);
-          break;
-        case '#': attr.id = token.slice(1); break;
-        case '[':
-          const [ss] = [...token.matchAll(/\[([^\]=]+)(=([^\]]+))?\]/g)];
-          attr.attributes = [...(attr.attributes || []), { name: ss[1], value: ss[3] }];
-          break;
+    Context.rightColumn = $(rightColumnSelector);
+    if (!Context.rightColumn) {
+      if (!Context.centerColumn) {
+        err("No center column detected");
+        Context.rightColumn = null;
+        return;
       }
-    });
+      Context.rightColumn = selectorToDiv(rightColumnSelector);
+      Context.rightColumn.classList.add('optisearch-created');
+      insertAfter(Context.rightColumn, Context.centerColumn);
+    }
+    
+    const updateWideState = (value, start=false) => {
+      if (!start && !$(`style.${Context.WIDE_COLUMN_CLASS}`)) {
+        el('style', {
+          className: Context.WIDE_COLUMN_CLASS,
+          textContent: '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
+        }, Context.docHead);
+      }
+      Context.rightColumn.classList.toggle(Context.WIDE_COLUMN_CLASS, value);
+    }
+    updateWideState(Context.get('wideColumn'), true);
+    Context.addSettingListener('wideColumn', updateWideState);
 
-    Context.rightColumn = el('div', attr);
-    insertAfter(Context.rightColumn, Context.centerColumn);
-    return Context.rightColumn;
+    setObserver(mutations => {
+      mutations.some(m => {
+        if (m.attributeName !== 'class') return;
+        const isWide = m.target.classList.contains(Context.WIDE_COLUMN_CLASS);
+        if (Context.get('wideColumn') !== isWide) {
+          Context.set('wideColumn', isWide);
+        }
+      })
+    }, Context.rightColumn, { attributes: true });
   }
 
   static updateColor() {
@@ -377,19 +393,6 @@ class Context {
       else
         p.className = p.className.replace("dark", "bright");
     }
-  }
-
-  static wideColumn(wide = true, start = false) {
-    if (!start && !$(`style.${Context.WIDE_COLUMN_CLASS}`)) {
-      el('style', {
-        className: Context.WIDE_COLUMN_CLASS,
-        textContent: '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
-      }, Context.docHead);
-    }
-    if (wide)
-      Context.rightColumn.classList.add(Context.WIDE_COLUMN_CLASS);
-    else
-      Context.rightColumn.classList.remove(Context.WIDE_COLUMN_CLASS);
   }
 
   /** 
