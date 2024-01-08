@@ -328,8 +328,8 @@ class ChatSession {
     const buildPauseButton = () => {
       const playPauseButton = el('div', { className: 'play-pause' });
       const setPlayPauseText = () => {
-        setSvg(playPauseButton, ChatSession.Svg[Context.get('directchat') ? 'play' : 'pause'])
-        playPauseButton.title = Context.get('directchat') ? `${this.properties.name} answers automatically` : `You decide when ${this.properties.name} should answer`;
+        setSvg(playPauseButton, ChatSession.Svg[Context.get('directchat') ? 'pause' : 'play'])
+        playPauseButton.title = Context.get('directchat') ? `Pause auto-generation` : `Enable auto-generation`;
         if (this.currentAction === 'send' && Context.get('directchat')) {
           this.setupAndSend();
         }
