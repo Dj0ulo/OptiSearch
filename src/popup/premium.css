@@ -1,0 +1,121 @@
+:root {
+  --premium-yellow: #FCD53F;
+  --text-color: #111;
+  --bg: #fff;
+  --grey: #686868;
+  --scroll-bar-color: var(--grey);
+  --scroll-bar-bg-color: var(--bg);
+  --footer-height: 5rem;
+}
+body {
+  font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--text-color);
+  text-align: center;
+  overflow-y: auto;
+  margin: 0;
+}
+#title-container {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+#title-container img,
+#other-extensions img {
+  position: relative;
+  height: 2.2em;
+  top: 0.8em;
+  margin-right: 0.5em;
+}
+#extension-name {
+  display: inline-block;
+  margin-bottom: 1em;
+}
+#benefits {
+  display: grid;
+  width: fit-content;
+  margin-left: 15%;
+  grid-template-columns: 1fr auto;
+  text-align: left;
+}
+#benefits .icon > svg {
+  height: 2rem;
+}
+#benefits .icon {
+  position: relative;
+  top: 0.5em;
+  padding: 0 1em;
+  fill: var(--grey);
+  stroke: var(--grey);
+}
+#benefits .description {
+  padding: 1rem 0;
+}
+
+.clear {
+  height: var(--footer-height);
+  margin-top: 2rem;
+}
+
+#example-screenshot {
+  display: block;
+  margin: 1rem auto;
+}
+#also {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+#other-extensions {
+  text-align: left;
+  width: fit-content;
+  margin: 0 auto;
+}
+#other-extensions > *{
+  margin: .5em 0;
+}
+#other-extensions a {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+#other-extensions a:hover {
+  text-decoration: underline;
+}
+
+
+footer {
+  position: fixed;
+  margin: auto;
+  height: var(--footer-height);
+  bottom: 0;
+  width: 100%;
+  background-color: var(--bg);
+  box-shadow:  0px 3px 8px 8px #00000024;
+}
+
+#upgrade-button {
+  padding: 10px 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  background-color: var(--premium-yellow);
+  color: #111;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0.8em 20%;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scroll-bar-bg-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-bar-color);
+  border-radius: 20px;
+  border: 3px solid var(--scroll-bar-bg-color);
+}

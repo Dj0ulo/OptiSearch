@@ -262,7 +262,7 @@ class BardSession extends ChatSession {
 
     const rightButtonsContainer = $('.right-buttons-container', this.panel);
     const accountButton = el('div', { className: 'bust', title: 'Switch Google account' }, rightButtonsContainer);
-    setSvg(accountButton, ChatSession.Svg.user);
+    setSvg(accountButton, SVG.user);
     accountButton.addEventListener('click', () => {
       this.discussion.clear();
       this.chooseGoogleAccount(false);

@@ -8,9 +8,6 @@ class Context {
   static RIGHT_COLUMN_CLASS = 'optisearch-column';
   static WIDE_COLUMN_CLASS = 'optisearch-column-wide';
   static MOBILE_CLASS = 'mobile';
-  static Svg = {
-    chevron: {"children":[{"tagName":"path","d":"M384 810.666667c-12.8 0-21.333333-4.266667-29.866667-12.8-17.066667-17.066667-17.066667-42.666667 0-59.733334l226.133334-226.133333-226.133334-226.133333c-17.066667-17.066667-17.066667-42.666667 0-59.733334s42.666667-17.066667 59.733334 0l256 256c17.066667 17.066667 17.066667 42.666667 0 59.733334l-256 256c-8.533333 8.533333-17.066667 12.8-29.866667 12.8z"}],"viewBox":"0 0 1024 1024"},
-  };
 
   static engines = {};
   static engine = {};
@@ -241,7 +238,7 @@ class Context {
 
     const buildExpandArrow = () => {
       const expandArrow = el('div', { className: 'expand-arrow' });
-      setSvg(expandArrow, Context.Svg.chevron);
+      setSvg(expandArrow, SVG.chevron);
       const setTitleExpand = () => expandArrow.title = Context.get('wideColumn') ? 'Minimize the panel' : 'Expand the panel';
       setTitleExpand();
       expandArrow.addEventListener('click', () => Context.set('wideColumn', !Context.get('wideColumn')));

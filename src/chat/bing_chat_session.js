@@ -114,7 +114,7 @@ class BingChatSession extends ChatSession {
       const updateInternalSearchButton = async () => {
         const activated = await this.internalSearchActivated();
         glass.textContent = '';
-        setSvg(glass, ChatSession.Svg[activated ? 'magnifyingGlass' : 'emptySet'])
+        setSvg(glass, SVG[activated ? 'magnifyingGlass' : 'emptySet'])
         glass.title = activated ? 'Bing internal search enabled' : 'Bing internal search disabled';
       };
       updateInternalSearchButton();

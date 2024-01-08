@@ -7,120 +7,23 @@
         <script src="../utils.js"></script>
         <script src="../settings.js"></script>
         <script defer src="premium.js"></script>
-        
-        <style>
-            :root {
-                --premium-yellow: #FCD53F;
-                --text-color: #ddd;
-                --bg: #1c1c1c;
-                --grey: #686868;
-                --scroll-bar-color: var(--grey);
-                --scroll-bar-bg-color: var(--bg);
-            }
-            body {
-                font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
-                font-size: 15px;
-                background: #111;
-                color: var(--text-color);
-                text-align: center;
-                overflow-y: auto;
-            }
-            .advantages {
-                text-align: left;
-                margin: 0 auto;
-                width: 300px;
-            }
-            h2 {
-                font-size: 1.2rem;
-                font-weight: normal;
-            }
-            h3 {
-                font-size: 1rem;
-                font-weight: normal;
-            }
-            button {
-                padding: 10px 20px;
-                font-size: 1.2rem;
-                font-weight: bold;
-                background-color: var(--premium-yellow);
-                color: #111;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            #feature-img {
-                margin: 20px auto;
-                display: block;
-                height: 300px;
-            }
-
-            img {
-                height: inherit;
-            }
-
-            .only {
-                display: none;
-            }
-
-            body.bingchat .only.bingchat,
-            body.bard .only.bard,
-            body.optisearch .only.optisearch {
-                display: initial;
-            }
-
-            body.bingchat .not.bingchat,
-            body.bard .not.bard,
-            body.optisearch .not.optisearch {
-                display: none;
-            }
-
-            .yellow {
-                color: var(--premium-yellow);
-                font-weight: bold;
-            }
-            
-            a {
-                color: #8ab4f8;
-            }
-
-            *::-webkit-scrollbar {
-                width: 12px;
-                height: 12px;
-            }
-
-            *::-webkit-scrollbar-track {
-                background: var(--scroll-bar-bg-color);
-            }
-
-            *::-webkit-scrollbar-thumb {
-                background-color: var(--scroll-bar-color);
-                border-radius: 20px;
-                border: 3px solid var(--scroll-bar-bg-color);
-            }
-        </style>
+        <link rel="stylesheet" href="premium.css">
     </head>
     <body>
-        <h1>⭐ Upgrade to Premium ⭐</h1>
-        <h2>Sign up for a <span class="yellow">Premium membership</span> to:</h2>
-        <h3>
-            - <strong>Save your conversation</strong> for later<br>
-            - <strong>Chat directly</strong> in the result page<br>
-            <span class="only bingchat">
-            - <strong>Save time</strong> by preventing Bing to make internal search<br>
-            </span> 
-        </h3>
-        <div id="feature-img">
-            <img class="only bingchat" src="../images/bing_conversation_example.png">
-            <img class="only bard" src="../images/bard_conversation_example.png">
-            <img class="only optisearch" src="../images/chatgpt_conversation_example.png">
+        <div id="title-container">
+            <img alt="Extension icon">
+            <span id="extension-name"></span>
+            <div>⭐ Premium ⭐</div>
         </div>
+        <div id="benefits"></div>
+        <div id="example-screenshot"></div>
 
-        <button class="upgrade-button">Purchase Premium</button>
-        <div style="margin-top: 10px;">
-            <h3>This subscription also includes <span class="yellow">Premium membership</span> for&nbsp;:</h3>
-            <div><a class="not bard" data-link="bard">Bard next to Google results</a></div>
-            <div><a class="not bingchat" data-link="bingchat">Bing Chat (GPT-4) in Google</a></div>
-            <div><a class="not optisearch" data-link="optisearch">OptiSearch (for ChatGPT)</a></div>
-        </div>
+        <div id="also">This also includes <strong>⭐ Premium ⭐</strong> for the following extensions!</div>
+        <div id="other-extensions"></div>
+
+        <div class="clear"></div>
+        <footer>
+            <div id="upgrade-button">Get Premium</div>
+        </footer>
     </body>
 </html>

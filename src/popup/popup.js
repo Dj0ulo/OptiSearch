@@ -16,7 +16,7 @@
   $('#name').textContent = manifest.name;
   $('#version').textContent = manifest.version;
 
-  $('#title-container img').src = (onChrome() ? '../../' : '') + manifest.icons[128];
+  $('#title-container img').src = chrome.runtime.getURL(manifest.icons[128]);
   $('.title > a').href = webstore;
   $('#feedback').href = webstore + '/reviews';
 

@@ -35,11 +35,12 @@
       "src/styles/code-light-theme.css",
       "src/styles/code-dark-theme.css",
       "src/images/bingchat.png",
-      "src/images/bing_search_allowed.png",
-      "src/images/bing_search_forbidden.png",
-      "src/images/bing_conversation_example.png",
+      "src/images/bingchat_conversation_example.png",
       "src/images/engines/*",
-      "src/chat/bingchat/bing_socket.js"
+      "src/chat/bingchat/bing_socket.js",
+      "icons/optisearch/icon_128.png",
+      "icons/bingchat/icon_128.png",
+      "icons/bard/icon_128.png"
     ],
     "matches": [
       "*://duckduckgo.com/*",

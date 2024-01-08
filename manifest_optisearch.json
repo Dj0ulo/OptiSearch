@@ -36,7 +36,10 @@
       "src/engines.json",
       "src/styles/*",
       "src/images/*",
-      "src/images/engines/*"
+      "src/images/engines/*",
+      "icons/optisearch/icon_128.png",
+      "icons/bingchat/icon_128.png",
+      "icons/bard/icon_128.png"
     ],
     "matches": [
       "*://duckduckgo.com/*",
