@@ -32,6 +32,9 @@ async function handleActionFetch(action) {
   const response = await fetch(action.url, action.params && JSON.parse(action.params))
     .catch(e => ({ errorInBackgroundScript: true, error: e.toString() }));
 
+  if (response.type === "opaqueredirect") {
+    return { status: 302 };
+  }
   if (!response.ok)
     return {
       status: response.status,
