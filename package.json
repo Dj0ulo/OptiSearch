@@ -6,6 +6,6 @@
   },
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha ./tests/test.js",
-    "build": "node build.mjs optisearch -z & node build.mjs optisearch -zft & node build.mjs bingchat -z & node build.mjs bingchat -zft & node build.mjs bard -z & node build.mjs bard -zft"
+    "build": "node build.mjs optisearch -z; node build.mjs optisearch -zft; node build.mjs bingchat -z; node build.mjs bingchat -zft; node build.mjs bard -z; node build.mjs bard -zft"
   }
 }
