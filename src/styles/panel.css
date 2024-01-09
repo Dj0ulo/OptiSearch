@@ -250,7 +250,7 @@
 
 .optipanel hr {
   height: 1px;
-  margin: 0px;
+  margin: 0 .5em .5em .5em;
   border: 0px;
   background-color: rgb(220, 220, 220);
 }
