@@ -16,7 +16,6 @@ class BardSession extends ChatSession {
   }
   static accountConfigKeys = {
     index: 'QrtxK',
-    hasNotBard: 'u21JSd',
     email: 'oPEP7c',
     at: 'SNlM0e',
     bl: 'cfb2h',
@@ -94,6 +93,7 @@ class BardSession extends ChatSession {
         img64: parseStr(html, /(https:\/\/lh3\.googleusercontent\.com\/[^\s'"]*?s64[^\s'"]*)/),
       };
       Object.entries(BardSession.accountConfigKeys).forEach(([k, v]) => res[k] = data[v]);
+      res.hasNotBard = false;
       return res;
     };
     const url = `https://bard.google.com/u/${user_id}/`;
@@ -199,7 +199,7 @@ class BardSession extends ChatSession {
       <select name="google-account" class="chatgpt-button">
       ${accounts.map((a, i) => `
         <option value="${i}" ${a.index == Context.get('googleAccount') ? 'selected' : ''}>
-          ${a.hasBard ? '✅' : '❌'} ${a.email}
+          ${a.email}
         </option>
       `).join('')}
       </select>
