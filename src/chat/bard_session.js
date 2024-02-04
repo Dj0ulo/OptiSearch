@@ -156,7 +156,7 @@ class BardSession extends ChatSession {
       let text = runMarkdown(firstResponse[1][0]);
       images?.forEach(img => {
         const [substr, source, url, title] = [img[2], img[1][0][0], img[3][0][0], img[7][2]].map(escapeHtml);
-        text = text.replace(substr, `<a href="${source}" style="display: inline-block;"><img src="${url}" alt="${title}" title="${title}"/></a>`);
+        text = text.replace(substr, `<a href="${source}" class="bard-image-link"><img src="${url}" alt="${title}" title="${title}"/></a>`);
       });
       return text;
     }

@@ -194,9 +194,13 @@ a.chat-title {
   cursor: not-allowed;
 }
 
-.bard .optibody img {
+.bard-image-link {
+  display: inline;
+}
+.bard-image-link img {
   display: block;
   border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 25%) 1px 1px 5px 0;
 }
 
 
