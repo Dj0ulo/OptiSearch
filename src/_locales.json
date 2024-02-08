@@ -46,31 +46,31 @@
   },
   "bardName": {
     "ar": "بارد بجوار نتائج Google",
-    "de": "Bard neben Google-Ergebnissen",
-    "en": "Bard next to Google results",
-    "es": "Bard junto a los resultados de Google",
-    "fr": "Bard à côté des résultats Google",
-    "hi": "Google परिणामों के बगल में Bard",
-    "it": "Bard accanto ai risultati di Google",
-    "ja": "Google の検索結果の横にある Bard",
-    "ko": "Google 검색 결과 옆에 Bard",
-    "nl": "Bard naast Google-resultaten",
-    "ru": "Bard рядом с результатами Google",
-    "zh_CN": "Bard 与 Google 搜索结果并排"
+    "de": "Gemini neben Google-Ergebnissen",
+    "en": "Gemini next to Google results",
+    "es": "Gemini junto a los resultados de Google",
+    "fr": "Gemini à côté des résultats Google",
+    "hi": "Google परिणामों के बगल में Gemini",
+    "it": "Gemini accanto ai risultati di Google",
+    "ja": "Google の検索結果の横にある Gemini",
+    "ko": "Google 검색 결과 옆에 Gemini",
+    "nl": "Gemini naast Google-resultaten",
+    "ru": "Gemini рядом с результатами Google",
+    "zh_CN": "Gemini 与 Google 搜索结果并排"
   },
   "bardDesc": {
-    "ar": "🗨️ إجابة Bard بجانب نتائج Google.",
-    "de": "🗨️ Antwort von Bard neben Google-Ergebnissen.",
-    "en": "🗨️ Bard answer alongside Google results.",
-    "es": "🗨️ Respuesta de Bard junto a los resultados de Google.",
-    "fr": "🗨️ Réponse de Bard à côté des résultats Google.",
-    "hi": "🗨️ Bard से उत्तर Google परिणामों के बगल में.",
-    "it": "🗨️ Risposta di Bard accanto ai risultati di Google.",
-    "ja": "🗨️ Google の検索結果の横にある Bard からの回答.",
-    "ko": "🗨️ Google 검색 결과 옆에 Google Bard 의 답변.",
-    "nl": "🗨️ Antwoord van Bard naast Google-resultaten.",
-    "ru": "🗨️ Ответ от Bard рядом с результатами Google.",
-    "zh_CN": "🗨️ 与 Google 搜索结果并排显示来自 Bard 的答案."
+    "ar": "🗨️ إجابة Gemini بجانب نتائج Google.",
+    "de": "🗨️ Antwort von Gemini neben Google-Ergebnissen.",
+    "en": "🗨️ Gemini answer alongside Google results.",
+    "es": "🗨️ Respuesta de Gemini junto a los resultados de Google.",
+    "fr": "🗨️ Réponse de Gemini à côté des résultats Google.",
+    "hi": "🗨️ Gemini से उत्तर Google परिणामों के बगल में.",
+    "it": "🗨️ Risposta di Gemini accanto ai risultati di Google.",
+    "ja": "🗨️ Google の検索結果の横にある Gemini からの回答.",
+    "ko": "🗨️ Google 검색 결과 옆에 Google Gemini 의 답변.",
+    "nl": "🗨️ Antwoord van Gemini naast Google-resultaten.",
+    "ru": "🗨️ Ответ от Gemini рядом с результатами Google.",
+    "zh_CN": "🗨️ 与 Google 搜索结果并排显示来自 Gemini 的答案."
   },
   "Copied!": {
     "ar": "تم النسخ!",
@@ -506,19 +506,19 @@
     "ru": "ID учетной записи Google",
     "zh_CN": "Google 帐户 ID"
   },
-  "Google account number to use with Bard": {
-    "ar": "رقم حساب Google للاستخدام مع Bard",
-    "de": "Google-Kontonummer für Bard",
-    "en": "Google account number to use with Bard",
-    "es": "Número de cuenta de Google para usar con Bard",
-    "fr": "Numéro de compte Google à utiliser avec Bard",
-    "hi": "Google खाता संख्या जिसका उपयोग Bard के साथ किया जाएगा",
-    "it": "Numero di conto Google da utilizzare con Bard",
-    "ja": "Bard で使用する Google アカウント番号",
-    "ko": "Bard와 함께 사용할 Google 계정 번호",
-    "nl": "Google-accountnummer om met Bard te gebruiken",
-    "ru": "Номер учетной записи Google для использования с Bard",
-    "zh_CN": "与 Bard 一起使用的 Google 帐户号码"
+  "Google account number to use with Gemini": {
+    "ar": "رقم حساب Google للاستخدام مع Gemini",
+    "de": "Google-Kontonummer für Gemini",
+    "en": "Google account number to use with Gemini",
+    "es": "Número de cuenta de Google para usar con Gemini",
+    "fr": "Numéro de compte Google à utiliser avec Gemini",
+    "hi": "Google खाता संख्या जिसका उपयोग Gemini के साथ किया जाएगा",
+    "it": "Numero di conto Google da utilizzare con Gemini",
+    "ja": "Gemini で使用する Google アカウント番号",
+    "ko": "Gemini와 함께 사용할 Google 계정 번호",
+    "nl": "Google-accountnummer om met Gemini te gebruiken",
+    "ru": "Номер учетной записи Google для использования с Gemini",
+    "zh_CN": "与 Gemini 一起使用的 Google 帐户号码"
   },
   "⭐ Premium ⭐": {
     "ar": "⭐ بريميوم ⭐",
@@ -912,19 +912,19 @@
     "ru": "Слишком много запросов. Пожалуйста, решите CAPTCHA и обновите страницу.",
     "zh_CN": "请求过多。请解决 reCAPTCHA 并刷新页面。"
   },
-  "Solve Google Bard captcha": {
-    "ar": "حل CAPTCHA Google Bard",
-    "de": "Google Bard CAPTCHA lösen",
-    "en": "Solve Google Bard captcha",
-    "es": "Resolver CAPTCHA de Google Bard",
-    "fr": "Résoudre le CAPTCHA de Google Bard",
-    "hi": "Google Bard CAPTCHA को हल करें",
-    "it": "Risolvi il CAPTCHA di Google Bard",
-    "ja": "Google Bard CAPTCHA を解除する",
-    "ko": "Google Bard CAPTCHA를 해결하세요",
-    "nl": "Los het CAPTCHA van Google Bard op",
-    "ru": "Решить reCAPTCHA Google Bard",
-    "zh_CN": "解决 Google Bard CAPTCHA"
+  "Solve Google Gemini captcha": {
+    "ar": "حل CAPTCHA Google Gemini",
+    "de": "Google Gemini CAPTCHA lösen",
+    "en": "Solve Google Gemini captcha",
+    "es": "Resolver CAPTCHA de Google Gemini",
+    "fr": "Résoudre le CAPTCHA de Google Gemini",
+    "hi": "Google Gemini CAPTCHA को हल करें",
+    "it": "Risolvi il CAPTCHA di Google Gemini",
+    "ja": "Google Gemini CAPTCHA を解除する",
+    "ko": "Google Gemini CAPTCHA를 해결하세요",
+    "nl": "Los het CAPTCHA van Google Gemini op",
+    "ru": "Решить reCAPTCHA Google Gemini",
+    "zh_CN": "解决 Google Gemini CAPTCHA"
   },
   "An error occured while parsing the response:<br>$error$": {
     "message": {
@@ -947,20 +947,20 @@
       }
     }
   },
-  "This Google account does not have access to Bard yet, please visit <a href=\"$url$\">this link</a> to activate it or choose another Google account for Bard": {
+  "This Google account does not have access to Gemini yet, please visit <a href=\"$url$\">this link</a> to activate it or choose another Google account for Gemini": {
     "message": {
-      "ar": "لا يزال هذا الحساب غير متاح لاستخدام Bard، يرجى زيارة <a href=\"$url$\">هذا الرابط</a> لتفعيله أو استخدام حساب Google آخر لـ Bard",
-      "de": "Dieses Google-Konto hat noch keinen Zugriff auf Bard. Bitte besuchen Sie <a href=\"$url$\">diesen Link</a>, um es zu aktivieren, oder wählen Sie ein anderes Google-Konto für Bard.",
-      "en": "This Google account does not have access to Bard yet. Please visit <a href=\"$url$\">this link</a> to activate it or choose another Google account for Bard.",
-      "es": "Este cuenta de Google aún no tiene acceso a Bard. Por favor, visite <a href=\"$url$\">este enlace</a> para activarlo o elija otra cuenta de Google para Bard.",
-      "fr": "Ce compte Google n'a pas encore accès à Bard. Veuillez visiter <a href=\"$url$\">ce lien</a> pour l'activer ou choisissez un autre compte Google pour Bard.",
-      "hi": "इस Google खाते की अभी तक Bard तक पहुंच नहीं है, कृपया <a href=\"$url$\">इस लिंक</a> पर जाएं इसे सक्रिय करने के लिए या Bard के लिए एक और Google खाता चुनें",
-      "it": "Questo account Google non ha ancora accesso a Bard. Per favore visita <a href=\"$url$\">questo link</a> per attivarlo o scegli un altro account Google per Bard.",
-      "ja": "このGoogleアカウントはまだBardにアクセスできません。<a href=\"$url$\">このリンク</a>をクリックしてアクティベートするか、Bard用に別のGoogleアカウントを選択してください。",
-      "ko": "이 Google 계정은 아직 Bard에 액세스할 수 없습니다. <a href=\"$url$\">이 링크</a>를 방문하여 활성화하거나 Bard에 사용할 다른 Google 계정을 선택하십시오.",
-      "nl": "Dit Google-account heeft nog geen toegang tot Bard. Bezoek <a href=\"$url$\">deze link</a> om het te activeren of kies een ander Google-account voor Bard.",
-      "ru": "Этот аккаунт Google еще не имеет доступа к Bard. Пожалуйста, посетите <a href=\"$url$\">эту ссылку</a> для активации или выберите другой аккаунт Google для Bard.",
-      "zh_CN": "此 Google 账户尚未授权使用 Bard。请访问 <a href=\"$url$\">此链接</a> 以激活它或选择另一个 Google 账户用于 Bard。"
+      "ar": "لا يزال هذا الحساب غير متاح لاستخدام Gemini، يرجى زيارة <a href=\"$url$\">هذا الرابط</a> لتفعيله أو استخدام حساب Google آخر لـ Gemini",
+      "de": "Dieses Google-Konto hat noch keinen Zugriff auf Gemini. Bitte besuchen Sie <a href=\"$url$\">diesen Link</a>, um es zu aktivieren, oder wählen Sie ein anderes Google-Konto für Gemini.",
+      "en": "This Google account does not have access to Gemini yet. Please visit <a href=\"$url$\">this link</a> to activate it or choose another Google account for Gemini.",
+      "es": "Este cuenta de Google aún no tiene acceso a Gemini. Por favor, visite <a href=\"$url$\">este enlace</a> para activarlo o elija otra cuenta de Google para Gemini.",
+      "fr": "Ce compte Google n'a pas encore accès à Gemini. Veuillez visiter <a href=\"$url$\">ce lien</a> pour l'activer ou choisissez un autre compte Google pour Gemini.",
+      "hi": "इस Google खाते की अभी तक Gemini तक पहुंच नहीं है, कृपया <a href=\"$url$\">इस लिंक</a> पर जाएं इसे सक्रिय करने के लिए या Gemini के लिए एक और Google खाता चुनें",
+      "it": "Questo account Google non ha ancora accesso a Gemini. Per favore visita <a href=\"$url$\">questo link</a> per attivarlo o scegli un altro account Google per Gemini.",
+      "ja": "このGoogleアカウントはまだGeminiにアクセスできません。<a href=\"$url$\">このリンク</a>をクリックしてアクティベートするか、Gemini用に別のGoogleアカウントを選択してください。",
+      "ko": "이 Google 계정은 아직 Gemini에 액세스할 수 없습니다. <a href=\"$url$\">이 링크</a>를 방문하여 활성화하거나 Gemini에 사용할 다른 Google 계정을 선택하십시오.",
+      "nl": "Dit Google-account heeft nog geen toegang tot Gemini. Bezoek <a href=\"$url$\">deze link</a> om het te activeren of kies een ander Google-account voor Gemini.",
+      "ru": "Этот аккаунт Google еще не имеет доступа к Gemini. Пожалуйста, посетите <a href=\"$url$\">эту ссылку</a> для активации или выберите другой аккаунт Google для Gemini.",
+      "zh_CN": "此 Google 账户尚未授权使用 Gemini。请访问 <a href=\"$url$\">此链接</a> 以激活它或选择另一个 Google 账户用于 Gemini。"
     },
     "placeholders": {
       "url": {
@@ -968,19 +968,19 @@
       }
     }
   },
-  "Choose a Google account for Bard": {
-    "ar": "اختر حساب Google لـ Bard",
-    "de": "Wählen Sie ein Google-Konto für Bard",
-    "en": "Choose a Google account for Bard",
-    "es": "Elige una cuenta de Google para Bard",
-    "fr": "Choisissez un compte Google pour Bard",
-    "hi": "Google खाता Bard के लिए चुनें",
-    "it": "Scegli un account Google per Bard",
-    "ja": "Bard 用に Google アカウントを選択してください",
-    "ko": "Bard에 사용할 Google 계정을 선택하세요",
-    "nl": "Kies een Google-account voor Bard",
-    "ru": "Выберите учетную запись Google для Bard",
-    "zh_CN": "为 Bard 选择一个 Google 账户"
+  "Choose a Google account for Gemini": {
+    "ar": "اختر حساب Google لـ Gemini",
+    "de": "Wählen Sie ein Google-Konto für Gemini",
+    "en": "Choose a Google account for Gemini",
+    "es": "Elige una cuenta de Google para Gemini",
+    "fr": "Choisissez un compte Google pour Gemini",
+    "hi": "Google खाता Gemini के लिए चुनें",
+    "it": "Scegli un account Google per Gemini",
+    "ja": "Gemini 用に Google アカウントを選択してください",
+    "ko": "Gemini에 사용할 Google 계정을 선택하세요",
+    "nl": "Kies een Google-account voor Gemini",
+    "ru": "Выберите учетную запись Google для Gemini",
+    "zh_CN": "为 Gemini 选择一个 Google 账户"
   },
   "Switch Google account": {
     "ar": "تغيير حساب جوجل",

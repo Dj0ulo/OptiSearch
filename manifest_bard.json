@@ -8,7 +8,7 @@
     "storage"
   ],
   "host_permissions": [
-    "https://bard.google.com/"
+    "https://gemini.google.com/"
   ],
   "action": {
     "default_popup": "src/popup/popup.html"

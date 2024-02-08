@@ -1,8 +1,8 @@
-# OptiSearch ｜ Bing Chat (GPT-4) in Google ｜ Bard next to Google results
+# OptiSearch ｜ Bing Chat (GPT-4) in Google ｜ Gemini next to Google results
 
 ![License](https://img.shields.io/github/license/dj0ulo/optisearch)
 
-This repository contains the code of **OptiSearch**, **Bing Chat (GPT-4) in Google** and **Bard next to Google results** browser extensions. They share the same codebase core. 
+This repository contains the code of **OptiSearch**, **Bing Chat (GPT-4) in Google** and **Gemini next to Google results** browser extensions. They share the same codebase core. 
 
 ### <img alt="OptiSearch icon" src="./icons/optisearch/icon_128.png" width="24" height="24"> OptiSearch
 ![License](https://img.shields.io/chrome-web-store/users/bbojmeobdaicehcopocnfhaagefleiae?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/optisearch?label=Firefox%20Users)
@@ -22,10 +22,10 @@ Displays the answer from Bing Chat AI alongside search engine results.
 
 [Install from Mozilla Add-on Store](https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google/)
 
-### <img alt="Bard next to Google results" src="./icons/bard/icon_128.png" width="24" height="24"> Bard next to Google results
+### <img alt="Gemini next to Google results" src="./icons/bard/icon_128.png" width="24" height="24"> Gemini next to Google results
 ![License](https://img.shields.io/chrome-web-store/users/pkdmfoabhnkpkcacnmgilaeghiggdbgf?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/bard-for-search-engines?label=Firefox%20Users)
 
-Displays the answer from Google Bard alongside search engine results.
+Displays the answer from Google Gemini alongside search engine results.
 
 [Install from Chrome Web Store](https://chrome.google.com/webstore/detail/bard-for-search-engines/pkdmfoabhnkpkcacnmgilaeghiggdbgf)
 
@@ -53,7 +53,7 @@ Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave Search
     ```
     node build.mjs optisearch -b DIR
     ```
-    E.g. to copy **Bard next to Google results** sources for Firefox in `build/bard`
+    E.g. to copy **Gemini next to Google results** sources for Firefox in `build/bard`
     ```
     node build.mjs bard -bf
     ```

@@ -1,7 +1,7 @@
 class BardSession extends ChatSession {
   properties = {
-    name: "Bard",
-    link: "https://bard.google.com",
+    name: "Gemini",
+    link: "https://gemini.google.com",
     icon: "src/images/bard.png",
     local_icon: "bard.png",
     href: this.urlPrefix,
@@ -24,7 +24,7 @@ class BardSession extends ChatSession {
     return "SAVE_BARD";
   }
   get urlPrefix() {
-    return `https://bard.google.com/u/${Context.get("googleAccount")}`;
+    return `https://gemini.google.com/u/${Context.get("googleAccount")}`;
   }
 
   constructor() {
@@ -100,7 +100,7 @@ class BardSession extends ChatSession {
       res.hasNotBard = false;
       return res;
     };
-    const url = `https://bard.google.com/u/${user_id}/`;
+    const url = `https://gemini.google.com/u/${user_id}/`;
     const r = await bgFetch(url, { credentials: "include", redirect: "manual" });
     if (r.status !== undefined && r.status !== 200) {
       switch (r.status) {
@@ -111,7 +111,7 @@ class BardSession extends ChatSession {
             code: "BARD_CAPTCHA",
             url,
             text: _t("Too many requests. Please solve the captcha and refresh"),
-            button: _t("Solve Google Bard captcha"),
+            button: _t("Solve Google Gemini captcha"),
           };
         default:
           throw BardSession.errors.session;
@@ -193,10 +193,10 @@ class BardSession extends ChatSession {
       ${
         isError
           ? _t(
-              'This Google account does not have access to Bard yet, please visit <a href="$url$">this link</a> to activate it or choose another Google account for Bard',
+              'This Google account does not have access to Gemini yet, please visit <a href="$url$">this link</a> to activate it or choose another Google account for Gemini',
               this.urlPrefix
             )
-          : _t("Choose a Google account for Bard")
+          : _t("Choose a Google account for Gemini")
       }
       <br>
       <select name="google-account" class="chatgpt-button">

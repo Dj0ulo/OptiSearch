@@ -158,7 +158,7 @@
       }, sublist);
       el('a', {
         className: 'ad',
-        innerHTML: _t('Get answers from <strong>$AI$</strong>', 'Google Bard'),
+        innerHTML: _t('Get answers from <strong>$AI$</strong>', 'Google Gemini'),
         href: webstores['bard'],
       }, sublist);
     }
@@ -175,7 +175,7 @@
   if (WhichExtension === 'bingchat') {
     el('a', {
       className: 'ad',
-      innerHTML: _t('I want answers from <strong>$AI$</strong> too!', 'Google Bard'),
+      innerHTML: _t('I want answers from <strong>$AI$</strong> too!', 'Google Gemini'),
       href: webstores['bard'],
     }, optionsContainer);
   }

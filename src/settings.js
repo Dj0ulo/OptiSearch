@@ -2,7 +2,7 @@ const WhichExtension = (() => {
   const extensionName = chrome.runtime.getManifest().name;
   if (extensionName.includes('Bing'))
     return 'bingchat';
-  if (extensionName.includes('Bard'))
+  if (extensionName.includes('Gemini'))
     return 'bard';
   return 'optisearch';
 })();
@@ -89,7 +89,7 @@ switch(WhichExtension) {
   case 'bard':
     Settings['AI Assitant']['googleAccount'] = {
       name: "Google account ID",
-      title: 'Google account number to use with Bard',
+      title: 'Google account number to use with Gemini',
       default: 0,
       min: 0,
       active: false,
