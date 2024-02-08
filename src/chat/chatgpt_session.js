@@ -10,14 +10,14 @@ class ChatGPTSession extends ChatSession {
     session: {
       code: 'CHAT_GPT_SESSION',
       url: 'https://chat.openai.com/chat',
-      text: "Please login to ChatGPT, then refresh :",
-      button: "Login to ChatGPT",
+      text: _t("Please login to $AI$, then refresh", "ChatGPT"),
+      button: _t("Login to $AI$", "ChatGPT"),
     },
     cloudflare: {
       code: 'CHAT_GPT_CLOUDFLARE',
       url: 'https://chat.openai.com/chat',
-      text: "Please pass the Cloudflare check on ChatGPT, then refresh :",
-      button: "Cloudflare check",
+      text: _t("Please pass the Cloudflare check on ChatGPT, then refresh"),
+      button: _t("Cloudflare check"),
     },
   }
   static get storageKey() {

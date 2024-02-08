@@ -1,8 +1,8 @@
 {
-  "name": "__MSG_appName__",
+  "name": "__MSG_bingchatName__",
   "version": "2.3",
   "manifest_version": 3,
-  "description": "__MSG_appDesc__",
+  "description": "__MSG_bingchatDesc__",
   "default_locale": "en",
   "permissions": [
     "storage",

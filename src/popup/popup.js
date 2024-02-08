@@ -7,16 +7,19 @@
   const titleSection = (name) => {
     const title = el("span", { className: "menu_title" });
     el("hr", { className: 'flexchild' }, title)
-    el("span", { textContent: name }, title);
+    el("span", { textContent: _t(name) }, title);
     el("hr", { className: 'flexchild' }, title)
     return title;
   }
 
+  renderDocText();
+
   const manifest = chrome.runtime.getManifest();
   $('#name').textContent = manifest.name;
   $('#version').textContent = manifest.version;
-
-  $('#title-container img').src = chrome.runtime.getURL(manifest.icons[128]);
+  const extensionIcon = $('#title-container img');
+  extensionIcon.src = chrome.runtime.getURL(manifest.icons[128]);
+  extensionIcon.title = _t("Go to Chrome Web Store");
   $('.title > a').href = webstore;
   $('#feedback').href = webstore + '/reviews';
 
@@ -26,14 +29,14 @@
   extpay.getUser().then(user => {
     upgradeButton.classList.add('upgrade-button');
     if (user.paidAt) {
-      upgradeButtonSpan.textContent = 'Manage subscription';
+      upgradeButtonSpan.textContent = _t('Manage subscription');
       upgradeButton.addEventListener('click', extpay.openPaymentPage);
     } else {
-      upgradeButtonSpan.textContent = 'Upgrade to Premium';
+      upgradeButtonSpan.textContent = _t('Upgrade to Premium');
       upgradeButton.addEventListener('click', premiumPresentationPopup);
     }
   }).catch(err => {
-    upgradeButtonSpan.textContent = 'Failed to load subscription status';
+    upgradeButtonSpan.textContent = _t('Failed to load subscription status');
   })
 
   const liEng = document.querySelector("#engines");
@@ -77,14 +80,14 @@
       const li = el("li", { id: o }, sublist);
 
       const label = el("label", {
-        className: "optiondiv",
+        className: "setting",
         style: "display: inline-block"
       }, li);
 
       const spanImg = el("span", {
-        className: "titleOption",
-        innerHTML: spec.href ? `<a href=${spec.href}>${spec.name}</a>` : spec.name,
-        title: spec.title ?? "",
+        className: "setting-title",
+        innerHTML: spec.href ? `<a href=${spec.href}>${_t(spec.name)}</a>` : _t(spec.name),
+        title: _t(spec.title ?? spec.name),
       }, label);
 
       if (spec.local_icon) {
@@ -117,13 +120,12 @@
           onchange: ({ target }) => set(o, target.value),
         }, label);
         Object.entries(spec.options).forEach(([key, props]) => {
-          el('option', { value: key, text: props.name, selected: save[o] === key }, select);
+          el('option', { value: key, text: _t(props.name), selected: save[o] === key }, select);
         });
         return;
       }
 
       const checkDiv = el("div", {
-        className: 'checkdiv',
         style: "display: inline-block"
       }, label)
 
@@ -151,13 +153,13 @@
     if (isOptiSearch && category === 'AI Assitant') {
       el('a', {
         className: 'ad',
-        innerHTML: 'Get answers from <strong>Bing Chat</strong>',
-        href: webstores['bingchat'][onChrome() ? 'chrome' : 'firefox']
+        innerHTML: _t('Get answers from <strong>$AI$</strong>', 'Bing AI'),
+        href: webstores['bingchat'],
       }, sublist);
       el('a', {
         className: 'ad',
-        innerHTML: 'Get answers from <strong>Google Bard</strong>',
-        href: webstores['bard'][onChrome() ? 'chrome' : 'firefox']
+        innerHTML: _t('Get answers from <strong>$AI$</strong>', 'Google Bard'),
+        href: webstores['bard'],
       }, sublist);
     }
 
@@ -166,15 +168,22 @@
   if (!isOptiSearch) {
     el('a', {
       className: 'ad',
-      innerHTML: 'I want answers from <strong>ChatGPT</strong> and <strong>StackOverflow</strong> too !',
-      href: webstores['optisearch'][onChrome() ? 'chrome' : 'firefox']
+      innerHTML: _t('I want answers from <strong>ChatGPT</strong> and <strong>StackOverflow</strong> too!'),
+      href: webstores['optisearch'],
     }, optionsContainer);
   }
   if (WhichExtension === 'bingchat') {
     el('a', {
       className: 'ad',
-      innerHTML: 'I want answers from <strong>Google Bard</strong> too !',
-      href: webstores['bard'][onChrome() ? 'chrome' : 'firefox']
+      innerHTML: _t('I want answers from <strong>$AI$</strong> too!', 'Google Bard'),
+      href: webstores['bard'],
+    }, optionsContainer);
+  }
+  if (WhichExtension === 'bard') {
+    el('a', {
+      className: 'ad',
+      innerHTML: _t('I want answers from <strong>$AI$</strong> too!', 'Bing AI'),
+      href: webstores['bingchat'],
     }, optionsContainer);
   }
 

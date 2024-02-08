@@ -35,7 +35,7 @@ body {
 #benefits {
   display: grid;
   width: fit-content;
-  margin-left: 15%;
+  margin: 0 15%;
   grid-template-columns: 1fr auto;
   text-align: left;
 }

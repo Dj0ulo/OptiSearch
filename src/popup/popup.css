@@ -34,7 +34,7 @@ body {
 
 .title {
   text-align: center;
-  margin-bottom: 1em;
+  margin-bottom: .5em;
 }
 
 .title img {
@@ -57,7 +57,8 @@ body {
 }
 
 #engines {
-  height: 20px;
+  height: fit-content;
+  position: relative;
 }
 
 .engine .icon {
@@ -75,7 +76,7 @@ body {
   margin-left: 0.5rem;
   cursor: pointer;
 
-  vertical-align: middle;
+  vertical-align: top;
   opacity: 0;
 
   animation: dropIn 1s ease forwards;
@@ -148,23 +149,26 @@ hr.flexchild {
   flex: 1 1 200px;
 }
 
-.optiondiv {
+label.setting {
   /* user-select: none; */
   overflow: hidden;
 }
 
-.titleOption {
+label.setting > :last-child {
+  vertical-align: top;
+}
+
+.setting-title {
   display: inline-block;
   text-align: right;
   width: 140px;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-right: 10px;
   position: relative;
 }
 
-.titleOption .input {
+.setting-title .input {
   margin-left: 20px;
 }
 

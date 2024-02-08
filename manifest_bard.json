@@ -1,8 +1,8 @@
 {
-  "name": "__MSG_appName__",
+  "name": "__MSG_bardName__",
   "version": "2.2.1",
   "manifest_version": 3,
-  "description": "__MSG_appDesc__",
+  "description": "__MSG_bardDesc__",
   "default_locale": "en",
   "permissions": [
     "storage"

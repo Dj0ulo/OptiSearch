@@ -3,7 +3,7 @@ class ChatSession {
   static #abstractError = "ChatSession is an abstract classes that cannot be instantiated.";
   static #abstractMethodError = "This method should be inherited";
   static #nameError = "The inherited class from ChatSession should be given a name";
-  static #undefinedError = "⚠️ Oups, an error occured. Please try again. ⚠️";
+  static #undefinedError = "⚠️ " + _t("Oups, an error occured. Please try again.");
 
   static errors = {};
   static Mode = {
@@ -171,7 +171,7 @@ class ChatSession {
       const sendButton = el('div', {
         type: 'button',
         className: 'send-button',
-        title: 'Send message',
+        title: _t('Send message'),
       });
       setSvg(sendButton, SVG.send);
       this.listen('textAreaChange', (value) => {
@@ -210,11 +210,11 @@ class ChatSession {
       };
       this.listen('allowSend', () => {
         textArea.disabled = false;
-        textArea.placeholder = 'Ask me anything...';
+        textArea.placeholder = _t('Ask me anything...');
       });
       this.listen('disableSend', () => {
         textArea.disabled = true;
-        textArea.placeholder = `${this.properties.name} is answering...`;
+        textArea.placeholder = _t('$AI$ is answering...', this.properties.name);
       });
       this.listen('conversationModeSwitched', () => {
         if (this.discussion.length === 0) {
@@ -266,7 +266,7 @@ class ChatSession {
     /** Left buttons **/
     const buildBookmarkButton = () => {
       const bookmark = el('div', {
-        title: `Save conversation in ${this.properties.name}`,
+        title: _t('Save conversation in $AI$', this.properties.name),
         className: 'save-conversation-button',
       });
       this.setDeleteConversationAfter = async (value) => {
@@ -283,7 +283,7 @@ class ChatSession {
 
     const buildChatButton = () => {
       const continueChat = el('div', {
-        title: 'Continue the conversation',
+        title: _t('Continue the conversation'),
         className: 'continue-conversation-button',
       });
       setSvg(continueChat, SVG.chat);
@@ -317,7 +317,7 @@ class ChatSession {
       const playPauseButton = el('div', { className: 'play-pause' });
       const setPlayPauseText = () => {
         setSvg(playPauseButton, SVG[Context.get('directchat') ? 'pause' : 'play'])
-        playPauseButton.title = Context.get('directchat') ? `Pause auto-generation` : `Enable auto-generation`;
+        playPauseButton.title = Context.get('directchat') ? _t('Pause auto-generation') : _t('Enable auto-generation')
         if (this.currentAction === 'send' && Context.get('directchat')) {
           this.setupAndSend();
         }
@@ -407,7 +407,7 @@ class ChatSession {
     this.disableSend();
     this.discussion.appendMessage(new MessageContainer(Author.User, escapeHtml(prompt)));
     this.discussion.appendMessage(new MessageContainer(Author.Bot, ''));
-    this.onMessage(ChatSession.infoHTML(`Waiting for <strong>${this.properties.name}</strong>...`));
+    this.onMessage(ChatSession.infoHTML(_t("Waiting for <strong>$AI$</strong>...", this.properties.name)));
     try {
       if (!this.canSend()) {
         await this.init();
@@ -429,11 +429,11 @@ class ChatSession {
       displayElement(btn);
     switch (action) {
       case 'send':
-        btn.textContent = `Ask ${this.properties.name}`;
+        btn.textContent = _t('Ask $AI$', this.properties.name);
         btn.onclick = () => this.setupAndSend();
         break;
       case 'refresh':
-        btn.textContent = 'Refresh';
+        btn.textContent = _t('Refresh');
         btn.onclick = () => this.restartConversation();
         break;
       case 'window':

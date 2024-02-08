@@ -5,15 +5,15 @@ class BardSession extends ChatSession {
     icon: "src/images/bard.png",
     local_icon: "bard.png",
     href: this.urlPrefix,
-  }
+  };
   static errors = {
     session: {
-      code: 'BARD_SESSION',
-      url: 'https://accounts.google.com/',
-      text: "Please login to Google, then refresh&nbsp;:",
-      button: "Login to Google",
+      code: "BARD_SESSION",
+      url: "https://accounts.google.com/",
+      text: _t("Please login to $AI$, then refresh", "Google"),
+      button: _t("Login to $AI$", "Google"),
     },
-  }
+  };
   static accountConfigKeys = {
     index: 'QrtxK',
     email: 'oPEP7c',
@@ -24,11 +24,11 @@ class BardSession extends ChatSession {
     return "SAVE_BARD";
   }
   get urlPrefix() {
-    return `https://bard.google.com/u/${Context.get('googleAccount')}`;
+    return `https://bard.google.com/u/${Context.get("googleAccount")}`;
   }
 
   constructor() {
-    super('bard');
+    super("bard");
   }
 
   async init() {
@@ -37,7 +37,7 @@ class BardSession extends ChatSession {
   }
 
   async fetchSession() {
-    const { at, bl, hasNotBard } = await BardSession.fetchAccountData(Context.get('googleAccount'));
+    const { at, bl, hasNotBard } = await BardSession.fetchAccountData(Context.get("googleAccount"));
     if (hasNotBard) {
       this.chooseGoogleAccount();
       return null;
@@ -48,42 +48,46 @@ class BardSession extends ChatSession {
 
   static async fetchAvailableAccounts(offset = 0) {
     const testCount = 8;
-    const accounts = await Promise.all([...Array(testCount).keys()].map(async i => {
-      try {
-        const { index, name, email, hasNotBard, img32 } = await BardSession.fetchAccountData(offset + i);
-        if (i + offset != index) {
-          return null;
+    const accounts = await Promise.all(
+      [...Array(testCount).keys()].map(async (i) => {
+        try {
+          const { index, name, email, hasNotBard, img32 } = await BardSession.fetchAccountData(
+            offset + i
+          );
+          if (i + offset != index) {
+            return null;
+          }
+          return {
+            index: parseInt(index),
+            name,
+            email,
+            hasBard: !hasNotBard,
+            img32,
+          };
+        } catch (error) {
+          if (error.code === "BARD_CAPTCHA" || error.code === "BARD_SESSION") {
+            return null;
+          }
+          throw error;
         }
-        return {
-          index: parseInt(index),
-          name,
-          email,
-          hasBard: !hasNotBard,
-          img32
-        };
-      } catch (error) {
-        if (error.code === 'BARD_CAPTCHA' || error.code === 'BARD_SESSION') {
-          return null;
-        }
-        throw error;
-      }
-    }));
+      })
+    );
     if (accounts.at(-1) !== null) {
       return [
-        ...accounts.filter(a => !!a),
-        ...(await BardSession.fetchAvailableAccounts(offset + testCount))
+        ...accounts.filter((a) => !!a),
+        ...(await BardSession.fetchAvailableAccounts(offset + testCount)),
       ];
     }
-    return accounts.filter(a => !!a);
+    return accounts.filter((a) => !!a);
   }
 
-  static async fetchAccountData(user_id=0) {
+  static async fetchAccountData(user_id = 0) {
     const parseData = (html) => {
-      let str = 'window.WIZ_global_data = ';
+      let str = "window.WIZ_global_data = ";
       let beg = html.indexOf(str) + str.length;
-      let end = html.indexOf('</script>', beg);
+      let end = html.indexOf("</script>", beg);
       const raw = html.slice(beg, end);
-      const data = JSON.parse(raw.slice(0, raw.lastIndexOf('}') + 1));
+      const data = JSON.parse(raw.slice(0, raw.lastIndexOf("}") + 1));
       if (!(BardSession.accountConfigKeys.email in data)) {
         throw BardSession.errors.session;
       }
@@ -97,17 +101,17 @@ class BardSession extends ChatSession {
       return res;
     };
     const url = `https://bard.google.com/u/${user_id}/`;
-    const r = await bgFetch(url, { credentials: "include", redirect:"manual" });
+    const r = await bgFetch(url, { credentials: "include", redirect: "manual" });
     if (r.status !== undefined && r.status !== 200) {
       switch (r.status) {
         case 0: // redirected, which means that the user is not logged in at this account index
           throw BardSession.errors.session;
         case 429:
           throw {
-            code: 'BARD_CAPTCHA',
+            code: "BARD_CAPTCHA",
             url,
-            text: "Too many requests. Please solve the captcha and refresh&nbsp;:",
-            button: "Solve Google Bard captcha",
+            text: _t("Too many requests. Please solve the captcha and refresh"),
+            button: _t("Solve Google Bard captcha"),
           };
         default:
           throw BardSession.errors.session;
@@ -121,31 +125,27 @@ class BardSession extends ChatSession {
     if (ChatSession.debug) {
       return;
     }
-    const askBard = () => this.api('assistant.lamda.BardFrontendService/StreamGenerate', {}, [
-      null,
-      JSON.stringify([
-        [prompt],
+    const askBard = () =>
+      this.api("assistant.lamda.BardFrontendService/StreamGenerate", {}, [
         null,
-        (this.session.conversation ?? ["", "", ""])
-      ]),
-    ]);
+        JSON.stringify([[prompt], null, this.session.conversation ?? ["", "", ""]]),
+      ]);
 
     const cleanResponse = (raw) => {
       let i = 0;
       try {
-        i = raw.indexOf('[[');
-        i = raw.indexOf(',', i);
-        i = raw.indexOf(',', i + 1);
+        i = raw.indexOf("[[");
+        i = raw.indexOf(",", i);
+        i = raw.indexOf(",", i + 1);
       } catch (e) {
         throw "Output is null";
       }
-      if (raw.slice(i + 1, i + 5) === 'null')
-        throw "Output is null";
-      if (raw.slice(i + 1, i + 2) !== '"')
-        throw "Invalid output";
+      if (raw.slice(i + 1, i + 5) === "null") throw "Output is null";
+      if (raw.slice(i + 1, i + 2) !== '"') throw "Invalid output";
       return JSON.parse(
-        raw.slice(i + 2, raw.indexOf('\n', i) - 3)
-          .replace(/\\(\\)?/g, (_, backslash) => backslash ?? '')
+        raw
+          .slice(i + 2, raw.indexOf("\n", i) - 3)
+          .replace(/\\(\\)?/g, (_, backslash) => backslash ?? "")
       );
     };
 
@@ -159,8 +159,8 @@ class BardSession extends ChatSession {
         text = text.replace(substr, `<a href="${source}" class="bard-image-link"><img src="${url}" alt="${title}" title="${title}"/></a>`);
       });
       return text;
-    }
-  
+    };
+
     let res = null;
     try {
       res = cleanResponse(await askBard());
@@ -183,17 +183,20 @@ class BardSession extends ChatSession {
       this.session.conversation = res[1];
       this.onMessage(parseMessage(res[4]));
     } catch (e) {
-      this.onErrorMessage(`⚠️&nbsp;An error occured while parsing the response&nbsp:<br/>${e}`);
+      this.onErrorMessage("⚠️ " + _t("An error occured while parsing the response:<br>$error$", e));
     }
   }
 
   async chooseGoogleAccount(isError = true) {
     const accounts = await BardSession.fetchAvailableAccounts();
     const htmlMessage = `
-      ${isError 
-        ? `This Google account has not access to Bard yet, please <a href="${this.urlPrefix}">activate it</a> 
-          or choose another Google account for Bard&nbsp;:`
-        : `Choose a Google account for Bard&nbsp;:`
+      ${
+        isError
+          ? _t(
+              'This Google account does not have access to Bard yet, please visit <a href="$url$">this link</a> to activate it or choose another Google account for Bard',
+              this.urlPrefix
+            )
+          : _t("Choose a Google account for Bard")
       }
       <br>
       <select name="google-account" class="chatgpt-button">
@@ -201,30 +204,37 @@ class BardSession extends ChatSession {
         <option value="${i}" ${a.index == Context.get('googleAccount') ? 'selected' : ''}>
           ${a.email}
         </option>
-      `).join('')}
+      `
+        )
+        .join("")}
       </select>
     `;
     if (isError) {
       this.handleActionError({
-        code: 'BARD_ACCOUNT',
+        code: "BARD_ACCOUNT",
         text: htmlMessage,
-        action: 'refresh',
+        action: "refresh",
       });
     } else {
-      this.setCurrentAction('refresh');
+      this.setCurrentAction("refresh");
       this.onMessage(htmlMessage);
     }
     const input = $("[name=google-account]", this.panel);
-    input.value = Context.get('googleAccount');
-    input.addEventListener("change", () => Context.set('googleAccount', parseInt(input.value)));
+    input.value = Context.get("googleAccount");
+    input.addEventListener("change", () => Context.set("googleAccount", parseInt(input.value)));
   }
 
   removeConversation() {
-    if (ChatSession.debug || !this.session || !this.session.conversation || this.session.conversation.length === 0)
+    if (
+      ChatSession.debug ||
+      !this.session ||
+      !this.session.conversation ||
+      this.session.conversation.length === 0
+    )
       return;
 
-    return this.api('batchexecute', { 'rpcids': 'GzXR5e', 'source-path': '/' }, [
-      [['GzXR5e', `["${this.session.conversation[0]}"]`, null, 'generic']]
+    return this.api("batchexecute", { rpcids: "GzXR5e", "source-path": "/" }, [
+      [["GzXR5e", `["${this.session.conversation[0]}"]`, null, "generic"]],
     ]);
   }
 
@@ -233,37 +243,44 @@ class BardSession extends ChatSession {
       bl: this.session.bl,
       rt: "c",
       ...params,
-    }
-    return bgFetch(`${this.urlPrefix}/_/BardChatUi/data/${method}?${this.encodeURIParams(params)}`, {
-      headers: {
-        "accept": "*/*",
-        "cache-control": "no-cache",
-        "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
-        "pragma": "no-cache",
-      },
-      body: this.encodeURIParams({
-        'f.req': fReq,
-        'at': this.session.at,
-      }),
-      method: "POST",
-      mode: "cors",
-      credentials: "include",
-    });
+    };
+    return bgFetch(
+      `${this.urlPrefix}/_/BardChatUi/data/${method}?${this.encodeURIParams(params)}`,
+      {
+        headers: {
+          accept: "*/*",
+          "cache-control": "no-cache",
+          "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+          pragma: "no-cache",
+        },
+        body: this.encodeURIParams({
+          "f.req": fReq,
+          at: this.session.at,
+        }),
+        method: "POST",
+        mode: "cors",
+        credentials: "include",
+      }
+    );
   }
 
   encodeURIParams(params) {
     return Object.entries(params)
-      .map(([k, v]) => `${k}=${encodeURIComponent(typeof v === 'object' ? JSON.stringify(v) : v)}`)
-      .join('&');
+      .map(([k, v]) => `${k}=${encodeURIComponent(typeof v === "object" ? JSON.stringify(v) : v)}`)
+      .join("&");
   }
 
   createPanel(directchat = true) {
     super.createPanel(directchat);
 
-    const rightButtonsContainer = $('.right-buttons-container', this.panel);
-    const accountButton = el('div', { className: 'bust', title: 'Switch Google account' }, rightButtonsContainer);
+    const rightButtonsContainer = $(".right-buttons-container", this.panel);
+    const accountButton = el(
+      "div",
+      { className: "bust", title: _t("Switch Google account") },
+      rightButtonsContainer
+    );
     setSvg(accountButton, SVG.user);
-    accountButton.addEventListener('click', () => {
+    accountButton.addEventListener("click", () => {
       this.discussion.clear();
       this.chooseGoogleAccount(false);
     });

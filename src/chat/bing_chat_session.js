@@ -10,14 +10,14 @@ class BingChatSession extends ChatSession {
     session: {
       code: 'BING_CHAT_SESSION',
       url: 'https://login.live.com/login.srf?wa=wsignin1.0&wreply=https%3A%2F%2Fwww.bing.com%2Ffd%2Fauth%2Fsignin%3Faction%3Dinteractive%26provider%3Dwindows_live_id%26return_url%3Dhttps%3A%2F%2Fwww.bing.com%2F%3Fwlexpsignin%3D1%26src%3DEXPLICIT',
-      text: "Please login to Bing with your Microsoft account, then refresh :",
-      button: "Login to Bing",
+      text: _t("Please login to Bing with your Microsoft account, then refresh"),
+      button: _t("Login to $AI$", "Bing"),
     },
     forbidden: {
       code: 'BING_CHAT_FORBIDDEN',
       url: 'https://www.bing.com/new?form=MY028Z&OCID=MY028Z',
-      text: "Unfortunately you don't have access to Bing Chat yet, please register to the waitlist",
-      button: "Register to the waitlist",
+      text: _t("Unfortunately you don't have access to Bing Chat yet, please register to the waitlist"),
+      button: _t("Register to the waitlist"),
     },
   }
   static get storageKey() {
@@ -83,7 +83,6 @@ class BingChatSession extends ChatSession {
     if (ChatSession.debug) {
       return;
     }
-
     this.bingIconElement?.classList.add('disabled');
 
     bgWorker({
@@ -115,7 +114,7 @@ class BingChatSession extends ChatSession {
         const activated = await this.internalSearchActivated();
         glass.textContent = '';
         setSvg(glass, SVG[activated ? 'magnifyingGlass' : 'emptySet'])
-        glass.title = activated ? 'Bing internal search enabled' : 'Bing internal search disabled';
+        glass.title = activated ? _t("Bing internal search enabled") : _t("Bing internal search disabled");
       };
       updateInternalSearchButton();
       glass.addEventListener('click', async () => {
@@ -175,7 +174,7 @@ class BingChatSession extends ChatSession {
           }
           if (body.item.result) {
             if (body.item.result.value === 'Throttled') {
-              this.onErrorMessage("⚠️&nbsp;Sorry, you've reached the limit of messages you can send to Bing within 24 hours. Check back soon!");
+              this.onErrorMessage("⚠️ " + _t("Sorry, you've reached the limit of messages you can send to Bing within 24 hours. Check back soon!"));
               return;
             }
             if (body.item.result.value === 'UnauthorizedRequest') {
@@ -242,9 +241,9 @@ class BingChatSession extends ChatSession {
       const maxVisible = 2;
       const invisible = Math.max(0, Object.keys(sources).length - maxVisible);
       const footHTML = Object.keys(sources).length === 0 ? '' : `<div class="learnmore less" 
-          >Learn more&nbsp: ${Object.entries(sources).map(([href, n], i) =>
+          >${_t("Learn more")}&nbsp: ${Object.entries(sources).map(([href, n], i) =>
         `<a class="source" href="${href}" ${i >= maxVisible ? 'more' : ''}>${n}. ${new URL(href).host}</a>`).join('\n')}
-          <a class="showmore source" title="Show more" invisible=${invisible}>+${invisible} more</a></div>`;
+          <a class="showmore source" title="${_t("Show more")}" invisible=${invisible}>${_t("+$n$ more", invisible)}</a></div>`;
           
       this.onMessage(bodyHTML, footHTML);
 

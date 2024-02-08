@@ -1,8 +1,9 @@
 {
-  "name": "OptiSearch",
+  "name": "__MSG_optisearchName__",
   "version": "3.6",
   "manifest_version": 3,
-  "description": "Display ChatGPT, StackOverflow, Wikipedia, etc. answers alongside Google Search results !",
+  "description": "__MSG_optisearchDesc__",
+  "default_locale": "en",
   "permissions": [
     "storage"
   ],

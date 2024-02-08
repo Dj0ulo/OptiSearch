@@ -54,7 +54,7 @@ let name = '';
     fs.rmSync('_locales', { recursive: true });
   }
   if (mf.default_locale){
-    makeLocalesDir(`src/locales/${name}.json`)
+    makeLocalesDir(`src/_locales.json`)
   }
 
   const isCopyToBuildDir = parseArg('-b');
@@ -261,16 +261,19 @@ function makeLocalesDir(localesFile) {
   const json = readJsonFile(localesFile);
   const locales = {};
   for (let [key, types] of Object.entries(json)) {
-    for (let [lang, value] of Object.entries(types.message)) {
+    for (let [lang, value] of Object.entries(types.message ?? types)) {
       locales[lang] ??= {};
-      locales[lang][key] = value;
+      locales[lang][key.replaceAll(/[^\w]/g, '_')] = { 
+        message: value,
+        ...(types.placeholders ? { placeholders: types.placeholders } : {}),
+      };
     }
   }
   Object.entries(locales).forEach(([lang, entries]) => {
     fs.mkdirSync(`_locales/${lang}`);
     const jsonToSave = {};
     for (let [key, value] of Object.entries(entries)) {
-      jsonToSave[key] = { "message": value };
+      jsonToSave[key] = value;
     }
     fs.writeFileSync(`_locales/${lang}/messages.json`, JSON.stringify(jsonToSave, null, 4));
   })

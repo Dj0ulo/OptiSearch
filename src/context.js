@@ -224,14 +224,14 @@ class Context {
   static appendPanel(panel, prepend = false) {
     const buildTopButtons = () => {
       const topButtonsContainer = el('div', { className: 'top-buttons-container headerhover' });
-      const star = el('div', { className: 'thumb', title: 'Rate this extension' }, topButtonsContainer);
+      const star = el('div', { className: 'thumb', title: _t("Rate this extension") }, topButtonsContainer);
       el('a', { textContent: '👍', href: webstore + '/reviews' }, star);
-      const crown = el('div', { className: 'star', title: 'Premium subscription', textContent: '⭐' }, topButtonsContainer);
+      const crown = el('div', { className: 'star', title: _t("Premium subscription"), textContent: '⭐' }, topButtonsContainer);
       crown.onclick = premiumPresentationPopup;
       Context.addSettingListener('premium', () => {
         crown.onclick = Context.extpayUser.paidAt ? extpay.openPaymentPage : premiumPresentationPopup;
       });
-      const heart = el('div', { className: 'heart', title: 'Donate' }, topButtonsContainer);
+      const heart = el('div', { className: 'heart', title: _t("Donate") }, topButtonsContainer);
       el('a', { textContent: '❤️', href: donationLink }, heart);
       return topButtonsContainer;
     }
@@ -239,7 +239,7 @@ class Context {
     const buildExpandArrow = () => {
       const expandArrow = el('div', { className: 'expand-arrow' });
       setSvg(expandArrow, SVG.chevron);
-      const setTitleExpand = () => expandArrow.title = Context.get('wideColumn') ? 'Minimize the panel' : 'Expand the panel';
+      const setTitleExpand = () => expandArrow.title = Context.get('wideColumn') ? _t("Minimize the panel") : _t("Expand the panel");
       setTitleExpand();
       expandArrow.addEventListener('click', () => Context.set('wideColumn', !Context.get('wideColumn')));
       Context.addSettingListener('wideColumn', setTitleExpand);
@@ -247,7 +247,7 @@ class Context {
     }
     const header = $('.optiheader', panel);
     if (header) {
-      header.prepend(el('div', { className: 'watermark', textContent: 'OptiSearch' }, header));
+      header.prepend(el('div', { className: 'watermark', textContent: _t("optisearchName") }, header));
       header.prepend(buildTopButtons());
 
       let rightButtonsContainer = $('.right-buttons-container', header);

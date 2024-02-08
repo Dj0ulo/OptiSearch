@@ -38,6 +38,17 @@ const $$ = (query, element) => [...(element ?? document).querySelectorAll(query)
  */
 function onChrome() { return typeof browser === 'undefined'; }
 
+function _t(messageName, ...args) {
+  console.log(messageName.replaceAll(/[^\w]/g, '_'),args)
+  return chrome.i18n.getMessage(messageName.replaceAll(/[^\w]/g, '_'), args) || messageName;
+}
+
+function renderDocText() {
+  $$("[data-i18n]").forEach(el => {
+    el.innerHTML = _t(el.dataset.i18n);
+  });
+}
+
 /**
  * Read file from this extension
  * @param {string} url 
@@ -117,7 +128,7 @@ function createCopyButton(text) {
   copyIcon.addEventListener('click', async () => {
     copyButton.textContent = '';
     const r = await copyTextToClipboard(text);
-    copyButton.textContent = r ? "Copied !" : "Error";
+    copyButton.textContent = r ? _t("Copied!") : _t("Error");
     setTimeout(() => {
       copyButton.textContent = '';
       copyButton.appendChild(copyIcon);
