@@ -238,19 +238,11 @@ class BingChatSession extends ChatSession {
           if (!ref) return '';
           return `href="${ref.href}"`;
         });
-      const maxVisible = 2;
-      const invisible = Math.max(0, Object.keys(sources).length - maxVisible);
-      const footHTML = Object.keys(sources).length === 0 ? '' : `<div class="learnmore less" 
-          >${_t("Learn more")}&nbsp: ${Object.entries(sources).map(([href, n], i) =>
-        `<a class="source" href="${href}" ${i >= maxVisible ? 'more' : ''}>${n}. ${new URL(href).host}</a>`).join('\n')}
-          <a class="showmore source" title="${_t("Show more")}" invisible=${invisible}>${_t("+$n$ more", invisible)}</a></div>`;
-          
-      this.onMessage(bodyHTML, footHTML);
-
-      $('.showmore', this.panel)?.addEventListener('click', ({ currentTarget }) => {
-        currentTarget.parentElement.classList.remove('less');
-        currentTarget.remove();
-      });
+        
+      this.onMessage(
+        bodyHTML,
+        Object.entries(sources).map(([href, index]) => ({ index, href })),
+      );
     }
     const doClose = packet.split('\x1e')
       .slice(0, -1)

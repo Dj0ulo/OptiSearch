@@ -116,6 +116,64 @@ class ChatSession {
 
   createPanel(directchat = true) {
 
+    const buildLearnMoreSection = (sources) => {
+      const visibleCount = 2;
+      const invisibleCount = Math.max(0, Object.keys(sources).length - visibleCount);
+      const learnMoreSection = el('div', { className: 'learnmore less'});
+
+      el('span', { textContent: `${_t("Learn more")}\xa0: `}, learnMoreSection);
+
+      sources.forEach(({index, href}, i) => {
+        const link = el('a', { className: 'source', href, textContent: `${index ?? i+1}. ${new URL(href).host}`}, learnMoreSection);
+        if (i >= visibleCount) {
+          link.setAttribute('more', '');
+        }
+        // To make sure they go to next line if there is not enough horizontal space in the panel
+        learnMoreSection.append('\n');
+      });
+
+      const showMoreButton = el('a', {
+        className:'showmore source',
+        title: _t("Show more"),
+        textContent: _t("+$n$ more", invisibleCount)
+      }, learnMoreSection);
+      showMoreButton.dataset.invisibleCount = invisibleCount;
+
+      showMoreButton.addEventListener('click', () => {
+        showMoreButton.parentElement.classList.remove('less');
+        showMoreButton.remove();
+      });
+      return learnMoreSection;
+    }
+
+    const buildFootNote = () => {
+      const hr = el('hr', { className: 'optifoot-hr' });
+      hideElement(hr);
+  
+      const foot = el("div", { className: 'optifoot' });
+      this.listen('conversationModeSwitched', () => {
+        hideElement(hr);
+        hideElement(foot);
+      });
+
+      this.listen('onMessage', (_, sources) => {
+        if(this.mode !== ChatSession.Mode.Text) return;
+        foot.replaceChildren();
+        if (!sources?.length) {
+          hideElement(hr);
+          return;
+        }
+        displayElement(hr);
+        foot.append(buildLearnMoreSection(sources));
+      });
+
+      this.listen('clear', () => {
+        hideElement(hr);
+        foot.replaceChildren();
+      });
+      return [hr, foot];
+    };
+
     const buildPanelSkeleton = () => {
       const panel = el("div", { className: `${Context.PANEL_CLASS} optichat ${WhichChat}` });
       panel.dataset.chat = this.name;
@@ -132,25 +190,7 @@ class ChatSession {
       hline(panel);
       el("div", { className: 'optibody' }, panel);
   
-      const footHr = el('hr', { className: 'optifoot-hr' }, panel);
-      hideElement(footHr);
-  
-      const foot = el("div", { className: 'optifoot' });
-      this.listen('conversationModeSwitched', () => {
-        hideElement(footHr);
-        hideElement(foot);
-      });
-      this.listen('onMessage', (_, footHTML) => {
-        if(this.mode !== ChatSession.Mode.Text) return;
-        if (footHTML) {
-          displayElement(footHr);
-          foot.innerHTML = footHTML;
-          return;
-        }
-        hideElement(footHr);
-      });
-  
-      panel.append(foot);
+      panel.append(...buildFootNote());
   
       return panel;
     }
@@ -245,6 +285,7 @@ class ChatSession {
       updateInputContainerVisibility();
       this.listen('onMessage', updateInputContainerVisibility);
       this.listen('conversationModeSwitched', updateInputContainerVisibility);
+      this.listen('clear', () => hideElement(inputContainer));
 
       inputContainer.append(
         buildTextArea(),
@@ -329,9 +370,10 @@ class ChatSession {
     }
 
     const buildActionButton = () => {
-      return el('button', { type: 'button', className: 'chatgpt-button' });
+      const actionButton = el('button', { type: 'button', className: 'chatgpt-button' });
+      this.listen('clear', () => hideElement(actionButton));
+      return actionButton;
     }
-
 
     this.panel = buildPanelSkeleton();
     this.actionButton = buildActionButton();
@@ -350,9 +392,9 @@ class ChatSession {
     return this.panel;
   }
 
-  onMessage(bodyHTML, footHTML) {
+  onMessage(bodyHTML, sources) {
     this.discussion.setLastMessageHTML(bodyHTML);
-    this.dispatch('onMessage', bodyHTML, footHTML);
+    this.dispatch('onMessage', bodyHTML, sources);
   }
 
   onErrorMessage(error) {
@@ -361,6 +403,11 @@ class ChatSession {
       error = ChatSession.#undefinedError;
     warn(error);
     this.onMessage(ChatSession.infoHTML(error));
+  }
+
+  clear() {
+    this.discussion.clear()
+    this.dispatch('clear');
   }
 
   allowSend() {
@@ -378,7 +425,7 @@ class ChatSession {
       this.removeConversation();
     }
     this.session = null;
-    this.discussion.clear();
+    this.clear();
     this.setupAndSend();
     if (this.mode === ChatSession.Mode.Discussion) {
       this.dispatch('conversationModeSwitched', this.mode);

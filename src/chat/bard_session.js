@@ -125,13 +125,15 @@ class BardSession extends ChatSession {
     if (ChatSession.debug) {
       return;
     }
-    const askBard = () =>
-      this.api("assistant.lamda.BardFrontendService/StreamGenerate", {}, [
+
+    const fetchResponse = () => {
+      return this.api("assistant.lamda.BardFrontendService/StreamGenerate", {}, [
         null,
         JSON.stringify([[prompt], null, this.session.conversation ?? ["", "", ""]]),
       ]);
+    };
 
-    const cleanResponse = (raw) => {
+    const parseJSONResponse = (raw) => {
       let i = 0;
       try {
         i = raw.indexOf("[[");
@@ -149,21 +151,58 @@ class BardSession extends ChatSession {
       );
     };
 
-    const parseMessage = (responses) => {
-      const firstResponse = responses[0];
-      this.session.conversation.push(firstResponse[0]);
-      let images = firstResponse[4];
-      let text = runMarkdown(firstResponse[1][0]);
-      images?.forEach(img => {
+    const parseConversationId = (jsonResp) => jsonResp[1];
+    const parseAnswersList = (jsonResp) => jsonResp[4];
+    const parseSourcesAnswer = (answer) => {
+      const sources = answer[2][0];
+      if (!sources) return [];
+      return sources.map((s, i) => {
+        const href = escapeHtml(s[2][0]);
+        return {
+          start: s[0],
+          end: s[1],
+          href,
+          html: `<a href="${href}" class="source superscript">${i+1}</a>`,
+        };
+      }).filter(({href}) => href);
+    };
+    const parseTextAnswer = (answer) => answer[1][0];
+    const parseImagesAnswer = (answer) => {
+      let images = answer[4];
+      if (!images) return [];
+      return images.map(img => {
         const [substr, source, url, title] = [img[2], img[1][0][0], img[3][0][0], img[7][2]].map(escapeHtml);
-        text = text.replace(substr, `<a href="${source}" class="bard-image-link"><img src="${url}" alt="${title}" title="${title}"/></a>`);
+        return {
+          substr,
+          html: `
+            <a href="${source}" class="bard-image-link">
+              <img src="${url}" alt="${title}" title="${title}"/>
+            </a>`.trim(),
+        };
       });
-      return text;
     };
 
-    let res = null;
+    const buildMessage = (answer) => {
+      let text = parseTextAnswer(answer);
+      let offset = 0;
+      const sources = parseSourcesAnswer(answer);
+      sources.forEach(({end}, i) => {
+        const position = text.slice(0, end + offset).lastIndexOf(' ');
+        if (position === -1) return;
+        text = text.slice(0, position) + `\uF8FD${i}\uF8FE` + text.slice(position);
+        offset += 3;
+      });
+      let bodyHTML = runMarkdown(text).replace(/\uF8FD(\d+)\uF8FE/g, (_, i) => sources[i]?.html);
+      parseImagesAnswer(answer).forEach(({substr, html}) => {
+        bodyHTML = bodyHTML.replace(substr, html);
+      });
+      return [bodyHTML, sources];
+    };
+
+    let formattedResponse = null;
     try {
-      res = cleanResponse(await askBard());
+      const rawResponse = await fetchResponse();
+      formattedResponse = parseJSONResponse(rawResponse);
     } catch (e) {
       if (e == "Output is null") {
         this.chooseGoogleAccount();
@@ -173,17 +212,21 @@ class BardSession extends ChatSession {
       }
     }
 
-    if (!res) {
+    if (!formattedResponse) {
       this.onErrorMessage();
       return;
     }
     this.allowSend();
 
     try {
-      this.session.conversation = res[1];
-      this.onMessage(parseMessage(res[4]));
+      const answersList = parseAnswersList(formattedResponse);
+      const firstAnswer = answersList[0];
+      this.session.conversation = parseConversationId(formattedResponse);
+      this.session.conversation.push(firstAnswer[0]);
+      this.onMessage(...buildMessage(firstAnswer));
     } catch (e) {
       this.onErrorMessage("⚠️ " + _t("An error occured while parsing the response:<br>$error$", e));
+      throw e;
     }
   }
 
@@ -281,7 +324,7 @@ class BardSession extends ChatSession {
     );
     setSvg(accountButton, SVG.user);
     accountButton.addEventListener("click", () => {
-      this.discussion.clear();
+      this.clear();
       this.chooseGoogleAccount(false);
     });
   }

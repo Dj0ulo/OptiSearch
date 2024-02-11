@@ -100,7 +100,7 @@ a.chat-title {
   animation: bounce 0.5s cubic-bezier(0.08, 0.82, 0.17, 1); /* Apply the 'bounce' animation */
 }
 
-.learnmore > a[invisible="0"] {
+.learnmore > a[data-invisible-count="0"] {
   display: none;
 }
 .learnmore > .showmore {
@@ -199,6 +199,7 @@ a.chat-title {
 }
 .bard-image-link img {
   display: block;
+  margin: 1em 0;
   border-radius: 5px;
   box-shadow: rgb(0 0 0 / 25%) 1px 1px 5px 0;
 }
