@@ -39,7 +39,6 @@ const $$ = (query, element) => [...(element ?? document).querySelectorAll(query)
 function onChrome() { return typeof browser === 'undefined'; }
 
 function _t(messageName, ...args) {
-  console.log(messageName.replaceAll(/[^\w]/g, '_'),args)
   return chrome.i18n.getMessage(messageName.replaceAll(/[^\w]/g, '_'), args) || messageName;
 }
 
