@@ -37,6 +37,7 @@
       "src/images/bingchat.png",
       "src/images/bingchat_conversation_example.png",
       "src/images/engines/*",
+      "src/background/websocket_utils.js",
       "src/chat/bingchat/bing_socket.js",
       "icons/optisearch/icon_128.png",
       "icons/bingchat/icon_128.png",

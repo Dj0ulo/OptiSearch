@@ -29,10 +29,22 @@ function onSocketScriptReady({data}) {
 }
 
 function injectScriptToIframe() {
-  document.querySelector('iframe').contentWindow.postMessage({
-    scriptElementId: 'bing-socket-script',
-    scriptToInject: chrome.runtime.getURL('src/chat/bingchat/bing_socket.js'),
-  }, '*');
+  const iframeWindow = document.querySelector("iframe").contentWindow;
+  iframeWindow.postMessage(
+    {
+      scripts: [
+        {
+          id: "websocket-script",
+          src: chrome.runtime.getURL("src/background/websocket_utils.js"),
+        },
+        {
+          id: "bing-socket-script",
+          src: chrome.runtime.getURL("src/chat/bingchat/bing_socket.js"),
+        },
+      ],
+    },
+    "*"
+  );
 };
 
 chrome.runtime.onMessage.addListener((message, _, sendResponse) => {

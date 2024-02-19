@@ -26,13 +26,16 @@ class ChatGPTSession extends ChatSession {
 
   constructor() {
     super('chatgpt');
-    this.eventStreamID = null;
+    this.socketID = null;
   }
 
   async init() {
     if (ChatSession.debug) return;
     await this.fetchSession();
-    await this.fetchModels();
+    await Promise.all([
+      this.fetchModels(),
+      this.registerWebSocket(),
+    ]);
   }
 
   async fetchSession() {
@@ -57,9 +60,9 @@ class ChatGPTSession extends ChatSession {
     return this.models;
   }
 
-  async fetchConversations() {
-    this.conversations = await this.backendApi("conversations?offset=0&limit=20");
-    return this.conversations;
+  async registerWebSocket() {
+    const url = (await this.backendApi("register-websocket", null, 'POST')).wss_url;
+    this.socketID = await this.createSocket(url);
   }
 
   async send(prompt) {
@@ -67,12 +70,7 @@ class ChatGPTSession extends ChatSession {
     if (ChatSession.debug)
       return;
 
-    const res = await this.backendApi(`conversation`, this.config(prompt));
-    if (!res.eventStream) {
-      res.detail && this.onMessage(runMarkdown(res.detail));
-      throw res;
-    }
-    this.eventStreamID = res.id;
+    await this.backendApi('conversation', this.config(prompt));
     await this.next();
   }
 
@@ -80,9 +78,10 @@ class ChatGPTSession extends ChatSession {
     const fetchPackets = async () => {
       const streamData = await this.readStream();
       if (!streamData) return [];
-      if (streamData.done) return ["DONE"];
-      if (!streamData.data) return [];
-      return streamData.data
+      if (streamData.readyState === WebSocket.CLOSED) return ["DONE"];
+      if (!streamData.packet) return [];
+      const packet = JSON.parse(streamData.packet);
+      return atob(packet.body)
         .split('\n\n')
         .map((p, i) => {
           if (!p) return null;
@@ -136,11 +135,25 @@ class ChatGPTSession extends ChatSession {
     return this.next();
   }
 
+  async createSocket(url) {
+    const res = await bgWorker({
+      action: "websocket",
+      url,
+    });
+    if (!('socketID' in res)) {
+      throw "Socket ID not returned";
+    }
+    return res.socketID;
+  }
+
   readStream() {
+    if (this.socketID == null) {
+      throw "Need socket ID to send";
+    }
     return bgWorker({
-      action: 'event-stream',
-      id: this.eventStreamID,
-    })
+      action: "websocket",
+      socketID: this.socketID,
+    });
   }
 
   removeConversation() {
