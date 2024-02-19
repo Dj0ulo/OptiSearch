@@ -1,6 +1,17 @@
 {
   "optisearchName": {
-    "en": "OptiSearch"
+    "ar": "OptiSearch",
+    "de": "OptiSearch",
+    "en": "OptiSearch",
+    "es": "OptiSearch",
+    "fr": "OptiSearch",
+    "hi": "OptiSearch",
+    "it": "OptiSearch",
+    "ja": "OptiSearch",
+    "ko": "OptiSearch",
+    "nl": "OptiSearch",
+    "ru": "OptiSearch",
+    "zh_CN": "OptiSearch"
   },
   "optisearchDesc": {
     "ar": "إجابات من ChatGPT وStackOverflow وويكيبيديا وما إلى ذلك جنبًا إلى جنب مع نتائج Google.",
