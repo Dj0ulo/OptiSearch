@@ -25,7 +25,8 @@
 
   const upgradeButton = document.getElementById("premium");
   const upgradeButtonSpan = upgradeButton.querySelector('span');
-
+  
+  const extpay = ExtPay('optisearch');
   extpay.getUser().then(user => {
     upgradeButton.classList.add('upgrade-button');
     if (user.paidAt) {

@@ -77,6 +77,7 @@
 
         "src/tools/tools.js",
         "src/sites/sites.js",
+        "src/constants.js",
         "src/settings.js",
 
         "src/chat/message.js",

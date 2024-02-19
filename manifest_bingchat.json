@@ -84,6 +84,7 @@
         "src/libs/ExtPay.js",
 
         "src/utils.js",
+        "src/constants.js",
         "src/settings.js",
 
         "src/chat/message.js",

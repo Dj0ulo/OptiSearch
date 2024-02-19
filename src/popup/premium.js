@@ -40,7 +40,7 @@
 
   const upgradeButton = $("#upgrade-button");
   upgradeButton.addEventListener('click', async () => {
-    extpay.openPaymentPage();
+    ExtPay('optisearch').openPaymentPage();
     setInterval(window.close, 1000);
   });
 

@@ -16,6 +16,7 @@ class Context {
 
   static boxes = [];
 
+  static extpay = null;
   static extpayUser = null;
 
   /** @type {HTMLElement | null} */
@@ -33,6 +34,8 @@ class Context {
 
   /** Start the content script, should be run only once */
   static async run() {
+    Context.extpay = ExtPay('optisearch');
+
     Context.docHead = document.head || document.documentElement;
 
     Context.save = await loadSettings();
@@ -135,7 +138,7 @@ class Context {
    * there is an error.
    */
   static async checkPremiumSubscription() {
-    await extpay.getUser()
+    await Context.extpay.getUser()
       .then(user => {
         Context.extpayUser = user;
         Context.set('premium', user.paid);
@@ -229,7 +232,7 @@ class Context {
       const crown = el('div', { className: 'star', title: _t("Premium subscription"), textContent: '⭐' }, topButtonsContainer);
       crown.onclick = premiumPresentationPopup;
       Context.addSettingListener('premium', () => {
-        crown.onclick = Context.extpayUser.paidAt ? extpay.openPaymentPage : premiumPresentationPopup;
+        crown.onclick = Context.extpayUser.paidAt ? Context.extpay.openPaymentPage : premiumPresentationPopup;
       });
       const heart = el('div', { className: 'heart', title: _t("Donate") }, topButtonsContainer);
       el('a', { textContent: '❤️', href: donationLink }, heart);
