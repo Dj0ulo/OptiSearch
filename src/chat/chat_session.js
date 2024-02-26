@@ -401,7 +401,7 @@ class ChatSession {
     this.session = null;
     if (!error)
       error = ChatSession.#undefinedError;
-    warn(error);
+    err(error);
     this.onMessage(ChatSession.infoHTML(error));
   }
 
@@ -437,11 +437,10 @@ class ChatSession {
     this.session = null;
     if (error && error.code && error.text) {
       this.setCurrentAction(error.action ?? 'window');
-      this.onMessage(ChatSession.infoHTML(error.text));
+      this.onErrorMessage(error.text);
     }
     else {
-      err(error.error || error);
-      this.onMessage(ChatSession.infoHTML(ChatSession.#undefinedError));
+      this.onErrorMessage();
     }
   }
 
