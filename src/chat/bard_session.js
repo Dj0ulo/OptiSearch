@@ -133,27 +133,28 @@ class BardSession extends ChatSession {
       ]);
     };
 
-    const parseJSONResponse = (raw) => {
-      let i = 0;
-      try {
-        i = raw.indexOf("[[");
-        i = raw.indexOf(",", i);
-        i = raw.indexOf(",", i + 1);
-      } catch (e) {
-        throw "Output is null";
-      }
-      if (raw.slice(i + 1, i + 5) === "null") throw "Output is null";
-      if (raw.slice(i + 1, i + 2) !== '"') throw "Invalid output";
-      return JSON.parse(
-        raw
-          .slice(i + 2, raw.indexOf("\n", i) - 3)
-          .replace(/\\(\\)?/g, (_, backslash) => backslash ?? "")
-      );
+    const parseRawResponse = (raw) => {
+      const sectionsRegex = /(\d+)\s*\[\s*\[/g;
+      const sections = [...raw.matchAll(sectionsRegex)];
+      const blockObjects = sections.map((section, i) => {
+        const start = section.index + section[1].length;
+        const end = sections[i + 1]?.index ?? raw.length;
+        try {
+          return JSON.parse(raw.slice(start, end));
+        } catch {
+          if (e instanceof SyntaxError) return null;
+        }
+      });
+      return blockObjects
+        .filter((obj) => obj && obj[0] && typeof obj[0][2] === "string") // filter the relevant objects
+        .map((obj) => JSON.parse(obj[0][2])) // parse them
+        .find((obj) => obj[4] && obj[4].length >= 3); // find the first one that has 3 answers (or more to be future-proof)
     };
 
     const parseConversationId = (jsonResp) => jsonResp[1];
     const parseAnswersList = (jsonResp) => jsonResp[4];
     const parseSourcesAnswer = (answer) => {
+      if (!answer[2]) return [];
       const sources = answer[2][0];
       if (!sources) return [];
       return sources.map((s, i) => {
@@ -202,7 +203,7 @@ class BardSession extends ChatSession {
     let formattedResponse = null;
     try {
       const rawResponse = await fetchResponse();
-      formattedResponse = parseJSONResponse(rawResponse);
+      formattedResponse = parseRawResponse(rawResponse);
     } catch (e) {
       if (e == "Output is null") {
         this.chooseGoogleAccount();
@@ -226,7 +227,6 @@ class BardSession extends ChatSession {
       this.onMessage(...buildMessage(firstAnswer));
     } catch (e) {
       this.onErrorMessage("⚠️ " + _t("An error occured while parsing the response:<br>$error$", e));
-      throw e;
     }
   }
 
