@@ -1,6 +1,6 @@
 {
   "name": "__MSG_bingchatName__",
-  "version": "2.3",
+  "version": "2.4",
   "manifest_version": 3,
   "description": "__MSG_bingchatDesc__",
   "default_locale": "en",
