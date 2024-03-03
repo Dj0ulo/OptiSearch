@@ -16,6 +16,11 @@ body {
   overflow-y: auto;
   margin: 0;
 }
+
+main {
+  padding: 1rem;
+}
+
 #title-container {
   font-size: 1.6rem;
   font-weight: bold;
@@ -29,13 +34,13 @@ body {
   margin-right: 0.5em;
 }
 #extension-name {
-  display: inline-block;
+  display: inline;
   margin-bottom: 1em;
 }
 #benefits {
   display: grid;
   width: fit-content;
-  margin: 0 15%;
+  margin: 0 auto;
   grid-template-columns: 1fr auto;
   text-align: left;
 }
