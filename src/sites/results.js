@@ -61,10 +61,9 @@
     const paramsToSend = {
       action: 'fetch-result',
       engine: Context.engineName,
-      link: siteLink,
       site: siteName,
       type: "html",
-      ...siteProps.msgApi(siteLink),
+      ...(siteProps.msgApi ? siteProps.msgApi(siteLink) : {}),
     };
 
     if (intermediateLink) {
@@ -72,9 +71,10 @@
       const start = html.lastIndexOf('"', html.search(siteProps.link)) + 1;
       const end = html.indexOf('"', start);
       siteLink = html.substring(start, end);
-      paramsToSend.link = siteLink;
     }
-
+    paramsToSend.baseLink = siteLink;
+    paramsToSend.link = siteProps.refactorLink ? siteProps.refactorLink(siteLink) : siteLink;
+    
     const isSameURL = (a, b) => a.host === b.host && a.pathname === b.pathname && a.search === b.search;
 
     const urlLink = new URL(siteLink);

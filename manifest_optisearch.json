@@ -97,6 +97,7 @@
         "src/sites/genius.js",
         "src/sites/unity.js",
         "src/sites/mathworks.js",
+        "src/sites/reddit.js",
 
         "src/run.js"
       ]

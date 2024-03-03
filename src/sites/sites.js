@@ -49,4 +49,11 @@ const Sites = Object.freeze({
     local_icon: "mathworks.ico",
     href: "https://www.mathworks.com/matlabcentral/answers/",
   },
+  reddit: {
+    name: "Reddit",
+    link: /https:\/\/www\.reddit\.com\/r\/\w+\/comments\//,
+    icon: "https://www.redditstatic.com/shreddit/assets/favicon/64x64.png",
+    local_icon: "reddit.png",
+    href: "https://www.reddit.com/",
+  },
 });
