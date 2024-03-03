@@ -51,8 +51,8 @@ switch(WhichExtension) {
       default: 'balanced',
     }
     Settings['AI Assitant']['bingInternalSearch'] = {
-      name: "Bing internal search",
-      title: 'Allow Bing to make internal search before giving you an answer. Takes more time to answer.',
+      name: "Internal search",
+      title: "Enable internal search for Copilot to provide more comprehensive answers. This may take slightly longer.",
       default: true,
       active: false,
     }

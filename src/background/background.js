@@ -84,7 +84,7 @@ function handleActionWindow(action) {
 
 /**
  * Check if there is an offscreen document active and create one if not.
- * This method should be executed only on the BingChat extension and with manifest v3.
+ * This method should be executed only on the Copilot extension and with manifest v3.
  */
 async function handleSetupOffscreen() {
   const already = await setupOffscreenDocument('src/chat/bingchat/offscreen.html');
@@ -95,7 +95,7 @@ let creating; // A global promise to avoid concurrency issues
 
 /**
  * Check if there is an offscreen document active and create one if not.
- * This method should be executed only on the BingChat extension and with manifest v3.
+ * This method should be executed only on the Copilot extension and with manifest v3.
  */
 async function setupOffscreenDocument(path) {
   const offscreenUrl = chrome.runtime.getURL(path);
@@ -128,7 +128,7 @@ async function setupOffscreenDocument(path) {
 
 /**
  * Check if there is an offscreen document active.
- * This method should be executed only on the BingChat extension and with manifest v3.
+ * This method should be executed only on the Copilot extension and with manifest v3.
  */
 async function hasOffscreenDocument(offscreenUrl) {
   const matchedClients = await clients.matchAll();

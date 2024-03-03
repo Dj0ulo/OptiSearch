@@ -1,8 +1,8 @@
-# OptiSearch ｜ Bing Chat (GPT-4) in Google ｜ Gemini next to Google results
+# OptiSearch ｜ Copilot in Google ｜ Gemini next to Google results
 
 ![License](https://img.shields.io/github/license/dj0ulo/optisearch)
 
-This repository contains the code of **OptiSearch**, **Bing Chat (GPT-4) in Google** and **Gemini next to Google results** browser extensions. They share the same codebase core. 
+This repository contains the code of **OptiSearch**, **Copilot in Google** and **Gemini next to Google results** browser extensions. They share the same codebase core. 
 
 ### <img alt="OptiSearch icon" src="./icons/optisearch/icon_128.png" width="24" height="24"> OptiSearch
 ![License](https://img.shields.io/chrome-web-store/users/bbojmeobdaicehcopocnfhaagefleiae?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/optisearch?label=Firefox%20Users)
@@ -13,10 +13,10 @@ Displays relevant informations from search engine results directly alongside the
 
 [Install from Mozilla Add-on Store](https://addons.mozilla.org/fr/firefox/addon/optisearch/)
 
-### <img alt="Bing Chat (GPT-4) in Google icon" src="./icons/bingchat/icon_128.png" width="24" height="24"> Bing Chat (GPT-4) in Google
+### <img alt="Copilot in Google icon" src="./icons/bingchat/icon_128.png" width="24" height="24"> Copilot in Google
 ![License](https://img.shields.io/chrome-web-store/users/pcnhobmoglanpljipbomknafhdlcgcng?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/bing-chat-gpt-4-in-google?label=Firefox%20Users)
 
-Displays the answer from Bing Chat AI alongside search engine results.
+Displays the answer from Microsoft Copilot alongside search engine results.
 
 [Install from Chrome Web Store](https://chrome.google.com/webstore/detail/bing-chat-gpt-4-in-google/pcnhobmoglanpljipbomknafhdlcgcng)
 
@@ -42,7 +42,7 @@ Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave Search
     ```
 1. You can load both extension in your favorite browser directly from the root of the repo, you just need to build the manifest first, use the flag `-f` to build the manifest for Firefox.
     
-    E.g. to build the firefox manifest for **Bing Chat (GPT-4) in Google**:
+    E.g. to build the firefox manifest for **Copilot in Google**:
     ```
     npm build.mjs bingchat -f
     ```

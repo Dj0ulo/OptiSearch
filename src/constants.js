@@ -1,8 +1,8 @@
 const WhichExtension = (() => {
-  const extensionName = chrome.runtime.getManifest().name;
-  if (extensionName.includes('Bing'))
+  const iconPath = chrome.runtime.getManifest().icons["128"];
+  if (iconPath.includes('bingchat'))
     return 'bingchat';
-  if (extensionName.includes('Gemini'))
+  if (iconPath.includes('bard'))
     return 'bard';
   return 'optisearch';
 })();

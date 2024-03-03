@@ -154,7 +154,7 @@
     if (isOptiSearch && category === 'AI Assitant') {
       el('a', {
         className: 'ad',
-        innerHTML: _t('Get answers from <strong>$AI$</strong>', 'Bing AI'),
+        innerHTML: _t('Get answers from <strong>$AI$</strong>', 'Microsoft Copilot'),
         href: webstores['bingchat'],
       }, sublist);
       el('a', {
@@ -183,7 +183,7 @@
   if (WhichExtension === 'bard') {
     el('a', {
       className: 'ad',
-      innerHTML: _t('I want answers from <strong>$AI$</strong> too!', 'Bing AI'),
+      innerHTML: _t('I want answers from <strong>$AI$</strong> too!', 'Microsoft Copilot'),
       href: webstores['bingchat'],
     }, optionsContainer);
   }

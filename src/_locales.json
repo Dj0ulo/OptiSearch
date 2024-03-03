@@ -28,32 +28,32 @@
     "zh_CN": "来自 ChatGPT、StackOverflow、Wikipedia 等的答案与 Google 搜索结果并排."
   },
   "bingchatName": {
-    "ar": "Bing Chat (GPT-4) في Google",
-    "de": "Bing Chat (GPT-4) in Google",
-    "en": "Bing Chat (GPT-4) in Google",
-    "es": "Bing Chat (GPT-4) en Google",
-    "fr": "Bing Chat (GPT-4) dans Google",
-    "hi": "Bing Chat (GPT-4) in Google",
-    "it": "Bing Chat (GPT-4) in Google",
-    "ja": "Bing Chat (GPT-4) in Google",
-    "ko": "Google의 Bing 채팅(GPT-4)",
-    "nl": "Bing Chat (GPT-4) in Google",
-    "ru": "Чат Bing (GPT-4) в Google",
-    "zh_CN": "Bing聊天（GPT-4）在谷歌中"
+    "ar": "Copilot في Google",
+    "de": "Copilot in Google",
+    "en": "Copilot in Google",
+    "es": "Copilot en Google",
+    "fr": "Copilot dans Google",
+    "hi": "Google में Copilot",
+    "it": "Copilot in Google",
+    "ja": "Googleの中の Copilot",
+    "ko": "Google의 Copilot",
+    "nl": "Copilot in Google",
+    "ru": "Copilot в Google",
+    "zh_CN": "谷歌中的 Copilot"
   },
   "bingchatDesc": {
-    "ar": "🗨️ إجابة Bing Copilot بجانب نتائج Google.",
-    "de": "🗨️ Bing Copilot-Antwort neben Google-Ergebnissen.",
-    "en": "🗨️ Bing Copilot answer alongside Google results.",
-    "es": "🗨️ Respuesta de Bing Copilot junto a los resultados de Google.",
-    "fr": "🗨️ Réponse de Bing Copilot à côté des résultats Google.",
-    "hi": "🗨️ Bing Copilot से जवाब Google परिणामों के बगल में.",
-    "it": "🗨️ Risposta di Bing Copilot accanto ai risultati di Google.",
-    "ja": "🗨️ Microsoft Bing Copilot からの回答を Google の検索結果の横に表示します。",
-    "ko": "🗨️ Bing Copilot 의 답변을 Google 검색 결과 옆에 제공합니다.",
-    "nl": "🗨️ Antwoord van Bing Copilot naast Google-resultaten.",
-    "ru": "🗨️ Ответ от Bing Copilot рядом с результатами Google.",
-    "zh_CN": "🗨️ 与 Google 搜索结果并排显示来自 Bing Copilot 的答案."
+    "ar": "🗨️ إجابة Microsoft Copilot بجانب نتائج Google.",
+    "de": "🗨️ Microsoft Copilot-Antwort neben Google-Ergebnissen.",
+    "en": "🗨️ Microsoft Copilot answer alongside Google results.",
+    "es": "🗨️ Respuesta de Microsoft Copilot junto a los resultados de Google.",
+    "fr": "🗨️ Réponse de Microsoft Copilot à côté des résultats Google.",
+    "hi": "🗨️ Microsoft Copilot से जवाब Google परिणामों के बगल में.",
+    "it": "🗨️ Risposta di Microsoft Copilot accanto ai risultati di Google.",
+    "ja": "🗨️ Microsoft Copilot からの回答を Google の検索結果の横に表示します。",
+    "ko": "🗨️ Microsoft Copilot 의 답변을 Google 검색 결과 옆에 제공합니다.",
+    "nl": "🗨️ Antwoord van Microsoft Copilot naast Google-resultaten.",
+    "ru": "🗨️ Ответ от Microsoft Copilot рядом с результатами Google.",
+    "zh_CN": "🗨️ 与 Google 搜索结果并排显示来自 Microsoft Copilot 的答案."
   },
   "bardName": {
     "ar": "بارد بجوار نتائج Google",
@@ -110,7 +110,7 @@
     "nl": "Fout",
     "ru": "Ошибка",
     "zh_CN": "错误"
-  },  
+  },
   "Go to Chrome Web Store": {
     "ar": "انتقل إلى Chrome Web Store",
     "de": "Zum Chrome Web Store gehen",
@@ -124,7 +124,7 @@
     "nl": "Ga naar Chrome Web Store",
     "ru": "Перейти в Chrome Web Store",
     "zh_CN": "前往 Chrome 网上应用店"
-  },  
+  },
   "Get answers from <strong>$AI$</strong>": {
     "message": {
       "ar": "احصل على إجابات من <strong>$AI$</strong>",
@@ -475,33 +475,33 @@
     "ru": "Точный",
     "zh_CN": "精确"
   },
-  "Bing internal search": {
-    "ar": "البحث الداخلي ل Bing",
-    "de": "Interne Bing-Suche",
-    "en": "Bing internal search",
-    "es": "Búsqueda interna de Bing",
-    "fr": "Recherche interne Bing",
-    "hi": "बिंग में अन्तर्निहित खोज",
-    "it": "Ricerca interna di Bing",
-    "ja": "Bing 内部検索",
-    "ko": "Bing 내부 검색",
-    "nl": "Interne Bing-zoekop",
-    "ru": "Внутренний поиск Bing",
-    "zh_CN": "Bing 内部搜索"
+  "Internal search": {
+    "ar": "بحث داخلي",
+    "de": "Interne Suche",
+    "en": "Internal search",
+    "es": "Búsqueda interna",
+    "fr": "Recherche interne",
+    "hi": "आंतरिक खोज",
+    "it": "Ricerca interna",
+    "ja": "内部検索",
+    "ko": "내부 검색",
+    "nl": "Interne zoekopdracht",
+    "ru": "Внутренний поиск",
+    "zh_CN": "内部搜索"
   },
-  "Allow Bing to make an internal search before giving you an answer. Takes longer to answer.": {
-    "ar": "السماح لـ Bing بإجراء بحث داخلي قبل إعطائك إجابة. يستغرق وقتًا أطول للإجابة.",
-    "de": "Erlauben Sie Bing, eine interne Suche durchzuführen, bevor Sie Ihnen eine Antwort geben. Es dauert länger, um eine Antwort zu erhalten.",
-    "en": "Allow Bing to make an internal search before giving you an answer. Takes longer to answer.",
-    "es": "Permitir que Bing realice una búsqueda interna antes de dar una respuesta. Tarda más en responder.",
-    "fr": "Autoriser Bing à effectuer une recherche interne avant de vous donner une réponse. Cela prend plus de temps pour répondre.",
-    "hi": "बिंग से आपके उत्तर देने से पहले एक आंतरिक खोज करने की अनुमति दें। जवाब देने में अधिक समय लगता है।",
-    "it": "Consenti a Bing di eseguire una ricerca interna prima di darti una risposta. Ci vuole più tempo per rispondere.",
-    "ja": "Bingが回答する前に内部検索を実行できるようにします。回答には時間がかかります。",
-    "ko": "Bing이 답변을 제공하기 전에 내부 검색을 수행하도록 허용합니다. 응답하는 데 더 오래 걸립니다.",
-    "nl": "Sta Bing toe om een interne zoekopdracht uit te voeren voordat u een antwoord krijgt. Het antwoord duurt langer.",
-    "ru": "Разрешите Bing выполнить внутренний поиск перед предоставлением ответа. На ответ требуется больше времени.",
-    "zh_CN": "允许 Bing 在给您答案之前进行内部搜索。需要更长时间才能回答。"
+  "Enable internal search for Copilot to provide more comprehensive answers. This may take slightly longer.": {
+    "ar": "قم بتفعيل البحث الداخلي لـ Copilot لتقديم إجابات أكثر شمولاً. قد يستغرق هذا الأمر بعض الوقت الإضافي.",
+    "de": "Aktivieren Sie die interne Suche für Copilot, um umfassendere Antworten zu erhalten. Dies kann etwas länger dauern.",
+    "en": "Enable internal search for Copilot to provide more comprehensive answers. This may take slightly longer.",
+    "es": "Habilita la búsqueda interna para Copilot para brindar respuestas más completas. Esto puede tardar un poco más.",
+    "fr": "Activez la recherche interne pour Copilot afin de fournir des réponses plus complètes. Cela peut prendre un peu plus de temps.",
+    "hi": "Copilot को अधिक व्यापक उत्तर प्रदान करने के लिए आंतरिक खोज सक्षम करें। इसमें थोड़ा अधिक समय लग सकता है।",
+    "it": "Abilita la ricerca interna per Copilot per fornire risposte più complete. Potrebbe richiedere un po' più di tempo.",
+    "ja": "Copilot がより包括的な回答を提供できるように、内部検索を有効にしてください。これには少し時間がかかる場合があります。",
+    "ko": "Copilot이 더 포괄적인 답변을 제공할 수 있도록 내부 검색을 활성화하십시오. 이 작업에는 약간 더 오래 걸릴 수 있습니다.",
+    "nl": "Schakel interne zoekopdrachten voor Copilot in om uitgebreidere antwoorden te geven. Dit kan iets langer duren.",
+    "ru": "Включите внутренний поиск для Copilot, чтобы предоставить более исчерпывающие ответы. Это может занять немного больше времени.",
+    "zh_CN": "启用 Copilot 的内部搜索以提供更全面的答案。这可能会花费稍长的时间。"
   },
   "Google account ID": {
     "ar": "معرف حساب Google",
@@ -601,19 +601,19 @@
     "ru": "<strong>Начните чат прямо на</strong> странице результатов",
     "zh_CN": "<strong>直接在结果页面中</strong>聊天"
   },
-  "<strong>Disable Bing internal search</strong> and save time": {
-    "ar": "<strong>تعطيل البحث الداخلي</strong> في Bing وتوفير الوقت",
-    "de": "<strong>Bing-Internes Suchen</strong> deaktivieren und Zeit sparen",
-    "en": "<strong>Disable Bing internal search</strong> and save time",
-    "es": "<strong>Deshabilite</strong> la búsqueda interna de Bing y ahorrar tiempo",
-    "fr": "<strong>Désactivez la recherche interne</strong> de Bing et gagnez du temps",
-    "hi": "<strong>Bing के आंतरिक खोज</strong> को अक्षम करें और समय बचाएं",
-    "it": "<strong>Disabilita la ricerca interna</strong> di Bing e risparmia tempo",
-    "ja": "<strong>Bingの内部検索を無効に</strong>して時間を節約する",
-    "ko": "<strong>Bing의 내부 검색을 비활성화</strong>하고 시간을 절약하세요",
-    "nl": "<strong>Schakel Bing's interne zoekfunctie</strong> uit en bespaar tijd",
-    "ru": "<strong>Отключите внутренний поиск</strong> Bing и сэкономьте время",
-    "zh_CN": "<strong>禁用 Bing 的内部搜索</strong>并节省时间"
+  "<strong>Disable internal search</strong> and save time": {
+    "ar": "<strong>تعطيل البحث الداخلي</strong> وتوفير الوقت",
+    "de": "<strong>Internes Suchen deaktivieren</strong> und Zeit sparen",
+    "en": "<strong>Disable internal search</strong> and save time",
+    "es": "<strong>Deshabilite la búsqueda interna</strong> y ahorre tiempo",
+    "fr": "<strong>Désactivez la recherche interne</strong> et gagnez du temps",
+    "hi": "<strong>आंतरिक खोज को अक्षम करें</strong> और समय बचाएं",
+    "it": "<strong>Disabilita la ricerca interna</strong> e risparmia tempo",
+    "ja": "<strong>内部検索を無効にして</strong>時間を節約する",
+    "ko": "<strong>내부 검색을 비활성화하고</strong> 시간을 절약하세요",
+    "nl": "<strong>Schakel de interne zoekfunctie uit</strong> en bespaar tijd",
+    "ru": "<strong>Отключите внутренний поиск</strong> и сэкономьте время",
+    "zh_CN": "<strong>禁用内部搜索</strong>并节省时间"
   },
   "OptiSearch (for ChatGPT)": {
     "ar": "OptiSearch (لل ChatGPT)",
@@ -684,7 +684,7 @@
     "nl": "Vouw het paneel uit",
     "ru": "Развернуть панель",
     "zh_CN": "展开面板"
-  },  
+  },
   "Oups, an error occured. Please try again.": {
     "ar": "حدث خطأً. يرجى المحاولة مرة أخرى.",
     "de": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
@@ -1021,20 +1021,6 @@
     "ru": "Войдите в Bing с помощью своей учетной записи Microsoft, а затем обновите страницу.",
     "zh_CN": "请使用您的 Microsoft 帐户登录 Bing，然后刷新页面"
   },
-  "Unfortunately you don't have access to Bing Chat yet, please register to the waitlist": {
-    "ar": "لسوء الحظ، لا يزال ليس لديك إمكانية الوصول إلى Bing Chat، يرجى التسجيل في قائمة الانتظار",
-    "de": "Leider haben Sie noch keinen Zugriff auf Bing Chat. Bitte registrieren Sie sich für die Warteliste.",
-    "en": "Unfortunately you don't have access to Bing Chat yet, please register to the waitlist",
-    "es": "Desafortunadamente, aún no tiene acceso a Bing Chat. Regístrese en la lista de espera.",
-    "fr": "Malheureusement, vous n'avez pas encore accès à Bing Chat. Veuillez vous inscrire sur la liste d'attente",
-    "hi": "दुर्भाग्य से, आपके पास अभी तक Bing Chat तक पहुंच नहीं है, कृपया प्रतीक्षा सूची में पंजीकरण करें",
-    "it": "Sfortunatamente, non hai ancora accesso a Bing Chat. Registrati alla lista d'attesa",
-    "ja": "Bing Chatへのアクセス権がありません。 waitlistに登録してください",
-    "ko": "Bing Chat에 아직 액세스할 수 없습니다. 대기 목록에 등록하세요.",
-    "nl": "Helaas heeft u nog geen toegang tot Bing Chat. Registreer u voor de wachtlijst",
-    "ru": "К сожалению, у вас еще нет доступа к Bing Chat. Пожалуйста, зарегистрируйтесь в листе ожидания",
-    "zh_CN": "很遗憾，您目前无法使用 Bing Chat，请先注册候补名单"
-  },
   "Register to the waitlist": {
     "ar": "التسجيل في قائمة الانتظار",
     "de": "An der Warteliste anmelden",
@@ -1049,47 +1035,47 @@
     "ru": "Зарегистрироваться в листе ожидания",
     "zh_CN": "注册候补名单"
   },
-  "Bing internal search enabled": {
-    "ar": "تم تمكين البحث الداخلي في Bing",
-    "de": "Interne Suche von Bing aktiviert",
-    "en": "Bing internal search enabled",
-    "es": "Búsqueda interna de Bing habilitada",
-    "fr": "Recherche interne de Bing activée",
-    "hi": "Bing का आंतरिक खोज सक्षम",
-    "it": "Ricerca interna di Bing abilitata",
-    "ja": "Bing 内部検索を有効にしました",
-    "ko": "Bing 내부 검색이 활성화되었습니다",
-    "nl": "Interne zoekopdracht van Bing ingeschakeld",
-    "ru": "Внутренний поиск Bing включен",
-    "zh_CN": "Bing 内部搜索已启用"
+  "Internal search enabled": {
+    "ar": "البحث الداخلي مُمَكَّن",
+    "de": "Interne Suche aktiviert",
+    "en": "Internal search enabled",
+    "es": "Búsqueda interna habilitada",
+    "fr": "Recherche interne activée",
+    "hi": "आंतरिक खोज सक्षम",
+    "it": "Ricerca interna abilitata",
+    "ja": "内部検索が有効になっています",
+    "ko": "내부 검색 활성화됨",
+    "nl": "Interne zoekfunctie ingeschakeld",
+    "ru": "Внутренний поиск включен",
+    "zh_CN": "内部搜索已启用"
   },
-  "Bing internal search disabled": {
-    "ar": "تم تعطيل البحث الداخلي في Bing",
-    "de": "Interne Suche von Bing deaktiviert",
-    "en": "Bing internal search disabled",
-    "es": "Búsqueda interna de Bing deshabilitada",
-    "fr": "Recherche interne de Bing désactivée",
-    "hi": "Bing का आंतरिक खोज अक्षम",
-    "it": "Ricerca interna di Bing disabilitata",
-    "ja": "Bing 内部検索を無効にしました",
-    "ko": "Bing 내부 검색이 비활성화되었습니다",
-    "nl": "Interne zoekopdracht van Bing uitgeschakeld",
-    "ru": "Внутренний поиск Bing отключен",
-    "zh_CN": "Bing 内部搜索已禁用"
+  "Internal search disabled": {
+    "ar": "البحث الداخلي مُعَطَّل",
+    "de": "Interne Suche deaktiviert",
+    "en": "Internal search disabled",
+    "es": "Búsqueda interna deshabilitada",
+    "fr": "Recherche interne désactivée",
+    "hi": "आंतरिक खोज अक्षम",
+    "it": "Ricerca interna disabilitata",
+    "ja": "内部検索が無効になっています",
+    "ko": "내부 검색 비활성화됨",
+    "nl": "Interne zoekfunctie uitgeschakeld",
+    "ru": "Внутренний поиск отключен",
+    "zh_CN": "内部搜索已禁用"
   },
-  "Sorry, you've reached the limit of messages you can send to Bing within 24 hours. Check back soon!": {
-    "ar": "عذراً، لقد بلغت الحد الأقصى لعدد الرسائل التي يمكنك إرسالها إلى Bing خلال 24 ساعة. يرجى العودة قريباً!",
-    "de": "Entschuldigung, Sie haben die maximale Anzahl von Nachrichten erreicht, die Sie innerhalb von 24 Stunden an Bing senden können. Bitte schauen Sie später wieder vorbei!",
-    "en": "Sorry, you've reached the limit of messages you can send to Bing within 24 hours. Check back soon!",
-    "es": "Lo sentimos, ha alcanzado el límite de mensajes que puede enviar a Bing dentro de las 24 horas. ¡Vuelva pronto!",
-    "fr": "Désolé, vous avez atteint la limite du nombre de messages que vous pouvez envoyer à Bing dans les 24 heures. Veuillez vérifier ultérieurement!",
-    "hi": "क्षमा करें, आपने Bing को 24 घंटे के भीतर भेजे जा सकने वाले संदेशों की सीमा को पूरा कर लिया है। कृपया जल्द ही वापस जाएं!",
-    "it": "Ci dispiace, ma hai raggiunto il limite di messaggi che puoi inviare a Bing entro 24 ore. Torna presto!",
-    "ja": "24時間以内にBingに送信できるメッセージの上限に達しました。後でもう一度やり直してください！",
-    "ko": "24시간 이내에 Bing에 보낼 수 있는 메시지의 한도를 초과했습니다. 다시 시도해주세요!",
-    "nl": "Sorry, maar u heeft het maximum aantal berichten bereikt dat u binnen 24 uur naar Bing kunt verzenden. Kom later terug!",
-    "ru": "Извините, но вы достигли лимита количества сообщений, которые вы можете отправить в Bing в течение 24 часов. Пожалуйста, вернитесь позже!",
-    "zh_CN": "很抱歉，您已达到您可以在 24 小时内发送到 Bing 的最大消息数。请稍后再试！"
+  "Sorry, you've reached the limit of messages you can send to Copilot within 24 hours. Check back soon!": {
+    "ar": "عذراً، لقد وصلت إلى حد الرسائل التي يمكنك إرسالها إلى Copilot خلال 24 ساعة. راجع لاحقاً!",
+    "de": "Leider haben Sie das Limit der Nachrichten erreicht, die Sie innerhalb von 24 Stunden an Copilot senden können. Bitte versuchen Sie es später erneut!",
+    "en": "Sorry, you've reached the limit of messages you can send to Copilot within 24 hours. Check back soon!",
+    "es": "Lo sentimos, ha alcanzado el límite de mensajes que puede enviar a Copilot en 24 horas. ¡Vuelve pronto!",
+    "fr": "Désolé, vous avez atteint la limite de messages que vous pouvez envoyer à Copilot en 24 heures. Revenez plus tard !",
+    "hi": "क्षमा करें, आप 24 घंटों के भीतर Copilot को भेज सकने वाले संदेशों की सीमा तक पहुँच चुके हैं। जल्द ही वापस आएं!",
+    "it": "Spiacenti, hai raggiunto il limite di messaggi che puoi inviare a Copilot entro 24 ore. Ricontrolla più tardi!",
+    "ja": "申し訳ありませんが、Copilot に送信できるメッセージの上限に達しました。 24 時間後に再度お試しください。",
+    "ko": "죄송합니다. 24시간 이내에 Copilot에게 보낼 수 있는 메시지 제한에 도달했습니다. 곧 다시 확인하십시오!",
+    "nl": "Sorry, je hebt het aantal berichten bereikt dat je binnen 24 uur naar Copilot kunt sturen. Kom later nog eens terug!",
+    "ru": "Извините, вы достигли лимита сообщений, которые вы можете отправлять в Copilot в течение 24 часов. Пожалуйста, зайдите позже!",
+    "zh_CN": "很抱歉，您已达到 24 小时内可以发送给 Copilot 的消息限制。请稍后再试！"
   },
   "Learn more": {
     "ar": "تعلم المزيد",
@@ -1167,5 +1153,5 @@
     "nl": "Cloudflare-controle",
     "ru": "Проверка Cloudflare",
     "zh_CN": "Cloudflare 检查"
-  }  
+  }
 }

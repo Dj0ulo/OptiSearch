@@ -1,10 +1,10 @@
 class BingChatSession extends ChatSession {
   properties = {
-    name: "Bing",
+    name: "Copilot",
     link: "https://www.bing.com/search",
-    icon: "src/images/bingchat.png",
-    local_icon: "bingchat.png",
-    href: "https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Bing+AI&showconv=1",
+    icon: "src/images/copilot.png",
+    local_icon: "copilot.png",
+    href: "https://www.bing.com/search?form=MY0291&OCID=MY0291&q=Copilot&showconv=1",
   }
   static errors = {
     session: {
@@ -12,12 +12,6 @@ class BingChatSession extends ChatSession {
       url: 'https://login.live.com/login.srf?wa=wsignin1.0&wreply=https%3A%2F%2Fwww.bing.com%2Ffd%2Fauth%2Fsignin%3Faction%3Dinteractive%26provider%3Dwindows_live_id%26return_url%3Dhttps%3A%2F%2Fwww.bing.com%2F%3Fwlexpsignin%3D1%26src%3DEXPLICIT',
       text: _t("Please login to Bing with your Microsoft account, then refresh"),
       button: _t("Login to $AI$", "Bing"),
-    },
-    forbidden: {
-      code: 'BING_CHAT_FORBIDDEN',
-      url: 'https://www.bing.com/new?form=MY028Z&OCID=MY028Z',
-      text: _t("Unfortunately you don't have access to Bing Chat yet, please register to the waitlist"),
-      button: _t("Register to the waitlist"),
     },
   }
   static get storageKey() {
@@ -59,8 +53,6 @@ class BingChatSession extends ChatSession {
     const session = await BingChatSession.offscreenAction({ action: "session" });
     if (session.result?.value === 'UnauthorizedRequest')
       throw BingChatSession.errors.session;
-    if (session.result?.value === 'Forbidden')
-      throw BingChatSession.errors.forbidden;
     this.session = session;
     this.session.isStartOfSession = true;
     return this.session;
@@ -94,7 +86,7 @@ class BingChatSession extends ChatSession {
     const { packet } = await this.socketReceive();
     if (packet !== '{}\x1e') {
       this.onErrorMessage();
-      err(`Error with Bing Chat: first packet received is ${packet}`);
+      err(`Error with Bing Copilot: first packet received is ${packet}`);
       return;
     }
 
@@ -114,7 +106,7 @@ class BingChatSession extends ChatSession {
         const activated = await this.internalSearchActivated();
         glass.textContent = '';
         setSvg(glass, SVG[activated ? 'magnifyingGlass' : 'emptySet'])
-        glass.title = activated ? _t("Bing internal search enabled") : _t("Bing internal search disabled");
+        glass.title = activated ? _t("Internal search enabled") : _t("Internal search disabled");
       };
       updateInternalSearchButton();
       glass.addEventListener('click', async () => {
@@ -174,7 +166,7 @@ class BingChatSession extends ChatSession {
           }
           if (body.item.result) {
             if (body.item.result.value === 'Throttled') {
-              this.onErrorMessage("⚠️ " + _t("Sorry, you've reached the limit of messages you can send to Bing within 24 hours. Check back soon!"));
+              this.onErrorMessage("⚠️ " + _t("Sorry, you've reached the limit of messages you can send to Copilot within 24 hours. Check back soon!"));
               return;
             }
             if (body.item.result.value === 'UnauthorizedRequest') {
@@ -184,8 +176,6 @@ class BingChatSession extends ChatSession {
             if (body.item.result.error) {
               if (body.item.result.error === 'UnauthorizedRequest' || body.item.result.value === 'CaptchaChallenge')
                 throw BingChatSession.errors.session;
-              if (body.item.result.error === 'Forbidden')
-                throw BingChatSession.errors.forbidden;
             }
             if (body.item.result.value !== 'Success' && body.item.result.message) {
               this.onMessage(ChatSession.infoHTML(body.item.result.message));
