@@ -148,7 +148,7 @@ class BardSession extends ChatSession {
       return blockObjects
         .filter((obj) => obj && obj[0] && typeof obj[0][2] === "string") // filter the relevant objects
         .map((obj) => JSON.parse(obj[0][2])) // parse them
-        .find((obj) => obj[4] && obj[4].length >= 3); // find the first one that has 3 answers (or more to be future-proof)
+        .find((obj) => obj[4] && obj[4].length); // find the first one that has some answers
     };
 
     const parseConversationId = (jsonResp) => jsonResp[1];
