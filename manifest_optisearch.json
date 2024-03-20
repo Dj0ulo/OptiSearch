@@ -1,6 +1,6 @@
 {
   "name": "__MSG_optisearchName__",
-  "version": "3.7",
+  "version": "3.7.1",
   "manifest_version": 3,
   "description": "__MSG_optisearchDesc__",
   "default_locale": "en",
