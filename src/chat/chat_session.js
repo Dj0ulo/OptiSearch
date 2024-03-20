@@ -3,7 +3,7 @@ class ChatSession {
   static #abstractError = "ChatSession is an abstract classes that cannot be instantiated.";
   static #abstractMethodError = "This method should be inherited";
   static #nameError = "The inherited class from ChatSession should be given a name";
-  static #undefinedError = "⚠️ " + _t("Oups, an error occured. Please try again.");
+  static #undefinedError = _t("Oups, an error occured. Please try again.");
 
   static errors = {};
   static Mode = {
@@ -397,12 +397,12 @@ class ChatSession {
     this.dispatch('onMessage', bodyHTML, sources);
   }
 
-  onErrorMessage(error) {
+  onErrorMessage(error, traceback) {
     this.session = null;
     if (!error)
       error = ChatSession.#undefinedError;
-    err(error);
-    this.onMessage(ChatSession.infoHTML(error));
+    err(error, traceback);
+    this.onMessage(ChatSession.infoHTML("⚠️ " + error));
   }
 
   clear() {
@@ -437,10 +437,10 @@ class ChatSession {
     this.session = null;
     if (error && error.code && error.text) {
       this.setCurrentAction(error.action ?? 'window');
-      this.onErrorMessage(error.text);
+      this.onErrorMessage(error.text, error.traceback);
     }
     else {
-      this.onErrorMessage();
+      this.onErrorMessage(error, error?.traceback);
     }
   }
 
@@ -454,16 +454,13 @@ class ChatSession {
     this.discussion.appendMessage(new MessageContainer(Author.User, escapeHtml(prompt)));
     this.discussion.appendMessage(new MessageContainer(Author.Bot, ''));
     this.onMessage(ChatSession.infoHTML(_t("Waiting for <strong>$AI$</strong>...", this.properties.name)));
-    try {
-      if (!this.canSend()) {
-        await this.init();
-      }
-      if (this.canSend()) {
-        await this.send(prompt);
-      }
+    if (!this.canSend()) {
+      await this.init().catch(error => this.handleActionError(error));
     }
-    catch (error) {
-      this.handleActionError(error);
+    if (this.canSend()) {
+      await this.send(prompt).catch(error => this.handleActionError(error));
+    } else {
+      this.onErrorMessage();
     }
   }
 

@@ -166,7 +166,7 @@ class BingChatSession extends ChatSession {
           }
           if (body.item.result) {
             if (body.item.result.value === 'Throttled') {
-              this.onErrorMessage("⚠️ " + _t("Sorry, you've reached the limit of messages you can send to Copilot within 24 hours. Check back soon!"));
+              this.onErrorMessage(_t("Sorry, you've reached the limit of messages you can send to Copilot within 24 hours. Check back soon!"));
               return;
             }
             if (body.item.result.value === 'UnauthorizedRequest') {

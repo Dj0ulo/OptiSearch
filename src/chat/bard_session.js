@@ -226,7 +226,7 @@ class BardSession extends ChatSession {
       this.session.conversation.push(firstAnswer[0]);
       this.onMessage(...buildMessage(firstAnswer));
     } catch (e) {
-      this.onErrorMessage("⚠️ " + _t("An error occured while parsing the response:<br>$error$", e));
+      this.onErrorMessage(_t("An error occured while parsing the response:<br>$error$", e));
     }
   }
 
