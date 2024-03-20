@@ -27,6 +27,7 @@ class ChatGPTSession extends ChatSession {
   constructor() {
     super('chatgpt');
     this.socketID = null;
+    this.eventStreamID = null;
   }
 
   async init() {
@@ -70,7 +71,10 @@ class ChatGPTSession extends ChatSession {
     if (ChatSession.debug)
       return;
 
-    await this.backendApi('conversation', this.config(prompt));
+    const res = await this.backendApi('conversation', this.config(prompt));
+    if (res.eventStream) {
+      this.eventStreamID = res.id;
+    }
     await this.next();
   }
 
@@ -78,10 +82,17 @@ class ChatGPTSession extends ChatSession {
     const fetchPackets = async () => {
       const streamData = await this.readStream();
       if (!streamData) return [];
-      if (streamData.readyState === WebSocket.CLOSED) return ["DONE"];
-      if (!streamData.packet) return [];
-      const packet = JSON.parse(streamData.packet);
-      return atob(packet.body)
+      let packetBody = null;
+      if (this.eventStreamID !== null) {
+        if (streamData.done) return ["DONE"];
+        if (!streamData.data) return [];
+        packetBody = streamData.data;
+      } else {
+        if (streamData.readyState === WebSocket.CLOSED) return ["DONE"];
+        if (!streamData.packet) return [];
+        packetBody = atob(JSON.parse(streamData.packet).body);
+      }
+      return packetBody
         .split('\n\n')
         .map((p, i) => {
           if (!p) return null;
@@ -147,13 +158,21 @@ class ChatGPTSession extends ChatSession {
   }
 
   readStream() {
-    if (this.socketID == null) {
-      throw "Need socket ID to send";
+    if (this.eventStreamID !== null) {
+      return bgWorker({
+        action: 'event-stream',
+        id: this.eventStreamID,
+      });
     }
-    return bgWorker({
-      action: "websocket",
-      socketID: this.socketID,
-    });
+
+    if (this.socketID !== null) {
+      return bgWorker({
+        action: "websocket",
+        socketID: this.socketID,
+      });
+    }
+
+    throw "Need socket or event stream ID to send";
   }
 
   removeConversation() {

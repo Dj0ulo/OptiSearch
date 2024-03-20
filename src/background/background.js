@@ -6,6 +6,7 @@ chrome.runtime.onMessage.addListener((action, _, sendResponse) => {
   return true;
 });
 
+const eventStreams = [];
 const sessionStorage = {};
 
 async function handleAction(action) {
@@ -19,6 +20,7 @@ async function handleAction(action) {
     'session-storage': handleSessionStorage,
     'setup-bing-offscreen': handleSetupOffscreen,
     'window': handleActionWindow,
+    'event-stream': handleActionEventStream,
     'websocket': handleActionWebsocket,
   };
   if (actionType in handlers)
@@ -45,6 +47,10 @@ async function handleActionFetch(action) {
     const text = await response.text();
     try { return JSON.parse(text); }
     catch (e) { return text; };
+  }
+  if (contentType.startsWith("text/event-stream")) {
+    eventStreams.push(response.body.getReader());
+    return { eventStream: true, id: eventStreams.length - 1 };
   }
   return response.text();
 }
@@ -80,6 +86,19 @@ function handleActionWindow(action) {
     focused: true 
   });
   return { status: 'Window created !' };
+}
+
+/** Handles new data received from an event-stream */
+function handleActionEventStream(action) {
+  const { id } = action;
+
+  if (!eventStreams[id])
+    return { error: `Error: event-stream ${id} not available` };
+
+  return eventStreams[id].read().then(({ done, value }) => ({
+    done,
+    data: value && [...value.values()].map(c => String.fromCharCode(c)).join(''),
+  }));
 }
 
 /**
