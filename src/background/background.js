@@ -166,18 +166,20 @@ async function hasOffscreenDocument(offscreenUrl) {
  * @returns 
  */
 async function fetchEngines(local = false) {
-  const GIST = "https://gist.githubusercontent.com/Dj0ulo/7224203ee9be47ba5be6f57be1cd22c5/raw";
+  const distantPath = "https://raw.githubusercontent.com/Dj0ulo/OptiSearch/master/src/engines.json";
+  const localPath = chrome.runtime.getURL("./src/engines.json");
   const SAVE_QUERIES_ENGINE = "save_queries_engine";
-  let url = local ? chrome.runtime.getURL(`./src/engines.json`) : `${GIST}/engines.json`;
+  let url = local ? localPath : distantPath;
   const response = await fetch(url).catch(() => {
     if (local)
       throw new Error("No local engines found...");
     return fetchEngines(true);
   });
-  if (!response.ok)
-    throw response;
-  const json = await response.json();
+  const json = await response.json().catch(_ => ({}));
+  if (!local && !json["Google"]) {
+    return fetchEngines(true);
+  }
   chrome.storage.local.set({ [SAVE_QUERIES_ENGINE]: json });
-  console.log(`Engines properties fetched ${local ? 'locally' : `from ${GIST}`}: `, json);
+  console.log(`Engines properties fetched ${local ? 'locally' : `from ${url}`}: `, json);
   return json;
 }
