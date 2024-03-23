@@ -320,6 +320,9 @@ function getBackgroundColor() {
 function isDarkMode() {
   try {
     const rgba = textColorToRGBA(getBackgroundColor());
+    if (rgba[3] === 0) {
+      return false;
+    }
 
     const av = rgba.slice(0, 3).reduce((a, v) => a + v) / 3;
     return av < 128;
