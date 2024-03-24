@@ -5,8 +5,6 @@ class Context {
   static STYLE_ELEMENT_ID = `${Context.EXTENSION_SELECTOR_PREFIX}-style`;
   static DARK_BG_STYLE_ELEMENT_ID = `${Context.EXTENSION_SELECTOR_PREFIX}-dark-background-style`;
   static PANEL_CLASS = "optipanel";
-  static RIGHT_COLUMN_CLASS = 'optisearch-column';
-  static WIDE_COLUMN_CLASS = 'optisearch-column-wide';
   static MOBILE_CLASS = 'mobile';
 
   static engines = {};
@@ -24,7 +22,7 @@ class Context {
   static set rightColumn(value) {
     Context.rightColumnElement = value;
     if (value)
-      Context.rightColumnElement.classList.add(Context.RIGHT_COLUMN_CLASS);
+      value.dataset.optisearchColumn = 'thin';
   }
   static get rightColumn() {
     return Context.rightColumnElement;
@@ -212,7 +210,7 @@ class Context {
   }
 
   static executeTools() {
-    if (Context.chatSession && Context.chatSession.panel) Context.appendPanel(Context.chatSession.panel, true);
+    if (Context.chatSession && Context.chatSession.panel) Context.appendPanel(Context.chatSession.panel);
     if (Context.isActive("bangs")) Context.bangs && Context.bangs();
     if (Context.isActive("calculator")) Context.calculator && Context.calculator();
     if (Context.isActive("plot") || Context.isActive("calculator")) Context.plotOrCompute && Context.plotOrCompute();
@@ -224,7 +222,7 @@ class Context {
    * @param {Element} panel the content of the panel
    * @returns {Element} the box where the panel is 
    */
-  static appendPanel(panel, prepend = false) {
+  static appendPanel(panel) {
     const buildTopButtons = () => {
       const topButtonsContainer = el('div', { className: 'top-buttons-container headerhover' });
       const star = el('div', { className: 'thumb', title: _t("Rate this extension") }, topButtonsContainer);
@@ -267,13 +265,13 @@ class Context {
       box.classList.add(Context.MOBILE_CLASS);
     box.append(panel);
 
-    Context.appendBoxes([box], prepend);
+    Context.appendBoxes([box]);
 
     Context.updateColor();
     return box;
   }
 
-  static appendBoxes(boxes, prepend = false) {
+  static appendBoxes(boxes) {
     const isOnMobile = Context.computeIsOnMobile();
     const firstResultRow = $(Context.engine.resultRow);
     let boxContainer = Context.rightColumn;
@@ -282,12 +280,9 @@ class Context {
       boxContainer = firstResultRow ? firstResultRow.parentElement : Context.centerColumn;
     if (!boxContainer)
       return;
-    if (prepend)
-      boxes = boxes.slice().reverse();
 
     boxes.forEach(box => {
-      if (prepend) {
-        // prepend means that it is a chatbox
+      if ($('.optichat', box)) {
         const order = ['bard', 'bingchat', 'chatgpt'];
         const precedings = order
           .slice(0, order.indexOf(WhichChat))
@@ -350,21 +345,21 @@ class Context {
     }
     
     const updateWideState = (value, start=false) => {
-      if (!start && !$(`style.${Context.WIDE_COLUMN_CLASS}`)) {
+      if (!start && !$(`style.wide-column-transition`)) {
         el('style', {
-          className: Context.WIDE_COLUMN_CLASS,
+          className: 'wide-column-transition',
           textContent: '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
         }, Context.docHead);
       }
-      Context.rightColumn.classList.toggle(Context.WIDE_COLUMN_CLASS, value);
+      Context.rightColumn.dataset.optisearchColumn = value ? 'wide' : 'thin';
     }
     updateWideState(Context.get('wideColumn'), true);
     Context.addSettingListener('wideColumn', updateWideState);
 
     setObserver(mutations => {
       mutations.some(m => {
-        if (m.attributeName !== 'class') return;
-        const isWide = m.target.classList.contains(Context.WIDE_COLUMN_CLASS);
+        if (m.attributeName !== "data-optisearch-column") return;
+        const isWide = m.target.dataset.optisearchColumn === 'wide';
         if (Context.get('wideColumn') !== isWide) {
           Context.set('wideColumn', isWide);
         }

@@ -8,8 +8,7 @@
     "searchBox": "input.gLFyf.gsfi, input.gLFyf, textarea.gLFyf",
     "active": true,
     "regex": "^www\\.google\\.",
-    "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
-    "style": ".optisearch-column:has(.zLsiYe) .optisearchbox {margin-left: -21px;}",
+    "style": "[data-optisearch-column]:has(.zLsiYe) .optisearchbox {margin-left: -21px;}",
     "onMobile": "#cnt > #center_col"
   },
   "Bing": {
@@ -21,7 +20,6 @@
     "searchBox": ".b_searchbox#sb_form_q",
     "active": true,
     "regex": "\\.bing\\.com$",
-    "widthStyle": ".optisearchbox{min-width: ${maxW}px;}",
     "style": ".optisearchbox {margin-right: -20px;  margin-left: -20px;}",
     "onMobile": "meta[name='viewport']"
   },
@@ -37,7 +35,6 @@
     "searchBox": ".search-form__input, #search-form-input",
     "active": true,
     "regex": "\\.ecosia\\.org$",
-    "widthStyle": ".web[data-test-id=layout-content] { grid-template-columns: 120px minmax(0,660px) 40px minmax(0,${maxW}px) 25px !important;}",
     "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;} .optisearchbox .optichat .title, .continue-chat-button > span { bottom: 0; }",
     "onMobile": 992
   },
@@ -60,8 +57,7 @@
     "resultsContainer": "[data-area='mainline']",
     "active": true,
     "regex": "duckduckgo\\.com$",
-    "widthStyle": ".js-react-sidebar {max-width: ${maxW}px !important; } .cw{max-width:unset;}",
-    "style": ".optisearch-column-wide { max-width: var(--opti-max-width) !important; } .cw{max-width:unset;}",
+    "style": "[data-optisearch-column=wide] { max-width: var(--opti-max-width) !important; } .cw{max-width:unset;}",
     "onMobile": null
   },
   "Brave Search": {
@@ -69,12 +65,11 @@
     "icon": "https://cdn.search.brave.com/serp/v1/static/brand/16c26cd189da3f0f7ba4e55a584ddde6a7853c9cc340ff9f381afc6cb18e9a1e-favicon-32x32.png",
     "rightColumn": ".sidebar",
     "centerColumn": "#results",
-    "resultRow": ".snippet.fdb, .snippet.svelte-1ckzfks",
+    "resultRow": "#results > .snippet",
     "searchBox": "#searchbox",
     "active": true,
     "regex": "search\\.brave\\.com$",
-    "widthStyle": "#side-right {--width: ${maxW}px;}",
-    "style": ".optisearch-column-wide {max-width: var(--opti-max-width); min-width: var(--opti-max-width) !important;}",
+    "style": ".column-layout {max-width: 100% !important;} [data-optisearch-column=wide] {max-width: var(--opti-max-width); min-width: var(--opti-max-width) !important;}",
     "onMobile": "meta[name='viewport']"
   },
   "Baidu": {
@@ -86,7 +81,6 @@
     "searchBox": "#kw",
     "active": true,
     "regex": "www\\.baidu\\.com$",
-    "widthStyle": "#container{ width: 1280px; } #content_right{ width: ${maxW}px !important;}",
     "style": "#container.sam_newgrid .right-ceiling {position: static !important;}"
   }
 }

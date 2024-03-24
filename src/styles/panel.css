@@ -31,7 +31,7 @@
   transition: min-width var(--expand-time) linear;
 }
 
-.optisearch-column-wide .optisearchbox {
+[data-optisearch-column=wide] .optisearchbox {
   min-width: var(--opti-max-width);
 }
 
@@ -194,7 +194,7 @@
   transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
   transform-origin: center;
 }
-.optisearch-column-wide .optisearchbox .expand-arrow {
+[data-optisearch-column=wide] .optisearchbox .expand-arrow {
   transform: rotate(-180deg);
 }
 
