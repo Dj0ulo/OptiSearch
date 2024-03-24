@@ -69,7 +69,7 @@
     "searchBox": "#searchbox",
     "active": true,
     "regex": "search\\.brave\\.com$",
-    "style": ".column-layout {max-width: 100% !important;} [data-optisearch-column=wide] {max-width: var(--opti-max-width); min-width: var(--opti-max-width) !important;}",
+    "style": ".optisearchbox { box-shadow: none; border-radius: var(--border-radius-xlarge); } .column-layout {max-width: 100% !important;} [data-optisearch-column=wide] {max-width: var(--opti-max-width); min-width: var(--opti-max-width) !important;}",
     "onMobile": "meta[name='viewport']"
   },
   "Baidu": {

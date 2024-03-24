@@ -9,6 +9,7 @@ class Context {
 
   static engines = {};
   static engine = {};
+  static processEngine = {};
   static save = {};
   static settingsListeners = {};
 
@@ -22,7 +23,7 @@ class Context {
   static set rightColumn(value) {
     Context.rightColumnElement = value;
     if (value)
-      value.dataset.optisearchColumn = 'thin';
+      value.dataset.optisearchColumn = Context.get('wideColumn');
   }
   static get rightColumn() {
     return Context.rightColumnElement;
@@ -91,8 +92,9 @@ class Context {
     Context.searchString = parseSearchParam();
     Context.setupRightColumn();
 
-    if (Context.engineName === Ecosia)
-      Context.forEcosia();
+    if (Context.engineName in Context.processEngine){
+      Context.processEngine[Context.engineName]();
+    }
 
     if (Context.computeIsOnMobile()) {
       debug("On Mobile !");
@@ -281,29 +283,35 @@ class Context {
     if (!boxContainer)
       return;
 
+    const startEl = $('.optisearch-start', boxContainer);
+
     boxes.forEach(box => {
-      if ($('.optichat', box)) {
-        const order = ['bard', 'bingchat', 'chatgpt'];
-        const precedings = order
-          .slice(0, order.indexOf(WhichChat))
-          .map(e => $$(`.optichat.${e}`))
-          .flat();
-        if (precedings.length) {
-          const lastPrecedingBox = precedings.at(-1).parentElement;
-          insertAfter(box, lastPrecedingBox);
-          return;
-        }
-
-        boxContainer.prepend(box);
-        return;
-      }
-
       if (isOnMobile && firstResultRow) {
         boxContainer.insertBefore(box, firstResultRow);
         return;
       }
 
-      boxContainer.append(box);
+      if(!box.firstChild.classList.contains('optichat')) {
+        boxContainer.append(box);
+        return;
+      }
+
+      const order = ['bard', 'bingchat', 'chatgpt'];
+      const precedings = order
+        .slice(0, order.indexOf(WhichChat))
+        .map(e => $$(`.optichat.${e}`))
+        .flat();
+      if (precedings.length) {
+        const lastPrecedingBox = precedings.at(-1).parentElement;
+        insertAfter(box, lastPrecedingBox);
+        return;
+      }
+      if (startEl) {
+        insertAfter(box, startEl);
+        return;
+      }
+
+      boxContainer.prepend(box);
     });
   }
 
@@ -359,6 +367,10 @@ class Context {
     setObserver(mutations => {
       mutations.some(m => {
         if (m.attributeName !== "data-optisearch-column") return;
+        if(!m.target.dataset.optisearchColumn) {
+          Context.set('wideColumn', Context.get('wideColumn')); // to set again the column attribute
+          return;
+        }
         const isWide = m.target.dataset.optisearchColumn === 'wide';
         if (Context.get('wideColumn') !== isWide) {
           Context.set('wideColumn', isWide);
@@ -411,45 +423,5 @@ class Context {
     else if (typeof (Context.engine.onMobile) === 'number')
       return window.innerWidth < Context.engine.onMobile;
     return !!$(Context.engine.onMobile);
-  }
-
-  /**
-   * Special method to deal with Ecosia.
-   * Because in Ecosia, the main column can be reomoved after few seconds and added again.
-   * Also Ecosia is the only engine for which the HTML does not change if it is on mobile 
-   * (only @media CSS instructions make it change).
-   * This also means that we have to deal with eventual resizing of the page
-   */
-  static forEcosia() {
-    if (Context.engineName !== Ecosia)
-      return;
-
-    const searchNav = $(Context.engine.searchNav);
-    setObserver(mutations => {
-      if (!mutations.some(m => m.removedNodes.length))
-        return;
-      if (mutations.map(m => [...m.removedNodes]).flat().find(n => n === Context.centerColumn)) {
-        Context.centerColumn = $(Context.engine.centerColumn);
-        Context.appendBoxes(Context.boxes);
-      }
-      if (!$(Context.engine.searchNav))
-        insertAfter(searchNav, $(Context.engine.searchNavNeighbor));
-      if (!$(Context.engine.rightColumn))
-        insertAfter(Context.rightColumn, Context.centerColumn);
-    }, document.body, { childList: true, subtree: true });
-
-    if (typeof (Context.engine.onMobile) !== 'number')
-      return;
-
-    let wasOnMobile = Context.computeIsOnMobile();
-    window.addEventListener("resize", () => {
-      const isOnMobile = Context.computeIsOnMobile();
-      if (isOnMobile === wasOnMobile)
-        return;
-      wasOnMobile = isOnMobile;
-      const allBoxes = $$(Context.BOX_SELECTOR);
-      allBoxes.forEach(p => p.classList[isOnMobile ? 'add' : 'remove'](Context.MOBILE_CLASS));
-      Context.appendBoxes(allBoxes);
-    });
   }
 }

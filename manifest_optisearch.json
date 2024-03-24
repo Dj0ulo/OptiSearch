@@ -85,6 +85,7 @@
         "src/chat/chatgpt_session.js",
 
         "src/context.js",
+        "src/engine-specifics.js",
         "src/sites/results.js",
         "src/tools/plot.js",
         "src/tools/init.js",

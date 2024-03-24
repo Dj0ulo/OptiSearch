@@ -69,6 +69,7 @@
         "src/chat/bard_session.js",
 
         "src/context.js",
+        "src/engine-specifics.js",
         "src/chat/init.js",
 
         "src/run.js"
