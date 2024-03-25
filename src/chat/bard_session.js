@@ -200,21 +200,10 @@ class BardSession extends ChatSession {
       return [bodyHTML, sources];
     };
 
-    let formattedResponse = null;
-    try {
-      const rawResponse = await fetchResponse();
-      formattedResponse = parseRawResponse(rawResponse);
-    } catch (e) {
-      if (e == "Output is null") {
-        this.chooseGoogleAccount();
-        return;
-      } else {
-        warn(e);
-      }
-    }
-
+    const rawResponse = await fetchResponse();
+    const formattedResponse = parseRawResponse(rawResponse);
     if (!formattedResponse) {
-      this.onErrorMessage();
+      this.chooseGoogleAccount();
       return;
     }
     this.allowSend();
