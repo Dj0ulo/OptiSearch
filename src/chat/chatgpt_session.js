@@ -71,6 +71,8 @@ class ChatGPTSession extends ChatSession {
     if (ChatSession.debug)
       return;
 
+    const requirements = await this.backendApi('sentinel/chat-requirements', {});
+    this.session.sentinelToken = requirements.token;
     const res = await this.backendApi('conversation', this.config(prompt));
     if (res.eventStream) {
       this.eventStreamID = res.id;
@@ -201,6 +203,7 @@ class ChatGPTSession extends ChatSession {
       }],
       parent_message_id: pid,
       model: this.models[0].slug,
+      websocket_request_id: generateUUID(),
     }
   }
 
@@ -210,6 +213,7 @@ class ChatGPTSession extends ChatSession {
     const params = {
       "headers": {
         "authorization": `Bearer ${this.session.accessToken}`,
+        ...(service === "conversation" && this.session.sentinelToken && { "openai-sentinel-chat-requirements-token": this.session.sentinelToken}),
         ...(body && { "content-type": "application/json" }),
       },
       "credentials": "include",
