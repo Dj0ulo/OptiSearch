@@ -397,12 +397,17 @@ class ChatSession {
     this.dispatch('onMessage', bodyHTML, sources);
   }
 
-  onErrorMessage(error, traceback) {
+  onErrorMessage(error) {
     this.session = null;
-    if (!error)
+    if (!error) {
       error = ChatSession.#undefinedError;
-    err(error, traceback);
-    this.onMessage(ChatSession.infoHTML("⚠️ " + error));
+    }
+    const isAction = error.button || error.action;
+    const message = error.text ?? error;
+    if (!isAction) {
+      err(message);
+    }
+    this.onMessage(ChatSession.infoHTML(isAction ? message : `⚠️ ${message}`));
   }
 
   clear() {
@@ -437,11 +442,8 @@ class ChatSession {
     this.session = null;
     if (error && error.code && error.text) {
       this.setCurrentAction(error.action ?? 'window');
-      this.onErrorMessage(error.text, error.traceback);
     }
-    else {
-      this.onErrorMessage(error, error?.traceback);
-    }
+    this.onErrorMessage(error);
   }
 
   async setupAndSend(prompt) {
@@ -454,13 +456,16 @@ class ChatSession {
     this.discussion.appendMessage(new MessageContainer(Author.User, escapeHtml(prompt)));
     this.discussion.appendMessage(new MessageContainer(Author.Bot, ''));
     this.onMessage(ChatSession.infoHTML(_t("Waiting for <strong>$AI$</strong>...", this.properties.name)));
-    if (!this.canSend()) {
-      await this.init().catch(error => this.handleActionError(error));
+    try {
+      if (!this.canSend()) {
+        await this.init();
+      }
+      if (this.canSend()) {
+        await this.send(prompt);
+      }
     }
-    if (this.canSend()) {
-      await this.send(prompt).catch(error => this.handleActionError(error));
-    } else {
-      this.onErrorMessage();
+    catch (error) {
+      this.handleActionError(error);
     }
   }
 
