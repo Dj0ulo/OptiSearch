@@ -1,6 +1,6 @@
 {
   "name": "__MSG_bardName__",
-  "version": "2.4.2",
+  "version": "2.4.4",
   "manifest_version": 3,
   "description": "__MSG_bardDesc__",
   "default_locale": "en",
