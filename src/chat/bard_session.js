@@ -232,8 +232,8 @@ class BardSession extends ChatSession {
       }
       <br>
       <select name="google-account" class="chatgpt-button">
-      ${accounts.map((a, i) => `
-        <option value="${i}" ${a.index == Context.get('googleAccount') ? 'selected' : ''}>
+      ${accounts.map((a) => `
+        <option value="${a.index}" ${a.index == Context.get('googleAccount') ? 'selected' : ''}>
           ${a.email}
         </option>
       `
