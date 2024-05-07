@@ -28,18 +28,18 @@
     "zh_CN": "来自 ChatGPT、StackOverflow、Wikipedia 等的答案与 Google 搜索结果并排."
   },
   "bingchatName": {
-    "ar": "Copilot (GPT-4) في Google",
-    "de": "Copilot (GPT-4) in Google",
-    "en": "Copilot (GPT-4) in Google",
-    "es": "Copilot (GPT-4) en Google",
-    "fr": "Copilot (GPT-4) dans Google",
-    "hi": "Google में Copilot (GPT-4)",
-    "it": "Copilot (GPT-4) in Google",
-    "ja": "Googleの中の Copilot (GPT-4)",
-    "ko": "Google의 Copilot (GPT-4)",
-    "nl": "Copilot (GPT-4) in Google",
-    "ru": "Copilot (GPT-4) в Google",
-    "zh_CN": "谷歌中的 Copilot (GPT-4)"
+    "ar": "Copilot (شات بينج) في Google",
+    "de": "Copilot (Bing Chat) in Google",
+    "en": "Copilot (Bing Chat) in Google",
+    "es": "Copilot (Bing Chat) en Google",
+    "fr": "Copilot (Bing Chat) dans Google",
+    "hi": "Google में Copilot (Bing Chat)",
+    "it": "Copilot (Bing Chat) in Google",
+    "ja": "Googleの中の Copilot (Bing Chat)",
+    "ko": "Google의 Copilot (Bing Chat)",
+    "nl": "Copilot (Bing Chat) in Google",
+    "ru": "Copilot (Bing Chat) в Google",
+    "zh_CN": "谷歌中的 Copilot (Bing Chat)"
   },
   "bingchatDesc": {
     "ar": "🗨️ إجابة Microsoft Copilot بجانب نتائج Google.",
