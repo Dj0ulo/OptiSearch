@@ -38,7 +38,7 @@
       "src/images/bingchat_conversation_example.png",
       "src/images/engines/*",
       "src/background/websocket_utils.js",
-      "src/chat/bingchat/bing_socket.js",
+      "src/chat/offscreen/bing_socket.js",
       "icons/optisearch/icon_128.png",
       "icons/bingchat/icon_128.png",
       "icons/bard/icon_128.png"
@@ -63,7 +63,7 @@
       "all_frames": true,
       "run_at": "document_start",
       "js": [
-        "src/chat/bingchat/bing_iframe_content_script.js"
+        "src/chat/offscreen/iframe_script.js"
       ]
     },
     {
@@ -89,7 +89,7 @@
 
         "src/chat/message.js",
         "src/chat/chat_session.js",
-        "src/chat/bing_chat_session.js",
+        "src/chat/bingchat_session.js",
 
         "src/context.js",
         "src/engine-specifics.js",

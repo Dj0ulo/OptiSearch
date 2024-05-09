@@ -16,7 +16,7 @@ name: [ ${names.join(' | ')} ]
 
 const ADDITIONAL_FILES = {
   'optisearch': [],
-  'bingchat': ['src/chat/bingchat/*'],
+  'bingchat': ['src/chat/offscreen/*'],
   'bard': [],
 }
 const ADDITIONAL_FILES_V2 = {
@@ -26,7 +26,7 @@ const ADDITIONAL_FILES_V2 = {
 }
 const OFFSCREEN_DOC = {
   'optisearch': null,
-  'bingchat': 'src/chat/bingchat/firefox_background.html',
+  'bingchat': 'src/background/background_loader_firefox.html',
   'bard': null,
 }
 const PERMISSION_V2 = {
