@@ -382,6 +382,7 @@ function bgWorker(params) {
 }
 
 function escapeHtml(unsafe) {
+  if (!unsafe || typeof unsafe !== 'string') return '';
   return unsafe
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
