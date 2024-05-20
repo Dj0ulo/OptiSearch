@@ -1,11 +1,12 @@
 :root {
   --color: rgb(215, 210, 204);
   --bg: #1c1c1c;
+  --darker-bg: #111111;
   --dark-grey: rgb(51, 51, 51);
   --grey: #686868;
+  --lighter-grey: #9c9c9c;
   --scroll-bar-color: var(--grey);
-  --scroll-bar-bg-color: var(--bg);
-  --footer-height: 85px;
+  --scroll-bar-bg-color: var(--dark-grey);
 }
 
 body {
@@ -15,6 +16,14 @@ body {
   width: 320px;
   font-size: 12px;
   margin: 0;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+main {
+  max-height: 300px;
+  padding: 8px;
+  overflow-y: auto;
 }
 
 *::-webkit-scrollbar {
@@ -50,10 +59,6 @@ body {
   padding-top: -23px;
   top: 2px;
   position: relative;
-}
-
-#main {
-  padding: 8px;
 }
 
 #engines {
@@ -203,16 +208,9 @@ input:focus {
 
 /*** FOOTER ***/
 
-.clear {
-  height: var(--footer-height);
-}
-
 footer {
   margin: auto;
-  position: fixed;
-  bottom: 0;
   width: 100%;
-  height: var(--footer-height);
   background-color: var(--bg);
   box-shadow: 0px 1px 20px 0px black;
 }
@@ -261,8 +259,8 @@ footer {
 .upgrade-button > span {
   display: inline-block;
   vertical-align: middle;
-  line-height: 1.2rem;
-  font-size: 1.2rem;
+  line-height: 1.2em;
+  font-size: 1.3em;
   font-weight: bold;
 }
 
@@ -293,5 +291,78 @@ footer {
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* GPX Follower ad */
+
+#gpxfollower {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the start (left) */
+  background-color: var(--darker-bg);
+  padding: 0.8em 1em;
+  margin-top: 1em;
+  text-decoration: none;
+}
+
+#gpxfollower > #also-from {
+  font-size: 0.9em;
+  color: var(--lighter-grey);
+  margin-bottom: .5em; /* Spacing below "Also from OptiSearch" */
+}
+
+.gpxfollower-app {
+  display: flex;
+  align-items: center;
+}
+
+.gpxfollower-app img {
+  width: 72px; /* Adjust as needed */
+  height: auto;
+  border-radius: 20%;
+}
+
+#gpxfollower:hover .text-app span:first-child {
+  text-decoration: underline;
+}
+
+.text-app span:first-child {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 0.4em;
+}
+.text-app {
+  display: flex;
+  flex-direction: column;
+  padding: .5em;
+}
+
+.text-app span:last-child {
+  color: var(--lighter-grey);
+}
+
+.icon-container {
+  position: relative;
+  display: inline-block; /* Ensure the container wraps around the icon and text */
+}
+
+.new-text {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-weight: bold;
+  color: var(--color);
+  padding: 3px 5px; /* Adjust as needed */
+  background-color: red; /* Adjust as needed */
+  animation: bounce 0.5s infinite alternate; /* Adjust duration and timing as needed */
+}
+
+@keyframes bounce {
+  0% {
+    transform: translate(20%, 20%) rotate(40deg) scale(0.8); /* Initial scale */
+  }
+  100% {
+    transform: translate(20%, 20%) rotate(40deg) scale(.9); /* Scale at the peak of the bounce */
   }
 }

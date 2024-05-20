@@ -18,11 +18,13 @@ const ADDITIONAL_FILES = {
   'optisearch': [],
   'bingchat': ['src/chat/offscreen/*'],
   'bard': [],
+  'all': ['src/images/gpxfollower.png'],
 }
 const ADDITIONAL_FILES_V2 = {
   'optisearch': [],
   'bingchat': ['src/rule_resources/rules.js'],
   'bard': [],
+  'all': [],
 }
 const OFFSCREEN_DOC = {
   'optisearch': null,
@@ -170,11 +172,11 @@ function copyToBuildDir(buildDir) {
   }
 
   // add additional files as resources to enable directory
-  for (let file of ADDITIONAL_FILES[name]) {
+  for (let file of ADDITIONAL_FILES[name].concat(ADDITIONAL_FILES.all)) {
     resources.push(file);
   }
   if (mf.manifest_version === 2) {
-    for (let file of ADDITIONAL_FILES_V2[name]) {
+    for (let file of ADDITIONAL_FILES_V2[name].concat(ADDITIONAL_FILES_V2.all)) {
       resources.push(file);
     }
   }

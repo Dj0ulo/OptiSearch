@@ -17,7 +17,7 @@
   const manifest = chrome.runtime.getManifest();
   $('#name').textContent = manifest.name;
   $('#version').textContent = manifest.version;
-  const extensionIcon = $('#title-container img');
+  const extensionIcon = $('header img');
   extensionIcon.src = chrome.runtime.getURL(manifest.icons[128]);
   extensionIcon.title = _t("Go to Chrome Web Store");
   $('.title > a').href = webstore;

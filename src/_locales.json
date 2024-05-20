@@ -293,6 +293,48 @@
     "ru": "GitHub",
     "zh_CN": "GitHub"
   },
+  "Also from OptiSearch": {
+    "ar": "أيضًا من OptiSearch",
+    "de": "Auch von OptiSearch",
+    "en": "Also from OptiSearch",
+    "es": "También de OptiSearch",
+    "fr": "Également d'OptiSearch",
+    "hi": "भी OptiSearch से",
+    "it": "Anche da OptiSearch",
+    "ja": "OptiSearch からも",
+    "ko": "OptiSearch에서도",
+    "nl": "Ook van OptiSearch",
+    "ru": "Также от OptiSearch",
+    "zh_CN": "也来自 OptiSearch"
+  },
+  "Import GPX routes from Strava & Komoot and follow them on your watch!": {
+    "ar": "استيراد مسارات GPX من Strava و Komoot ومتابعتها على ساعتك!",
+    "de": "Importiere GPX-Routen von Strava & Komoot und verfolge sie auf deiner Uhr!",
+    "en": "Import GPX routes from Strava & Komoot and follow them on your watch!",
+    "es": "¡Importa rutas GPX desde Strava y Komoot y síguelas en tu reloj!",
+    "fr": "Importez des itinéraires GPX depuis Strava et Komoot et suivez-les sur votre montre !",
+    "hi": "Strava और Komoot से GPX रूटें आयात करें और उन्हें अपनी घड़ी पर देखें!",
+    "it": "Importa percorsi GPX da Strava e Komoot e seguili sul tuo orologio!",
+    "ja": "StravaとKomootからGPXルートをインポートして、ウォッチで追跡します！",
+    "ko": "Strava 및 Komoot에서 GPX 경로를 가져와 시계에서 따라보세요!",
+    "nl": "Importeer GPX-routes van Strava & Komoot en volg ze op je horloge!",
+    "ru": "Импортируйте маршруты GPX из Strava и Komoot и следите за ними на своих часах!",
+    "zh_CN": "从Strava和Komoot导入GPX路线，并在手表上跟踪它们！"
+  },
+  "NEW": {
+    "ar": "جديد",
+    "de": "NEU",
+    "en": "NEW",
+    "es": "NUEVO",
+    "fr": "NOUVEAU",
+    "hi": "नया",
+    "it": "NUOVO",
+    "ja": "新着",
+    "ko": "새로운",
+    "nl": "NIEUW",
+    "ru": "НОВЫЙ",
+    "zh_CN": "新"
+  },
   "Options": {
     "ar": "خيارات",
     "de": "Optionen",
