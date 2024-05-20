@@ -115,7 +115,7 @@ h3 {
 
 .googleplay {
   height: 5em;
-  width: fit-content;
+  width: max-content;
   margin: -.6em;
   margin-top: .5em;
 }
