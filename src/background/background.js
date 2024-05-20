@@ -1,5 +1,7 @@
 fetchEngines();
 
+chrome.runtime.setUninstallURL('https://www.optisearch.io/uninstall.html');
+
 chrome.runtime.onMessage.addListener((action, _, sendResponse) => {
   if (action.target === 'offscreen') return;
   handleAction(action).then(sendResponse);
