@@ -22,7 +22,7 @@
     "https://genius.com/",
     "https://answers.unity.com/",
     "https://*.mathworks.com/",
-    "https://*.openai.com/"
+    "https://chatgpt.com/"
   ],
   "icons": {
     "128": "icons/optisearch/icon_128.png",
@@ -71,6 +71,7 @@
         "src/libs/highlight.min.js",
         "src/libs/tex-svg.js",
         "src/libs/drawdown.js",
+        "src/libs/sha3.min.js",
         "src/libs/ExtPay.js",
 
         "src/utils.js",

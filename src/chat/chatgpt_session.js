@@ -1,21 +1,21 @@
 class ChatGPTSession extends ChatSession {
   properties = {
     name: "ChatGPT",
-    link: "https://chat.openai.com/chat",
+    link: "https://chatgpt.com",
     icon: "src/images/chatgpt.png",
     local_icon: "chatgpt.png",
-    href: "https://chat.openai.com/chat",
+    href: "https://chatgpt.com",
   }
   static errors = {
     session: {
       code: 'CHAT_GPT_SESSION',
-      url: 'https://chat.openai.com/chat',
+      url: 'https://chatgpt.com',
       text: _t("Please login to $AI$, then refresh", "ChatGPT"),
       button: _t("Login to $AI$", "ChatGPT"),
     },
     cloudflare: {
       code: 'CHAT_GPT_CLOUDFLARE',
-      url: 'https://chat.openai.com/chat',
+      url: 'https://chatgpt.com',
       text: _t("Please pass the Cloudflare check on ChatGPT, then refresh"),
       button: _t("Cloudflare check"),
     },
@@ -26,21 +26,17 @@ class ChatGPTSession extends ChatSession {
 
   constructor() {
     super('chatgpt');
-    this.socketID = null;
     this.eventStreamID = null;
   }
 
   async init() {
     if (ChatSession.debug) return;
     await this.fetchSession();
-    await Promise.all([
-      this.fetchModels(),
-      this.registerWebSocket(),
-    ]);
+    await this.fetchModels();
   }
 
   async fetchSession() {
-    const session = await bgFetch('https://chat.openai.com/api/auth/session', {
+    const session = await bgFetch('https://chatgpt.com/api/auth/session', {
       credentials: "include",
     });
     if (session.error) {
@@ -61,18 +57,18 @@ class ChatGPTSession extends ChatSession {
     return this.models;
   }
 
-  async registerWebSocket() {
-    const url = (await this.backendApi("register-websocket", null, 'POST')).wss_url;
-    this.socketID = await this.createSocket(url);
-  }
-
   async send(prompt) {
     super.send(prompt);
     if (ChatSession.debug)
       return;
 
-    const requirements = await this.backendApi('sentinel/chat-requirements', {});
+    const requirements = await this.backendApi('sentinel/chat-requirements', {
+      p: "gAAAAAC" + await this.generateProofToken("" + Math.random(), "0"),
+    });
     this.session.sentinelToken = requirements.token;
+    if (requirements.proofofwork?.required){
+      this.session.proofToken = "gAAAAAB" + await this.generateProofToken(requirements.proofofwork.seed, requirements.proofofwork.difficulty);
+    }
     const res = await this.backendApi('conversation', this.config(prompt));
     if (res.eventStream) {
       this.eventStreamID = res.id;
@@ -148,17 +144,6 @@ class ChatGPTSession extends ChatSession {
     return this.next();
   }
 
-  async createSocket(url) {
-    const res = await bgWorker({
-      action: "websocket",
-      url,
-    });
-    if (!('socketID' in res)) {
-      throw "Socket ID not returned";
-    }
-    return res.socketID;
-  }
-
   readStream() {
     if (this.eventStreamID !== null) {
       return bgWorker({
@@ -167,14 +152,7 @@ class ChatGPTSession extends ChatSession {
       });
     }
 
-    if (this.socketID !== null) {
-      return bgWorker({
-        action: "websocket",
-        socketID: this.socketID,
-      });
-    }
-
-    throw "Need socket or event stream ID to send";
+    throw "Need event stream ID to send";
   }
 
   removeConversation() {
@@ -192,6 +170,14 @@ class ChatGPTSession extends ChatSession {
     const pid = this.session.parent_message_id ? this.session.parent_message_id : generateUUID();
     return {
       action: "next",
+      conversation_mode: {
+        kind: "primary_assistant"
+      },
+      force_nulligen: false,
+      force_paragen: false,
+      force_paragen_model_slug: "",
+      force_rate_limit: false,
+      history_and_training_disabled: false,
       ...(this.session.conversation_id && { conversation_id: this.session.conversation_id }),
       messages: [{
         id,
@@ -203,23 +189,61 @@ class ChatGPTSession extends ChatSession {
       }],
       parent_message_id: pid,
       model: this.models[0].slug,
-      websocket_request_id: generateUUID(),
+      suggestions: [],
     }
   }
 
+  /**
+   * @param {string} seed float number between 0 and 1 encoded in a string
+   * @param {string} difficulty integer encoded in a string with leading zeros
+   * @returns Proof token
+   */
+  async generateProofToken(seed, difficulty) {
+    const config = [
+      navigator.hardwareConcurrency + screen.width + screen.height,
+      new Date().toString(),
+      4294705152,
+      0,
+      navigator.userAgent,
+      "",
+      "",
+      navigator.language,
+      navigator.languages.join(","),
+      0,
+    ];
+    const encodeConfig = (data) => {
+      const jsonData = JSON.stringify(data);
+      return btoa(String.fromCharCode(...new TextEncoder().encode(jsonData)));
+    }
+    const start = performance.now();
+    for (let i = 0; i < 3e5; i++) {
+        config[3] = i, config[9] = Math.round(performance.now() - start);
+        const base = encodeConfig(config);
+        const hash = sha3_512(seed + base);
+        if (hash.slice(0, difficulty.length) <= difficulty) return base;
+    }
+    return "wQ8Lk5FbGpA2NcR9dShT6gYjU7VxZ4D" + encodeConfig(`"${seed}"`);
+  }
+
   backendApi(service, body, method) {
-    if (!method)
+    if (!method) {
       method = body ? "POST" : "GET";
+    }
+    const headers = {
+      authorization: `Bearer ${this.session.accessToken}`,
+      ...(body && { "content-type": "application/json" }),
+    }
+    if (service === "conversation") {
+      headers["accept"] = 'text/event-stream';
+      if (this.session.sentinelToken) headers["openai-sentinel-chat-requirements-token"] = this.session.sentinelToken;
+      if (this.session.proofToken) headers["openai-sentinel-proof-token"] = this.session.proofToken;
+    }
     const params = {
-      "headers": {
-        "authorization": `Bearer ${this.session.accessToken}`,
-        ...(service === "conversation" && this.session.sentinelToken && { "openai-sentinel-chat-requirements-token": this.session.sentinelToken}),
-        ...(body && { "content-type": "application/json" }),
-      },
-      "credentials": "include",
+      headers,
+      credentials: "include",
       method,
       ...(body && { "body": JSON.stringify(body) }),
     }
-    return bgFetch(`https://chat.openai.com/backend-api/${service}`, params);
+    return bgFetch(`https://chatgpt.com/backend-api/${service}`, params);
   }
 }
