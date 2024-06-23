@@ -102,9 +102,14 @@ class BardSession extends ChatSession {
     };
     const url = `https://gemini.google.com/u/${user_id}/`;
     const r = await bgFetch(url, { credentials: "include", redirect: "manual" });
-    if (r.status !== undefined && r.status !== 200) {
+    if (r.status) {
       switch (r.status) {
         case 0: // redirected, which means that the user is not logged in at this account index
+          throw BardSession.errors.session;
+        case 200:
+          if(r.body) {
+            return parseData(r.body);
+          }
           throw BardSession.errors.session;
         case 429:
           throw {
@@ -116,8 +121,9 @@ class BardSession extends ChatSession {
         default:
           throw BardSession.errors.session;
       }
+    } else if(typeof r === "string") {
+      return parseData(r);
     }
-    return parseData(r);
   }
 
   async send(prompt) {
