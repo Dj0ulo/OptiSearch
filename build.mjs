@@ -60,7 +60,7 @@ let name = '';
   }
 
   const isCopyToBuildDir = parseArg('-b');
-  const buildDir = typeof isCopyToBuildDir === 'string' ? isCopyToBuildDir : `build/${name}`;
+  const buildDir = typeof isCopyToBuildDir === 'string' ? isCopyToBuildDir : `build/${name}${firefox ? '_firefox' : ''}`;
   const makeZip = parseArg('-z');
 
   if (isCopyToBuildDir || makeZip) {
