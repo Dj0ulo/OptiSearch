@@ -175,10 +175,10 @@ class BardSession extends ChatSession {
     };
     const parseTextAnswer = (answer) => answer[1][0];
     const parseImagesAnswer = (answer) => {
-      let images = answer[4];
+      let images = answer[12][1];
       if (!images) return [];
       return images.map(img => {
-        const [substr, source, url, title] = [img[2], img[1][0][0], img[3][0][0], img[7][2]].map(escapeHtml);
+        const [substr, source, url, title] = [img[7][0], img[1][0][0], img[3][0][0], img[7][2]].map(escapeHtml);
         return {
           substr,
           html: `
