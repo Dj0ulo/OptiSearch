@@ -137,7 +137,10 @@ class ChatGPTSession extends ChatSession {
       }
 
       this.session.parent_message_id = data.message.id;
-      const text = data.message.content?.parts[0];
+      if (!data.message.content?.parts) {
+        return false;
+      }
+      const text = data.message.content.parts[0];
       if (text) {
         this.onMessage(runMarkdown(text));
       }
