@@ -2,7 +2,7 @@
   "dependencies": {
     "archiver": "^5.3.1",
     "mocha": "^10.2.0",
-    "puppeteer": "^19.4.1"
+    "puppeteer": "^23.1.0"
   },
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha ./tests/test.js",
