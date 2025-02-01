@@ -2,7 +2,7 @@
 
 ![License](https://img.shields.io/github/license/dj0ulo/optisearch)
 
-This repository contains the code of **OptiSearch**, **Copilot in Google** and **Gemini next to Google results** browser extensions. They share the same codebase core. 
+This repository contains the code of **OptiSearch**, **Copilot in Google** and **Gemini next to Google results** browser extensions. They share the same codebase core.
 
 ### <img alt="OptiSearch icon" src="./icons/optisearch/icon_128.png" width="24" height="24"> OptiSearch
 ![License](https://img.shields.io/chrome-web-store/users/bbojmeobdaicehcopocnfhaagefleiae?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/optisearch?label=Firefox%20Users)
@@ -44,7 +44,7 @@ Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave Search
     
     E.g. to build the firefox manifest for **Copilot in Google**:
     ```
-    npm build.mjs bingchat -f
+    node build.mjs bingchat -f
     ```
 
 1. You can copy the source for a given extension with the flag `-b` followed by the name of the desired directory (default: `build/<extension_codename>`).
@@ -63,7 +63,7 @@ Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave Search
     ```
 1. You can create a zip from the source using the flag `-z` followed by the output filename. This will also copy the sources in the default build directory (unless you specified another one with `-b`). Use `-t` (for "tidy") to delete the build directory after the operation.
 
-1. Finally, to build and zip all extensions for Chrome and Firefox and put them in the `versions` directory: 
+1. Finally, to build and zip all extensions for Chrome and Firefox and put them in the `versions` directory:
     ```
     npm run build
     ```
