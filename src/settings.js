@@ -49,6 +49,7 @@ switch(WhichExtension) {
         'precise': { name: 'Precise' },
       },
       default: 'balanced',
+      active: false,
     }
     Settings['AI Assitant']['bingInternalSearch'] = {
       name: "Internal search",

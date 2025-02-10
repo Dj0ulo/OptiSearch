@@ -77,15 +77,6 @@ a.chat-title {
   filter: hue-rotate(-52deg) !important;
 }
 
-.optipanel.bingchat .ai-name > img:not(.disabled) {
-  cursor: pointer;
-  transition: filter 0.3s;
-}
-
-.optipanel.bingchat .ai-name > img:active:not(.disabled) {
-  transform: scale(0.8);
-}
-
 /* Define the bouncing effect using keyframes */
 @keyframes bounce {
   0%, 100% {

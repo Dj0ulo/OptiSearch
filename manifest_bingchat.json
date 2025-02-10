@@ -1,6 +1,6 @@
 {
   "name": "__MSG_bingchatName__",
-  "version": "2.5",
+  "version": "2.6",
   "manifest_version": 3,
   "description": "__MSG_bingchatDesc__",
   "default_locale": "en",
@@ -10,7 +10,7 @@
     "offscreen"
   ],
   "host_permissions": [
-    "https://*.bing.com/"
+    "https://copilot.microsoft.com/"
   ],
   "declarative_net_request": {
     "rule_resources": [
@@ -44,6 +44,7 @@
       "icons/bard/icon_128.png"
     ],
     "matches": [
+      "*://copilot.microsoft.com/*",
       "*://duckduckgo.com/*",
       "*://www.bing.com/*",
       "*://www.ecosia.org/*",
@@ -58,7 +59,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.bing.com/sa/simg/favicon-trans-bg-blue-mg.ico?bing-chat-gpt-4-in-google"
+        "https://copilot.microsoft.com/favicon.ico?bing-chat-gpt-4-in-google"
       ],
       "all_frames": true,
       "run_at": "document_start",

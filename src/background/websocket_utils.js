@@ -24,6 +24,7 @@ async function handleActionWebsocket(action, tryTimes = 3) {
     ws.onopen = () => {
       if (toSend)
         ws.send(toSend);
+      ws.stream.write('{eventWebSocket:"open"}');
     }
     ws.onmessage = ({ data }) => {
       ws.stream.write(data);

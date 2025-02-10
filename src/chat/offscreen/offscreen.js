@@ -1,6 +1,6 @@
 const strings = {
   scripts: ["src/background/websocket_utils.js", "src/chat/offscreen/bing_socket.js"],
-  iframeSrc: "https://www.bing.com/sa/simg/favicon-trans-bg-blue-mg.ico?bing-chat-gpt-4-in-google",
+  iframeSrc: "https://copilot.microsoft.com/favicon.ico?bing-chat-gpt-4-in-google",
 }
 
 const socketScriptReady = {
