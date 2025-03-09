@@ -32,10 +32,7 @@ class ChatGPTSession extends ChatSession {
   async init() {
     if (ChatSession.debug) return;
     await this.fetchSession();
-    await Promise.all([
-      this.fetchModels(),
-      this.registerWebSocket(),
-    ]);
+    await this.fetchModels();
   }
 
   async fetchSession() {
@@ -217,7 +214,7 @@ class ChatGPTSession extends ChatSession {
         }
       }],
       parent_message_id: pid,
-      model: this.models[0].slug,
+      model: this.models.at(-1).slug,
       suggestions: [],
     }
   }
