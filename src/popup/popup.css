@@ -238,6 +238,14 @@ footer {
   padding: 5px 5px;
 }
 
+.premium-link {
+  display: block;
+  text-align: center;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  color: var(--lighter-grey);
+}
+
 .upgrade-button {
   border-radius: 3px;
 

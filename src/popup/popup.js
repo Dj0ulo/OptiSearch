@@ -25,6 +25,7 @@
 
   const upgradeButton = document.getElementById("premium");
   const upgradeButtonSpan = upgradeButton.querySelector('span');
+  const premiumLink = document.getElementById('premium-link');
   
   const extpay = ExtPay('optisearch');
   extpay.getUser().then(user => {
@@ -32,12 +33,15 @@
     if (user.paidAt) {
       upgradeButtonSpan.textContent = _t('Manage subscription');
       upgradeButton.addEventListener('click', extpay.openPaymentPage);
+      premiumLink.style.display = 'none';
     } else {
       upgradeButtonSpan.textContent = _t('Upgrade to Premium');
       upgradeButton.addEventListener('click', premiumPresentationPopup);
+      premiumLink.addEventListener('click', extpay.openLoginPage);
     }
   }).catch(err => {
     upgradeButtonSpan.textContent = _t('Failed to load subscription status');
+    premiumLink.style.display = 'none';
   })
 
   const liEng = document.querySelector("#engines");

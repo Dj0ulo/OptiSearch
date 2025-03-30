@@ -1196,6 +1196,20 @@
     "ru": "Проверка Cloudflare",
     "zh_CN": "Cloudflare 检查"
   },
+  "I already have Premium": {
+    "ar": "لدي بالفعل النسخة المميزة",
+    "de": "Ich habe bereits Premium",
+    "en": "I already have Premium",
+    "es": "Ya tengo Premium",
+    "fr": "J'ai déjà Premium",
+    "hi": "मेरे पास पहले से प्रीमियम है",
+    "it": "Ho già Premium",
+    "ja": "すでにプレミアム版を持っています",
+    "ko": "이미 프리미엄이 있습니다",
+    "nl": "Ik heb al Premium",
+    "ru": "У меня уже есть Премиум",
+    "zh_CN": "我已经有高级版了"
+  },
   "To see answers from $host$ you first need to <a href='$link$'> verify that you are not a robot</a>.": {
     "message": {
       "ar": "لرؤية الأجوبة من $host$، تحتاج أولاً إلى <a href='$link$'>التحقق من أنك لست روبوتاً</a>.",
