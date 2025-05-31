@@ -95,9 +95,9 @@
         title: _t(spec.title ?? spec.name),
       }, label);
 
-      if (spec.local_icon) {
+      if (spec.icon) {
         const img = el("div", { className: "icon" }, spanImg);
-        img.style = `background-image: url(../images/${spec.local_icon});
+        img.style = `background-image: url(../images/${spec.icon});
                     background-size: contain;
                     width: 14px;
                     height: 14px;

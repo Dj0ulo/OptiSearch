@@ -3,7 +3,7 @@ class BardSession extends ChatSession {
     name: "Gemini",
     link: "https://gemini.google.com",
     icon: "src/images/bard.png",
-    local_icon: "bard.png",
+    icon: "bard.png",
     href: this.urlPrefix,
   };
   static errors = {

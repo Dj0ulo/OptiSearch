@@ -32,7 +32,7 @@ switch(WhichExtension) {
     };
     Settings['AI Assitant'] = {
       chatgpt: {
-        local_icon: "chatgpt.png",
+        icon: "chatgpt.png",
         name: "ChatGPT",
         default: true,
         slaves: ['directchat'],

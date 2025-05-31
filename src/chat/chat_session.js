@@ -181,7 +181,7 @@ class ChatSession {
       const header = el("div", { className: 'optiheader' }, panel);
       header.innerHTML = `
         <div class="ai-name">
-          <img alt="${this.properties.name} icon" width=32 height=32 src="${chrome.runtime.getURL(this.properties.icon)}" />
+          <img alt="${this.properties.name} icon" width=32 height=32 src="${chrome.runtime.getURL('src/images/' + this.properties.icon)}" />
           <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
         </div>
       `;

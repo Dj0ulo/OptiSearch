@@ -3,7 +3,7 @@ class ChatGPTSession extends ChatSession {
     name: "ChatGPT",
     link: "https://chatgpt.com",
     icon: "src/images/chatgpt.png",
-    local_icon: "chatgpt.png",
+    icon: "chatgpt.png",
     href: "https://chatgpt.com",
   }
   static errors = {

@@ -234,17 +234,17 @@ function hrefPopUp() {
  * @param {Element} container 
  */
 function writeHostOnLinks(url, container) {
-  const host = url.match("https?://[^/]+")[0];
+  const origin = new URL(url).origin +  '/';
   const links = container.querySelectorAll("a, img");
   links.forEach(a => {
     const attr = a.tagName === 'A' ? 'href' : 'src';
     const ahref = a.getAttribute(attr);
-    if (!ahref || ahref.startsWith("http") || ahref.startsWith("//") || ahref.startsWith("data:")) {
+    if (!ahref || ahref.includes("://") || ahref.startsWith("//") || ahref.startsWith("data:")) {
       return;
     }
 
     if (ahref.startsWith("/")) {
-      a[attr] = host + ahref;
+      a[attr] = origin + ahref;
       return;
     }
 

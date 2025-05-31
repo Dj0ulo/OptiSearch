@@ -38,7 +38,6 @@ Sites.stackexchange.get = (from, doc) => {
 
   const res = {
     title: title.textContent,
-    icon: doc.querySelector(`[rel="shortcut icon"]`).href
   }
 
   const acceptedAnswer = body.querySelector(QUERIES.answer); // always answer with most upvotes

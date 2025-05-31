@@ -99,11 +99,15 @@
         default: return;
       }
 
-      const siteData = { ...msg, ...(await site.get(msg, doc)) };
+      const siteData = {
+        icon: $('[rel="shortcut icon"]', doc)?.href ?? chrome.runtime.getURL(`src/images/${site.icon}`),
+        ...msg,
+        ...(await site.get(msg, doc))
+      };
       const content = site.set(siteData); // set body and foot
 
       if (content && content.body.innerHTML && siteData.title !== undefined)
-        Context.panels[panelIndex] = panelFromSite({ ...siteData, icon: siteData.icon ?? site.icon, ...content });
+        Context.panels[panelIndex] = panelFromSite({ ...siteData, ...content });
       else
         Context.panels[panelIndex] = null;
 

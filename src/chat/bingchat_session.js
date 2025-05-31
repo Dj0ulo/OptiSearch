@@ -3,7 +3,7 @@ class BingChatSession extends ChatSession {
     name: "Copilot",
     link: "https://copilot.microsoft.com/",
     icon: "src/images/copilot.png",
-    local_icon: "copilot.png",
+    icon: "copilot.png",
     href: "https://copilot.microsoft.com/",
   }
   static errors = {
