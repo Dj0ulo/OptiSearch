@@ -14,7 +14,7 @@ Sites.mdn.get = (from, doc) => {
     const syntaxTitle = article.querySelector("#syntax, #syntaxe");
     const syntax = syntaxTitle && syntaxTitle.nextSibling.querySelector("pre");
 
-    const summary = Array.from(article.querySelectorAll("p")).find(p => p.textContent != "");
+    const summary = Array.from(article.querySelectorAll("p")).find(p => p.textContent != "" && !p.closest('header'));
 
     const underS = underSummary(summary);
 
