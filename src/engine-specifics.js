@@ -1,4 +1,13 @@
 (function (){
+  Context.processEngine[Google] = () => {
+    const udm = parseInt(new URL(window.location.href).searchParams.get("udm") || "0", 10);
+    if ( udm == 0 || udm == 14 ) return;
+
+    // We are not on the main Google page
+    Context.rightColumn.parentNode.removeChild(Context.rightColumn);
+    Context.rightColumn = null;
+  };
+  
   Context.processEngine[Brave] = () => {
     if (!$(".optisearch-start")) {
       Context.rightColumn.prepend(el("div", { className: "optisearch-start" }));
