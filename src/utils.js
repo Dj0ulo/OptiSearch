@@ -160,9 +160,15 @@ async function copyTextToClipboard(text) {
  * @returns {HTMLElement} Element created
  */
 function el(tag, attr, parent) {
+  if (attr instanceof HTMLElement) {
+    parent = attr;
+    attr = undefined;
+  }
   const x = document.createElement(tag);
   parent?.appendChild(x);
-  attr && Object.entries(attr).forEach(([k, v]) => x[k] = v);
+  if (attr) {
+    Object.entries(attr).forEach(([k, v]) => (x[k] = v));
+  }
   return x;
 }
 
