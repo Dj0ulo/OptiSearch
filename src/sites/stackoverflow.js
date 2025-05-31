@@ -32,7 +32,7 @@ Sites.stackexchange.get = (from, doc) => {
     // this is a Cloudflare challenge page
     return {
         isCloudflareChallenge: true,
-        title: "Robot check ✓",
+        title: _t("Robot check ✓"),
     };
   }
 
@@ -125,8 +125,13 @@ Sites.stackexchange.set = (answer) => {
   }
 
   if (!answer.html) {
-    body.innerHTML = `No answer on this question... If you know the answer, <a href="${answer.link}#post-form">submit it</a>!`;
-    body.style.margin = '1em 0px';
+    body.innerHTML = `
+      <p 
+        data-i18n="No answer on this question... If you know the answer, <a href='$link$#post-form'>submit it</a>!"
+        data-i18n-args="${answer.link}" 
+      />
+    `;
+    renderDocText(body);
     return { body };
   }
 

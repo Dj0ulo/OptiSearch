@@ -1210,6 +1210,20 @@
     "ru": "У меня уже есть Премиум",
     "zh_CN": "我已经有高级版了"
   },
+  "Robot check ✓": {
+    "ar": "✓ التحقق من الروبوت",
+    "de": "Roboterprüfung ✓",
+    "en": "Robot check ✓",
+    "es": "Verificación de robot ✓",
+    "fr": "Vérification robot ✓",
+    "hi": "रोबोट जांच ✓",
+    "it": "Controllo robot ✓", 
+    "ja": "ロボット確認 ✓",
+    "ko": "로봇 확인 ✓",
+    "nl": "Robotcontrole ✓",
+    "ru": "Проверка робота ✓",
+    "zh_CN": "机器人检查 ✓"
+  },
   "To see answers from $host$ you first need to <a href='$link$'> verify that you are not a robot</a>.": {
     "message": {
       "ar": "لرؤية الأجوبة من $host$، تحتاج أولاً إلى <a href='$link$'>التحقق من أنك لست روبوتاً</a>.",
@@ -1248,6 +1262,27 @@
       "nl": "Vervolgens <a href='$link$'>ververs deze pagina</a>.",
       "ru": "Затем <a href='$link$'>обновите эту страницу</a>.",
       "zh_CN": "然后<a href='$link$'>刷新此页面</a>。"
+    },
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
+  },
+  "No answer on this question... If you know the answer, <a href='$link$#post-form'>submit it</a>!": {
+    "message": {
+      "ar": "لا يوجد إجابة على هذا السؤال... إذا كنت تعرف الإجابة، <a href='$link$#post-form'>أرسلها</a>!",
+      "de": "Keine Antwort auf diese Frage... Wenn Sie die Antwort kennen, <a href='$link$#post-form'>reichen Sie sie ein</a>!",
+      "en": "No answer on this question... If you know the answer, <a href='$link$#post-form'>submit it</a>!",
+      "es": "No hay respuesta a esta pregunta... Si conoces la respuesta, ¡<a href='$link$#post-form'>envíala</a>!",
+      "fr": "Pas de réponse à cette question... Si vous connaissez la réponse, <a href='$link$#post-form'>soumettez-la</a> !",
+      "hi": "इस प्रश्न का कोई उत्तर नहीं है... यदि आप उत्तर जानते हैं, तो <a href='$link$#post-form'>इसे जमा करें</a>!",
+      "it": "Nessuna risposta a questa domanda... Se conosci la risposta, <a href='$link$#post-form'>inviala</a>!",
+      "ja": "この質問に対する回答はありません... 回答を知っている場合は、<a href='$link$#post-form'>投稿</a>してください！",
+      "ko": "이 질문에 대한 답변이 없습니다... 답을 알고 계시다면, <a href='$link$#post-form'>제출</a>해 주세요!",
+      "nl": "Geen antwoord op deze vraag... Als je het antwoord weet, <a href='$link$#post-form'>dien het dan in</a>!",
+      "ru": "Нет ответа на этот вопрос... Если вы знаете ответ, <a href='$link$#post-form'>отправьте его</a>!",
+      "zh_CN": "这个问题还没有答案...如果您知道答案，请<a href='$link$#post-form'>提交</a>！"
     },
     "placeholders": {
       "link": {
