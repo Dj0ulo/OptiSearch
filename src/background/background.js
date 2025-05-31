@@ -1,4 +1,4 @@
-fetchEngines();
+fetchEngines(isDebugMode);
 
 chrome.runtime.setUninstallURL('https://www.optisearch.io/uninstall.html');
 
