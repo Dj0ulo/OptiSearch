@@ -1195,5 +1195,50 @@
     "nl": "Cloudflare-controle",
     "ru": "Проверка Cloudflare",
     "zh_CN": "Cloudflare 检查"
+  },
+  "To see answers from $host$ you first need to <a href='$link$'> verify that you are not a robot</a>.": {
+    "message": {
+      "ar": "لرؤية الأجوبة من $host$، تحتاج أولاً إلى <a href='$link$'>التحقق من أنك لست روبوتاً</a>.",
+      "de": "Um Antworten von $host$ zu sehen, müssen Sie zuerst <a href='$link$'>nachweisen, dass Sie kein Roboter sind</a>.",
+      "en": "To see answers from $host$, you first need to <a href='$link$'>verify that you are not a robot</a>.",
+      "es": "Para ver respuestas de $host$, primero necesitas <a href='$link$'>verificar que no eres un robot</a>.",
+      "fr": "Pour voir les réponses de $host$, vous devez d'abord <a href='$link$'>vérifier que vous n'êtes pas un robot</a>.",
+      "hi": "$host$ से उत्तर देखने के लिए, आपको पहले <a href='$link$'>सत्यापित करना होगा कि आप रोबोट नहीं हैं</a>.",
+      "it": "Per vedere le risposte da $host$, devi prima <a href='$link$'>verificare che non sei un robot</a>.",
+      "ja": "$host$ の回答を見るには、まず <a href='$link$'>ロボットでないことを確認</a>する必要があります。",
+      "ko": "$host$의 답변을 보려면 먼저 <a href='$link$'>로봇이 아님을 확인</a>해야 합니다.",
+      "nl": "Om antwoorden van $host$ te zien, moet u eerst <a href='$link$'>controleren dat u geen robot bent</a>.",
+      "ru": "Чтобы увидеть ответы от $host$, сначала необходимо <a href='$link$'>убедиться, что вы не робот</a>.",
+      "zh_CN": "要查看来自 $host$ 的答案，您首先需要<a href='$link$'>验证您不是机器人</a>。"
+    },
+    "placeholders": {
+      "host": {
+        "content": "$1"
+      },
+      "link": {
+        "content": "$2"
+      }
+    }
+  },
+  "Then <a href='$link$'>refresh this page</a>.": {
+    "message": {
+      "ar": "ثم <a href='$link$'>قم بتحديث هذه الصفحة</a>.",
+      "de": "Dann <a href='$link$'>aktualisieren Sie diese Seite</a>.",
+      "en": "Then <a href='$link$'>refresh this page</a>.",
+      "es": "Luego, <a href='$link$'>actualiza esta página</a>.",
+      "fr": "Ensuite, <a href='$link$'>actualisez cette page</a>.",
+      "hi": "फिर <a href='$link$'>इस पृष्ठ को रिफ्रेश करें</a>.",
+      "it": "Quindi <a href='$link$'>aggiorna questa pagina</a>.",
+      "ja": "その後、<a href='$link$'>このページを更新</a>してください。",
+      "ko": "그런 다음 <a href='$link$'>이 페이지를 새로 고침</a>하세요.",
+      "nl": "Vervolgens <a href='$link$'>ververs deze pagina</a>.",
+      "ru": "Затем <a href='$link$'>обновите эту страницу</a>.",
+      "zh_CN": "然后<a href='$link$'>刷新此页面</a>。"
+    },
+    "placeholders": {
+      "link": {
+        "content": "$1"
+      }
+    }
   }
 }

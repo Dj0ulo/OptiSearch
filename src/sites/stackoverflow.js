@@ -1,4 +1,5 @@
 Sites.stackexchange.msgApi = (_) => ({});
+Sites.stackexchange.credentials = "include";
 
 /**
  * @param {*} from 
@@ -25,8 +26,15 @@ Sites.stackexchange.get = (from, doc) => {
   }
 
   const title = doc.querySelector(QUERIES.title);
-  if (!title)
-    return;
+  if (!title) {
+    if (!body.innerHTML.includes("_cf_chl_opt")) return;
+
+    // this is a Cloudflare challenge page
+    return {
+        isCloudflareChallenge: true,
+        title: "Robot check ✓",
+    };
+  }
 
   const res = {
     title: title.textContent,
@@ -94,6 +102,27 @@ Sites.stackexchange.get = (from, doc) => {
 
 Sites.stackexchange.set = (answer) => {
   const body = el("div", { className: 'stackbody' });
+
+  if (answer.isCloudflareChallenge) {
+    body.innerHTML = `
+      <p 
+        data-i18n="To see answers from $host$ you first need to <a href='$link$'> verify that you are not a robot</a>."
+        data-i18n-args="${new URL(answer.link).host},${answer.link}" 
+      />
+      <p 
+        data-i18n="Then <a href='$link$'>refresh this page</a>." 
+        data-i18n-args="${window.location.href}" 
+      />
+    `;
+    renderDocText(body);
+
+    $("a", body).addEventListener("click", (e) => {
+      e.preventDefault();
+      window.open(answer.link, 'newwindow', 'width=800,height=800,focused=true'); 
+      return false;
+    });
+    return { body };
+  }
 
   if (!answer.html) {
     body.innerHTML = `No answer on this question... If you know the answer, <a href="${answer.link}#post-form">submit it</a>!`;

@@ -64,6 +64,7 @@
       link: siteLink,
       site: siteName,
       type: "html",
+      credentials: siteProps.credentials,
       ...siteProps.msgApi(siteLink),
     };
 

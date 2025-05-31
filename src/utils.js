@@ -42,9 +42,17 @@ function _t(messageName, ...args) {
   return chrome.i18n.getMessage(messageName.replaceAll(/[^\w]/g, '_'), args) || messageName;
 }
 
-function renderDocText() {
-  $$("[data-i18n]").forEach(el => {
-    el.innerHTML = _t(el.dataset.i18n);
+function renderDocText(parent = document) {
+  const elements = (parent instanceof Element ? parent : document).querySelectorAll("[data-i18n]");
+  elements.forEach(el => {
+    const key = el.dataset.i18n;
+    let args = [];
+    if (el.dataset.i18nArgs) {
+      args = el.dataset.i18nArgs.split(',').map(arg => arg.trim());
+    }
+    el.innerHTML = _t(key, ...args);
+    el.removeAttribute('data-i18n');
+    el.removeAttribute('data-i18n-args');
   });
 }
 

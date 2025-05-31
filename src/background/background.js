@@ -62,7 +62,7 @@ async function handleActionFetchResult(action) {
   let url = String(action.api || action.link);
   if (url.startsWith('http://'))
     url = 'https' + url.slice(4);
-  const response = await fetch(url, { credentials: 'omit' }).catch(e => ({ error: e.toString() }));
+  const response = await fetch(url, { credentials: action.credentials ?? "omit" }).catch(e => ({ error: e.toString() }));
   return [action, await response.text()]
 }
 
