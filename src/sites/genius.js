@@ -12,13 +12,14 @@ Sites.genius.get = (from, doc) => {
   let lyricsDiv = body.querySelector('[class*=Lyrics__Root], .lyrics');
   if (!lyricsDiv)
     return;
-  Array.from(lyricsDiv?.querySelectorAll('a')).forEach(a => a.outerHTML = a.innerHTML);
+  $$('a', lyricsDiv).forEach(a => a.outerHTML = a.innerHTML);
+  $$('[class^=LyricsHeader__Container]', lyricsDiv).forEach(h => h.parentNode.removeChild(h));
 
   let lyrics = "";
   if (lyricsDiv.classList.contains('lyrics'))
     lyrics = lyricsDiv?.innerHTML;
   else {
-    lyrics = Array.from(lyricsDiv.querySelectorAll('[class^=Lyrics__Container]'))
+    lyrics = $$('[class^=Lyrics__Container]', lyricsDiv)
       .map(e => e.innerHTML)
       .join('<br><br>');
     lyrics = `<p>${lyrics}</p>`;
