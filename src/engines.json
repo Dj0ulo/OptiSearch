@@ -4,7 +4,7 @@
     "icon": "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
     "rightColumn": "#rhs",
     "centerColumn": "#center_col",
-    "resultRow": "#rso > div:not(.optisearchbox)",
+    "resultRow": "#rso span:has(> a > h3)",
     "searchBox": "input.gLFyf.gsfi, input.gLFyf, textarea.gLFyf",
     "active": true,
     "regex": "^www\\.google\\.",
