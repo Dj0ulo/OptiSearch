@@ -310,6 +310,10 @@ span.math-container > mjx-container[jax="SVG"][display="true"]{
     margin: 0;
 }
 
+.opticontent {
+    overflow-y: auto;
+}
+
 a {
   text-decoration: none;
 }
