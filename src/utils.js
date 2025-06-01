@@ -69,31 +69,33 @@ const read = (url) => fetch(chrome.runtime.getURL(url))
 /**
  * Format a text element into LaTeX
  * @param {Element} element
- * @param {boolean} convertWhole If true convert element.innerHTML to TeX,
- *  otherwise only the part of it that have $ or $$ around
  */
-function toTeX(element, convertWhole = true) {
+function toTeX(element) {
   const REGEX_LATEX_G = /\${1,2}([^\$]*)\${1,2}/g;
-  if (convertWhole)
-    element.innerHTML = element.innerHTML.replace(REGEX_LATEX_G, '$1');
-  else
-    element.innerHTML = element.innerHTML.replace(
-      REGEX_LATEX_G,
-      `<span style="display: inline-block;" class="math-container">$1</span>`
-    );
+  [element, ...$$('*', element)].forEach(e => {
+    const textNodes = Array.from(e.childNodes)
+      .filter(node => node.nodeType === 3 && !node.parentElement.closest('code, pre, .math-container'));
+    textNodes.forEach(node => {
+      if (!node.textContent.match(REGEX_LATEX_G)) return;
+
+      const container = el('span');
+      container.innerHTML = node.textContent.replace(
+        REGEX_LATEX_G,
+        `<span style="display: inline-block;" class="math-container">$1</span>`
+      );
+      node.parentNode.replaceChild(container, node);
+    });
+  });
   MathJax.texReset();
 
   async function TeXThis(element) {
     const options = MathJax.getMetricsFor(element);
     const node = await MathJax.tex2svgPromise(element.textContent, options);
-    element.innerHTML = "";
+    element.replaceChildren();
     element.appendChild(node);
   }
 
-  if (convertWhole)
-    TeXThis(element);
-  else
-    $$(".math-container", element).forEach((e) => TeXThis(e));
+  $$(".math-container", element).forEach((e) => TeXThis(e));
 }
 
 /**

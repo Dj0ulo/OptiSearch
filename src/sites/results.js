@@ -121,7 +121,7 @@
 
     const a = el("a", { href: link, className: "result-link" }, headPanel);
 
-    toTeX(el("div", { className: "title result-title", textContent: title }, a), false);
+    toTeX(el("div", { className: "title result-title", textContent: title }, a));
 
     const linkElement = el("cite", { className: "optilink result-url" }, a);
     el("img", { width: 16, height: 16, src: icon }, linkElement);
@@ -142,7 +142,7 @@
       body.classList.add("optibody");
 
       if (site === "stackexchange") {
-        $$('.math-container', body).forEach((e) => toTeX(e, true));
+        toTeX(body);
       }
 
       prettifyCode(body);

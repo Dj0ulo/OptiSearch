@@ -306,6 +306,10 @@ pre {
   white-space: pre-wrap;
 }
 
+span.math-container > mjx-container[jax="SVG"][display="true"]{
+    margin: 0;
+}
+
 a {
   text-decoration: none;
 }
