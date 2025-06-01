@@ -1,23 +1,3 @@
-:root {
-  --line-dark: #34363e;
-  --expand-time: 0.5s;
-  --opti-max-width: 600px;
-}
-
-.optisearchbox {
-  margin: 20px 0 20px 0;
-  border-radius: 8px;
-  min-width: 250px;
-  max-width: var(--opti-max-width);
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 1px 3px 8px 0px;
-  overflow: hidden;
-  transition: min-width var(--expand-time) linear;
-}
-
-[data-optisearch-column=wide] .optisearchbox {
-  min-width: var(--opti-max-width);
-}
-
 .mobile {
   width: 100%;
   max-width: unset;
@@ -53,10 +33,8 @@
 }
 
 .optipanel {
-  margin: 0px 5px 0px 5px;
-  padding: 15px 15px;
-  padding-bottom: 8px;
-  padding-top: 8px;
+  border-radius: 8px;
+  padding: 8px 20px;
   font-size: 15px;
   position: relative;
   transition: max-height 5s;
@@ -177,7 +155,7 @@
   transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
   transform-origin: center;
 }
-[data-optisearch-column=wide] .optisearchbox .expand-arrow {
+.optiheader .expand-arrow.rotated {
   transform: rotate(-180deg);
 }
 
@@ -188,13 +166,13 @@
   grid-auto-columns: 75% 1fr;
 }
 
-.optipanel .title {
+.title {
   font-size: large;
   font-weight: bold;
   line-height: initial;
   word-wrap: break-word;
 }
-.bright .optipanel .title.result-title {
+.bright .title.result-title {
   color: #1a0dab;
 }
 
@@ -205,7 +183,7 @@
   text-decoration: none !important;
 }
 
-.optipanel .optilink {
+.optilink {
   display: block;
   white-space: nowrap;
   overflow: hidden;
@@ -216,14 +194,14 @@
   font-size: small;
 }
 
-.bright .optipanel .optilink {
+.bright .optilink {
   color: #3c4043 !important;
 }
-.dark .optipanel .optilink {
+.dark .optilink {
   color: rgb(167, 159, 147) !important;
 }
 
-.optipanel .optilink img {
+.optilink img {
   vertical-align: middle;
   margin-right: 5px;
   margin-top: -3px;
@@ -231,17 +209,17 @@
   display: inline;
 }
 
-.optipanel hr {
+hr {
   height: 1px;
   margin: 0 .5em .5em .5em;
   border: 0px;
   background-color: rgb(220, 220, 220);
 }
-.dark .optipanel hr {
+.dark hr {
   background-color: var(--line-dark);
 }
 
-.optipanel .opticopy {
+.opticopy {
   position: absolute;
   width: auto;
   height: auto;
@@ -252,44 +230,44 @@
   opacity: 70%;
 }
 
-.optipanel .opticopy svg {
+.opticopy svg {
   width: 15px;
   height: 15px;
   stroke: #bbc0c4;
 }
-.optipanel .opticopy svg:hover {
+.opticopy svg:hover {
   stroke: #9fa6ad;
   cursor: pointer;
 }
-.optipanel .optibody p,
-.optipanel .optibody ul,
-.optipanel .optibody ol {
+.optibody p,
+.optibody ul,
+.optibody ol {
   line-height: 1.5;
   margin-block-start: 1em;
   margin-block-end: 1em;
 }
 
-.optipanel .optibody ul,
-.optipanel .optibody ol {
+.optibody ul,
+.optibody ol {
   padding-left: 15px;
 }
-.optipanel .optibody img {
+.optibody img {
   max-width: 100%;
 }
 
-.optipanel .optibody li,
-.optipanel .optibody ol {
+.optibody li,
+.optibody ol {
   list-style: initial;
   margin: 0.4rem;
   padding: 0 0.4rem;
 }
 
-.optipanel blockquote {
+blockquote {
   position: relative;
   padding-left: 12px;
 }
 
-.optipanel blockquote:before {
+blockquote:before {
   content: "";
   display: block;
   position: absolute;
@@ -302,7 +280,7 @@
   background: #c8ccd0;
 }
 
-.optipanel code {
+code {
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace, sans-serif;
   padding: 0.25em 0.25em;
@@ -310,11 +288,11 @@
   font-size: 100%;
 }
 
-.optipanel pre code {
+pre code {
   display: block;
 }
 
-.optipanel pre {
+pre {
   border: 0px;
   margin-bottom: 1em;
   padding: 12px 8px;
@@ -328,24 +306,24 @@
   white-space: pre-wrap;
 }
 
-.optipanel a {
+a {
   text-decoration: none;
 }
-.bright .optipanel a {
+.bright a {
   color: #0077cc;
 }
-.dark .optipanel a {
+.dark a {
   color: #8ab4f8;
 }
-.optipanel a:hover {
+a:hover {
   text-decoration: underline;
 }
 
-.optipanel .stackfoot .d-none {
+.stackfoot .d-none {
   display: none;
 }
 
-.optipanel .stackfoot {
+.stackfoot {
   margin-top: 15px;
   line-height: 23px;
   font-size: small;

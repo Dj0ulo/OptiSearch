@@ -63,7 +63,8 @@ function renderDocText(parent = document) {
  * @returns 
  */
 const read = (url) => fetch(chrome.runtime.getURL(url))
-  .then(response => response.text());
+  .then(response => response.text())
+  .catch(() => '');
 
 /**
  * Format a text element into LaTeX

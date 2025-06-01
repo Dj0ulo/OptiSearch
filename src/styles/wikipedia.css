@@ -1,10 +1,10 @@
-.optipanel .optibody.wikibody .imgwiki img {
+.optibody.wikibody .imgwiki img {
   width: 40%;
   height: 100%;
   float: right;
   border-radius: 5px;
   margin: 10px;
 }
-.optipanel .optibody.wikibody p {
+.optibody.wikibody p {
   margin: 0.5em 0;
 }

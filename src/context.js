@@ -3,8 +3,7 @@ class Context {
   static BOX_CLASS = `${Context.EXTENSION_SELECTOR_PREFIX}-box`;
   static BOX_SELECTOR = `.${Context.BOX_CLASS}`;
   static STYLE_ELEMENT_ID = `${Context.EXTENSION_SELECTOR_PREFIX}-style`;
-  static DARK_BG_STYLE_ELEMENT_ID = `${Context.EXTENSION_SELECTOR_PREFIX}-dark-background-style`;
-  static PANEL_CLASS = "optipanel";
+  static DARK_BG_STYLE_ELEMENT_ID = 'dynamic-dark-background-style';
   static MOBILE_CLASS = 'mobile';
 
   static engines = {};
@@ -14,6 +13,7 @@ class Context {
   static settingsListeners = {};
 
   static boxes = [];
+  static shadowStyleContent = "";
 
   static extpay = null;
   static extpayUser = null;
@@ -180,40 +180,16 @@ class Context {
 
   static async injectStyle() {
     let styles = ['chatgpt', 'panel', 'code-light-theme', 'code-dark-theme'];
-    if (isOptiSearch)
-      styles = [...styles, ...['w3schools', 'wikipedia', 'genius']];
-    const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`).catch(() => '')));
-    const allCss = this.addCssParentSelector(cssContents.join('\n'));
-    el('style', { id: Context.STYLE_ELEMENT_ID, textContent: allCss }, Context.docHead);
-
-    if (!Context.engine.style)
-      return;
+    if (isOptiSearch) styles.push('w3schools', 'wikipedia', 'genius');
+    const cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`)));
+    Context.shadowStyleContent = cssContents.join('\n');
 
     // Change style based on the search engine
+    const globalStyleContent = await read(`src/styles/box.css`) + '\n' + Context.engine.style ?? '';
     el('style', {
-      textContent: Context.engine.style.trim().replaceAll('.optisearchbox', Context.BOX_SELECTOR),
+      textContent: globalStyleContent.trim().replaceAll('.optisearchbox', Context.BOX_SELECTOR),
       id: `${Context.STYLE_ELEMENT_ID}-${Context.engineName}`
     }, Context.docHead);
-  }
-
-  static addCssParentSelector(cssContent) {
-    const cssRuleRegex = /(?!\s)([^{}%\/\\]+)({[^{}]*})/g; //avoid spaces, comments, @media, @keyframes
-    return cssContent.replace(cssRuleRegex, (_, selector, body) => 
-      `${selector.split(",").map(s => {
-        const sTrim = s.trim();
-        if (sTrim[0] === ':') return sTrim;
-        if (sTrim.includes('.optisearchbox')) {
-          return sTrim.replace('.optisearchbox', Context.BOX_SELECTOR);
-        }
-        if (sTrim.includes('.dark')) {
-          return sTrim.replace('.dark', `${Context.BOX_SELECTOR}.dark`);
-        }
-        if (sTrim.includes('.bright')) {
-          return sTrim.replace('.bright', `${Context.BOX_SELECTOR}.bright`);
-        }
-        return `${Context.BOX_SELECTOR} ${sTrim}`;
-      }).join(", ")} ${body}\n`
-    );
   }
 
   /**
@@ -258,11 +234,19 @@ class Context {
       rightButtonsContainer.append(buildExpandArrow());
     }
 
-    const box = el("div", { className: `${Context.BOX_CLASS} bright ${Context.engineName}` });
+    const box = el("div", { className: `${Context.BOX_CLASS} ${Context.engineName}` });
     Context.boxes.push(box);
     if (Context.computeIsOnMobile())
       box.classList.add(Context.MOBILE_CLASS);
-    box.append(panel);
+
+    const shadow = box.attachShadow({ mode: "open" });
+    el("style", { textContent: Context.shadowStyleContent }, shadow);
+    const texStyle = $("#MJX-SVG-styles");
+    if (texStyle) el("style", { textContent: texStyle.textContent, id: texStyle.id }, shadow);
+    shadow.append(panel);
+
+    panel.classList.add("bright");
+    $(`.expand-arrow`, panel)?.classList.toggle('rotated', Context.rightColumn.dataset.optisearchColumn === 'wide');   
 
     Context.appendBoxes([box]);
 
@@ -288,7 +272,7 @@ class Context {
         return;
       }
 
-      if(!box.firstChild.classList.contains('optichat')) {
+      if (!$('.optichat', box.shadowRoot)) {
         boxContainer.append(box);
         return;
       }
@@ -296,10 +280,10 @@ class Context {
       const order = ['bard', 'bingchat', 'chatgpt'];
       const precedings = order
         .slice(0, order.indexOf(WhichChat))
-        .map(e => $$(`.optichat.${e}`))
+        .map(e => boxes.filter(b => $(`.optichat.${e}`, b.shadowRoot)))
         .flat();
       if (precedings.length) {
-        const lastPrecedingBox = precedings.at(-1).parentElement;
+        const lastPrecedingBox = precedings.at(-1);
         insertAfter(box, lastPrecedingBox);
         return;
       }
@@ -357,6 +341,9 @@ class Context {
         }, Context.docHead);
       }
       Context.rightColumn.dataset.optisearchColumn = value ? 'wide' : 'thin';
+      Context.boxes.forEach(box => {
+        $(`.expand-arrow`, box.shadowRoot)?.classList.toggle('rotated', value)
+      });
     }
     updateWideState(Context.get('wideColumn'), true);
     Context.addSettingListener('wideColumn', updateWideState);
@@ -379,24 +366,24 @@ class Context {
   static updateColor() {
     const bg = getBackgroundColor();
     const dark = isDarkMode();
-    const allPanels = $$(Context.BOX_SELECTOR);
 
-    let style = $(`#${Context.DARK_BG_STYLE_ELEMENT_ID}`);
-    if (!style) {
-      style = el('style', { id: Context.DARK_BG_STYLE_ELEMENT_ID }, Context.docHead);
-    }
+    Context.boxes.map(box => box.shadowRoot).forEach(shadowRoot => {
+      let style = $(`#${Context.DARK_BG_STYLE_ELEMENT_ID}`, shadowRoot);
+      if (!style) {
+        style = el('style', { id: Context.DARK_BG_STYLE_ELEMENT_ID });
+        shadowRoot.prepend(style);
+      }
 
-    if (dark) {
-      style.textContent = `
-      ${Context.BOX_SELECTOR}.dark {background-color: ${colorLuminance(bg, 0.02)}}
-      ${Context.BOX_SELECTOR}.dark .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}`;
-    }
-    for (let p of allPanels) {
-      if (dark)
-        p.className = p.className.replace("bright", "dark");
-      else
-        p.className = p.className.replace("dark", "bright");
-    }
+      const panel = $(`.optipanel`, shadowRoot); 
+      if (dark) {
+        style.textContent = `
+          .dark {background-color: ${colorLuminance(bg, 0.02)}}
+          .dark .optibody.w3body .w3-example {background-color: ${colorLuminance(bg, 0.04)}}
+        `;
+      }
+      panel.classList.toggle('dark', dark);
+      panel.classList.toggle('bright', !dark);
+    });
   }
 
   /** 

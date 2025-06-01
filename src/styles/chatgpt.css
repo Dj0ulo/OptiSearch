@@ -87,7 +87,7 @@ a.chat-title {
   }
 }
 
-.optipanel.bingchat .optiheader:hover .ai-name > img:not(.disabled) {
+.optichat.bingchat .optiheader:hover .ai-name > img:not(.disabled) {
   animation: bounce 0.5s cubic-bezier(0.08, 0.82, 0.17, 1); /* Apply the 'bounce' animation */
 }
 
@@ -228,11 +228,11 @@ a.chat-title {
   color: white;
 }
 
-.bright .optichat a.source {
+.bright.optichat a.source {
   color: #123bb6;
   background-color: #d1dbfa;
 }
-.dark .optichat a.source {
+.dark.optichat a.source {
   background-color: #293740;
 }
 

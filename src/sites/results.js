@@ -116,7 +116,7 @@
   }
 
   function panelFromSite({ site, title, link, icon, header, body, foot }) {
-    const panel = el("div", { className: `${Context.PANEL_CLASS}` });
+    const panel = el("div", { className: "optipanel" });
     const headPanel = el("div", { className: "optiheader" }, panel);
 
     const a = el("a", { href: link, className: "result-link" }, headPanel);

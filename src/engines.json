@@ -35,7 +35,7 @@
     "searchBox": ".search-form__input, #search-form-input",
     "active": true,
     "regex": "\\.ecosia\\.org$",
-    "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;} .optisearchbox .optichat .title, .continue-chat-button > span { bottom: 0; }",
+    "style": ".sidebar.web__sidebar[data-test-id=sidebar]{grid-area: sidebar;}",
     "onMobile": 992
   },
   "Yahoo": {
