@@ -419,20 +419,6 @@
     "ru": "Спросите у ИИ-помощника, как только загрузится страница результатов",
     "zh_CN": "结果页面加载完成后立即询问人工智能助手"
   },
-  "Tools": {
-    "ar": "أدوات",
-    "de": "Tools",
-    "en": "Tools",
-    "es": "Herramientas",
-    "fr": "Outils",
-    "hi": "उपकरण",
-    "it": "Strumenti",
-    "ja": "ツール",
-    "ko": "도구",
-    "nl": "Tools",
-    "ru": "Инструменты",
-    "zh_CN": "工具"
-  },
   "Maximum number of result panels": {
     "ar": "أقصى عدد من لوحات النتائج",
     "de": "Maximale Anzahl von Ergebnisfenstern",

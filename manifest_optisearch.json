@@ -66,8 +66,6 @@
       ],
       "run_at": "document_end",
       "js": [
-        "src/libs/plotly-2.8.3.min.js",
-        "src/libs/math.min.js",
         "src/libs/highlight.min.js",
         "src/libs/tex-svg.js",
         "src/libs/drawdown.js",
@@ -76,7 +74,6 @@
 
         "src/utils.js",
 
-        "src/tools/tools.js",
         "src/sites/sites.js",
         "src/constants.js",
         "src/settings.js",
@@ -88,8 +85,6 @@
         "src/context.js",
         "src/engine-specifics.js",
         "src/sites/results.js",
-        "src/tools/plot.js",
-        "src/tools/init.js",
         "src/chat/init.js",
 
         "src/sites/stackoverflow.js",

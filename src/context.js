@@ -110,7 +110,12 @@ class Context {
       sendResponse(true);
     });
 
-    Context.executeTools();
+    if (Context.chatSession && Context.chatSession.panel) {
+      Context.appendPanel(Context.chatSession.panel);
+    }
+    if (typeof Sites !== 'undefined' && Context.parseResults) {
+      Context.parseResults();
+    }
   }
 
   static async checkIfUserStillNotPremium() {
@@ -209,14 +214,6 @@ class Context {
         return `${Context.BOX_SELECTOR} ${sTrim}`;
       }).join(", ")} ${body}\n`
     );
-  }
-
-  static executeTools() {
-    if (Context.chatSession && Context.chatSession.panel) Context.appendPanel(Context.chatSession.panel);
-    if (Context.isActive("bangs")) Context.bangs && Context.bangs();
-    if (Context.isActive("calculator")) Context.calculator && Context.calculator();
-    if (Context.isActive("plot") || Context.isActive("calculator")) Context.plotOrCompute && Context.plotOrCompute();
-    if (typeof Sites !== 'undefined') Context.parseResults && Context.parseResults();
   }
 
   /**

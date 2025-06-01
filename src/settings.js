@@ -23,7 +23,6 @@ const Settings = {
 switch(WhichExtension) {
   case 'optisearch':
     Settings['Sites'] = Sites;
-    Settings['Tools'] = Tools;
     Settings['Options']['maxResults'] = {
       name: "Maximum number of result panels",
       default: 3,

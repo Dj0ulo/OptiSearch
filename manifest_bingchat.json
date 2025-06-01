@@ -78,7 +78,6 @@
       ],
       "run_at": "document_end",
       "js": [
-        "src/libs/math.min.js",
         "src/libs/highlight.min.js",
         "src/libs/tex-svg.js",
         "src/libs/drawdown.js",

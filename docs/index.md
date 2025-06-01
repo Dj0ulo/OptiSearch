@@ -19,7 +19,5 @@ Currently, the following sites are supported:
 
 In bonus, it also works with Bing, DuckDuckGo, Ecosia and Brave Search !
 
-OptiSearch can also plot graphs and evaluate math expression typed in the search bar.
-
 ## Privacy Policy
 You can read the privacy policy [by clicking here](./privacy.html).

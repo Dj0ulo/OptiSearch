@@ -3,23 +3,6 @@
   --expand-time: 0.5s;
   --opti-max-width: 600px;
 }
-#optiexpr {
-  padding-left: 20px;
-  position: relative;
-  overflow: auto;
-  font-size: 18px;
-}
-#optiplot {
-  padding: 0px;
-  margin: 5px;
-  overflow: auto;
-}
-
-#opticalculator {
-  height: 400px;
-  width: 400px;
-  padding: 0px;
-}
 
 .optisearchbox {
   margin: 20px 0 20px 0;
@@ -358,9 +341,6 @@
   text-decoration: underline;
 }
 
-.optipanel span.mwe-math-element {
-  display: inline-flex;
-}
 .optipanel .stackfoot .d-none {
   display: none;
 }
