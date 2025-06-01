@@ -70,27 +70,6 @@ a.chat-title {
   white-space: nowrap;
 }
 
-.optiheader[data-bing-conv-style="creative"] .ai-name > img {
-  filter: hue-rotate(63deg) !important;
-}
-.optiheader[data-bing-conv-style="precise"] .ai-name > img {
-  filter: hue-rotate(-52deg) !important;
-}
-
-/* Define the bouncing effect using keyframes */
-@keyframes bounce {
-  0%, 100% {
-      transform: scale(1); /* Initial and final state (original size) */
-  }
-  70% {
-      transform: scale(1.2); /* Bounce to a larger size */
-  }
-}
-
-.optichat.bingchat .optiheader:hover .ai-name > img:not(.disabled) {
-  animation: bounce 0.5s cubic-bezier(0.08, 0.82, 0.17, 1); /* Apply the 'bounce' animation */
-}
-
 .learnmore > a[data-invisible-count="0"] {
   display: none;
 }
@@ -101,15 +80,6 @@ a.chat-title {
   display: none;
 }
 
-.bing-internal-search-button.allowed > img.bing-internal-search-allowed,
-.bing-internal-search-button.forbidden > img.bing-internal-search-forbidden {
-  display: block;
-}
-
-.bing-internal-search-button.forbidden > img.bing-internal-search-allowed,
-.bing-internal-search-button.allowed > img.bing-internal-search-forbidden {
-  display: none;
-}
 /*---------------Discussion------------------*/
 .response-container .input-container,
 .response-container .box-message-container.user{

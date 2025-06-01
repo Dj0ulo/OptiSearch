@@ -6,26 +6,8 @@ class BingChatSession extends ChatSession {
     icon: "copilot.png",
     href: "https://copilot.microsoft.com/",
   }
-  static errors = {
-    session: {
-      code: 'BING_CHAT_SESSION',
-      url: 'https://login.live.com/login.srf?wa=wsignin1.0&wreply=https%3A%2F%2Fwww.bing.com%2Ffd%2Fauth%2Fsignin%3Faction%3Dinteractive%26provider%3Dwindows_live_id%26return_url%3Dhttps%3A%2F%2Fwww.bing.com%2F%3Fwlexpsignin%3D1%26src%3DEXPLICIT',
-      text: _t("Please login to Bing with your Microsoft account, then refresh"),
-      button: _t("Login to $AI$", "Bing"),
-    },
-  }
   static get storageKey() {
     return "SAVE_BINGCHAT";
-  }
-
-  async internalSearchActivated() {
-    if (Context.get('bingInternalSearch')) return true;
-    const notPremium = await Context.checkIfUserStillNotPremium();
-    if (notPremium) {
-      Context.set('bingInternalSearch', true);
-      return true;
-    }
-    return false;
   }
 
   /** @type {HTMLImageElement | null} */
@@ -43,29 +25,10 @@ class BingChatSession extends ChatSession {
   }
 
   async fetchSession() {
-    const sessionURL = await this.parseSessionFromURL();
-    if (sessionURL) {
-      this.isContinueSession = true;
-      this.session = sessionURL;
-      return this.session;
-    }
-
     const session = await BingChatSession.offscreenAction({ action: "session" });
     this.session = { conversationId: session.id };
     this.session.isStartOfSession = true;
     return this.session;
-  }
-
-  async parseSessionFromURL() {
-    if (!window.location.hostname.endsWith('.bing.com'))
-      return;
-    const continuesession = new URL(window.location.href).searchParams.get('continuesession');
-    if (!continuesession)
-      return;
-    const session = await bgWorker({ action: 'session-storage', type: 'get', key: continuesession });
-    if (!session || session.inputText !== parseSearchParam())
-      return;
-    return session;
   }
 
   async send(prompt) {
@@ -93,20 +56,6 @@ class BingChatSession extends ChatSession {
     await this.socketSend(await this.config(prompt));
     this.rawMessage = "";
     return this.next();
-  }
-
-  createPanel(directchat = true) {
-    super.createPanel(directchat);
-
-    this.bingIconElement = $('img', $('.ai-name', this.panel));
-    const updateIconButton = (mode = 'balanced') => {
-      const displayName = Settings['AI Assitant']['bingConvStyle'].options[mode].name;
-      this.bingIconElement.title = displayName;
-      $('.optiheader', this.panel).dataset['bingConvStyle'] = mode;
-    }
-    updateIconButton();
-
-    return this.panel;
   }
 
   async next() {
@@ -158,11 +107,9 @@ class BingChatSession extends ChatSession {
   removeConversation() {
     if (ChatSession.debug || !this.session)
       return;
-    const { conversationSignature, clientId, conversationId } = this.session;
+    const { conversationId } = this.session;
     return BingChatSession.offscreenAction({
       action: "delete",
-      conversationSignature,
-      clientId,
       conversationId,
     });
   }

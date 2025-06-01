@@ -17,7 +17,10 @@ async function handleMessage(message) {
       });
       return await response.json();
     case 'delete':
-      return;
+      return await fetch(`https://copilot.microsoft.com/c/api/conversations/${message.conversationId}`, {
+        method: "DELETE",
+        credentials: "include",
+      }).then(r => r.text());
     default:
       return handleActionWebsocket(message);
   }

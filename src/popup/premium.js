@@ -9,7 +9,6 @@
   const benefits = {
     save: [SVG.filledBookmark, _t('<strong>Save your conversation</strong> for later')],
     chat: [SVG.chat, _t('<strong>Chat directly</strong> in the result page')],
-    bingSearch: [SVG.emptySet, _t("<strong>Disable internal search</strong> and save time")],
   };
   const benefitsContainer = $("#benefits");
   Object.entries(benefits).forEach(([id, [icon, html]]) => {

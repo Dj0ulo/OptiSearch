@@ -22,7 +22,7 @@ const ADDITIONAL_FILES = {
 }
 const ADDITIONAL_FILES_V2 = {
   'optisearch': [],
-  'bingchat': ['src/rule_resources/rules.js'],
+  'bingchat': [],
   'bard': [],
   'all': [],
 }

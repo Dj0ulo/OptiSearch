@@ -39,24 +39,6 @@ switch(WhichExtension) {
       ...Settings['AI Assitant'],
     }
     break;
-  case 'bingchat':
-    Settings['AI Assitant']['bingConvStyle'] = {
-      name: "Conversation style",
-      options: {
-        'creative': { name: 'Creative (GPT-4)' },
-        'balanced': { name: 'Balanced' },
-        'precise': { name: 'Precise' },
-      },
-      default: 'balanced',
-      active: false,
-    }
-    Settings['AI Assitant']['bingInternalSearch'] = {
-      name: "Internal search",
-      title: "Enable internal search for Copilot to provide more comprehensive answers. This may take slightly longer.",
-      default: true,
-      active: false,
-    }
-    break;
   case 'bard':
     Settings['AI Assitant']['googleAccount'] = {
       name: "Google account ID",

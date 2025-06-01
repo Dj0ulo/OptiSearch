@@ -6,21 +6,11 @@
   "default_locale": "en",
   "permissions": [
     "storage",
-    "declarativeNetRequestWithHostAccess",
     "offscreen"
   ],
   "host_permissions": [
     "https://copilot.microsoft.com/"
   ],
-  "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "1",
-        "enabled": true,
-        "path": "src/rule_resources/rules.json"
-      }
-    ]
-  },
   "action": {
     "default_popup": "src/popup/popup.html"
   },
