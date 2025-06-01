@@ -188,7 +188,7 @@ class Context {
     const globalStyleContent = await read(`src/styles/box.css`) + '\n' + Context.engine.style ?? '';
     el('style', {
       textContent: globalStyleContent.trim().replaceAll('.optisearchbox', Context.BOX_SELECTOR),
-      id: `${Context.STYLE_ELEMENT_ID}-${Context.engineName}`
+      id: `${Context.STYLE_ELEMENT_ID}-${EngineTechnicalNames[Context.engineName]}`,
     }, Context.docHead);
   }
 
@@ -234,7 +234,7 @@ class Context {
       rightButtonsContainer.append(buildExpandArrow());
     }
 
-    const box = el("div", { className: `${Context.BOX_CLASS} ${Context.engineName}` });
+    const box = el("div", { className: Context.BOX_CLASS });
     Context.boxes.push(box);
     if (Context.computeIsOnMobile())
       box.classList.add(Context.MOBILE_CLASS);
@@ -245,7 +245,7 @@ class Context {
     if (texStyle) el("style", { textContent: texStyle.textContent, id: texStyle.id }, shadow);
     shadow.append(panel);
 
-    panel.classList.add("bright");
+    panel.classList.add(EngineTechnicalNames[Context.engineName], "bright");
     $(`.expand-arrow`, panel)?.classList.toggle('rotated', Context.rightColumn.dataset.optisearchColumn === 'wide');   
 
     Context.appendBoxes([box]);

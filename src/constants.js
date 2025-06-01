@@ -26,3 +26,12 @@ const donationLink = `https://www.paypal.com/donate?hosted_button_id=${WhichExte
 
 const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu", Brave = "Brave Search";
 const OrderEngines = [Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave, Yahoo];
+const EngineTechnicalNames = {
+  [Google]: 'google',
+  [Bing]: 'bing',
+  [Baidu]: 'baidu',
+  [DuckDuckGo]: 'duckduckgo',
+  [Ecosia]: 'ecosia',
+  [Brave]: 'brave',
+  [Yahoo]: 'yahoo',
+};
