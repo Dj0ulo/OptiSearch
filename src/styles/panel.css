@@ -32,7 +32,7 @@
   background-color: rgb(177, 177, 177);
 }
 
-.optipanel {
+#panel {
   border-radius: 8px;
   padding: 8px 20px;
   font-size: 15px;

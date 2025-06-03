@@ -175,7 +175,7 @@ class ChatSession {
     };
 
     const buildPanelSkeleton = () => {
-      const panel = el("div", { className: `optipanel optichat ${WhichChat}` });
+      const panel = el("div", { id: 'panel', className: `optichat ${WhichChat}` });
       panel.dataset.chat = this.name;
   
       const header = el("div", { className: 'optiheader' }, panel);

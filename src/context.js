@@ -374,7 +374,7 @@ class Context {
         shadowRoot.prepend(style);
       }
 
-      const panel = $(`.optipanel`, shadowRoot); 
+      const panel = $(`#panel`, shadowRoot); 
       if (dark) {
         style.textContent = `
           .dark {background-color: ${colorLuminance(bg, 0.02)}}
