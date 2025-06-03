@@ -179,11 +179,10 @@ class ChatSession {
       panel.dataset.chat = this.name;
   
       const header = el("div", { className: 'optiheader' }, panel);
-      header.innerHTML = `
-        <div class="ai-name">
+      const aiName = el("div", { className: 'ai-name' }, header);
+      aiName.innerHTML = `
           <img alt="${this.properties.name} icon" width=32 height=32 src="${chrome.runtime.getURL('src/images/' + this.properties.icon)}" />
           <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
-        </div>
       `;
       el('div', { className: 'right-buttons-container' }, header);
       
@@ -375,6 +374,12 @@ class ChatSession {
       return actionButton;
     }
 
+    const buildAskButton = () => {
+      const askButton = el('button', { type: 'button', className: 'chatgpt-button ask-button', textContent: _t('Ask') });
+      askButton.addEventListener('click', () => this.setupAndSend());
+      return askButton;     
+    }
+
     this.panel = buildPanelSkeleton();
     this.actionButton = buildActionButton();
     $('.optibody', this.panel).append(
@@ -387,6 +392,8 @@ class ChatSession {
     if (directchat) {
       this.setupAndSend();
     } else {
+      const askButton = buildAskButton();
+      insertAfter(askButton, $('.ai-name', this.panel));
       this.setCurrentAction('send');
     }
     return this.panel;
@@ -451,6 +458,7 @@ class ChatSession {
     
     prompt = prompt ?? parseSearchParam();
 
+    this.panel.classList.add('asked');
     this.setCurrentAction(null);
     this.disableSend();
     this.discussion.appendMessage(new MessageContainer(Author.User, escapeHtml(prompt)));
@@ -477,8 +485,7 @@ class ChatSession {
       displayElement(btn);
     switch (action) {
       case 'send':
-        btn.textContent = _t('Ask $AI$', this.properties.name);
-        btn.onclick = () => this.setupAndSend();
+        hideElement(btn);
         break;
       case 'refresh':
         btn.textContent = _t('Refresh');

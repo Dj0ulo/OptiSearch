@@ -1,6 +1,16 @@
+.optichat:not(.asked) > hr,
+.optichat:not(.asked) > .optibody,
+.optichat:not(.asked) .left-buttons-container {
+    display: none;
+}
+
+.optichat.asked .ask-button {
+    display: none;
+}
+
 .optichat .optiheader {
   margin-top: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   display: flex;
 }
 
@@ -20,6 +30,14 @@
   cursor: pointer;
   text-align: center;
   transition: 0.3s;
+}
+
+.chatgpt-button.ask-button {
+    margin: auto;
+    margin-left: 1em;
+    margin-right: 3em;
+    max-width: 100%;
+    min-width: 30%;
 }
 
 .chatgpt-button[name=google-account] {
@@ -44,7 +62,7 @@
   border-radius: 3px;
 }
 .chat-title {
-  bottom: 10px;
+  vertical-align: super;
   position: relative;
   margin: 0px 5px;
   cursor: pointer;
