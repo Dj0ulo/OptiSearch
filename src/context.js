@@ -239,6 +239,10 @@ class Context {
     if (Context.computeIsOnMobile())
       box.classList.add(Context.MOBILE_CLASS);
 
+    if (panel.classList.contains('optichat')) {
+        box.classList.add('optichatbox');
+    }
+
     const shadow = box.attachShadow({ mode: "open" });
     el("style", { textContent: Context.shadowStyleContent }, shadow);
     const texStyle = $("#MJX-SVG-styles");
@@ -280,7 +284,7 @@ class Context {
       const order = ['bard', 'bingchat', 'chatgpt'];
       const precedings = order
         .slice(0, order.indexOf(WhichChat))
-        .map(e => boxes.filter(b => $(`.optichat.${e}`, b.shadowRoot)))
+        .map(e => $$('.optichatbox').filter(b => $(`.optichat.${e}`, b.shadowRoot)))
         .flat();
       if (precedings.length) {
         const lastPrecedingBox = precedings.at(-1);
