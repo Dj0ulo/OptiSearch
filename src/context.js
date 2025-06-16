@@ -252,12 +252,12 @@ class Context {
       rightButtonsContainer.append(buildExpandArrow());
     }
 
-    const box = el("div", { className: `${Context.BOX_CLASS} bright ${EngineTechnicalNames[Context.engineName]}` });
+    const box = panel;
+    box.classList.add(Context.BOX_CLASS, 'bright', EngineTechnicalNames[Context.engineName]);
     Context.boxes.push(box);
     if (Context.computeIsOnMobile()) {
       box.classList.add(Context.MOBILE_CLASS);
     }
-    box.append(panel);
 
     Context.appendBoxes([box]);
 
@@ -283,7 +283,7 @@ class Context {
         return;
       }
 
-      if (!$('.optichat', box)) {
+      if (!box.dataset.chat) {
         boxContainer.append(box);
         return;
       }
@@ -291,10 +291,10 @@ class Context {
       const order = ['bard', 'bingchat', 'chatgpt'];
       const precedings = order
         .slice(0, order.indexOf(WhichChat))
-        .map(e => $$(`.optichat.${e}`))
+        .map(e => $$(`[data-chat=${e}]`))
         .flat();
       if (precedings.length) {
-        const lastPrecedingBox = precedings.at(-1).parentElement;
+        const lastPrecedingBox = precedings.at(-1);
         insertAfter(box, lastPrecedingBox);
         return;
       }

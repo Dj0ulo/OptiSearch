@@ -1,3 +1,27 @@
+:root {
+  --line-dark: #34363e;
+  --expand-time: 0.5s;
+  --opti-max-width: 600px;
+}
+
+[data-optisearch-column=wide] .optisearchbox {
+  min-width: var(--opti-max-width);
+}
+
+.optisearchbox {
+  position: relative;
+  overflow: hidden;
+  margin: 20px 0 20px 0;
+  padding: 8px 20px;
+  border-radius: 8px;
+  min-width: 250px;
+  max-width: var(--opti-max-width);
+  line-height: 1.5em;
+  font-size: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 1px 3px 8px 0px;
+  transition: min-width var(--expand-time) linear, max-height 5s;
+}
+
 .mobile {
   width: 100%;
   max-width: unset;
@@ -12,40 +36,6 @@
 .dark {
   color: rgb(215, 210, 204);
   color-scheme: dark;
-}
-
-.unfold_button {
-  width: 100%;
-  text-align: left;
-  height: 2rem;
-  border: 1px rgb(220, 220, 220);
-  cursor: pointer;
-  position: relative;
-  box-shadow: rgb(255 255 255) 0px -15px 20px -3px;
-  padding: 10px 0px 0px 10px;
-  font-size: smaller;
-}
-.dark .unfold_button {
-  box-shadow: rgb(0, 0, 0) 0px -15px 20px -3px;
-}
-.unfold_button:active {
-  background-color: rgb(177, 177, 177);
-}
-
-.optipanel {
-  border-radius: 8px;
-  padding: 8px 20px;
-  font-size: 15px;
-  position: relative;
-  transition: max-height 5s;
-  /* overflow-y: auto; */
-  max-height: initial;
-  line-height: 1.5em;
-}
-
-.folded {
-  overflow-y: hidden;
-  max-height: 400px;
 }
 
 .optiheader .headerhover {

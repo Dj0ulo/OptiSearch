@@ -1,20 +1,20 @@
-.optichat:not(.asked) > hr,
-.optichat:not(.asked) > .optibody,
-.optichat:not(.asked) .left-buttons-container {
+.optisearchbox[data-chat]:not(.asked) > hr,
+.optisearchbox[data-chat]:not(.asked) > .optibody,
+.optisearchbox[data-chat]:not(.asked) .left-buttons-container {
     display: none;
 }
 
-.optichat.asked .ask-button {
+.optisearchbox[data-chat].asked .ask-button {
     display: none;
 }
 
-.optichat .optiheader {
+.optisearchbox[data-chat] .optiheader {
   margin-top: 10px;
   margin-bottom: 10px;
   display: flex;
 }
 
-.optichat .title {
+.optisearchbox[data-chat] .title {
   font-size: 1.3em;
 }
 
@@ -46,7 +46,7 @@
 }
 
 
-.optichat .optifoot a.source {
+.optisearchbox[data-chat] .optifoot a.source {
   position: relative;
   white-space: nowrap;
   padding: 3px 5px;
@@ -54,7 +54,7 @@
   margin: 2px 1px;
   line-height: 1.8em;
 }
-.optichat a.source.superscript {
+.optisearchbox[data-chat] a.source.superscript {
   font-size: smaller;
   bottom: 0.5em;
   padding: 1px 4px;
@@ -216,11 +216,11 @@ a.chat-title {
   color: white;
 }
 
-.bright .optichat a.source {
+.bright[data-chat] a.source {
   color: #123bb6;
   background-color: #d1dbfa;
 }
-.dark .optichat a.source {
+.dark[data-chat] a.source {
   background-color: #293740;
 }
 
