@@ -252,7 +252,7 @@ class Context {
       rightButtonsContainer.append(buildExpandArrow());
     }
 
-    const box = el("div", { className: `${Context.BOX_CLASS} bright ${Context.engineName}` });
+    const box = el("div", { className: `${Context.BOX_CLASS} bright ${EngineTechnicalNames[Context.engineName]}` });
     Context.boxes.push(box);
     if (Context.computeIsOnMobile()) {
       box.classList.add(Context.MOBILE_CLASS);
