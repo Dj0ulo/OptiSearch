@@ -127,16 +127,10 @@
     el("img", { width: 16, height: 16, src: icon }, linkElement);
     el("span", { textContent: link }, linkElement);
 
-    if (body)
+    if (body) {
       hline(panel);
-
-    const content = el('div', { className: "opticontent" }, panel);
-
-    // HEADER
-    if (header) {
-      content.append(header);
-      hline(content);
     }
+
     // BODY
     if (body) {
       body.classList.add("optibody");
@@ -146,15 +140,15 @@
       }
 
       prettifyCode(body);
-      content.append(body);
+      panel.append(body);
     }
 
     // FOOT
     if (foot) {
       foot.classList.add("optifoot")
       foot.id = "output";
-      hline(content);
-      content.append(foot);
+      hline(panel);
+      panel.append(foot);
     }
 
     writeHostOnLinks(link, panel);

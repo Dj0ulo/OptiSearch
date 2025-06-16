@@ -310,7 +310,7 @@ span.math-container > mjx-container[jax="SVG"][display="true"]{
     margin: 0;
 }
 
-.opticontent {
+.optibody {
     overflow-y: auto;
 }
 
