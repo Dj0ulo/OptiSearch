@@ -32,7 +32,7 @@
   background-color: rgb(177, 177, 177);
 }
 
-#panel {
+.optipanel {
   border-radius: 8px;
   padding: 8px 20px;
   font-size: 15px;
@@ -155,7 +155,7 @@
   transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
   transform-origin: center;
 }
-.optiheader .expand-arrow.rotated {
+[data-optisearch-column=wide] .optisearchbox .expand-arrow {
   transform: rotate(-180deg);
 }
 

@@ -20,7 +20,6 @@
 		"resources": [
       "src/engines.json",
       "src/styles/chatgpt.css",
-      "src/styles/box.css",
       "src/styles/panel.css",
       "src/styles/code-light-theme.css",
       "src/styles/code-dark-theme.css",

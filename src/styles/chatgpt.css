@@ -216,11 +216,11 @@ a.chat-title {
   color: white;
 }
 
-.bright.optichat a.source {
+.bright .optichat a.source {
   color: #123bb6;
   background-color: #d1dbfa;
 }
-.dark.optichat a.source {
+.dark .optichat a.source {
   background-color: #293740;
 }
 
