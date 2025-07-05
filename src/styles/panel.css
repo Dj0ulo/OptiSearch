@@ -88,13 +88,13 @@
 .optiheader .top-buttons-container a:hover {
   text-decoration: none;
 }
-.optiheader .thumb:hover {
+.optiheader [data-emoji=thumb]:hover {
   text-shadow: 0 0 0 #31a1fd;
 }
-.optiheader .star:hover {
+.optiheader [data-emoji=star]:hover {
   text-shadow: 0 0 0 #ffe03e;
 }
-.optiheader .heart:hover {
+.optiheader [data-emoji=heart]:hover {
   text-shadow: 0 0 0 #ff4949;
 }
 

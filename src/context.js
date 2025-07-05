@@ -225,14 +225,19 @@ class Context {
   static appendPanel(panel) {
     const buildTopButtons = () => {
       const topButtonsContainer = el('div', { className: 'top-buttons-container headerhover' });
-      const star = el('div', { className: 'thumb', title: _t("Rate this extension") }, topButtonsContainer);
-      el('a', { textContent: '👍', href: webstore + '/reviews' }, star);
-      const crown = el('div', { className: 'star', title: _t("Premium subscription"), textContent: '⭐' }, topButtonsContainer);
-      crown.onclick = premiumPresentationPopup;
+      const thumb = el('div', { title: _t("Rate this extension") }, topButtonsContainer);
+      thumb.dataset.emoji = 'thumb';
+      el('a', { textContent: '👍', href: webstore + '/reviews' }, thumb);
+
+      const star = el('div', { title: _t("Premium subscription"), textContent: '⭐' }, topButtonsContainer);
+      star.dataset.emoji = "star";
+      star.onclick = premiumPresentationPopup;
       Context.addSettingListener('premium', () => {
-        crown.onclick = Context.extpayUser.paidAt ? Context.extpay.openPaymentPage : premiumPresentationPopup;
+        star.onclick = Context.extpayUser.paidAt ? Context.extpay.openPaymentPage : premiumPresentationPopup;
       });
-      const heart = el('div', { className: 'heart', title: _t("Donate") }, topButtonsContainer);
+
+      const heart = el('div', { title: _t("Donate") }, topButtonsContainer);
+      heart.dataset.emoji = "heart";
       el('a', { textContent: '❤️', href: donationLink }, heart);
       return topButtonsContainer;
     }
