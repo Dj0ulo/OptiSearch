@@ -167,13 +167,13 @@ describe('Chat tests', function () {
   };
 
   const switchTo = async (chatName) => {
-    await page.click("[optichat].main .ai-selected");
-    await page.$$("[optichat].main .ai-dropdown-option");
-    await page.click(`[optichat].main .ai-dropdown-option[data-value="${chatName}"]`);
+    await page.click("[optichat].mainchat .ai-selected");
+    await page.$$("[optichat].mainchat .ai-dropdown-option");
+    await page.click(`[optichat].mainchat .ai-dropdown-option[data-value="${chatName}"]`);
   };
 
   const checkMainChat = async (chatName) => {
-    const mainPanel = await page.waitForSelector(`[optichat="${chatName}"].main`, { timeout: 500 });
+    const mainPanel = await page.waitForSelector(`[optichat="${chatName}"].mainchat`, { timeout: 500 });
     assert.ok(mainPanel, `${chatName} panel should have main class after selection`);
 
     // Check that the parent has the correct data attribute
@@ -219,19 +219,19 @@ describe('Chat tests', function () {
     const bardPanel = await page.waitForSelector('.bard-box[optichat="bard"]', { timeout: 15000 });
     assert.ok(bardPanel, 'Bard panel not found');
 
-    await page.click("[optichat].main .ai-selected");
+    await page.click("[optichat].mainchat .ai-selected");
 
-    const dropDownExtensions = await page.$$("[optichat].main .ai-dropdown-option.has-extension");
+    const dropDownExtensions = await page.$$("[optichat].mainchat .ai-dropdown-option.has-extension");
     assert.equal(dropDownExtensions.length, 3, "Should show that the 3 extensions are installed");
 
-    await page.click(`[optichat].main .ai-dropdown-option[data-value="bingchat"]`);
+    await page.click(`[optichat].mainchat .ai-dropdown-option[data-value="bingchat"]`);
   });
 
   it('should exist only one main panel', async () => {
     const panels = await page.$$('[optichat]');
     assert.equal(panels.length, 3, 'There should be exactly 3 [optichat] panels');
 
-    const mainPanels = await page.$$('[optichat].main');
+    const mainPanels = await page.$$('[optichat].mainchat');
     assert.equal(mainPanels.length, 1, 'There should be exactly one main panel');
 
     const mainPanel = mainPanels[0];
@@ -276,7 +276,7 @@ describe('Chat tests', function () {
     const panels = await page.$$('[optichat]');
     assert.equal(panels.length, 2, 'There should be 2 [optichat] panels after uninstalling optisearch');
 
-    const mainPanels = await page.$$('[optichat].main');
+    const mainPanels = await page.$$('[optichat].mainchat');
     assert.equal(mainPanels.length, 1, 'There should still be exactly one main panel after uninstalling optisearch');
 
     const mainPanelOptichat = await page.evaluate(el => el.getAttribute('optichat'), mainPanels[0]);
@@ -285,13 +285,13 @@ describe('Chat tests', function () {
 
   describe('Auto-generate', () => {
     it('should have the auto-generate button', async () => {
-      const playPauseDiv = await page.$('[optichat].main .right-buttons-container > .play-pause');
+      const playPauseDiv = await page.$('[optichat].mainchat .right-buttons-container > .play-pause');
       assert.ok(
         playPauseDiv,
         "There should be an auto-generate buttons",
       );
       assert.ok(
-        await page.$('[optichat].main .right-buttons-container > .play-pause > svg'),
+        await page.$('[optichat].mainchat .right-buttons-container > .play-pause > svg'),
         "The auto-generate button should contain a svg",
       );
       const title = await page.evaluate(el => el.getAttribute('title'), playPauseDiv);
@@ -300,22 +300,22 @@ describe('Chat tests', function () {
 
     it('should start when hitting auto generate', async () => {
       await switchTo("bingchat");
-      const playPauseDiv = await page.$('[optichat].main .right-buttons-container > .play-pause');
+      const playPauseDiv = await page.$('[optichat].mainchat .right-buttons-container > .play-pause');
       playPauseDiv.click();
       assert.ok(
-        await page.waitForSelector('[optichat].main.asked', { timeout: 10000 }), 
+        await page.waitForSelector('[optichat].mainchat.asked', { timeout: 10000 }), 
         "It has been asked by clicking on auto-generate"
       );
 
       await reloadPage();
       assert.ok(
-        await page.waitForSelector('[optichat].main.asked', { timeout: 10000 }),
+        await page.waitForSelector('[optichat].mainchat.asked', { timeout: 10000 }),
         "It should auto asked even after reload",
       );
 
       await switchTo("bard");
       assert.ok(
-        await page.$('[optichat].main:not(.asked)'),
+        await page.$('[optichat].mainchat:not(.asked)'),
         "Gemini should not have started",
       );
       await reloadPage();

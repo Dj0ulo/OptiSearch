@@ -3,7 +3,7 @@
  src: url(moz-extension://__MSG_@@extension_id__/src/images/chat_icons_font.woff) format('woff');
 }
 
-.optisearchbox[optichat]:not(.main) {
+.optisearchbox[optichat]:not(.mainchat) {
     display: none;
 }
 

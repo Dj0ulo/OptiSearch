@@ -292,7 +292,7 @@ class Context {
         return;
       }
 
-      const mainChatBox = $("[optichat].main", boxContainer);
+      const mainChatBox = $("[optichat].mainchat", boxContainer);
       if (mainChatBox) {
         if (Context.get("mainChat") === WhichChat) {
           Context.set("mainChat", WhichChat); // set the colum attribute
@@ -300,7 +300,7 @@ class Context {
           Context.set("mainChat", mainChatBox.getAttribute("optichat"))
         }
       } else {
-        box.classList.add("main");
+        box.classList.add("mainchat");
       }
 
       if (startEl) {
@@ -385,7 +385,7 @@ class Context {
         Context.set("directchat", false);
       }
       $$('[optichat]').forEach(box => {
-        box.classList.toggle('main', box.getAttribute('optichat') === value);
+        box.classList.toggle('mainchat', box.getAttribute('optichat') === value);
       });
     }
     updateMainChat(Context.get('mainChat'), true);
