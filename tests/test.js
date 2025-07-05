@@ -168,10 +168,7 @@ describe('Chat tests', function () {
 
   const switchTo = async (chatName) => {
     await page.click("[optichat].main .ai-selected");
-
-    const dropDownExtensions = await page.$$('[optichat].main .ai-dropdown-option.has-extension');
-    assert.equal(dropDownExtensions.length, 3, 'Should show that the 3 extensions are installed');
-
+    await page.$$("[optichat].main .ai-dropdown-option");
     await page.click(`[optichat].main .ai-dropdown-option[data-value="${chatName}"]`);
   };
 
@@ -221,6 +218,13 @@ describe('Chat tests', function () {
 
     const bardPanel = await page.waitForSelector('.bard-box[optichat="bard"]', { timeout: 15000 });
     assert.ok(bardPanel, 'Bard panel not found');
+
+    await page.click("[optichat].main .ai-selected");
+
+    const dropDownExtensions = await page.$$("[optichat].main .ai-dropdown-option.has-extension");
+    assert.equal(dropDownExtensions.length, 3, "Should show that the 3 extensions are installed");
+
+    await page.click(`[optichat].main .ai-dropdown-option[data-value="bingchat"]`);
   });
 
   it('should exist only one main panel', async () => {
@@ -260,6 +264,11 @@ describe('Chat tests', function () {
 
     await browser.uninstallExtension(extensions.optisearch.id);
 
+    const pages = await browser.pages();
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const targetPage = pages.find(p => p.url().includes("https://www.optisearch.io/uninstall.html"));
+    await targetPage.close();
+
     // Refresh the page
     await reloadPage();
 
@@ -290,6 +299,7 @@ describe('Chat tests', function () {
     });
 
     it('should start when hitting auto generate', async () => {
+      await switchTo("bingchat");
       const playPauseDiv = await page.$('[optichat].main .right-buttons-container > .play-pause');
       playPauseDiv.click();
       assert.ok(
@@ -302,6 +312,19 @@ describe('Chat tests', function () {
         await page.waitForSelector('[optichat].main.asked', { timeout: 10000 }),
         "It should auto asked even after reload",
       );
+
+      await switchTo("bard");
+      assert.ok(
+        await page.$('[optichat].main:not(.asked)'),
+        "Gemini should not have started",
+      );
+      await reloadPage();
+  
+      assert.ok(
+        await page.$("[optichat=bingchat]:not(.asked)"),
+        "Copilot should not have started because it should disable directchat when switching to another chat"
+      );
+
     });
   });
 

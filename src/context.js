@@ -381,6 +381,9 @@ class Context {
         // so we want only the concerned chat to set the column attribute
         Context.rightColumn.dataset.optisearchMainChat = value;
       }
+      if (WhichChat !== value) {
+        Context.set("directchat", false);
+      }
       $$('[optichat]').forEach(box => {
         box.classList.toggle('main', box.getAttribute('optichat') === value);
       });
