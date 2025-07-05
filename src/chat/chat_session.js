@@ -217,6 +217,14 @@ class ChatSession {
           hideElement(menu);
           onChange(ai, e);
         });
+
+        const link = el('a', {
+          href: props.link,
+          target: '_blank',
+          className: 'ai-option-link',
+          innerHTML: '&#x2197;', // Top-right arrow
+        }, option);
+        link.addEventListener('mouseup', e => e.stopPropagation());
       });
 
       // Toggle menu

@@ -76,6 +76,11 @@
   color: inherit !important;
 }
 
+.ai-option-link {
+  position: relative;
+  top: 1px;
+}
+
 .chat-info {
   margin-top: 1em;
   margin-bottom: 1em;
@@ -143,6 +148,9 @@
 }
 .dark .ai-dropdown-option:hover {
   background: #444;
+}
+.ai-dropdown-option:has(.ai-option-link:hover) {
+  background: transparent;
 }
 
 .ai-dropdown img {
