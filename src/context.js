@@ -186,10 +186,13 @@ class Context {
       styles.push('w3schools', 'wikipedia', 'genius');
     }
     let cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`)));
+    let allCss = this.addCssParentSelector(cssContents.join('\n'));
+
+    // Engine specifics styles must not have css parent selector added to everything
     if (Context.engine.style) {
-      cssContents.push(Context.engine.style.trim());
+      allCss += "\n";
+      allCss += Context.engine.style.trim().replaceAll(".optisearchbox", Context.BOX_SELECTOR);
     }
-    const allCss = this.addCssParentSelector(cssContents.join('\n'));
     el('style', { id: Context.STYLE_ELEMENT_ID, textContent: allCss }, Context.docHead);
 
   }
