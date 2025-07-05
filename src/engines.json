@@ -57,7 +57,7 @@
     "resultsContainer": "[data-area='mainline']",
     "active": true,
     "regex": "duckduckgo\\.com$",
-    "style": "[data-optisearch-column=wide] { max-width: var(--opti-max-width) !important; } .cw{max-width:unset;}",
+    "style": "[data-optisearch-column=wide] { max-width: var(--opti-max-width) !important; } .cw{max-width:unset;} .optisearchbox img { max-width: initial; }",
     "onMobile": null
   },
   "Brave Search": {

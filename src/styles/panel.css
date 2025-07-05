@@ -1,5 +1,6 @@
 :root {
   --line-dark: #34363e;
+  --dark-mode-text-color: #d7d2cc;
   --expand-time: 0.5s;
   --opti-max-width: 600px;
 }
@@ -34,7 +35,7 @@
   background-color: #fff;
 }
 .dark {
-  color: rgb(215, 210, 204);
+  color: var(--dark-mode-text-color);
   color-scheme: dark;
 }
 
@@ -334,14 +335,17 @@ a:hover {
 
 .dark pre,
 .dark code  {
+  color: var(--dark-mode-text-color);
   background: #222;
 }
 
 .dark.duckduckgo {
+  color: var(--dark-mode-text-color);
   background-color: #282828;
 }
 
 .dark.duckduckgo pre,
 .dark.duckduckgo code {
+  color: var(--dark-mode-text-color);
   background-color: #222;
 }
