@@ -1,11 +1,5 @@
 class BingChatSession extends ChatSession {
-  properties = {
-    name: "Copilot",
-    link: "https://copilot.microsoft.com/",
-    icon: "src/images/copilot.png",
-    icon: "copilot.png",
-    href: "https://copilot.microsoft.com/",
-  }
+  properties = ChatSession.chatProperties.bingchat;
   static get storageKey() {
     return "SAVE_BINGCHAT";
   }

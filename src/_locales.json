@@ -1149,5 +1149,19 @@
         "content": "$1"
       }
     }
+  },
+  "Ask": {
+    "ar": "اسأل",
+    "de": "Fragen",
+    "en": "Ask",
+    "es": "Preguntar",
+    "fr": "Demander",
+    "hi": "पूछें",
+    "it": "Chiedi",
+    "ja": "質問する",
+    "ko": "질문",
+    "nl": "Vraag",
+    "ru": "Спросить",
+    "zh_CN": "提问"
   }
 }

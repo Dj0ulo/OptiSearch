@@ -1,11 +1,5 @@
 class ChatGPTSession extends ChatSession {
-  properties = {
-    name: "ChatGPT",
-    link: "https://chatgpt.com",
-    icon: "src/images/chatgpt.png",
-    icon: "chatgpt.png",
-    href: "https://chatgpt.com",
-  }
+  properties = ChatSession.chatProperties.chatgpt;
   static errors = {
     session: {
       code: 'CHAT_GPT_SESSION',

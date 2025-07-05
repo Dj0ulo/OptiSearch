@@ -29,6 +29,10 @@ class Context {
 
   static centerColumn = null;
 
+  static get inTestMode() {
+    return !!new URL(location).searchParams.get("optisearch-test-mode");
+  }
+
   /** Start the content script, should be run only once */
   static async run() {
     Context.extpay = ExtPay('optisearch');
@@ -177,7 +181,7 @@ class Context {
   }
 
   static async injectStyle() {
-    let styles = ['chatgpt', 'box', 'panel', 'code-light-theme', 'code-dark-theme'];
+    let styles = ['chatgpt', 'panel', 'code-light-theme', 'code-dark-theme'];
     if (isOptiSearch) {
       styles.push('w3schools', 'wikipedia', 'genius');
     }
@@ -283,21 +287,22 @@ class Context {
         return;
       }
 
-      if (!box.dataset.chat) {
+      if (!box.getAttribute("optichat")) {
         boxContainer.append(box);
         return;
       }
 
-      const order = ['bard', 'bingchat', 'chatgpt'];
-      const precedings = order
-        .slice(0, order.indexOf(WhichChat))
-        .map(e => $$(`[data-chat=${e}]`))
-        .flat();
-      if (precedings.length) {
-        const lastPrecedingBox = precedings.at(-1);
-        insertAfter(box, lastPrecedingBox);
-        return;
+      const mainChatBox = $("[optichat].main", boxContainer);
+      if (mainChatBox) {
+        if (Context.get("mainChat") === WhichChat) {
+          Context.set("mainChat", WhichChat); // set the colum attribute
+        } else {
+          Context.set("mainChat", mainChatBox.getAttribute("optichat"))
+        }
+      } else {
+        box.classList.add("main");
       }
+
       if (startEl) {
         insertAfter(box, startEl);
         return;
@@ -366,6 +371,32 @@ class Context {
         const isWide = m.target.dataset.optisearchColumn === 'wide';
         if (Context.get('wideColumn') !== isWide) {
           Context.set('wideColumn', isWide);
+        }
+      })
+    }, Context.rightColumn, { attributes: true });
+
+    const updateMainChat = (value, start=false) => {
+      if (!start || WhichChat === value) {
+        // If it is the start, all the panels might not be there
+        // so we want only the concerned chat to set the column attribute
+        Context.rightColumn.dataset.optisearchMainChat = value;
+      }
+      $$('[optichat]').forEach(box => {
+        box.classList.toggle('main', box.getAttribute('optichat') === value);
+      });
+    }
+    updateMainChat(Context.get('mainChat'), true);
+    Context.addSettingListener('mainChat', updateMainChat);
+
+    setObserver(mutations => {
+      mutations.some(m => {
+        if (m.attributeName !== "data-optisearch-main-chat") return;
+        if(!m.target.dataset.optisearchMainChat) {
+          Context.set('mainChat', Context.get('mainChat')); // to set again the column attribute
+          return;
+        }
+        if (Context.get('mainChat') !== m.target.dataset.optisearchMainChat) {
+          Context.set('mainChat', m.target.dataset.optisearchMainChat);
         }
       })
     }, Context.rightColumn, { attributes: true });

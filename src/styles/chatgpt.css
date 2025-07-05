@@ -1,21 +1,25 @@
-.optisearchbox[data-chat]:not(.asked) > hr,
-.optisearchbox[data-chat]:not(.asked) > .optibody,
-.optisearchbox[data-chat]:not(.asked) .left-buttons-container {
+@font-face{
+ font-family: ChatIconsFont;
+ src: url(moz-extension://__MSG_@@extension_id__/src/images/chat_icons_font.woff) format('woff');
+}
+
+.optisearchbox[optichat]:not(.main) {
     display: none;
 }
 
-.optisearchbox[data-chat].asked .ask-button {
+.optisearchbox[optichat]:not(.asked) > hr,
+.optisearchbox[optichat]:not(.asked) > .optibody,
+.optisearchbox[optichat]:not(.asked) .left-buttons-container {
     display: none;
 }
 
-.optisearchbox[data-chat] .optiheader {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.optisearchbox[optichat].asked .ask-button {
+    display: none;
+}
+
+.optisearchbox[optichat] .optiheader {
+  margin: 10px 0;
   display: flex;
-}
-
-.optisearchbox[data-chat] .title {
-  font-size: 1.3em;
 }
 
 .chatgpt-button {
@@ -30,12 +34,14 @@
   cursor: pointer;
   text-align: center;
   transition: 0.3s;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chatgpt-button.ask-button {
     margin: auto;
-    margin-left: 1em;
-    margin-right: 3em;
+    margin-left: .5em;
+    margin-right: 4em;
     max-width: 100%;
     min-width: 30%;
 }
@@ -46,7 +52,7 @@
 }
 
 
-.optisearchbox[data-chat] .optifoot a.source {
+.optisearchbox[optichat] .optifoot a.source {
   position: relative;
   white-space: nowrap;
   padding: 3px 5px;
@@ -54,26 +60,20 @@
   margin: 2px 1px;
   line-height: 1.8em;
 }
-.optisearchbox[data-chat] a.source.superscript {
+.optisearchbox[optichat] a.source.superscript {
   font-size: smaller;
   bottom: 0.5em;
   padding: 1px 4px;
   position: relative;
   border-radius: 3px;
 }
-.chat-title {
-  vertical-align: super;
+.optisearchbox[optichat] .title {
+  vertical-align: middle;
+  top: 1px;
   position: relative;
   margin: 0px 5px;
   cursor: pointer;
-}
-
-a.chat-title {
   color: inherit !important;
-}
-
-.chat-title:hover {
-  text-decoration: underline;
 }
 
 .chat-info {
@@ -81,11 +81,72 @@ a.chat-title {
   margin-bottom: 1em;
 }
 
-.ai-name {
-  display: inline-block;
+.ai-dropdown { 
+  display: inline-flex;
+  align-items: center;
   position: relative;
   user-select: none;
   white-space: nowrap;
+  font-size: 1.3em;
+  cursor: pointer;
+  background: none;
+  border: none;
+  z-index: 20; /* ensure stacking context */
+}
+
+/* Dropdown arrow */
+.ai-selected .title::after {
+  content: "";
+  display: inline-block;
+  margin-left: 6px;
+  width: 0;
+  height: 0;
+  vertical-align: middle;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid currentColor;
+}
+
+.ai-dropdown-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: none;
+  min-width: 160px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 9999;
+  border-radius: 4px;
+  margin-top: 2px;
+  overflow: hidden;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #fff;
+}
+.dark .ai-dropdown-menu {
+  background-color: #333;
+}
+.ai-dropdown-option {
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+}
+.ai-dropdown-option:not(.has-extension) {
+  opacity: 50%;
+}
+.ai-dropdown-option:not(.has-extension):hover {
+  text-decoration:underline;
+}
+.ai-dropdown-option:hover {
+  background: #f0f0f0;
+}
+.dark .ai-dropdown-option:hover {
+  background: #444;
+}
+
+.ai-dropdown img {
+  vertical-align: middle;
 }
 
 .learnmore > a[data-invisible-count="0"] {
@@ -216,11 +277,11 @@ a.chat-title {
   color: white;
 }
 
-.bright[data-chat] a.source {
+.bright[optichat] a.source {
   color: #123bb6;
   background-color: #d1dbfa;
 }
-.dark[data-chat] a.source {
+.dark[optichat] a.source {
   background-color: #293740;
 }
 

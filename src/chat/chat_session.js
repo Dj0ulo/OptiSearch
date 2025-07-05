@@ -1,5 +1,27 @@
 class ChatSession {
-  static debug = false;
+  static chatProperties = {
+    'bard': {
+      name: "Gemini",
+      link: "https://gemini.google.com",
+      icon: "src/images/bard.png",
+      href: this.urlPrefix,
+    },
+    'chatgpt': {
+      name: "ChatGPT",
+      link: "https://chatgpt.com",
+      icon: "src/images/chatgpt.png",
+      href: "https://chatgpt.com",
+    },
+    'bingchat': {
+      name: "Copilot",
+      link: "https://copilot.microsoft.com/",
+      icon: "src/images/copilot.png",
+      href: "https://copilot.microsoft.com/",
+    },
+  };
+  static get debug() {
+    return !!new URL(location).searchParams.get("optisearch-test-mode");
+  };
   static #abstractError = "ChatSession is an abstract classes that cannot be instantiated.";
   static #abstractMethodError = "This method should be inherited";
   static #nameError = "The inherited class from ChatSession should be given a name";
@@ -73,7 +95,7 @@ class ChatSession {
    * @returns True if we can send a message, false if the nessesary configuration is invalid or has not been fetched yet
    */
   canSend() {
-    return !!this.session;
+    return !!this.session || ChatSession.debug;
   }
 
   /**
@@ -85,19 +107,10 @@ class ChatSession {
     if (this.constructor === ChatSession)
       throw ChatSession.#abstractMethodError;
     if (ChatSession.debug) {
-      await new Promise(r => setTimeout(r, 2000));
-      this.onMessage(ChatSession.infoHTML('🔍 Searching for: <strong>setInterval()</strong>'));
-      await new Promise(r => setTimeout(r, 2000));
+      console.warn("Debug mode");
+      await new Promise(r => setTimeout(r, 100));
       this.onMessage(
-        `<p><code>stdnum</code> is a Python module that provides functions to parse, validate and reformat standard numbers and codes in different formats. It contains a large collection of number formats<a href="https://github.com/arthurdejong/python-stdnum/" title="GitHub - arthurdejong/python-stdnum: A Python library to provide ..." class="source"><sup>1</sup></a> <a href="https://pypi.org/project/python-stdnum/" title="python-stdnum · PyPI" class="source"><sup>2</sup></a>. Basically any number or code that has some validation mechanism available or some common formatting is eligible for inclusion in this library<a href="https://pypi.org/project/python-stdnum/" title="python-stdnum · PyPI" class="source"><sup>2</sup></a>.</p>
-        You can find more information about this module at <a href="https://arthurdejong.org/python-stdnum/">https://arthurdejong.org/python-stdnum/</a>
-        <a href="https://pypi.org/project/python-stdnum/" title="python-stdnum · PyPI" class="source superscript">2</a>.`,
-        `<div class="learnmore" 
-        >Learn more&nbsp: <a class="source" href="https://github.com/arthurdejong/python-stdnum/" >1. github.com</a>
-<a class="source" href="https://pypi.org/project/python-stdnum/" >2. pypi.org</a>
-<a class="source" href="https://arthurdejong.org/python-stdnum/doc/1.8/index" more>3. arthurdejong.org</a>
-<a class="source" href="https://pypi.org/project/python-stdnum-do/" more>4. pypi.org</a>
-        <a class="showmore source" title="Show more" invisible=2>+ 2 more</a></div>`
+        `<p>Fake response</p>`
       );
       this.allowSend();
       return;
@@ -174,16 +187,90 @@ class ChatSession {
       return [hr, foot];
     };
 
+    const buildChatDropdown = (onChange) => {
+      const optionHTML = ({name, icon}) => `
+        <img alt="${name} icon" width=32 height=32 src="${chrome.runtime.getURL(icon)}" />
+        <span class="title">${name}</span>
+      `;
+      const dropdown = el('div', { className: 'ai-dropdown' });
+      const selected = el('div', {
+        className: 'ai-selected',
+        innerHTML: optionHTML(this.properties),
+      }, dropdown);
+      const menu = el('div', { className: 'ai-dropdown-menu' }, dropdown);
+
+      const updateMenuPosition = () => {
+          const rect = selected.getBoundingClientRect();
+          menu.style.left = `${rect.left}px`;
+          menu.style.top = `${rect.bottom}px`;
+          menu.style.minWidth = `${rect.width}px`;
+      }
+
+      // Build menu options
+      Object.entries(ChatSession.chatProperties).forEach(([ai, props]) => {
+        const option = el('div', {
+          className: 'ai-dropdown-option',
+          innerHTML: optionHTML(props), 
+        }, menu);
+        option.dataset.value = ai;
+        option.addEventListener('mouseup', (e) => {
+          hideElement(menu);
+          onChange(ai, e);
+        });
+      });
+
+      // Toggle menu
+      selected.addEventListener('mousedown', (e) => {
+        if (menu.style.display === 'block') {
+          hideElement(menu);
+        } else {
+          menu.style.display = 'block';
+          $$('.ai-dropdown-option', menu).forEach(option => {
+            if ($(`[optichat=${option.dataset.value}]`)) {
+              option.classList.add("has-extension");
+            }
+          });
+          updateMenuPosition();
+        }
+      });
+
+      window.addEventListener('scroll', () => {
+        if (menu.style.display === 'block') {
+          updateMenuPosition();
+        }
+      });
+
+      // Hide menu on outside click
+      document.addEventListener('mousedown', (e) => {
+        if (!dropdown.contains(e.target) && menu.style.display === 'block') {
+          hideElement(menu);
+        }
+      });
+
+      hideElement(menu);
+      return dropdown;
+    }
+
     const buildPanelSkeleton = () => {
       const panel = el("div");
-      panel.dataset.chat = WhichChat;
+      panel.setAttribute("optichat", WhichChat);
   
       const header = el("div", { className: 'optiheader' }, panel);
-      const aiName = el("div", { className: 'ai-name' }, header);
-      aiName.innerHTML = `
-          <img alt="${this.properties.name} icon" width=32 height=32 src="${chrome.runtime.getURL('src/images/' + this.properties.icon)}" />
-          <a href="${this.properties.href}" class="title chat-title">${this.properties.name}</a>
-      `;
+
+      const aiDropdown = buildChatDropdown((ai, event) => {
+        if ($(`[optichat=${ai}]`)) {
+          event.preventDefault();
+          Context.set("mainChat", ai);
+          return;
+        } else {
+          el('a', { 
+            href: webstores[ai === 'chatgpt' ? 'optisearch' : ai],
+            target: "_blank",
+          }).click();
+        }
+      });
+      header.append(aiDropdown);
+
       el('div', { className: 'right-buttons-container' }, header);
       
       hline(panel);
@@ -387,13 +474,13 @@ class ChatSession {
       this.actionButton,
     );
     $('.right-buttons-container', this.panel).append(buildPauseButton());
-    insertAfter(buildLeftButtonsContainer(), $('.ai-name', this.panel));
+    insertAfter(buildLeftButtonsContainer(), $('.ai-dropdown', this.panel));
 
     if (directchat) {
       this.setupAndSend();
     } else {
       const askButton = buildAskButton();
-      insertAfter(askButton, $('.ai-name', this.panel));
+      insertAfter(askButton, $('.ai-dropdown', this.panel));
       this.setCurrentAction('send');
     }
     return this.panel;

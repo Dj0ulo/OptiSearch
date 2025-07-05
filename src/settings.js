@@ -15,7 +15,11 @@ const Settings = {
     directchat: {
       name: 'Ask at search',
       title: 'Ask the AI assistant as soon as the result page is loaded',
-      default: true,
+      default: false,
+    },
+    mainChat: {
+      default: WhichChat,
+      active: false,
     },
   },
 };

@@ -2,10 +2,12 @@
   "dependencies": {
     "archiver": "^5.3.1",
     "mocha": "^10.2.0",
-    "puppeteer": "^23.1.0"
+    "puppeteer": "^24.11.2"
   },
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha ./tests/test.js",
-    "build": "node build.mjs optisearch -z; node build.mjs optisearch -zft; node build.mjs bingchat -z; node build.mjs bingchat -zft; node build.mjs bard -z; node build.mjs bard -zft"
+    "chat-tests": "node ./node_modules/mocha/bin/mocha ./tests/test.js --grep Chat",
+    "build": "node build.mjs bingchat -b; node build.mjs bard -b; node build.mjs optisearch -b;",
+    "pack": "node build.mjs optisearch -z; node build.mjs optisearch -zft; node build.mjs bingchat -z; node build.mjs bingchat -zft; node build.mjs bard -z; node build.mjs bard -zft"
   }
 }

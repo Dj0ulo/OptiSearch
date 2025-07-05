@@ -63,9 +63,13 @@ Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave Search
     ```
 1. You can create a zip from the source using the flag `-z` followed by the output filename. This will also copy the sources in the default build directory (unless you specified another one with `-b`). Use `-t` (for "tidy") to delete the build directory after the operation.
 
-1. Finally, to build and zip all extensions for Chrome and Firefox and put them in the `versions` directory:
+1. Finally, to build all extensions for Chrome and put them in the `build` directory:
     ```
     npm run build
+    ```
+1. Finally, to build and zip all extensions for Chrome and Firefox and put them in the `versions` directory:
+    ```
+    npm run pack
     ```
 
 ## Contributing

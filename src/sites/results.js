@@ -115,7 +115,7 @@
     });
   }
 
-  function panelFromSite({ site, title, link, icon, header, body, foot }) {
+  function panelFromSite({ site, title, link, icon, body, foot }) {
     const panel = el("div");
     const headPanel = el("div", { className: "optiheader" }, panel);
 

@@ -1,11 +1,5 @@
 class BardSession extends ChatSession {
-  properties = {
-    name: "Gemini",
-    link: "https://gemini.google.com",
-    icon: "src/images/bard.png",
-    icon: "bard.png",
-    href: this.urlPrefix,
-  };
+  properties = ChatSession.chatProperties.bard;
   static errors = {
     session: {
       code: "BARD_SESSION",

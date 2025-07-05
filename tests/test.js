@@ -69,7 +69,6 @@ let browser = null;
 const boot = async () => {
   browser = await puppeteer.launch({
     headless: false, // extension are allowed only in head-full mode
-    // executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
     defaultViewport: null,
     devtools: true,
     // slowMo: true,
@@ -147,12 +146,170 @@ describe('OptiPanel', function () {
       p.assertOk(els.length > 0, "Failed to parse results row");
     }));
     it('Stackoverflow panel', async () => await ap(async p => {
-      const els = await p.$$(".stackbody.optibody");
+      const els = await p.$(".stackbody.optibody");
       p.assertOk(els.length > 0, 'No Stackoverflow panel found');
     }));
   });
 
   // after(async () => await browser.close());
+});
+
+describe('Chat tests', function () {
+  this.timeout(2000000);
+  /** @type {puppeteer.Browser} */
+  let browser = null;
+  /** @type {puppeteer.Page} */
+  let page = null;
+  let extensions = {};
+
+  const reloadPage = async () => {
+    await page.reload({ waitUntil: 'networkidle2' });
+  };
+
+  const switchTo = async (chatName) => {
+    await page.click("[optichat].main .ai-selected");
+
+    const dropDownExtensions = await page.$$('[optichat].main .ai-dropdown-option.has-extension');
+    assert.equal(dropDownExtensions.length, 3, 'Should show that the 3 extensions are installed');
+
+    await page.click(`[optichat].main .ai-dropdown-option[data-value="${chatName}"]`);
+  };
+
+  const checkMainChat = async (chatName) => {
+    const mainPanel = await page.waitForSelector(`[optichat="${chatName}"].main`, { timeout: 500 });
+    assert.ok(mainPanel, `${chatName} panel should have main class after selection`);
+
+    // Check that the parent has the correct data attribute
+    const parentData = await page.evaluate(el => el.parentElement.dataset.optisearchMainChat, mainPanel);
+    assert.equal(parentData, chatName, `Parent should have data-optisearch-main-chat="${chatName}"`);
+  };
+
+  before(async () => {
+    const extensionNames = ['optisearch', 'bard', 'bingchat'];
+    const extensionPaths = extensionNames.map(e => path.join(__dirname, '..', 'build', e));
+
+    browser = await puppeteer.launch({
+      headless: false, // extension are allowed only in head-full mode
+      devtools: true,
+      pipe: true,
+      enableExtensions: true,
+      args: [
+        '--enable-automation',
+        `--window-size=1920,1080`,
+      ]
+    });
+
+    const extensionIds = await Promise.all(extensionPaths.map(e => browser.installExtension(e)));
+    extensionNames.forEach((e, i) => {
+      extensions[e] = {
+        path: extensionPaths[i],
+        id: extensionIds[i],
+      }
+    })
+
+    page = await browser.newPage();
+    await page.setViewport({ width: 1929, height: 1080 });
+    await page.goto('https://duckduckgo.com/?q=setinterval+js&optisearch-test-mode=1', { waitUntil: 'networkidle2' });
+  });
+
+  it('should load all 3 extension panels', async () => {
+    const optisearchPanel = await page.waitForSelector('.optisearch-box[optichat="chatgpt"]', { timeout: 15000 });
+    assert.ok(optisearchPanel, 'Optisearch panel not found');
+
+    const bingchatPanel = await page.waitForSelector('.bingchat-box[optichat="bingchat"]', { timeout: 15000 });
+    assert.ok(bingchatPanel, 'Bing Chat panel not found');
+
+    const bardPanel = await page.waitForSelector('.bard-box[optichat="bard"]', { timeout: 15000 });
+    assert.ok(bardPanel, 'Bard panel not found');
+  });
+
+  it('should exist only one main panel', async () => {
+    const panels = await page.$$('[optichat]');
+    assert.equal(panels.length, 3, 'There should be exactly 3 [optichat] panels');
+
+    const mainPanels = await page.$$('[optichat].main');
+    assert.equal(mainPanels.length, 1, 'There should be exactly one main panel');
+
+    const mainPanel = mainPanels[0];
+    const mainChat = await page.evaluate(el => el.parentElement.dataset.optisearchMainChat, mainPanel);
+    const optichat = await page.evaluate(el => el.getAttribute('optichat'), mainPanel);
+
+    assert.equal(optichat, mainChat, 'optichat attribute should match parent data-optisearch-main-chat');
+  });
+
+  it('should set main class and data-optisearch-main-chat when selecting a panel', async () => {
+    await switchTo('bard');
+    await checkMainChat('bard');
+    await reloadPage();
+    await checkMainChat('bard');
+
+    await switchTo('bingchat');
+    await checkMainChat('bingchat');
+    await reloadPage();
+    await checkMainChat('bingchat');
+    
+    await switchTo('chatgpt');
+    await checkMainChat('chatgpt');
+    await reloadPage();
+    await checkMainChat('chatgpt');
+  });
+
+  it('should still have a main panel after uninstalling optisearch and refreshing', async () => {
+    await switchTo('chatgpt');
+    await checkMainChat('chatgpt');
+
+    await browser.uninstallExtension(extensions.optisearch.id);
+
+    // Refresh the page
+    await reloadPage();
+
+    // Check that there is still a main panel
+    const panels = await page.$$('[optichat]');
+    assert.equal(panels.length, 2, 'There should be 2 [optichat] panels after uninstalling optisearch');
+
+    const mainPanels = await page.$$('[optichat].main');
+    assert.equal(mainPanels.length, 1, 'There should still be exactly one main panel after uninstalling optisearch');
+
+    const mainPanelOptichat = await page.evaluate(el => el.getAttribute('optichat'), mainPanels[0]);
+    assert.ok(['bingchat', 'bard'].includes(mainPanelOptichat), 'Main panel should be one of the remaining extensions');
+  });
+
+  describe('Auto-generate', () => {
+    it('should have the auto-generate button', async () => {
+      const playPauseDiv = await page.$('[optichat].main .right-buttons-container > .play-pause');
+      assert.ok(
+        playPauseDiv,
+        "There should be an auto-generate buttons",
+      );
+      assert.ok(
+        await page.$('[optichat].main .right-buttons-container > .play-pause > svg'),
+        "The auto-generate button should contain a svg",
+      );
+      const title = await page.evaluate(el => el.getAttribute('title'), playPauseDiv);
+      assert.equal(title, 'Enable auto-generation', "The play-pause button should have the correct title");
+    });
+
+    it('should start when hitting auto generate', async () => {
+      const playPauseDiv = await page.$('[optichat].main .right-buttons-container > .play-pause');
+      playPauseDiv.click();
+      assert.ok(
+        await page.waitForSelector('[optichat].main.asked', { timeout: 10000 }), 
+        "It has been asked by clicking on auto-generate"
+      );
+
+      await reloadPage();
+      assert.ok(
+        await page.waitForSelector('[optichat].main.asked', { timeout: 10000 }),
+        "It should auto asked even after reload",
+      );
+    });
+  });
+
+  after(async () => {
+    if (browser) {
+      // await browser.close();
+    }
+  });
 });
 
 
