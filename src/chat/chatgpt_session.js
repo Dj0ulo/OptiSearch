@@ -128,7 +128,7 @@ class ChatGPTSession extends ChatSession {
       }
 
       this.session.parent_message_id = data.message.id;
-      if (!data.message.content?.parts) {
+      if (!data.message.content?.parts || data.message.author?.role === "user") {
         return false;
       }
       const text = data.message.content.parts[0];
