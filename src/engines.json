@@ -8,7 +8,7 @@
     "searchBox": "input.gLFyf.gsfi, input.gLFyf, textarea.gLFyf",
     "active": true,
     "regex": "^www\\.google\\.",
-    "style": "[data-optisearch-column]:has([role=\"heading\"]) .optisearchbox {margin-left: -21px;} .optisearchbox {min-width: 360px;}",
+    "style": "[data-optisearch-column]:has([role=\"heading\"]) .optisearchbox {margin-left: -21px;}",
     "onMobile": "#cnt > #center_col"
   },
   "Bing": {
@@ -69,7 +69,7 @@
     "searchBox": "#searchbox",
     "active": true,
     "regex": "search\\.brave\\.com$",
-    "style": ".optisearchbox { box-shadow: none; border-radius: var(--border-radius-xlarge); } .column-layout {max-width: 100% !important;} [data-optisearch-column=wide] {max-width: var(--opti-max-width); min-width: var(--opti-max-width) !important;}",
+    "style": ".column-layout {max-width: 100% !important;}",
     "onMobile": "meta[name='viewport']"
   },
   "Baidu": {

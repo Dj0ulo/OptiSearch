@@ -364,6 +364,12 @@ class Context {
     updateWideState(Context.get('wideColumn'), true);
     Context.addSettingListener('wideColumn', updateWideState);
 
+    const transition = window.getComputedStyle(Context.rightColumn)["transition"];
+    const expandTransition = "min-width var(--expand-time) linear";
+    if (!transition.includes(expandTransition)) {
+      Context.rightColumn.style.transition = transition + "," + expandTransition;
+    }
+
     setObserver(mutations => {
       mutations.some(m => {
         if (m.attributeName !== "data-optisearch-column") return;

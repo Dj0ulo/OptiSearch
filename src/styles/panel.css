@@ -1,11 +1,15 @@
 :root {
   --line-dark: #34363e;
   --dark-mode-text-color: #d7d2cc;
-  --expand-time: 0.5s;
+  --expand-time: 0.2s;
   --opti-max-width: 600px;
+  --opti-min-width: 360px;
 }
 
-[data-optisearch-column=wide] .optisearchbox {
+[data-optisearch-column]:has(.optisearchbox) {
+  min-width: var(--opti-min-width);
+}
+[data-optisearch-column=wide]:has(.optisearchbox) {
   min-width: var(--opti-max-width);
 }
 
@@ -15,12 +19,12 @@
   margin: 20px 0 20px 0;
   padding: 8px 20px;
   border-radius: 8px;
-  min-width: 250px;
-  max-width: var(--opti-max-width);
+  width: 100%;
+  max-width: min(100%, var(--opti-max-width));
   line-height: 1.5em;
   font-size: 15px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 2px 0px, rgb(0 0 0 / 15%) 1px 3px 8px 0px;
-  transition: min-width var(--expand-time) linear, max-height 5s;
+  transition: max-height 5s;
 }
 
 .mobile {

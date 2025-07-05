@@ -23,6 +23,16 @@
       Context.rightColumn,
       { childList: true }
     );
+    setObserver((mutations) => {
+        if(!getRemovedNodes(mutations).find((x) => x === Context.rightColumn)) {
+          return;
+        }
+        Context.setupRightColumn();
+        Context.appendBoxes(Context.boxes);
+      },
+      Context.rightColumn.parentElement,
+      { childList: true }
+    );
   };
   
   /**
