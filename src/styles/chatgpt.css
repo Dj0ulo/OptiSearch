@@ -69,16 +69,9 @@
 }
 .optisearchbox[optichat] .title {
   vertical-align: middle;
-  top: 1px;
-  position: relative;
   margin: 0px 5px;
   cursor: pointer;
   color: inherit !important;
-}
-
-.ai-option-link {
-  position: relative;
-  top: 1px;
 }
 
 .chat-info {
