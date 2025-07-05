@@ -18,6 +18,7 @@
     "centerColumn": "main",
     "resultRow": ".b_algo",
     "searchBox": ".b_searchbox#sb_form_q",
+    "canPutBefore": ".b_ans",
     "active": true,
     "regex": "\\.bing\\.com$",
     "style": ".optisearchbox {margin-right: -20px;  margin-left: -20px;} #b_mcw:has([data-optisearch-column]) { width: 100%; }",

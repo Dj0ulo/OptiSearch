@@ -296,6 +296,13 @@ class Context {
       }
 
       if (!box.getAttribute("optichat")) {
+        if (Context.engine.canPutBefore) {
+          const toInsertBefore = $(Context.engine.canPutBefore, boxContainer);
+          if (toInsertBefore) {
+            boxContainer.insertBefore(box, toInsertBefore);
+            return;
+          }
+        }
         boxContainer.append(box);
         return;
       }
