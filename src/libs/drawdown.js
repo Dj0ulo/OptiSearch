@@ -17,6 +17,7 @@
     var rx_highlight = /(^|[^A-Za-z\d\\])(([*_])|(~)|(\^)|(--)|(\+\+))(\2?)([^<]*?)\2\8(?!\2)(?=\W|_|$)/g;
     var rx_code = /```\w*\n?(((?!```).)*)(```|$)/gs;
     var rx_one_line_code = /`(((?!`).)*)(`|$)/g;
+    var rx_image_in_link = /\[(!\[(.*?)\]\((.*?)( ".*")?\))\]\((.*?)( ".*")?\)/g;
     var rx_link = /((!?)\[(.*?)\]\((.*?)( ".*")?\)|\\([\\`*_{}\[\]()#+\-.!~]))/g;
     var rx_table = /\n(( *\|.*?\| *\n)+)/g;
     var rx_thead = /^.*\n( *\|( *\:?-+\:?-+\:? *\|)* *\n|)/;
@@ -95,6 +96,12 @@
     src = list(src);
     replace(rx_listjoin, '');
 
+    // link and image
+    replace(rx_image_in_link, (all, p1, alt, imgUrl, p4, linkUrl) => {
+        stash[--si] = `<a href="${linkUrl}"><img src="${imgUrl}" alt="${alt}"/></a>`
+        return si + '\uf8ff';
+    });
+  
     // link or image
     replace(rx_link, (all, p1, p2, p3, p4, p5, p6) => {
         stash[--si] = p4
@@ -131,3 +138,7 @@
 
     return src.trim();
 };
+
+if (typeof module !== "undefined") {
+    module.exports = markdown;
+}
