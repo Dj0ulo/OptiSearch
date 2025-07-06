@@ -9,8 +9,12 @@
   };
   
   Context.processEngine[Brave] = () => {
+    if (Context.computeIsOnMobile()) {
+      // Disable on mobile for the moment as it makes the whole page crash
+      Context.appendBoxes = () => {};
+    }
     if (!$(".optisearch-start")) {
-      Context.rightColumn.prepend(el("div", { className: "optisearch-start" }));
+        Context.rightColumn.prepend(el("div", { className: "optisearch-start" }));
     }
   
     setObserver((mutations) => {

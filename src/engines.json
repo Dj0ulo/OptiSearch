@@ -8,7 +8,7 @@
     "searchBox": "input.gLFyf.gsfi, input.gLFyf, textarea.gLFyf",
     "active": true,
     "regex": "^www\\.google\\.",
-    "style": "[data-optisearch-column]:has([role=\"heading\"]) .optisearchbox {margin-left: -21px;}",
+    "style": "[data-optisearch-column]:has([role=\"heading\"]) .optisearchbox:not(.mobile) {margin-left: -21px;}",
     "onMobile": "#cnt > #center_col"
   },
   "Bing": {

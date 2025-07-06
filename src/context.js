@@ -16,15 +16,27 @@ class Context {
   static extpay = null;
   static extpayUser = null;
 
+  static get onMobile() {
+    return Context.computeIsOnMobile();
+  }
+
   /** @type {HTMLElement | null} */
-  static rightColumnElement = null;
+  static _rightColumnElement = null;
   static set rightColumn(value) {
-    Context.rightColumnElement = value;
+    Context._rightColumnElement = value;
     if (value)
       value.dataset.optisearchColumn = Context.get('wideColumn');
   }
   static get rightColumn() {
-    return Context.rightColumnElement;
+    return Context._rightColumnElement;
+  }
+  static get boxContainer() {
+    const firstResultRow = $(Context.engine.resultRow);
+    return Context.onMobile
+        ? firstResultRow
+            ? firstResultRow.parentElement
+            : Context.centerColumn
+        : Context.rightColumn;
   }
 
   static centerColumn = null;
@@ -98,9 +110,7 @@ class Context {
       Context.processEngine[Context.engineName]();
     }
 
-    if (Context.computeIsOnMobile()) {
-      debug("On Mobile !");
-    } else if (!Context.rightColumn) {
+    if (!Context.boxContainer) {
       return;
     }
 
@@ -280,16 +290,23 @@ class Context {
   static appendBoxes(boxes) {
     const isOnMobile = Context.computeIsOnMobile();
     const firstResultRow = $(Context.engine.resultRow);
-    let boxContainer = Context.rightColumn;
-
-    if (isOnMobile)
-      boxContainer = firstResultRow ? firstResultRow.parentElement : Context.centerColumn;
-    if (!boxContainer)
-      return;
+    const boxContainer = Context.boxContainer;
+    if (!boxContainer) return;
 
     const startEl = $('.optisearch-start', boxContainer);
 
     boxes.forEach(box => {
+      const mainChatBox = $("[optichat].mainchat", boxContainer);
+      if (mainChatBox) {
+        if (Context.get("mainChat") === WhichChat) {
+          Context.set("mainChat", WhichChat); // set the colum attribute
+        } else {
+          Context.set("mainChat", mainChatBox.getAttribute("optichat"))
+        }
+      } else {
+        box.classList.add("mainchat");
+      }
+
       if (isOnMobile && firstResultRow) {
         boxContainer.insertBefore(box, firstResultRow);
         return;
@@ -305,17 +322,6 @@ class Context {
         }
         boxContainer.append(box);
         return;
-      }
-
-      const mainChatBox = $("[optichat].mainchat", boxContainer);
-      if (mainChatBox) {
-        if (Context.get("mainChat") === WhichChat) {
-          Context.set("mainChat", WhichChat); // set the colum attribute
-        } else {
-          Context.set("mainChat", mainChatBox.getAttribute("optichat"))
-        }
-      } else {
-        box.classList.add("mainchat");
       }
 
       if (startEl) {
@@ -363,7 +369,11 @@ class Context {
       Context.rightColumn.classList.add('optisearch-created');
       insertAfter(Context.rightColumn, Context.centerColumn);
     }
-    
+
+    Context.setupMultiExtensionsSettingListener();
+  }
+
+  static setupMultiExtensionsSettingListener() {
     const updateWideState = (value, start=false) => {
       if (!start && !$(`style.wide-column-transition`)) {
         el('style', {
@@ -371,15 +381,15 @@ class Context {
           textContent: '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
         }, Context.docHead);
       }
-      Context.rightColumn.dataset.optisearchColumn = value ? 'wide' : 'thin';
+      Context.boxContainer.dataset.optisearchColumn = value ? "wide" : "thin";
     }
     updateWideState(Context.get('wideColumn'), true);
     Context.addSettingListener('wideColumn', updateWideState);
 
-    const transition = window.getComputedStyle(Context.rightColumn)["transition"];
+    const transition = window.getComputedStyle(Context.boxContainer)["transition"];
     const expandTransition = "min-width var(--expand-time) linear";
     if (!transition.includes(expandTransition)) {
-      Context.rightColumn.style.transition = transition + "," + expandTransition;
+      Context.boxContainer.style.transition = transition + "," + expandTransition;
     }
 
     setObserver(mutations => {
@@ -394,13 +404,13 @@ class Context {
           Context.set('wideColumn', isWide);
         }
       })
-    }, Context.rightColumn, { attributes: true });
+    }, Context.boxContainer, { attributes: true });
 
     const updateMainChat = (value, start=false) => {
       if (!start || WhichChat === value) {
         // If it is the start, all the panels might not be there
         // so we want only the concerned chat to set the column attribute
-        Context.rightColumn.dataset.optisearchMainChat = value;
+        Context.boxContainer.dataset.optisearchMainChat = value;
       }
       if (WhichChat !== value) {
         Context.set("directchat", false);
@@ -423,7 +433,7 @@ class Context {
           Context.set('mainChat', m.target.dataset.optisearchMainChat);
         }
       })
-    }, Context.rightColumn, { attributes: true });
+    }, Context.boxContainer, { attributes: true });
   }
 
   static updateColor() {
