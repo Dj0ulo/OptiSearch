@@ -38,7 +38,7 @@
       { childList: true }
     );
   };
-  
+
   /**
    * Special method to deal with Ecosia.
    * Because in Ecosia, the main column can be removed after few seconds and added again.
@@ -73,6 +73,21 @@
       const allBoxes = $$(Context.BOX_SELECTOR);
       allBoxes.forEach((p) => p.classList[isOnMobile ? "add" : "remove"](Context.MOBILE_CLASS));
       Context.appendBoxes(allBoxes);
+    });
+  };
+
+  Context.processEngine[DuckDuckGo] = () => {
+    return new Promise((resolve) => {
+      if ($(Context.engine.resultRow)) return resolve();
+
+      setObserver((mutations, observer) => {
+          if (!$(Context.engine.resultRow)) return;
+          observer.disconnect();
+          resolve();
+        },
+        document.body,
+        { childList: true, subtree: true }
+      );
     });
   };
 

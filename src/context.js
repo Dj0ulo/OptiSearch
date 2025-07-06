@@ -108,7 +108,7 @@ class Context {
     Context.setupRightColumn();
 
     if (Context.engineName in Context.processEngine){
-      Context.processEngine[Context.engineName]();
+      await Context.processEngine[Context.engineName]();
     }
 
     if (!Context.boxContainer) {
