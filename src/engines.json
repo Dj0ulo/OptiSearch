@@ -32,7 +32,7 @@
     "searchNav": "div.main-header__search-navigation",
     "searchNavNeighbor": "div.main-header__navigation",
     "centerColumn": ".mainline",
-    "resultRow": ".mainline__result-wrapper",
+    "resultRow": ".mainline__result-wrapper .result__title",
     "searchBox": ".search-form__input, #search-form-input",
     "active": true,
     "regex": "\\.ecosia\\.org$",
