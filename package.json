@@ -5,7 +5,7 @@
     "puppeteer": "^24.11.2"
   },
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha ./tests/test.js",
+    "test": "npm run build; node ./node_modules/mocha/bin/mocha ./tests/test.js",
     "chat-tests": "node ./node_modules/mocha/bin/mocha ./tests/test.js --grep Chat",
     "build": "node build.mjs bingchat -b; node build.mjs bard -b; node build.mjs optisearch -b;",
     "pack": "node build.mjs optisearch -z; node build.mjs optisearch -zft; node build.mjs bingchat -z; node build.mjs bingchat -zft; node build.mjs bard -z; node build.mjs bard -zft"

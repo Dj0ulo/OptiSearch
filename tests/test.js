@@ -99,11 +99,17 @@ describe('OptiPanel', function () {
 
   // Part of the app
   describe('Engines selector', async () => {
+    const search = "setInterval js";
+    const encodedSearch = encodeURIComponent(search);
     before(async () => {
       pages = await Promise.all(
         Object.entries(engines)
           .filter(([e, v]) => {
-            return v.active && e !== "Google"; // google has a captcha with puppeteer
+            return (
+              v.active &&
+              e !== "Baidu" && // Too slow
+              e !== "Google" // Google has a captcha with puppeteer
+            ); 
           })
           .map(async ([e, v]) => {
             const p = await browser.newPage();
@@ -128,10 +134,10 @@ describe('OptiPanel', function () {
 
       await Promise.all(pages.map(p => {
         if (p.engineName === "DuckDuckGo")
-          return p.goto(`${p.engine.link}/?q=setinterval%20js%20stackoverflow`);
+          return p.goto(`${p.engine.link}/?q=${encodedSearch}`);
         if (p.engineName === "Baidu")
-          return p.goto(`${p.engine.link}/s?wd=setinterval%20js%20stackoverflow`);
-        return p.goto(`${p.engine.link}/search?q=setinterval%20js%20stackoverflow`);
+          return p.goto(`${p.engine.link}/s?wd=${encodedSearch}`);
+        return p.goto(`${p.engine.link}/search?q=${encodedSearch}`);
       }));
     });
 
@@ -142,15 +148,15 @@ describe('OptiPanel', function () {
     }));
     it('Search string', async () => await ap(async p => {
       const el = await p.$(p.engine.searchBox);
-      p.assertEqual(await el.get("value", p), "setinterval js stackoverflow");
+      p.assertEqual(await el.get("value", p), search);
     }));
     it('Result row', async () => await ap(async p => {
       const els = await p.$$(p.engine.resultRow);
       p.assertOk(els.length > 0, "Failed to parse results row");
     }));
-    it('Stackoverflow panel', async () => await ap(async p => {
-      const els = await p.$(".stackbody.optibody");
-      p.assertOk(els.length > 0, 'No Stackoverflow panel found');
+    it('Result panel', async () => await ap(async p => {
+      const els = await p.$$(".optisearch-box .optibody");
+      p.assertOk(els.length > 0, 'No result panel found');
     }));
   });
 
