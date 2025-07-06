@@ -100,26 +100,31 @@ describe('OptiPanel', function () {
   // Part of the app
   describe('Engines selector', async () => {
     before(async () => {
-      pages = await Promise.all(Object.entries(engines).filter(([e, v]) => v.active).map(async ([e, v]) => {
-        const p = await browser.newPage();
-        p.logs = [];
-        p.engine = v;
-        p.engineName = e;
-        p.on('console', message => {
-          const text = message.text();
-          if (text.startsWith("%c[OptiSearch]")) {
-            p.logs.push({
-              type: message.type(),
-              text: text.substring("%c[OptiSearch] font-weight: bold; ".length),
+      pages = await Promise.all(
+        Object.entries(engines)
+          .filter(([e, v]) => {
+            return v.active && e !== "Google"; // google has a captcha with puppeteer
+          })
+          .map(async ([e, v]) => {
+            const p = await browser.newPage();
+            p.logs = [];
+            p.engine = v;
+            p.engineName = e;
+            p.on("console", (message) => {
+              const text = message.text();
+              if (text.startsWith("%c[OptiSearch]")) {
+                p.logs.push({
+                  type: message.type(),
+                  text: text.substring(
+                    "%c[OptiSearch] font-weight: bold; ".length
+                  ),
+                });
+              }
             });
-          }
-        });
-        return p;
-      }));
+            return p;
+          })
+      );
 
-      const helloPromises = Promise.all(pages.map(p => new Promise(resolve => {
-        p.on('console', () => p.logs.length && resolve());
-      })));
 
       await Promise.all(pages.map(p => {
         if (p.engineName === "DuckDuckGo")
@@ -128,8 +133,6 @@ describe('OptiPanel', function () {
           return p.goto(`${p.engine.link}/s?wd=setinterval%20js%20stackoverflow`);
         return p.goto(`${p.engine.link}/search?q=setinterval%20js%20stackoverflow`);
       }));
-
-      await helloPromises;
     });
 
     // Functionality
@@ -151,7 +154,7 @@ describe('OptiPanel', function () {
     }));
   });
 
-  // after(async () => await browser.close());
+  after(async () => await browser.close());
 });
 
 describe('Chat tests', function () {
@@ -330,7 +333,7 @@ describe('Chat tests', function () {
 
   after(async () => {
     if (browser) {
-      // await browser.close();
+      await browser.close();
     }
   });
 });
