@@ -4,7 +4,8 @@
   --expand-time: 0.2s;
   --opti-max-width: 600px;
   --opti-min-width: 400px;
-  --horizontal-padding: 20px
+  --horizontal-padding: 20px;
+  --code-border-radius: 0.25rem;
 }
 
 [data-optisearch-column]:has(.optisearchbox:not(.mobile)) {
@@ -287,7 +288,7 @@ code {
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace, sans-serif;
   padding: 0.25em 0.25em;
-  border-radius: 3px;
+  border-radius: var(--code-border-radius);
   font-size: 100%;
 }
 
@@ -304,7 +305,7 @@ pre {
   overflow: auto;
   font-family: Consolas, Menlo, Monaco, monospace;
   font-size: 13px;
-  border-radius: 3px;
+  border-radius: var(--code-border-radius);
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
   white-space: pre-wrap;
 }

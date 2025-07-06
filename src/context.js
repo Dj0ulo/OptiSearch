@@ -47,6 +47,7 @@ class Context {
 
   /** Start the content script, should be run only once */
   static async run() {
+    console.log(window);
     Context.extpay = ExtPay('optisearch');
 
     Context.docHead = document.head || document.documentElement;
@@ -193,7 +194,7 @@ class Context {
   static async injectStyle() {
     let styles = ['chatgpt', 'panel', 'code-light-theme', 'code-dark-theme'];
     if (isOptiSearch) {
-      styles.push('w3schools', 'wikipedia', 'genius');
+      styles.push('mdn', 'w3schools', 'wikipedia', 'genius');
     }
     let cssContents = await Promise.all(styles.map(s => read(`src/styles/${s}.css`)));
     let allCss = this.addCssParentSelector(cssContents.join('\n'));

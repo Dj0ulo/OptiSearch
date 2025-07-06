@@ -10,7 +10,12 @@ Sites.mdn.get = (from, doc) => {
         return;
     }
 
-
+    const baselineIndicator = article.querySelector(".baseline-indicator");
+    const extra = baselineIndicator?.querySelector(".extra");
+    const browsers = baselineIndicator?.querySelector(".browsers");
+    if (browsers && extra) {
+      extra.prepend(browsers);
+    }
     const syntaxTitle = article.querySelector("#syntax, #syntaxe");
     const syntax = syntaxTitle && syntaxTitle.nextSibling.querySelector("pre");
 
@@ -21,15 +26,32 @@ Sites.mdn.get = (from, doc) => {
     const title = body.querySelector(".title, h1")
     return {
         title: title?.textContent ?? "",
-        summary: (summary?.outerHTML ?? '') + (underS?.outerHTML ?? ''),
+        baselineIndicator: baselineIndicator?.outerHTML ?? "",
+        summary: (summary?.outerHTML ?? "") + (underS?.outerHTML ?? ""),
         syntax: syntax?.outerHTML ?? "",
-    }
+    };
 }
 
 Sites.mdn.set = msg => {
     const bodyPanel = document.createElement("div");
     bodyPanel.className = "mdnbody";
-    bodyPanel.innerHTML = (msg.summary ? msg.summary : "") + (msg.syntax ? msg.syntax : "");
+    // Add MDN baseline-indicator CSS via a <link> element
+    const styleLink = document.createElement("link");
+    styleLink.rel = "stylesheet";
+    styleLink.type = "text/css";
+    styleLink.href = "https://developer.mozilla.org/static/css/document/baseline-indicator.css";
+    document.head.appendChild(styleLink);
+
+    // Add the rest of the content
+    if (msg.baselineIndicator) {
+      bodyPanel.insertAdjacentHTML("beforeend", msg.baselineIndicator);
+    }
+    if (msg.summary) {
+      bodyPanel.insertAdjacentHTML("beforeend", msg.summary);
+    }
+    if (msg.syntax) {
+      bodyPanel.insertAdjacentHTML("beforeend", msg.syntax);
+    }
 
     return { body: bodyPanel };
 }
