@@ -47,7 +47,6 @@ class Context {
 
   /** Start the content script, should be run only once */
   static async run() {
-    console.log(window);
     Context.extpay = ExtPay('optisearch');
 
     Context.docHead = document.head || document.documentElement;
