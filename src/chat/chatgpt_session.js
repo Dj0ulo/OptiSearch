@@ -129,7 +129,7 @@ class ChatGPTSession extends ChatSession {
       const references = data.message.metadata?.content_references || [];
       for (const citation of references) {
         if (citation.type === 'grouped_webpages') {
-          const citationText = citation.items.map(item => `[${item.title}](${item.url})`).join('\n');
+          const citationText = citation.items.map(item => `[${item.attribution || item.title}](${item.url})`).join('\n');
           text = text.replace(citation.matched_text, citationText);
         } else if (citation.type === 'image_v2') {
           const imagesText = citation.images.map(image => `[![${image.title}](${image.thumbnail_url})](${image.url})`).join('\n');
