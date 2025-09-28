@@ -457,11 +457,7 @@ class ChatSession {
       return playPauseButton;
     }
 
-    const buildActionButton = () => {
-      const actionButton = el('button', { type: 'button', className: 'chatgpt-button' });
-      this.listen('clear', () => hideElement(actionButton));
-      return actionButton;
-    }
+    const buildActionButton = () => el('button', { type: 'button', className: 'chatgpt-button action-button' });
 
     const buildAskButton = () => {
       const askButton = el('button', { type: 'button', className: 'chatgpt-button ask-button', textContent: _t('Ask') });
@@ -567,14 +563,18 @@ class ChatSession {
   }
 
   setCurrentAction(action) {
+    this.clear();
     this.allowSend();
     const btn = this.actionButton;
     this.currentAction = action;
-    if (action)
-      displayElement(btn);
+    if (action) {
+      this.panel.setAttribute("action", action);
+    } else {
+      this.panel.removeAttribute("action");
+    }
     switch (action) {
       case 'send':
-        hideElement(btn);
+        this.panel.removeAttribute("action");
         break;
       case 'refresh':
         btn.textContent = _t('Refresh');
@@ -591,7 +591,6 @@ class ChatSession {
         this.currentAction = null;
         btn.onclick = null;
         btn.textContent = '';
-        hideElement(btn);
     }
   }
 }

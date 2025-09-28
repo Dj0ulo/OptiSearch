@@ -7,8 +7,8 @@
     display: none;
 }
 
-.optisearchbox[optichat]:not(.asked) > hr,
-.optisearchbox[optichat]:not(.asked) > .optibody,
+.optisearchbox[optichat]:not(.asked):not([action]) > hr,
+.optisearchbox[optichat]:not(.asked):not([action]) > .optibody,
 .optisearchbox[optichat]:not(.asked) .left-buttons-container {
     display: none;
 }
@@ -36,6 +36,10 @@
   transition: 0.3s;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.optisearchbox[optichat]:not([action]) .action-button {
+  display: none;
 }
 
 .chatgpt-button.ask-button {

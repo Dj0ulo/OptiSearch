@@ -1163,5 +1163,19 @@
     "nl": "Vraag",
     "ru": "Спросить",
     "zh_CN": "提问"
+  },
+  "Fetching Google accounts...": {
+    "ar": "جلب حسابات Google...",
+    "de": "Google-Konten abrufen...",
+    "en": "Fetching Google accounts...",
+    "es": "Obteniendo cuentas de Google...",
+    "fr": "Récupération des comptes Google...",
+    "hi": "Google खातों को प्राप्त कर रहा है...",
+    "it": "Recupero degli account Google...",
+    "ja": "Google アカウントを取得しています...",
+    "ko": "Google 계정을 가져오는 중...",
+    "nl": "Google-accounts ophalen...",
+    "ru": "Получение учетных записей Google...",
+    "zh_CN": "正在获取 Google 帐户..."
   }
 }

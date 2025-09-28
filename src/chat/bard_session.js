@@ -220,7 +220,13 @@ class BardSession extends ChatSession {
   }
 
   async chooseGoogleAccount(isError = true) {
+    this.setCurrentAction("refresh");
+    this.onMessage(_t("Fetching Google accounts..."));
     const accounts = await BardSession.fetchAvailableAccounts();
+    if (accounts.length === 0) {
+      this.handleActionError(BardSession.errors.session);
+      return;
+    }
     const htmlMessage = `
       ${
         isError
@@ -247,6 +253,7 @@ class BardSession extends ChatSession {
         text: htmlMessage,
         action: "refresh",
       });
+      return;
     } else {
       this.setCurrentAction("refresh");
       this.onMessage(htmlMessage);
@@ -313,7 +320,6 @@ class BardSession extends ChatSession {
     );
     setSvg(accountButton, SVG.user);
     accountButton.addEventListener("click", () => {
-      this.clear();
       this.chooseGoogleAccount(false);
     });
   }
