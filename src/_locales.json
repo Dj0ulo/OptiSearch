@@ -1177,5 +1177,19 @@
     "nl": "Google-accounts ophalen...",
     "ru": "Получение учетных записей Google...",
     "zh_CN": "正在获取 Google 帐户..."
+  },
+  "Put OptiSearch panels above existing ones": {
+    "ar": "ضع لوحات OptiSearch فوق اللوحات الموجودة",
+    "de": "OptiSearch-Panels über den vorhandenen platzieren",
+    "en": "Put OptiSearch panels above existing ones",
+    "es": "Colocar los paneles de OptiSearch encima de los existentes",
+    "fr": "Placer les panneaux OptiSearch au-dessus des panneaux existants",
+    "hi": "मौजूदा पैनलों के ऊपर OptiSearch पैनल रखें",
+    "it": "Metti i pannelli OptiSearch sopra quelli esistenti",
+    "ja": "既存のパネルの上に OptiSearch パネルを配置する",
+    "ko": "기존 패널 위에 OptiSearch 패널 배치",
+    "nl": "Plaats OptiSearch-panelen boven bestaande",
+    "ru": "Разместить панели OptiSearch над существующими",
+    "zh_CN": "将 OptiSearch 面板放在现有面板之上"
   }
 }

@@ -33,6 +33,10 @@ switch(WhichExtension) {
       min: 0,
       max: 9,
     };
+    Settings['Options']['putAbove'] = {
+      name: "Put OptiSearch panels above existing ones",
+      default: false,
+    };
     Settings['AI Assitant'] = {
       chatgpt: {
         icon: "chatgpt.png",

@@ -295,7 +295,7 @@ class Context {
 
     const startEl = $('.optisearch-start', boxContainer);
 
-    boxes.forEach(box => {
+    for(let box of boxes) {
       const boxChat = box.getAttribute("optichat"); 
       if (boxChat && $(`[optichat=${boxChat}]`, boxContainer)) {
         return;
@@ -316,7 +316,7 @@ class Context {
         return;
       }
 
-      if (!boxChat) {
+      if (!boxChat && !Context.get("putAbove")) {
         if (Context.engine.canPutBefore) {
           const toInsertBefore = $(Context.engine.canPutBefore, boxContainer);
           if (toInsertBefore) {
@@ -328,13 +328,19 @@ class Context {
         return;
       }
 
+      const chatBoxes = $$(Context.BOX_SELECTOR, Context.boxContainer);
+      if (chatBoxes.length) {
+        insertAfter(box, chatBoxes.at(-1));
+        return;
+      }
+
       if (startEl) {
         insertAfter(box, startEl);
         return;
       }
 
       boxContainer.prepend(box);
-    });
+    }
   }
 
   /**
