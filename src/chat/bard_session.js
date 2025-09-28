@@ -253,7 +253,6 @@ class BardSession extends ChatSession {
         text: htmlMessage,
         action: "refresh",
       });
-      return;
     } else {
       this.setCurrentAction("refresh");
       this.onMessage(htmlMessage);
