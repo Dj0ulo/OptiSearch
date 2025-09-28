@@ -35,7 +35,6 @@ main {
 }
 #extension-name {
   display: inline;
-  margin-bottom: 1em;
 }
 #benefits {
   display: grid;
