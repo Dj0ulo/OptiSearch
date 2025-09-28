@@ -24,7 +24,7 @@
     var rx_row = /.*\n/g;
     var rx_cell = /\||(.*?[^\\])\|/g;
     var rx_heading = /(?=^|>|\n)([>\s]*?)(#{1,6}) (.*?)( #*)? *(?=\n|$)/g;
-    var rx_para = /(?=^|>|\n)\s*\n+([^<]+?)\n+\s*(?=\n|<|$)/g;
+    var rx_para = /(?=^|>|\n)\s*\n+([^<]+?)\n+\s*(?=\n|<|$)/g;
     var rx_stash = /-\d+\uf8ff/g;
 
     function replace(rex, fn) {
@@ -86,6 +86,12 @@
         return si + '\uf8ff';
     });
 
+    // one line code
+    replace(rx_one_line_code, (all, p1) => {
+        stash[--si] = element('code', p1);
+        return si + '\uf8ff';
+    });
+
     // blockquote
     src = blockquote(src);
 
@@ -129,9 +135,6 @@
 
     // paragraph
     replace(rx_para, (all, content) => element('p', unesc(highlight(content))));
-
-    // one line code
-    replace(rx_one_line_code, (all, p1) => element('code', p1));
 
     // stash
     replace(rx_stash, (all) => stash[parseInt(all)]);
