@@ -153,7 +153,6 @@
 }
 
 .optiheader .expand-arrow {
-  transition: transform var(--expand-time) ease-in-out, color 0.3s, text-shadow 0.3s;
   transform-origin: center;
 }
 [data-optisearch-column=wide] .optisearchbox .expand-arrow {

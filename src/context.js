@@ -378,23 +378,11 @@ class Context {
   }
 
   static setupMultiExtensionsSettingListener() {
-    const updateWideState = (value, start=false) => {
-      if (!start && !$(`style.wide-column-transition`)) {
-        el('style', {
-          className: 'wide-column-transition',
-          textContent: '.optisearch-column { transition: max-width var(--expand-time) linear, min-width var(--expand-time) linear ; }'
-        }, Context.docHead);
-      }
+    const updateWideState = (value) => {
       Context.boxContainer.dataset.optisearchColumn = value ? "wide" : "thin";
     }
-    updateWideState(Context.get('wideColumn'), true);
+    updateWideState(Context.get('wideColumn'));
     Context.addSettingListener('wideColumn', updateWideState);
-
-    const transition = window.getComputedStyle(Context.boxContainer)["transition"];
-    const expandTransition = "min-width var(--expand-time) linear";
-    if (!transition.includes(expandTransition)) {
-      Context.boxContainer.style.transition = transition + "," + expandTransition;
-    }
 
     setObserver(mutations => {
       mutations.some(m => {

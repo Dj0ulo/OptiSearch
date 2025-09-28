@@ -37,6 +37,17 @@
       Context.rightColumn.parentElement,
       { childList: true }
     );
+    const main = document.body.firstElementChild.querySelector("#main");
+    const observer = setObserver(() => {
+        if (main !== document.body.firstElementChild.querySelector("#main")) {
+          observer.disconnect();
+          Context.setupRightColumn();
+          Context.appendBoxes(Context.boxes);
+        }
+      },
+      main.parentElement,
+      { childList: true }
+    );
   };
 
   /**
