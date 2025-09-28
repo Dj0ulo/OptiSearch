@@ -7,7 +7,7 @@ const WhichExtension = (() => {
   return 'optisearch';
 })();
 const isOptiSearch = WhichExtension === 'optisearch';
-const WhichChat = isOptiSearch ? 'chatgpt' : WhichExtension;
+const WhichChat = WhichExtension === 'bard' ? 'bard' : 'chatgpt';
 const isDebugMode = !chrome.runtime.getManifest().update_url; // if it is set, it means that we loaded the extension from source (not from the store)
 
 const webstores = {
@@ -22,7 +22,7 @@ const webstores = {
     'https://addons.mozilla.org/fr/firefox/addon/bard-for-search-engines',
 }
 const webstore = webstores[WhichExtension];
-const donationLink = `https://www.paypal.com/donate?hosted_button_id=${WhichExtension === 'bingchat' ? 'BXBP3JELVS4FL' : 'VPF2BYBDBU5AA'}`;
+const donationLink = `https://www.paypal.com/donate?hosted_button_id=VPF2BYBDBU5AA`;
 
 const Google = "Google", Ecosia = "Ecosia", Bing = "Bing", Yahoo = "Yahoo", DuckDuckGo = "DuckDuckGo", Baidu = "Baidu", Brave = "Brave Search";
 const OrderEngines = [Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave, Yahoo];

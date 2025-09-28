@@ -12,12 +12,6 @@ class ChatSession {
       icon: "src/images/chatgpt.png",
       href: "https://chatgpt.com",
     },
-    'bingchat': {
-      name: "Copilot",
-      link: "https://copilot.microsoft.com/",
-      icon: "src/images/copilot.png",
-      href: "https://copilot.microsoft.com/",
-    },
   };
   static get debug() {
     return !!new URL(location).searchParams.get("optisearch-test-mode");
@@ -272,7 +266,7 @@ class ChatSession {
           return;
         } else {
           el('a', { 
-            href: webstores[ai === 'chatgpt' ? 'optisearch' : ai],
+            href: webstores[ai === 'chatgpt' ? 'bingchat' : ai],
             target: "_blank",
           }).click();
         }

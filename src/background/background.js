@@ -20,10 +20,8 @@ async function handleAction(action) {
     'fetch-result': handleActionFetchResult,
     'image-blob': handleActionImageBlob,
     'session-storage': handleSessionStorage,
-    'setup-bing-offscreen': handleSetupOffscreen,
     'window': handleActionWindow,
     'event-stream': handleActionEventStream,
-    'websocket': handleActionWebsocket,
   };
   if (actionType in handlers)
     return handlers[actionType](action);
@@ -101,65 +99,6 @@ function handleActionEventStream(action) {
     done,
     data: value && [...value.values()].map(c => String.fromCharCode(c)).join(''),
   }));
-}
-
-/**
- * Check if there is an offscreen document active and create one if not.
- * This method should be executed only on the Copilot extension and with manifest v3.
- */
-async function handleSetupOffscreen() {
-  const already = await setupOffscreenDocument('src/chat/offscreen/offscreen.html');
-  return { 'status': already ? 'Offscreen already running' : 'Offscreen setup' };
-}
-
-let creating; // A global promise to avoid concurrency issues
-
-/**
- * Check if there is an offscreen document active and create one if not.
- * This method should be executed only on the Copilot extension and with manifest v3.
- */
-async function setupOffscreenDocument(path) {
-  const offscreenUrl = chrome.runtime.getURL(path);
-
-  if (await hasOffscreenDocument(offscreenUrl)) {
-    return true;
-  }
-
-  if (creating) {
-    await creating;
-  } else {
-    const createOffscreenDocument = () => chrome.offscreen.createDocument({
-      url: path,
-      reasons: ['IFRAME_SCRIPTING'],
-      justification: 'Open WebSocket inside https://copilot.microsoft.com context',
-    });
-    creating = createOffscreenDocument().catch(async error => {
-      if (error.message.startsWith('Only a single offscreen document may be created.')) {
-        await chrome.offscreen.closeDocument();
-        creating = null;
-        return createOffscreenDocument();
-      }
-      throw error;
-    });
-    await creating;
-    creating = null;
-  }
-  return false;
-}
-
-/**
- * Check if there is an offscreen document active.
- * This method should be executed only on the Copilot extension and with manifest v3.
- */
-async function hasOffscreenDocument(offscreenUrl) {
-  const matchedClients = await clients.matchAll();
-
-  for (const client of matchedClients) {
-    if (client.url === offscreenUrl) {
-      return true;
-    }
-  }
-  return false;
 }
 
 /**

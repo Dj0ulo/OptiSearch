@@ -12,7 +12,6 @@
   };
   const benefitsContainer = $("#benefits");
   Object.entries(benefits).forEach(([id, [icon, html]]) => {
-    if (id === 'bingSearch' && WhichExtension !== 'bingchat') return;
     setSvg(el("div", { className: "icon" }, benefitsContainer), icon);
     el("div", { className: "description", innerHTML: html }, benefitsContainer);
   });

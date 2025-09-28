@@ -46,11 +46,6 @@ class ChatGPTSession extends ChatSession {
     return this.session;
   }
 
-  async registerWebSocket() {
-    const url = (await this.backendApi("register-websocket", null, 'POST')).wss_url;
-    this.socketID = await this.createSocket(url);
-  }
-
   async fetchModels() {
     this.models = (await this.backendApi("models")).models;
     return this.models;
@@ -85,7 +80,6 @@ class ChatGPTSession extends ChatSession {
         if (!streamData.data) return [];
         packetBody = streamData.data;
       } else {
-        if (streamData.readyState === WebSocket.CLOSED) return ["DONE"];
         if (!streamData.packet) return [];
         packetBody = atob(JSON.parse(streamData.packet).body);
       }
@@ -156,17 +150,6 @@ class ChatGPTSession extends ChatSession {
     return this.next();
   }
 
-  async createSocket(url) {
-    const res = await bgWorker({
-      action: "websocket",
-      url,
-    });
-    if (!('socketID' in res)) {
-      throw "Socket ID not returned";
-    }
-    return res.socketID;
-  }
-
   readStream() {
     if (this.eventStreamID !== null) {
       return bgWorker({
@@ -175,14 +158,7 @@ class ChatGPTSession extends ChatSession {
       });
     }
 
-    if (this.socketID !== null) {
-      return bgWorker({
-        action: "websocket",
-        socketID: this.socketID,
-      });
-    }
-
-    throw "Need socket or event stream ID to send";
+    throw "Need event stream ID to send";
   }
 
   removeConversation() {

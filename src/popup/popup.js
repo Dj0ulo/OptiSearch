@@ -158,11 +158,6 @@
     if (isOptiSearch && category === 'AI Assitant') {
       el('a', {
         className: 'ad',
-        innerHTML: _t('Get answers from <strong>$AI$</strong>', 'Microsoft Copilot'),
-        href: webstores['bingchat'],
-      }, sublist);
-      el('a', {
-        className: 'ad',
         innerHTML: _t('Get answers from <strong>$AI$</strong>', 'Google Gemini'),
         href: webstores['bard'],
       }, sublist);
@@ -182,13 +177,6 @@
       className: 'ad',
       innerHTML: _t('I want answers from <strong>$AI$</strong> too!', 'Google Gemini'),
       href: webstores['bard'],
-    }, optionsContainer);
-  }
-  if (WhichExtension === 'bard') {
-    el('a', {
-      className: 'ad',
-      innerHTML: _t('I want answers from <strong>$AI$</strong> too!', 'Microsoft Copilot'),
-      href: webstores['bingchat'],
     }, optionsContainer);
   }
 

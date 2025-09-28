@@ -42,18 +42,18 @@
     "zh_CN": "Google 中的 AI 答案"
   },
   "bingchatDesc": {
-    "ar": "يضع إجابة الذكاء الاصطناعي بجانب نتائج Google باستخدام Microsoft™ Copilot",
-    "de": "Zeigt KI-Antworten neben Google-Ergebnissen mit Microsoft™ Copilot an",
-    "en": "Puts AI answer next to Google results using Microsoft™ Copilot",
-    "es": "Coloca respuesta de IA junto a resultados de Google usando Microsoft™ Copilot",
-    "fr": "Place la réponse IA à côté des résultats Google en utilisant Microsoft™ Copilot",
-    "hi": "Microsoft™ Copilot का उपयोग करके Google परिणामों के बगल में AI उत्तर रखता है",
-    "it": "Mette la risposta AI accanto ai risultati di Google usando Microsoft™ Copilot",
-    "ja": "Microsoft™ Copilot を使用して Google の検索結果の横に AI の回答を配置します",
-    "ko": "Microsoft™ Copilot을 사용하여 Google 검색 결과 옆에 AI 답변을 배치합니다",
-    "nl": "Plaatst AI-antwoord naast Google-resultaten met Microsoft™ Copilot",
-    "ru": "Размещает ответ ИИ рядом с результатами Google используя Microsoft™ Copilot",
-    "zh_CN": "使用 Microsoft™ Copilot 在 Google 搜索结果旁边放置 AI 答案"
+    "ar": "يضع إجابة الذكاء الاصطناعي بجانب نتائج Google",
+    "de": "Zeigt KI-Antworten neben Google-Ergebnissen an",
+    "en": "Puts AI answer next to Google results",
+    "es": "Coloca respuesta de IA junto a resultados de Google",
+    "fr": "Place la réponse IA à côté des résultats Google",
+    "hi": "Google परिणामों के बगल में AI उत्तर रखता है",
+    "it": "Mette la risposta AI accanto ai risultati di Google",
+    "ja": "Google の検索結果の横に AI の回答を配置します",
+    "ko": "Google 검색 결과 옆에 AI 답변을 배치합니다",
+    "nl": "Plaatst AI-antwoord naast Google-resultaten",
+    "ru": "Размещает ответ ИИ рядом с результатами Google",
+    "zh_CN": "在 Google 搜索结果旁边放置 AI 答案"
   },
   "bardName": {
     "ar": "بارد بجوار نتائج Google",

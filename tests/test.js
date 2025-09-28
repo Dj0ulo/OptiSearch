@@ -218,12 +218,9 @@ describe('Chat tests', function () {
     await page.goto('https://duckduckgo.com/?q=setinterval+js&optisearch-test-mode=1', { waitUntil: 'networkidle2' });
   });
 
-  it('should load all 3 extension panels', async () => {
-    const optisearchPanel = await page.waitForSelector('.optisearch-box[optichat="chatgpt"]', { timeout: 15000 });
-    assert.ok(optisearchPanel, 'Optisearch panel not found');
-
-    const bingchatPanel = await page.waitForSelector('.bingchat-box[optichat="bingchat"]', { timeout: 15000 });
-    assert.ok(bingchatPanel, 'Bing Chat panel not found');
+  it('should load all 2 chat panels', async () => {
+    const chatGPTPanel = await page.waitForSelector('[optichat="chatgpt"]', { timeout: 15000 });
+    assert.ok(chatGPTPanel, 'ChatGPT panel not found');
 
     const bardPanel = await page.waitForSelector('.bard-box[optichat="bard"]', { timeout: 15000 });
     assert.ok(bardPanel, 'Bard panel not found');
@@ -231,14 +228,14 @@ describe('Chat tests', function () {
     await page.click("[optichat].mainchat .ai-selected");
 
     const dropDownExtensions = await page.$$("[optichat].mainchat .ai-dropdown-option.has-extension");
-    assert.equal(dropDownExtensions.length, 3, "Should show that the 3 extensions are installed");
+    assert.equal(dropDownExtensions.length, 2, "Should show that the 2 chat extensions are installed");
 
-    await page.click(`[optichat].mainchat .ai-dropdown-option[data-value="bingchat"]`);
+    await page.click(`[optichat].mainchat .ai-dropdown-option[data-value="chatgpt"]`);
   });
 
   it('should exist only one main panel', async () => {
     const panels = await page.$$('[optichat]');
-    assert.equal(panels.length, 3, 'There should be exactly 3 [optichat] panels');
+    assert.equal(panels.length, 2, 'There should be exactly 2 [optichat] panels');
 
     const mainPanels = await page.$$('[optichat].mainchat');
     assert.equal(mainPanels.length, 1, 'There should be exactly one main panel');
@@ -255,11 +252,6 @@ describe('Chat tests', function () {
     await checkMainChat('bard');
     await reloadPage();
     await checkMainChat('bard');
-
-    await switchTo('bingchat');
-    await checkMainChat('bingchat');
-    await reloadPage();
-    await checkMainChat('bingchat');
     
     await switchTo('chatgpt');
     await checkMainChat('chatgpt');
@@ -289,7 +281,7 @@ describe('Chat tests', function () {
     assert.equal(mainPanels.length, 1, 'There should still be exactly one main panel after uninstalling optisearch');
 
     const mainPanelOptichat = await page.evaluate(el => el.getAttribute('optichat'), mainPanels[0]);
-    assert.ok(['bingchat', 'bard'].includes(mainPanelOptichat), 'Main panel should be one of the remaining extensions');
+    assert.ok(['chatgpt', 'bard'].includes(mainPanelOptichat), 'Main panel should be one of the remaining extensions');
   });
 
   describe('Auto-generate', () => {
@@ -308,7 +300,7 @@ describe('Chat tests', function () {
     });
 
     it('should start when hitting auto generate', async () => {
-      await switchTo("bingchat");
+      await switchTo("chatgpt");
       const playPauseDiv = await page.$('[optichat].mainchat .right-buttons-container > .play-pause');
       playPauseDiv.click();
       assert.ok(
@@ -330,7 +322,7 @@ describe('Chat tests', function () {
       await reloadPage();
   
       assert.ok(
-        await page.$("[optichat=bingchat]:not(.asked)"),
+        await page.$("[optichat=chatgpt]:not(.asked)"),
         "Copilot should not have started because it should disable directchat when switching to another chat"
       );
 

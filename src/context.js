@@ -296,6 +296,10 @@ class Context {
     const startEl = $('.optisearch-start', boxContainer);
 
     boxes.forEach(box => {
+      const boxChat = box.getAttribute("optichat"); 
+      if (boxChat && $(`[optichat=${boxChat}]`, boxContainer)) {
+        return;
+      }
       const mainChatBox = $("[optichat].mainchat", boxContainer);
       if (mainChatBox) {
         if (Context.get("mainChat") === WhichChat) {
@@ -312,7 +316,7 @@ class Context {
         return;
       }
 
-      if (!box.getAttribute("optichat")) {
+      if (!boxChat) {
         if (Context.engine.canPutBefore) {
           const toInsertBefore = $(Context.engine.canPutBefore, boxContainer);
           if (toInsertBefore) {

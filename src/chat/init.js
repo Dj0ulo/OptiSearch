@@ -4,8 +4,6 @@
       return;
 
     Context.chatSession = (() => {
-      if (typeof BingChatSession !== 'undefined')
-        return new BingChatSession();
       if (typeof BardSession !== 'undefined')
         return new BardSession();
       if (typeof ChatGPTSession !== 'undefined')
