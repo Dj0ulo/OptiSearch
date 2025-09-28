@@ -5,7 +5,7 @@ Sites.mdn.msgApi = (link) => {
 Sites.mdn.get = (from, doc) => {
     const body = doc.querySelector("body");
 
-    const article = body.querySelector("article");
+    const article = body.querySelector("#content, article");
     if (!article) {
         return;
     }
@@ -17,7 +17,7 @@ Sites.mdn.get = (from, doc) => {
       extra.prepend(browsers);
     }
     const syntaxTitle = article.querySelector("#syntax, #syntaxe");
-    const syntax = syntaxTitle && syntaxTitle.nextSibling.querySelector("pre");
+    const syntax = syntaxTitle && syntaxTitle.nextElementSibling.querySelector("pre");
 
     const summary = Array.from(article.querySelectorAll("p")).find(p => p.textContent != "" && !p.closest('header'));
 
