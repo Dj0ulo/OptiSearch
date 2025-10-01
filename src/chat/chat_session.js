@@ -333,7 +333,7 @@ class ChatSession {
       this.sendTextArea = async () => {
         if (!this.sendingAllowed || !textArea.value) return;
         if (await Context.handleNotPremium()) return;
-        this.setupAndSend(textArea.value);
+        this.setupAndSend(textArea.value, false);
         setTextAreaValue('');
       };
       this.listen('allowSend', () => {
@@ -538,13 +538,13 @@ class ChatSession {
     this.onErrorMessage(error);
   }
 
-  async setupAndSend(prompt) {
+  async setupAndSend(prompt, clearPanel=true) {
     if (!this.sendingAllowed) return;
     
     prompt = prompt ?? parseSearchParam();
 
     this.panel.classList.add('asked');
-    this.setCurrentAction(null);
+    this.setCurrentAction(null, clearPanel);
     this.disableSend();
     this.discussion.appendMessage(new MessageContainer(Author.User, escapeHtml(prompt)));
     this.discussion.appendMessage(new MessageContainer(Author.Bot, ''));
@@ -562,8 +562,10 @@ class ChatSession {
     }
   }
 
-  setCurrentAction(action) {
-    this.clear();
+  setCurrentAction(action, clear=true) {
+    if (clear) {
+      this.clear();
+    }
     this.allowSend();
     const btn = this.actionButton;
     this.currentAction = action;
