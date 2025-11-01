@@ -22,6 +22,7 @@ async function handleAction(action) {
     'session-storage': handleSessionStorage,
     'window': handleActionWindow,
     'event-stream': handleActionEventStream,
+    'websocket': handleActionWebsocket,
   };
   if (actionType in handlers)
     return handlers[actionType](action);

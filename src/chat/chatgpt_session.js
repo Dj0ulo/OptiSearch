@@ -26,7 +26,10 @@ class ChatGPTSession extends ChatSession {
   async init() {
     if (ChatSession.debug) return;
     await this.fetchSession();
-    await this.fetchModels();
+    await Promise.all([
+      this.fetchModels(),
+      this.registerWebSocket(),
+    ]);
   }
 
   async fetchSession() {
@@ -44,6 +47,11 @@ class ChatGPTSession extends ChatSession {
       throw ChatGPTSession.errors.session;
     this.session = session;
     return this.session;
+  }
+
+  async registerWebSocket() {
+    const url = (await this.backendApi("register-websocket", null, 'POST')).wss_url;
+    this.socketID = await this.createSocket(url);
   }
 
   async fetchModels() {
@@ -80,6 +88,7 @@ class ChatGPTSession extends ChatSession {
         if (!streamData.data) return [];
         packetBody = streamData.data;
       } else {
+        if (streamData.readyState === WebSocket.CLOSED) return ["DONE"];
         if (!streamData.packet) return [];
         packetBody = atob(JSON.parse(streamData.packet).body);
       }
@@ -150,6 +159,17 @@ class ChatGPTSession extends ChatSession {
     return this.next();
   }
 
+  async createSocket(url) {
+    const res = await bgWorker({
+      action: "websocket",
+      url,
+    });
+    if (!('socketID' in res)) {
+      throw "Socket ID not returned";
+    }
+    return res.socketID;
+  }
+
   readStream() {
     if (this.eventStreamID !== null) {
       return bgWorker({
@@ -158,7 +178,14 @@ class ChatGPTSession extends ChatSession {
       });
     }
 
-    throw "Need event stream ID to send";
+    if (this.socketID !== null) {
+      return bgWorker({
+        action: "websocket",
+        socketID: this.socketID,
+      });
+    }
+
+    throw "Need socket or event stream ID to send";
   }
 
   removeConversation() {
@@ -240,7 +267,6 @@ class ChatGPTSession extends ChatSession {
       ...(body && { "content-type": "application/json" }),
     }
     if (service === "conversation") {
-      headers["accept"] = 'text/event-stream';
       if (this.session.sentinelToken) headers["openai-sentinel-chat-requirements-token"] = this.session.sentinelToken;
       if (this.session.proofToken) headers["openai-sentinel-proof-token"] = this.session.proofToken;
     }
