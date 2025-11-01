@@ -1,8 +1,8 @@
-# OptiSearch ｜ Copilot in Google ｜ Gemini next to Google results
+# OptiSearch ｜ AI answer in Google ｜ AI next to search results
 
 ![License](https://img.shields.io/github/license/dj0ulo/optisearch)
 
-This repository contains the code of **OptiSearch**, **Copilot in Google** and **Gemini next to Google results** browser extensions. They share the same codebase core.
+This repository contains the code of **OptiSearch**, **AI answer in Google** and **AI next to search results** browser extensions. They share the same codebase core.
 
 ### <img alt="OptiSearch icon" src="./icons/optisearch/icon_128.png" width="24" height="24"> OptiSearch
 ![License](https://img.shields.io/chrome-web-store/users/bbojmeobdaicehcopocnfhaagefleiae?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/optisearch?label=Firefox%20Users)
@@ -13,7 +13,7 @@ Displays relevant informations from search engine results directly alongside the
 
 [Install from Mozilla Add-on Store](https://addons.mozilla.org/fr/firefox/addon/optisearch/)
 
-### <img alt="Copilot in Google icon" src="./icons/bingchat/icon_128.png" width="24" height="24"> Copilot in Google
+### <img alt="AI answer in Google icon" src="./icons/bingchat/icon_128.png" width="24" height="24"> AI answer in Google
 ![License](https://img.shields.io/chrome-web-store/users/pcnhobmoglanpljipbomknafhdlcgcng?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/bing-chat-gpt-4-in-google?label=Firefox%20Users)
 
 Displays the answer from Microsoft Copilot alongside search engine results.
@@ -22,7 +22,7 @@ Displays the answer from Microsoft Copilot alongside search engine results.
 
 [Install from Mozilla Add-on Store](https://addons.mozilla.org/fr/firefox/addon/bing-chat-gpt-4-in-google/)
 
-### <img alt="Gemini next to Google results" src="./icons/bard/icon_128.png" width="24" height="24"> Gemini next to Google results
+### <img alt="AI next to search results" src="./icons/bard/icon_128.png" width="24" height="24"> AI next to search results
 ![License](https://img.shields.io/chrome-web-store/users/pkdmfoabhnkpkcacnmgilaeghiggdbgf?label=Chrome%20Users) ![License](https://img.shields.io/amo/users/bard-for-search-engines?label=Firefox%20Users)
 
 Displays the answer from Google Gemini alongside search engine results.
@@ -42,7 +42,7 @@ Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave Search
     ```
 1. You can load both extension in your favorite browser directly from the root of the repo, you just need to build the manifest first, use the flag `-f` to build the manifest for Firefox.
     
-    E.g. to build the firefox manifest for **Copilot in Google**:
+    E.g. to build the firefox manifest for **AI answer in Google**:
     ```
     node build.mjs bingchat -f
     ```
@@ -53,7 +53,7 @@ Google, Bing, Baidu, DuckDuckGo, Ecosia, Brave Search
     ```
     node build.mjs optisearch -b DIR
     ```
-    E.g. to copy **Gemini next to Google results** sources for Firefox in `build/bard`
+    E.g. to copy **AI next to search results** sources for Firefox in `build/bard`
     ```
     node build.mjs bard -bf
     ```

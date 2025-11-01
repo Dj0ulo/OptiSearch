@@ -56,18 +56,18 @@
     "zh_CN": "在 Google 搜索结果旁边放置 AI 答案"
   },
   "bardName": {
-    "ar": "بارد بجوار نتائج Google",
-    "de": "Gemini neben Google-Ergebnissen",
-    "en": "Gemini next to Google results",
-    "es": "Gemini junto a los resultados de Google",
-    "fr": "Gemini à côté des résultats Google",
-    "hi": "Google परिणामों के बगल में Gemini",
-    "it": "Gemini accanto ai risultati di Google",
-    "ja": "Google の検索結果の横にある Gemini",
-    "ko": "Google 검색 결과 옆에 Gemini",
-    "nl": "Gemini naast Google-resultaten",
-    "ru": "Gemini рядом с результатами Google",
-    "zh_CN": "Gemini 与 Google 搜索结果并排"
+    "ar": "الذكاء الاصطناعي بجوار نتائج البحث",
+    "de": "KI neben Suchergebnissen",
+    "en": "AI next to search results",
+    "es": "IA junto a los resultados de búsqueda",
+    "fr": "IA à côté des résultats de recherche",
+    "hi": "खोज परिणामों के बगल में AI",
+    "it": "IA accanto ai risultati di ricerca",
+    "ja": "検索結果の横にある AI",
+    "ko": "검색 결과 옆에 AI",
+    "nl": "AI naast zoekresultaten",
+    "ru": "ИИ рядом с результатами поиска",
+    "zh_CN": "搜索结果旁边的 AI"
   },
   "bardDesc": {
     "ar": "🗨️ إجابة Gemini بجانب نتائج Google.",
