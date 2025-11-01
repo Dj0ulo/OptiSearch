@@ -353,7 +353,7 @@ a:hover {
 .dark pre,
 .dark code  {
   color: var(--dark-mode-text-color);
-  background: #222;
+  background: var(--dark-secondary-background-color);
 }
 
 .dark.duckduckgo {
@@ -364,5 +364,5 @@ a:hover {
 .dark.duckduckgo pre,
 .dark.duckduckgo code {
   color: var(--dark-mode-text-color);
-  background-color: #222;
+  background: var(--dark-secondary-background-color);
 }

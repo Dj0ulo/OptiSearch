@@ -442,6 +442,7 @@ class Context {
       box.classList.toggle('dark', dark);
       box.classList.toggle('bright', !dark);
       box.style.backgroundColor = dark ? colorLuminance(bg, 0.02) : '';
+      box.style.setProperty('--dark-secondary-background-color', dark ? colorLuminance(bg, 0.005) : '');
     }
   }
 
