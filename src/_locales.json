@@ -1191,5 +1191,19 @@
     "nl": "Plaats OptiSearch-panelen boven bestaande",
     "ru": "Разместить панели OptiSearch над существующими",
     "zh_CN": "将 OptiSearch 面板放在现有面板之上"
+  },
+  "By purchasing, you accept the terms in our <a href='https://www.optisearch.io/privacy.html' target='_blank'>privacy policy</a>.": {
+    "ar": "من خلال الشراء، فإنك تقبل الشروط الواردة في <a href='https://www.optisearch.io/privacy.html' target='_blank'>سياسة الخصوصية</a> الخاصة بنا.",
+    "de": "Mit dem Kauf akzeptieren Sie die Bedingungen in unserer <a href='https://www.optisearch.io/privacy.html' target='_blank'>Datenschutzrichtlinie</a>.",
+    "en": "By purchasing, you accept the terms in our <a href='https://www.optisearch.io/privacy.html' target='_blank'>privacy policy</a>.",
+    "es": "Al comprar, usted acepta los términos de nuestra <a href='https://www.optisearch.io/privacy.html' target='_blank'>política de privacidad</a>.",
+    "fr": "En achetant, vous acceptez les conditions de notre <a href='https://www.optisearch.io/privacy.html' target='_blank'>politique de confidentialité</a>.",
+    "hi": "खरीदकर, आप हमारी <a href='https://www.optisearch.io/privacy.html' target='_blank'>गोपनीयता नीति</a> में शर्तों को स्वीकार करते हैं।",
+    "it": "Acquistando, accetti i termini della nostra <a href='https://www.optisearch.io/privacy.html' target='_blank'>politica sulla privacy</a>.",
+    "ja": "購入することにより、<a href='https://www.optisearch.io/privacy.html' target='_blank'>プライバシーポリシー</a>の条件を受け入れたことになります。",
+    "ko": "구매함으로써 귀하는 당사의 <a href='https://www.optisearch.io/privacy.html' target='_blank'>개인 정보 보호 정책</a>의 조건을 수락합니다.",
+    "nl": "Door te kopen, accepteert u de voorwaarden in ons <a href='https://www.optisearch.io/privacy.html' target='_blank'>privacybeleid</a>.",
+    "ru": "Совершая покупку, вы принимаете условия нашей <a href='https://www.optisearch.io/privacy.html' target='_blank'>политики конфиденциальности</a>.",
+    "zh_CN": "购买即表示您接受我们<a href='https://www.optisearch.io/privacy.html' target='_blank'>隐私政策</a>中的条款。"
   }
 }

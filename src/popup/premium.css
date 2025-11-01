@@ -5,7 +5,7 @@
   --grey: #686868;
   --scroll-bar-color: var(--grey);
   --scroll-bar-bg-color: var(--bg);
-  --footer-height: 5rem;
+  --footer-height: 6rem;
 }
 body {
   font-family: "Segoe UI", Consolas, Tahoma, sans-serif;
@@ -107,6 +107,23 @@ footer {
   border-radius: 5px;
   cursor: pointer;
   margin: 0.8em 20%;
+}
+
+#premium-acknowledgment {
+  font-size: 0.75em;
+  color: var(--grey);
+  text-align: center;
+  margin: 0 1em 0.5em 1em;
+  line-height: 1.3;
+}
+
+#premium-acknowledgment a {
+  color: var(--grey);
+  text-decoration: underline;
+}
+
+#premium-acknowledgment a:hover {
+  color: var(--text-color);
 }
 
 *::-webkit-scrollbar {
