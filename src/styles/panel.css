@@ -169,6 +169,11 @@
   grid-auto-columns: 75% 1fr;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-size: revert;
+  font-weight: revert;
+}
+
 .title {
   font-size: large;
   font-weight: bold;
