@@ -3,6 +3,7 @@ class Context {
   static BOX_CLASS = `${Context.EXTENSION_SELECTOR_PREFIX}-box`;
   static BOX_SELECTOR = `.${Context.BOX_CLASS}`;
   static STYLE_ELEMENT_ID = `${Context.EXTENSION_SELECTOR_PREFIX}-style`;
+  static OPTICHAT_MAIN_STYLE_ELEMENT_ID = `optichat-main`;
   static MOBILE_CLASS = 'mobile';
 
   static engines = {};
@@ -122,9 +123,9 @@ class Context {
       sendResponse(true);
     });
 
-    if (Context.chatSession && Context.chatSession.panel) {
-      Context.appendPanel(Context.chatSession.panel);
-    }
+    Context.chatSessions.forEach((session) => {
+      Context.appendPanel(session.panel);
+    });
     if (typeof Sites !== 'undefined' && Context.parseResults) {
       Context.parseResults();
     }
@@ -300,16 +301,6 @@ class Context {
       if (boxChat && $(`[optichat=${boxChat}]`, boxContainer)) {
         return;
       }
-      const mainChatBox = $("[optichat].mainchat", boxContainer);
-      if (mainChatBox) {
-        if (Context.get("mainChat") === WhichChat) {
-          Context.set("mainChat", WhichChat); // set the colum attribute
-        } else {
-          Context.set("mainChat", mainChatBox.getAttribute("optichat"))
-        }
-      } else {
-        box.classList.add("mainchat");
-      }
 
       if (isOnMobile && firstResultRow) {
         boxContainer.insertBefore(box, firstResultRow);
@@ -405,33 +396,55 @@ class Context {
     }, Context.boxContainer, { attributes: true });
 
     const updateMainChat = (value, start=false) => {
-      if (!start || WhichChat === value) {
-        // If it is the start, all the panels might not be there
-        // so we want only the concerned chat to set the column attribute
-        Context.boxContainer.dataset.optisearchMainChat = value;
+      if (!start || Context.isChatIncluded(value)) {
+        Context.setStyleMainChat(value);
       }
-      if (WhichChat !== value) {
-        Context.set("directchat", false);
-      }
-      $$('[optichat]').forEach(box => {
-        box.classList.toggle('mainchat', box.getAttribute('optichat') === value);
-      });
     }
     updateMainChat(Context.get('mainChat'), true);
     Context.addSettingListener('mainChat', updateMainChat);
 
-    setObserver(mutations => {
-      mutations.some(m => {
-        if (m.attributeName !== "data-optisearch-main-chat") return;
-        if(!m.target.dataset.optisearchMainChat) {
-          Context.set('mainChat', Context.get('mainChat')); // to set again the column attribute
-          return;
-        }
-        if (Context.get('mainChat') !== m.target.dataset.optisearchMainChat) {
-          Context.set('mainChat', m.target.dataset.optisearchMainChat);
-        }
-      })
-    }, Context.boxContainer, { attributes: true });
+    setObserver(
+      (mutations) => {
+        mutations.forEach((mutation) => {
+          if (
+            mutation.type === "characterData" ||
+            mutation.type === "childList"
+          ) {
+            const styleMainChat = Context.getStyleMainChat();
+            if (Context.get("mainChat") !== styleMainChat) {
+              Context.set("mainChat", styleMainChat);
+            }
+          }
+        });
+      },
+      Context.mainChatStyleEl,
+      {
+        characterData: true,
+        childList: true,
+        subtree: true,
+      }
+    );
+  }
+
+  static get mainChatStyleEl() {
+    let styleMainChat = Context.docHead.querySelector("#" + Context.OPTICHAT_MAIN_STYLE_ELEMENT_ID);
+    if (styleMainChat) {
+      return styleMainChat;
+    }
+    styleMainChat =  el('style', {
+      id: Context.OPTICHAT_MAIN_STYLE_ELEMENT_ID,
+      textContent: `[optichat]:not([optichat=${DefaultChat}]) { display: none; }`
+    }, Context.docHead);
+
+    return styleMainChat;
+  }
+
+  static getStyleMainChat() {
+    return Context.mainChatStyleEl.textContent.match(/optichat=(\w+)/)?.[1];
+  }
+
+  static setStyleMainChat(value) {
+    return Context.mainChatStyleEl.textContent = `[optichat]:not([optichat=${value}]) { display: none; }`;
   }
 
   static updateColor() {

@@ -172,13 +172,6 @@
       href: webstores['optisearch'],
     }, optionsContainer);
   }
-  if (WhichExtension === 'bingchat') {
-    el('a', {
-      className: 'ad',
-      innerHTML: _t('I want answers from <strong>$AI$</strong> too!', 'Google Gemini'),
-      href: webstores['bard'],
-    }, optionsContainer);
-  }
 
   function set(key, value) {
     save[key] = value;

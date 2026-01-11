@@ -12,6 +12,18 @@ class ChatSession {
       icon: "src/images/chatgpt.png",
       href: "https://chatgpt.com",
     },
+    'claude': {
+      name: "Claude",
+      link: "https://claude.ai",
+      icon: "src/images/claude.png",
+      href: "https://claude.ai",
+    },
+    'perplexity': {
+      name: "Perplexity",
+      link: "https://www.perplexity.ai",
+      icon: "src/images/perplexity.png",
+      href: "https://www.perplexity.ai",
+    },
   };
   static get debug() {
     return !!new URL(location).searchParams.get("optisearch-test-mode");
@@ -255,7 +267,7 @@ class ChatSession {
 
     const buildPanelSkeleton = () => {
       const panel = el("div");
-      panel.setAttribute("optichat", WhichChat);
+      panel.setAttribute("optichat", this.name);
   
       const header = el("div", { className: 'optiheader' }, panel);
 
@@ -266,7 +278,7 @@ class ChatSession {
           return;
         } else {
           el('a', { 
-            href: webstores[ai === 'chatgpt' ? 'bingchat' : ai],
+            href: webstores['bingchat'],
             target: "_blank",
           }).click();
         }

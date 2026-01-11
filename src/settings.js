@@ -18,7 +18,7 @@ const Settings = {
       default: false,
     },
     mainChat: {
-      default: WhichChat,
+      default: DefaultChat,
       active: false,
     },
   },

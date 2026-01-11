@@ -3,10 +3,6 @@
  src: url(moz-extension://__MSG_@@extension_id__/src/images/chat_icons_font.woff) format('woff');
 }
 
-.optisearchbox[optichat]:not(.mainchat) {
-    display: none;
-}
-
 .optisearchbox[optichat]:not(.asked):not([action]) > hr,
 .optisearchbox[optichat]:not(.asked):not([action]) > .optibody,
 .optisearchbox[optichat]:not(.asked) .left-buttons-container {

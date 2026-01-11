@@ -7,7 +7,11 @@ const WhichExtension = (() => {
   return 'optisearch';
 })();
 const isOptiSearch = WhichExtension === 'optisearch';
-const WhichChat = WhichExtension === 'bard' ? 'bard' : 'chatgpt';
+const DefaultChat = {
+  optisearch: "chatgpt",
+  bingchat: "chatgpt",
+  bard: "bard",
+}[WhichExtension];
 const isDebugMode = !chrome.runtime.getManifest().update_url; // if it is set, it means that we loaded the extension from source (not from the store)
 
 const webstores = {
